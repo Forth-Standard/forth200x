@@ -4,7 +4,6 @@
 
 [ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
 
-<!--
 <h4>Poll standings</h4>
 
 See <a href="#voting">below</a> for voting instructions.
@@ -13,32 +12,51 @@ See <a href="#voting">below</a> for voting instructions.
 
 <pre>
 [ ] conforms to ANS Forth.
-[ ] already implements the proposal in full since release [ ]:
-[ ] implements the proposal in full in a development version:
+ Gforth
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+ Gforth
+[ ] implements the proposal in full non-minimally in a development version.
+ Gforth
 [ ] will implement the proposal in full in release [ ].
+ Gforth 0.7
+[ ] will implement the proposal in full non-minimally in release [ ].
+ Gforth 0.7
 [ ] will implement the proposal in full in some future release.
+[ ] will implement the proposal in full non-minimally in some future release.
 There are no plans to implement the proposal in full in [ ].
-[ ] will never implement the proposal in full:
+[ ] will never implement the proposal in full.
 </pre>
 
 <h5>Programmers</h5>
 
 <pre>
-[ ] I have used (parts of) this proposal in my programs:
+[ ] I have used (parts of) this proposal in my programs.
 [ ] I would use (parts of) this proposal in my programs if the systems
-    I am interested in implemented it:
+    I am interested in implemented it.
+ David N. Williams
+ Anton Ertl
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it non-minimally.
+ David N. Williams
+ Anton Ertl
 [ ] I would use (parts of) this proposal in my programs if this
-    proposal was in the Forth standard:
+    proposal was in the Forth standard.
+ David N. Williams
+ Anton Ertl
 [ ] I would not use (parts of) this proposal in my programs.
 </pre>
 
 <h5>Informal results</h5>
 
--->
 
 <h4>Change history</h4>
 
 <dl>
+
+<dt>2005-03-16 <dd>No change in the normative section.  Made reference
+implementation case-insensitive.  Added non-normative section on
+naming guidelines.  Fixed typo.
 
 <dt>2nd RfD 2005-01-17 <dd>No change to the normative section.  New,
 non-trivial reference implementation.  More discussion of "Why not let
@@ -218,9 +236,9 @@ extension, and programs could query for this extension.
 <p>Doing this would require reserving some part of the ENVIRONMENT?
 name space for implementor-extension queries, with each query having
 an implementor part, and an extension name.  A naming authority would
-implementor part names to implementors, and the implementor would
-assign extension part names.  (Actually one the implementor could use
-it for arbitrary queries, not just extension queries).
+assign implementor part names to implementors, and the implementor
+would assign extension part names.  (Actually the implementor
+could use it for arbitrary queries, not just extension queries).
 
 <p>I am not convinced that there is enough demand for that.  In any
 case, I would like to see it handled in a separate RfD/CfV.
@@ -238,6 +256,25 @@ on-demand loading, it would require organizing each word separately.
 Lots of effort for the programmer and the system implementor.
 
 
+<h5>Guidelines for extension names</h5>
+
+Extension names should limited to 29 characters (excluding the "X:"
+prefix), so they can be stored into a wordlist systems with 31-char
+names.
+
+<p>The names of the extension queries (excluding the "X:" prefix) and
+the file names of the reference implementations should be lower case,
+so that the reference implementation of extension queries works on
+case-sensitive file systems (most Forth systems and the reference
+implementation match extension-query names case-insensitively, but
+making that standard is another RfD).
+
+<p>The names of the extension queries (excluding the "X:" prefix)
+should only contain printable ASCII characters that are allowed in all
+common file systems; it's probably best to just use alphanumeric
+characters and the "-".
+
+
 <h5>Implementation and Tests</h5>
 
 <ul>
@@ -250,6 +287,7 @@ available).
 
 <li><a href="tests/extension-query.fs">Tests</a>
 </ul>
+
 
 
 <h4>Experience</h4>
@@ -281,12 +319,24 @@ in the ballot.  Insert the system name or version between the
 brackets.  Multiple hits for the same system are possible (if they do
 not conflict).
 
+<p>Since most ANS Forth systems already support this proposal in full
+in a minimal way (i.e., they return false on every extension query),
+this ballot also asks for non-minimal support.
+
+<p>Note that for this proposal non-implementation means that you
+reserve the right to answer "X:" queries with true even if you do not
+implement the queried-for extension.  If the system answers the query
+with false, it supportsthe proposal in full in a minimal way.
+
 <pre>
 [ ] conforms to ANS Forth.
 [ ] already implements the proposal in full since release [ ].
 [ ] implements the proposal in full in a development version.
+[ ] implements the proposal in full non-minimally in a development version.
 [ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full non-minimally in release [ ].
 [ ] will implement the proposal in full in some future release.
+[ ] will implement the proposal in full non-minimally in some future release.
 There are no plans to implement the proposal in full in [ ].
 [ ] will never implement the proposal in full.
 </pre>
@@ -306,6 +356,8 @@ dominating class of programs you write.
 [ ] I have used (parts of) this proposal in my programs.
 [ ] I would use (parts of) this proposal in my programs if the systems
     I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it non-minimally.
 [ ] I would use (parts of) this proposal in my programs if this
     proposal was in the Forth standard.
 [ ] I would not use (parts of) this proposal in my programs.

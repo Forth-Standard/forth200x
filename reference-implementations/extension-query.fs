@@ -88,7 +88,6 @@ s" extension-query" insert-extension \ this is already loading
 : save-lower ( c-addr1 u -- c-addr2 u )
     \ c-addr1 u is a string; c-addr2 u is the lower-case variant of
     \ the string in newly ALLOCATEd memory.
-    \ !! dependency on au=char
     dup allocate throw swap 2dup 2>r ( c-addr1 c-addr2 u r: c-addr2 u )
     over chars + swap ?do
 	dup c@ to-lower i c!
@@ -115,7 +114,7 @@ s" extension-query" insert-extension \ this is already loading
 
 \ tests for this implementation
 
-1 [if]
+0 [if]
 require test/tester.fs
 
 \ { s" core" environment? -> true true } \ !! could also be false
