@@ -30,8 +30,8 @@
     s" extensions/" ;
 
 : extension-prefix ( -- c-addr u )
-    \ string at the start of evert extension query
-    s" X:" ;
+    \ string at the start of every extension query
+    s" x:" ;
 
 : extension-file-extension ( -- c-addr u )
     \ the file extension of the implementation files
@@ -80,9 +80,25 @@ variable extension-list 0 extension-list !
 
 s" extension-query" insert-extension \ this is already loading
 
+: to-lower ( c1 -- c2 )
+    dup [char] A [char] Z 1+ within if
+	[char] A - [char] a +
+    then ;
+
+: save-lower ( c-addr1 u -- c-addr2 u )
+    \ c-addr1 u is a string; c-addr2 u is the lower-case variant of
+    \ the string in newly ALLOCATEd memory.
+    \ !! dependency on au=char
+    dup allocate throw swap 2dup 2>r ( c-addr1 c-addr2 u r: c-addr2 u )
+    over chars + swap ?do
+	dup c@ to-lower i c!
+    char+ 1 chars +loop
+    drop 2r> ;
+
 : environment? ( c-addr u -- false | ... true )
     2dup 2>r environment? dup if ( f ) \ system answers query in another way
 	2r> 2drop exit then
+    2r> save-lower 2>r
     2r@ extension-prefix string-prefix? 0= if \ not an extension query
 	2r> 2drop exit then
     drop 2r> extension-prefix nip /string ( c-addr1 u1 )
@@ -97,10 +113,9 @@ s" extension-query" insert-extension \ this is already loading
     true ;
 
 
-
 \ tests for this implementation
 
-0 [if]
+1 [if]
 require test/tester.fs
 
 \ { s" core" environment? -> true true } \ !! could also be false
