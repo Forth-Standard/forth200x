@@ -36,6 +36,19 @@ There are no plans to implement the proposal in full in [ ].
 
 -->
 
+<h4>Change history</h4>
+
+<dl>
+
+<dt>2nd RfD 2005-01-17 <dd>No change to the normative section.  New,
+non-trivial reference implementation.  More discussion of "Why not let
+ENVIRONMENT? return a flag and true, like for wordset queries?" and
+"Why the "X:" prefix?".  New sections "Won't there be too many
+extension names?", "How about defining a way to query for implementor
+extensions?", "Why not just ask for word names with [UNDEFINED]?"
+
+</dl>
+
 <h4>Problem</h4>
 
 How does a program know whether the system it runs on supports one of
@@ -98,6 +111,44 @@ extra flag?  "Yes, we have heard of that extension, but no, we have
 not implemented it"?  That's not a useful information to have; what
 should a program do with that information?
 
+<p>Mitch Bradley and Guido Draheim would prefer a wordset-query-like
+behaviour, i.e., an additional flag if ENVIRONMENT?  returns true.
+Richard Borrell would prefer a single flag (i.e., the proposed
+behaviour).
+
+<p>With the wordset-query-like behaviour, the typical use above would
+look like:
+
+<pre>
+S" X:deferred" ENVIRONMENT? dup [IF]
+  drop
+[THEN]
+0= [IF]
+... \ reference implementation of the deferred words proposal
+[THEN]
+</pre>
+
+<p>Here are some statistics about the use of ENVIRONMENT? in general
+and wordset queries in particular in ANS Forth programs:
+
+<pre>
+Program      Author          ENVIRONMENT?  wordset queries
+brainless    David Kuehling  yes           no
+brew-0_03z9  Robert Epprecht yes           no
+brew_..._38  Robert Epprecht yes           floating-ext
+CD16v11      Brad Eckert     no            no
+anagrams     Wil Baden       no            no
+pentomino    Bruce Hoyt      no            no
+tscp         Ian Osgood      no            no
+Gray4        Anton Ertl	     yes	   no
+garbage-coll Anton Ertl	     yes	   no
+</pre>
+
+<p>I believe that one of the reason that wordset queries are used so
+rarely is that they are so cumbersome to use (that's certainly one of
+the reasons that kept me from using it).
+
+
 <h5>Why the "X:" prefix?</h5>
 
 This will hopefully ensure that there is no naming conflict with any
@@ -109,11 +160,26 @@ anything that has not gone to a CfV), without consuming all of it.
 existing system and have a better suggestion for a prefix, let me
 know.
 
+<p>Bruce McFarling has suggested changing the prefix such that the
+query string can be used as a filename on DOS/Windows.  However the
+prefix can be cut away easily, leading to a filename compatible with
+DOS/Windows (if the extension name is compatible), as the <a
+href="reference-implementations/extension-query.fs">reference
+implementation</a> demonstrates.
+
+<p>Guido Draheim suggested using a suffix, as it has advantages with
+input completion.  A prefix can also be used to profit with input
+completion, and overall this issue does not seem very important.
+Prefixes are more traditional for tagging names in programs (while
+suffixes are used for file names).
+
+
 <h5>What about extension proposals that have not (yet) gone to a
 CfV?</h5>
 
 If you want to introduce queries for them, do it with a different
 prefix.
+
 
 <h5>Why not include extension proposals that have not (yet) gone to a
 CfV?</h5>
@@ -122,11 +188,65 @@ They may still change before they go to a CfV, so it would not be
 clear if the system and the querying program refer to the same
 proposal.
 
+
+<h5>Won't there be too many extension names?</h5>
+
+Guido Draheim thinks that we will see many backwards-compatible
+revisions of proposals, so the number of extension names that should
+be known around for a the extensions would be a problem (since the nth
+revision would satisfy the requirements of revision 1-n, and thus n
+names would have to be kept around).
+
+<p>One way to deal with this would be to use a consistent naming
+scheme for backwards-compatible extensions: deferred, deferred-2,
+deferred-3 etc.  Then the system just needs to store the base name and
+the current revision number, and can check with a little code whether
+the queried-for extension is supported.
+
+<p>Keeping this naming scheme would be the responsibility of the
+person who maintains the list of CfVs.  (It's not the responsibility
+of the system implementor and therefore not in the normative part of
+this proposal).
+
+
+<h5>How about defining a way to query for implementor extensions?</h5>
+
+Guido Draheim suggested this.  With this one system implementor could
+formally define an extension, and another system could adopt that
+extension, and programs could query for this extension.
+
+<p>Doing this would require reserving some part of the ENVIRONMENT?
+name space for implementor-extension queries, with each query having
+an implementor part, and an extension name.  A naming authority would
+implementor part names to implementors, and the implementor would
+assign extension part names.  (Actually one the implementor could use
+it for arbitrary queries, not just extension queries).
+
+<p>I am not convinced that there is enough demand for that.  In any
+case, I would like to see it handled in a separate RfD/CfV.
+
+
+<h5>Why not just ask for word names with [UNDEFINED]?</h5>
+
+<p>Hans Bezemer and Albert van der Horst favour this approach.
+
+<p>That only tells whether a word exists in the system, but not how it
+behaves.
+
+<p>It would also require asking separately for each word.  And for
+on-demand loading, it would require organizing each word separately.
+Lots of effort for the programmer and the system implementor.
+
+
 <h5>Implementation and Tests</h5>
 
 <ul>
 
-<li><a href="reference-implementations/extension-query.fs">Reference implementation</a> (easy: empty file).
+<li><a href="reference-implementations/extension-query.fs">Reference
+implementation</a>; to make it useful, you should also download and
+unpack <a href="extensions.zip">extensions.zip</a>, containing a
+directory of reference implementations of voted-on extensions (if
+available).
 
 <li><a href="tests/extension-query.fs">Tests</a>
 </ul>
@@ -138,10 +258,6 @@ All ANS Forth systems I know implement this proposal in a minimal way
 (answer all queries with false).  None implement it in a non-minimal
 way.  No programs have used the proposal yet.
 
-<h4>Change history</h4>
-
-<dl>
-</dl>
 
 <h4>Comments</h4>
 

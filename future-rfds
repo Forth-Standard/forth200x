@@ -11,3 +11,5 @@ S\" .\"
 Using TAB, CR, LF, FF in source code
 feature requests (detect/ask for these extensions or Forth 200x)
 ALIAS
+! and @ for 16-bit and 32-bit signed and unsigned integers
+WHILE stack effect (allow multiple WHILEs)
