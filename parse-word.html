@@ -36,6 +36,12 @@ There are no plans to implement the proposal in full in [ ].
 
 -->
 
+
+<h4>Change history</h4>
+
+<dl>
+</dl>
+
 <h4>Problem</h4>
 
 How do we parse a word from the input stream?
@@ -45,12 +51,12 @@ you want to parse for white space.
 
 <p>WORD skips leading delimiters, but you cannot specify parsing for
 white space, it creates a counted string (not the preferred
-representation), the length of the string is therefore limited (and by
-the buffer length), it requires a separate buffer (and the copying to
-that buffer consumes time); WORD also requires passing a delimiter,
-although skipping leading delimiters only makes sense for white-space
-delimiters.  ANS Forth does not specify the lifetime of the resulting
-string very much.
+representation), the length of the string is therefore limited, it
+requires a separate buffer (typically limitinmg the string size even
+more, and the copying to that buffer consumes time); WORD also
+requires passing a delimiter, although skipping leading delimiters
+only makes sense for white-space delimiters.  ANS Forth does not
+specify the lifetime of the resulting string precisely.
 
 <h4>Proposal</h4>
 
@@ -63,7 +69,7 @@ character.
 
 <p>c-addr is the address within the input buffer and u is the length
 of the selected string. If the parse area is empty or contains only
-white space, the resulting string has a zero length.
+white space, the resulting string has length zero.
 
 
 <h4>Typical Use</h4>
@@ -79,7 +85,7 @@ PARSE-WORD some-name TYPE
 The lifetime of the resulting string is specified implicitly through
 "within the input buffer", as is done in PARSE; i.e., the string will
 be usable until the next input buffer is read, for whatever reason
-(REFILL, INCLUDED, etc.).  Should the lifetime be made more explicit.
+(REFILL, INCLUDED, etc.).  Should the lifetime be made more explicit?
 
 <h5>Existing practice</h5>
 
@@ -114,20 +120,6 @@ this specification.
 
 </ul>
 
-
-<h4>Experience</h4>
-
-DEFER and IS have been used in many systems and programs for a long
-time.  ACTION-OF also has been used, often under a different name
-(WHAT'S, WHATIS, IS?).  DEFER@ and DEFER! also have been present in
-some systems (under different names); on many systems &gt;BODY @/!
-were used instead.
-
-
-<h4>Change history</h4>
-
-<dl>
-</dl>
 
 <h4>Comments</h4>
 
