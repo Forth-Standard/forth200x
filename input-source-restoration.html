@@ -1,0 +1,62 @@
+<title>Input source restoration proposal</title>
+
+<h3><a name="input-source-restoration">restoration of the input source specification on THROW</a></h3>
+
+[<a href="proposals.html">Other proposals</a>]
+
+<h4>Problem</h4>
+
+The standard makes THROW responsible for restoring the input source
+specification. In combination with QUERY, this leads to the following
+anomaly:
+
+<pre>
+: foo query 1 throw ; 
+ 
+: bar ['] foo catch ; 
+</pre>
+
+According to the standard, the 1 THROW should restore the input source
+specification in effect before the execution of CATCH. If FOO did not
+execute a THROW (or 0 THROW), then the input source specification
+should not be restored.
+
+<h4>Proposal</h4>
+
+Remove the requirement to restore the input source specification from
+the definition of THROW.
+
+<p>Add the following requirement to the definition of LOAD,
+INCLUDE-FILE, INCLUDED, EVALUATE etc.: catch exceptions, restore the
+input source specification, and throw the exceptions.
+
+<h4>Remarks</h4>
+
+Alternatively, CATCH could be required to restore the input source
+specification, irrespective of whether there was a THROW or not. This
+would also eliminate the anomaly.
+
+<h4>Experience</h4>
+
+Most systems implementing THROW already implement the proposed
+behaviour. I have never heard of anyone complaining about that,
+neither from Gforth users nor otherwise. This indicates that no
+existing programs would be affected by the change.
+
+<p>AFAIK, there exist no experiences with the alternative.
+
+<h4>Comments</h4>
+
+Michael L. Gassanenko:
+
+<pre>
+> Proposal
+> Remove the requirement to restore the input source specification from the
+> definition of THROW.
+
+I agree. AFAIK, people (including myself) do implement CATCH and
+THROW without input souurce restoration, because if your program
+controls live hardware, why should you spend time and memory on >IN etc.?
+</pre>
+
+<hr><a href="/anton/">Anton Ertl</a>

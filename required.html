@@ -1,0 +1,119 @@
+<title>One-time file loading proposal</title>
+
+<h3><a name="required">One-time file loading</a></h3>
+
+[<a href="proposals.html">Other proposals</a>]
+
+<h4>Problem</h4>
+
+A library is needed by several parts of the source code, but it should
+be loaded only once.
+
+<h4>Proposal</h4>
+
+<pre>
+REQUIRED ( i*x c-addr u -- i*x )
+</pre>
+
+If the file specified by c-addr u has been INCLUDED or REQUIRED
+already, discard c-addr u; otherwise, perform INCLUDED.
+
+<p>If the same file is REQUIRED twice using different names (e.g.,
+through symbolic links), or different files with the same name are
+REQUIRED (by doing some renaming between the invocations of REQUIRED),
+the file will be INCLUDED the first time, but not necessarily several
+times.
+
+<p>An ambiguous conditionm exists if the stack effect of including the
+file is not ( i*x -- i*x ).
+
+
+<h4>Typical Use</h4>
+
+<pre>
+... s" filename" required ...
+</pre>
+
+<h4>Remarks</h4>
+
+The syntax follows the good example of INCLUDED in being
+non-parsing. A parsing version like NEEDS can be easily defined from
+it with:
+
+<pre>
+: NEEDS BL WORD COUNT REQUIRED ;
+</pre>
+
+Some might say: Why not use the C solution: The C solution to this
+problem is putting a wrapper like
+
+<pre>
+#ifndef FILE_H
+#define FILE_H
+...
+#endif
+</pre>
+
+around every source file. This is inefficient (the whole file has to
+be read again, unless the compiler does some pretty sophisticated
+stuff), requires cooperation from the author of the file (which is
+problematic, because not the author, but the users of the file have
+the trouble), and is cumbersome to express in standard Forth (there is
+no direct equivalent to #ifdef).
+
+<h4>Experience</h4>
+
+Gforth has REQUIRED. Many systems, including F-PC, Gforth, and
+Win32Forth, have NEEDS, a parsing version of REQUIRED. I use it
+extensively, and so do others.
+
+<h4>Change History</h4>
+
+Aug 14,2001: Changed stack effect from ( i*x c-addr u -- j*x ) to (
+i*x c-addr u -- i*x ), following a suggestion from Guido Draheim, and
+related changes in the text.
+
+<h4>Comments</h4>
+
+Michael L. Gassanenko:
+
+<pre>
+Yes. I do use NEEDS.
+
+> (there is no direct equivalent to #ifdef).
+
+I often invent analogs to #ifdef , namely,
+if a name is defined, interpret the following line.
+AFAIK, both F-PC and WIN32FOR have such words,
+but the only name I can remember is #ifdef / #ifndef (it seems, I myself
+used this name, because the others were not much meaningful).
+</pre>
+
+Peter Knaggs:
+
+<pre>
+Perl
+introduced a version of REQUIRED some time ago that works exactly in
+this manner.  I agree very much with its usefulness, indeed it would
+allow a standard "library" model.  Having said that, it can be defined
+using standard ANS.
+</pre>
+
+Guido Draheim:
+
+<pre>
+* Both Forth.com's Swiftforth and MPE's ProforthVFX have defined `requires`
+as the selfparsing version of `required`, and they use it. PFE will adopt
+this in the next version (> 0.30.30)
+
+* The specification is non-deterministic in its stack effect - the user of
+`required` has no way to check in advance if a file will get `included`.
+Many systems use a word like `loaded?` but it can not as easily specified
+for many systems just as it is done for `required` itself, where the form of
+`requires` has found wide acceptance. It may be useful to *allow* the use 
+CSP-like techniques to ensure a deterministic stack-effect, and it may be
+useful to *recommend* that atleast a warning message is shown for the case
+of stack-depth differences.
+</pre>
+
+<hr><a href="/anton/">Anton Ertl</a>

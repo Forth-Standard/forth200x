@@ -1,0 +1,440 @@
+<title>Deferred Words proposal</title>
+
+<h3><a name="deferred">Deferred Words</a></h3>
+
+[ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
+
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h5>Systems</h5>
+
+<pre>
+[ ] conforms to ANS Forth.
+ iForth
+ Gforth
+ bigFORTH
+ Carbon MacForth
+ SwiftForth, SwiftX
+ Quartus Forth
+[ ] already implements the proposal in full since release [ ]:
+[ ] implements the proposal in full in a development version:
+ iForth (Marcel Hendrix)
+ Gforth (Anton Ertl)
+ Quartus Forth 1.5.3b (Neal Bridges)
+[ ] will implement the proposal in full in release [ ].
+ iForth 2.01
+ Gforth 0.7
+ bigFORTH 2.0.12 (Bernd Paysan)
+ Carbon MacForth 6.05 (Ward McFarland)
+[ ] will implement the proposal in full in some future release.
+There are no plans to implement the proposal in full in [ ].
+ SwiftForth, SwiftX (Elizabeth Rather)
+[ ] will never implement the proposal in full:
+  4th (Hans Bezemer, partially ANS compliant)
+</pre>
+
+<h5>Programmers</h5>
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs:
+  Hans Bezemer
+  Brad Eckert
+  Marcel Hendrix
+  Elko Tchernev
+  David N. Williams
+  Anton Ertl
+  Bernd Paysan
+  Graham Smith
+  Elizabeth Rather
+  Richard Borrell
+  Neal Bridges
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it:
+  (same as "have-used", plus)
+  Bruce McFarling (interesting systems: Gforh, Win32Forth)
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard:
+  (same as "have-used", plus)
+  Bruce McFarling
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+<h5>Informal results</h5>
+
+4th (Hans Bezemer, partially ANS compliant) supports DEFER and IS
+since V3.4e, and will support DEFER@ and DEFER! in V3.4e-pre10.  Hans
+Bezemer writes that he will not add ACTION-OF, because it can be
+easily replaced with ['] word defer@.
+
+<p>Brad Eckert writes that ACTION-OF is redundant.
+
+<p>Elko Tchernev writes: "Actually, I am using (and will be using) the
+proposal in its entirety, regardless of whether it is standard or
+implemented (I just define the words in my utilities file). When (if)
+they become standard, I'll stop defining and will use the system's
+definitions instead."
+
+<p>Elizabeth Rather writes that she uses and implements DEFER and IS,
+but has no interest in DEFER@ and DEFER!.
+
+<h4>Problem</h4>
+
+How do we program a hook into which we insert functionality later?
+How do we program an indirect recursion or other forward references to
+words?
+
+<h4>Proposal</h4>
+
+<pre>
+DEFER ( "&lt;spaces&gt;name" -- ) CORE-EXT
+</pre>
+
+Skip leading space delimiters. Parse name delimited by a space. Create
+a definition for name with the execution semantics defined below.
+
+<pre>
+<em>name</em> Execution: ( i*x -- j*x )
+</pre>
+
+Execute xt associated with name.  An ambiguous condition exists if
+name has not been associated with an xt yet.
+
+<p>
+<pre>
+IS CORE-EXT
+</pre>
+
+<dl>
+<dt>Interpretation: ( xt "&lt;spaces&gt;name" -- )
+
+<dd>Skip leading spaces and parse name delimited by a space. Set
+name to execute xt.  An ambiguous condition exists if name was not defined
+by <code>DEFER</code>.
+
+<dt>Compilation: ( "&lt;spaces&gt;name" -- ) <dd>Skip leading spaces
+and parse name delimited by a space. Append the run-time semantics
+given below to the current definition. An ambiguous condition exists
+if name was not defined by <code>DEFER</code>.
+
+<dt>Run-time: ( xt -- )
+<dd>Set name to execute xt.
+
+</dl>
+
+An ambiguous condition exists if POSTPONE, [COMPILE], ['] or ' is applied
+to IS.
+
+<pre>
+DEFER@ ( xt1 -- xt2 ) CORE-EXT
+</pre>
+
+xt2 is the xt associated with the deferred word corresponding to xt1.
+An ambiguous condition exists if xt1 is not for a word defined via
+DEFER, or if the deferred word has not been associated with an xt yet.
+
+<pre>
+DEFER! ( xt2 xt1 -- ) CORE-EXT
+</pre>
+
+Set the word xt1 to execute xt2.  An ambiguous condition exists if xt1
+is not for a word defined via DEFER.
+
+<p>
+<pre>
+ACTION-OF CORE-EXT
+</pre>
+
+<dl>
+<dt>Interpretation: ( "&lt;spaces&gt;name" -- xt )
+
+<dd>Skip leading spaces and parse name delimited by a space.  xt is
+the xt associated with name.  An ambiguous condition exists if name
+was not defined by <code>DEFER</code>, or if the name has not been
+associated with an xt yet.
+
+<dt>Compilation: ( "&lt;spaces&gt;name" -- )
+
+<dd>Skip leading spaces and parse name delimited by a space. Append
+the run-time semantics given below to the current definition. An
+ambiguous condition exists if name was not defined by
+<code>DEFER</code>.
+
+<dt>Run-time: ( -- xt )
+
+<dd>xt is the execution token associated with name when the run-time
+semantics is performed.  An ambiguous condition exists if name has not
+been associated with an xt yet.
+
+</dl>
+
+An ambiguous condition exists if POSTPONE, [COMPILE], ['] or ' is applied
+to ACTION-OF.
+
+<h4>Typical Use</h4>
+
+<pre>
+DEFER plus
+' + IS plus
+1 2 plus .
+1 2 ' plus DEFER@ execute .
+' + ' plus defer! \ same as ' + IS plus
+1 2 ACTION-OF plus execute .
+</pre>
+
+<h4>Remarks</h4>
+
+<h5>Why standardize this?</h5>
+
+These words can be defined in ANS Forth, e.g., like this:
+
+<pre>
+: defer ( "name" -- )
+  create ['] abort ,
+does&gt; ( ... -- ... )
+  @ execute ;
+
+: defer@ ( xt1 -- xt2 )
+  &gt;body @ ;
+
+: defer! ( xt2 xt1 -- )
+  &gt;body ! ;
+
+: is
+  state @ if
+    POSTPONE ['] POSTPONE defer!
+  else
+    ' defer!
+  then ; immediate
+
+: action-of
+ state @ if
+   POSTPONE ['] POSTPONE defer@
+ else
+   ' defer@
+ then ; immediate
+</pre>
+
+<a href="deferred.fs">example implementation and test cases</a>
+
+<p>So why standardize these words?  For the following reasons:
+
+<ul>
+
+<li>Many systems define DEFER and IS already.
+
+<li>DEFER and IS are used in many programs.
+
+<li>They will be implemented more efficiently on many systems.
+Deferred words are used with relatively high frequency (0.6%-1% of the
+primitives in the <a
+href="http://www.complang.tuwien.ac.at/forth/peep/">peep benchmark
+traces</a>), so their efficiency is important.
+
+</ul>
+
+<h5>Why DEFER@ and DEFER! ?</h5>
+
+These words are not commonly present, but the functionality of these
+words is available in various systems through knowledge of the
+internal data structures of the implementation.  Such words are
+necessary to implement the functionality of words that some Forth
+systems have (e.g., WHAT'S and DEFERS in Gforth can be implemented
+with DEFER@).  Moreover, IS parses and has non-default compilation
+semantics, so DEFER! should be present for situations where IS is
+cumbersome or error-prone.  Open Firmware has BEHAVIOR (equivalent to
+DEFER@), MacForth has WHATIS&gt;&gt; and IS&gt;&gt;.  Michael
+Gassanenko uses BEHAVIOR and BEHAVIOR! (for DEFER!).  Several people
+have announced their preference for the names DEFER@ and DEFER!.
+
+<h5>Why ACTION-OF ?</h5>
+
+Many systems have a parsing word that provides access to the xt
+associated with a deferred word: IS? in iForth, WHAT'S in Gforth,
+WHATIS in MacForth, ACTION-OF in VFX Forth.  Stephen Pelc is a very
+vocal advocate of having such a word.  Several people (e.g., Ward
+McFarland) indicate that such a word has quite a bit of usage in
+some environments.
+
+<h5>&gt;BODY vs. DEFER@/DEFER!</h5>
+
+Instead of having DEFER@ and DEFER!, one could also extend &gt;BODY to
+be applicable to deferred words, and to use &gt;BODY @ instead of
+DEFER@ and &gt;BODY ! instead of DEFER!.  This change would eliminate
+two words, but also eliminate a number of implementation options.  Two
+systems have been named where &gt;BODY @/! would not work for deferred
+words (as implemented on these systems).
+
+<h5>IS vs. TO</h5>
+
+Some people prefer to use TO in place of IS.  This proposal allows a
+system to implement such functionality in TO; however, it standardizes
+on IS, since many systems implement IS and because IS is easier to
+implement.  It is also very easy to let systems that implement TO for
+deferred words to also implement IS.
+
+<p>The disadvantage of this approach is that it would be more work to
+make programs standard that have used TO with deferred words.  However,
+the systems running these programs could easily help the conversion by
+emitting an optional warning when they see TO used with a deferred
+word.
+
+<p>In the Rfd phase, several people have expressed a preference for
+IS, none a preference for TO.
+
+<h5>STATE-smartness etc.</h5>
+
+IS is defined as a word with interpretation and non-default
+compilation semantics, with restrictions that allow it to be
+implemented as a STATE-smart word, much like TO.  An alternative would
+be to define two words, e.g., IS and [IS], like ' and ['].  The
+definition above reflects the more common practice (AFAIK).  Similar
+reasoning applies to ACTION-OF.  If you need to do some things where
+this definition of these words is in the way, use DEFER@ and DEFER!.
+
+<h5>Default action</h5>
+
+Many systems define the default action of a deferred word to be noop.
+This proposal does not define a default action, and thus requires
+programs to set the action before using the deferred word.  Systems
+could still use noop as a default action, but programs relying on that
+behaviour would continue their dependency on the system.  Systems
+could also use other default actions, e.g., reporting the
+non-initialization of the deferred word as warning (which would help
+find such uninitialized uses, which may indicate bugs).
+
+<h5>Multi-tasking</h5>
+
+Like ANS Forth '94, the present wordset does not discuss multi-tasking
+at all.  If a system implements multi-tasking, it could make deferred
+words shared or task-local, or it could have a mechanism that lets the
+user decide between these alternatives.
+
+<h4>Experience</h4>
+
+DEFER and IS have been used in many systems and programs for a long
+time.  ACTION-OF also has been used, often under a different name
+(WHAT'S, WHATIS, IS?).  DEFER@ and DEFER! also have been present in
+some systems (under different names); on many systems &gt;BODY @/!
+were used instead.
+
+
+<h4>Change history</h4>
+
+<dl>
+
+<dt>2004-11-04 <dd>Revision incorporating feedback until now.
+
+<dt>2004-10-28 <dd>Corrected information about BEHAVIOR.
+
+<dt>2004-10-26 <dd>Added sections "Questions", "Parsing words for
+DEFER@" and "&gt;BODY vs. DEFER@/DEFER!".  Fixed use of ENDIF in
+example implementation.  Revised the efficiency argument for
+standardization.
+
+<dt>2004-10-25 <dd>fixed defered->deferred.  Changed the names of
+DEFERRED@/! to DEFER@/!.
+
+</dl>
+
+<h4>Comments</h4>
+
+<p>Several people expressed a preference for <code>defer@
+defer!</code> over alternative names.
+
+<p>Only Stephen Pelc expressed an opinion on the parsing variant of
+defer@.  He favours the name <code>action-of</code>.
+
+<p><a
+href="http://www.google.at/groups?as_umsgid=U_Qgd.739$o52.228%40trndny03">Gary
+Chanson</a> and <a href="4184e663.2424064718%40192.168.0.1">Stephen Pelc</a> gave examples for systems where
+<code>&gt;body @/!</code> does not work as <code>defer@/!</code>.
+
+<p><a
+href="http://www.google.at/groups?as_umsgid=25333429133563%50frunobulax.edu">Marcel
+Hendrix reports</a> the following statistics:
+
+<pre>
+Searching for: IS?        Found   60 occurrence(s)
+Searching for: IS         Found 2137 occurrence(s)
+Searching for: DEFER      Found  716 occurrence(s)
+Searching for: ' >BODY !  Found   10 occurrence(s)
+Searching for: ' >BODY @  Found   20 occurrence(s)
+</pre>
+
+<p><a
+href="http://www.google.at/groups?as_umsgid=1gm954z.vh0xgx12n7ymiN%25ward%40megawolf.com">Ward
+McFarland writes</a> that MacForth has IS&gt;&gt; for DEFER!,
+WHATIS&gt;&gt; for DEFER@, and WHATIS for a parsing DEFER@.  IS and
+WHATIS are STATE-smart.
+
+<p><a
+href="http://www.google.at/groups?as_umsgid=clid3r$2ase$1%40biggoron.nerim.net">Thomas
+Pornin suggests</a> adding a word IS-FOREVER that freezes the contents
+of the deferred word.  That's for another proposal IMO.  Bernd Paysan
+suggests having another word (FORWARD) for forward references instead.
+
+<p><a href="http://www.google.at/groups?as_umsgid=417cda72.1896720531%40192.168.0.1">Stephen Pelc suggests</a> that we should not have DEFER!
+and DEFER@, just IS (and maybe [IS]) and BEHAVIOR (or
+ACTION/[ACTION]).
+
+<p><a
+href="http://www.google.at/groups?as_umsgid=7s4v42-ft5.ln1%40miriam.mikron.de">Bernd
+Paysan suggests</a> that we should use >BODY @ and >BODY ! instead of
+DEFER@ and DEFER!.
+
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+<anton@mips.complang.tuwien.ac.at>.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+<h4>Ballot for systems</h4>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the
+brackets.  Multiple hits for the same system are possible (if they do
+not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please
+do so informally, and I will aggregate this information in some way.
+
+
+<h4>Ballot for programmers</h4>
+
+Just mark the statements that are correct for you (e.g., by putting an
+"x" between the brackets).  If some statements are true for some of
+your programs, but not others, please mark the statements for the
+dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from
+the proposal (especially if you have used that in your programs), make
+an informal comment, and I will collect these, too.  Note that the
+best time to voice such issues is the RfD stage.
+
+<hr><a href="/anton/">Anton Ertl</a>

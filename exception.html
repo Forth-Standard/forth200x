@@ -1,0 +1,108 @@
+<title>Exception proposal</title>
+
+<h3><a name="exception">EXCEPTION</a></h3>
+
+[<a href="proposals.html">Other proposals</a>]
+
+<h4>Problem</h4>
+
+Libraries cannot introduce throw values, because they don't know which
+values are used by other libraries or the application.
+
+<p>The system does not know how to report a new exception.
+
+<h4>Proposal</h4>
+
+<pre>
+EXCEPTION ( c-addr u -- n ) exception
+</pre>
+
+n is a previously unused THROW value in the range
+{-4095...-256}. Consecutive calls to EXCEPTION return consecutive
+decreasing numbers.
+
+<p>The system may use the string denoted by c-addr u when reporting
+that exception (if it is not caught).
+
+<p>After a marker is executed or a word is forgotten that was defined
+before EXCEPTION was called, THROWing n is an ambiguous condition.
+
+<h4>Typical Use</h4>
+
+<pre>
+s" Out of GC-managed memory" EXCEPTION CONSTANT gc-out-of-memory
+...
+... gc-out-of-memory THROW ...
+</pre>
+
+<h4>Remarks</h4>
+
+The restriction to values in the range {-4095...-256} ensures that
+existing standard programs continue to work.
+
+<p>The requirement to return consecutive decreasing THROW values makes it
+possible to check for whole classes of exceptions with WITHIN:
+
+<pre>
+... CATCH ?DUP IF
+  DUP lib-last-exception lib-first-exception 1+ WITHIN IF
+    ... \ deal with exceptions from lib
+  ELSE
+    THROW \ just pass the ones on that we don't know how to handle
+  THEN
+</pre>
+
+<p>The ambiguous condition after forgetting allows systems to reclaim
+exception numbers and the memory taken up by the strings on
+forgetting. Systems are not required to do this.
+
+<p>Andrew Haley also voiced concerns about the interaction with
+multitasking systems.  This proposal can be integrated with
+multitasking systems in several ways:
+
+<ul>
+
+<li>Exception numbers just can be treated like dictionary space: Each
+task/user gets a piece of the available range and allocates numbers
+within this space independently.
+
+<li>Each task maintains its own mapping of exceptions.  The same
+exception number could be used for different purposes in different
+tasks, but exception number usage would be restricted to the task and
+could not be used across tasks.
+
+</ul>
+
+<h4>Experience</h4>
+
+<code>EXCEPTION</code> is implementend in Gforth since before release
+0.4.0.
+
+<p>An approximation in ANS Forth is included in the Gforth compat library
+which is also included in the <a
+href="../garbage-collection.zip">garbage collector</a>.
+
+<p><code>EXCEPTION</code> is used in the <a
+href="../garbage-collection.zip">garbage collector</a>.
+
+<h4>Comments</h4>
+
+Michael L. Gassanenko on experience:
+
+<pre>
+I used:
+
+CREATE not-ready
+
+... IF not-ready THROW ...
+
+BTW, the system(s) that I have to work on have no built-in CATCH .
+</pre>
+
+Peter Knaggs:
+
+<pre>
+another part of your "library" model, most useful.
+</pre>
+
+<hr><a href="/anton/">Anton Ertl</a>

@@ -1,0 +1,204 @@
+<title>Extension queries</title>
+
+<h3>Extension queries</h3>
+
+[ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
+
+<!--
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h5>Systems</h5>
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ]:
+[ ] implements the proposal in full in a development version:
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full:
+</pre>
+
+<h5>Programmers</h5>
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs:
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it:
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard:
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+<h5>Informal results</h5>
+
+-->
+
+<h4>Problem</h4>
+
+How does a program know whether the system it runs on supports one of
+the extensions that ran through the RfD/CfV process, so that the
+program can implement the extension itself or work around its absence?
+
+<h4>Proposal</h4>
+
+If the string passed to <code>ENVIRONMENT?</code> starts with "X:",
+<code>ENVIRONMENT?</code> returns false if the system does not
+implement the extension indicated by the query string in full, or if
+there is no such extension that has gone to a CfV.
+
+<p>For an extension from the <a href="rfds.html">list of CfVs</a>,
+take the linked-to filename, delete the ".html", and prepend "X:" to
+construct a query string for the extension.
+
+<p>If the system implements the extension, <code>ENVIRONMENT?</code> may
+return true (without additional values) or false.
+
+<h4>Typical Use</h4>
+
+<pre>
+S" X:deferred" ENVIRONMENT? 0= [IF]
+... \ reference implementation of the deferred words proposal
+[THEN]
+</pre>
+
+<h4>Remarks</h4>
+
+<h5>Why allow returning false when the system supports the extension?</h5>
+
+Returning false when the system supports the extension will usually be
+safer than returning true when the system does not support the
+extension; in the former case the program will be slower, or have
+degraded features; in the latter case the program will usually fail in
+unpredictable ways.
+
+<p>Therefore, systems must not return true for extensions that have
+not yet gone to a CfV (the proposal for the extension could still
+change).
+
+<p>So, if a system happens to already support the extension, it will
+have to report false on queries for the extension at least from the
+time when the proposal goes to a CfV until the time that an update of
+the system with updated extension queries is released.
+
+<p>Moreover (and possibly more importantly), this feature means that
+systems whose implementors have never heard of (or ignore) RfDs and
+CfVs will work correctly for extension queries (as long as they don't
+support any queries starting with "X:" on their own), so a program
+written to cope with this specification will usually work correctly
+even on such systems.
+
+<h5>Why not let ENVIRONMENT? return a flag and true, like for wordset
+queries?</h5>
+
+This proposal is easier to use.  What is the point of returning an
+extra flag?  "Yes, we have heard of that extension, but no, we have
+not implemented it"?  That's not a useful information to have; what
+should a program do with that information?
+
+<h5>Why the "X:" prefix?</h5>
+
+This will hopefully ensure that there is no naming conflict with any
+existing environmental query of any system; it also reserves a part of
+the environmental query name space (by requiring a false result for
+anything that has not gone to a CfV), without consuming all of it.
+
+<p>If you know of any name conflict of the "X:" prefix with an
+existing system and have a better suggestion for a prefix, let me
+know.
+
+<h5>What about extension proposals that have not (yet) gone to a
+CfV?</h5>
+
+If you want to introduce queries for them, do it with a different
+prefix.
+
+<h5>Why not include extension proposals that have not (yet) gone to a
+CfV?</h5>
+
+They may still change before they go to a CfV, so it would not be
+clear if the system and the querying program refer to the same
+proposal.
+
+<h5>Implementation and Tests</h5>
+
+<ul>
+
+<li><a href="reference-implementations/extension-query.fs">Reference implementation</a> (easy: empty file).
+
+<li><a href="tests/extension-query.fs">Tests</a>
+</ul>
+
+
+<h4>Experience</h4>
+
+All ANS Forth systems I know implement this proposal in a minimal way
+(answer all queries with false).  None implement it in a non-minimal
+way.  No programs have used the proposal yet.
+
+<h4>Change history</h4>
+
+<dl>
+</dl>
+
+<h4>Comments</h4>
+
+
+<!--
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+<anton@mips.complang.tuwien.ac.at>.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+<h4>Ballot for systems</h4>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the
+brackets.  Multiple hits for the same system are possible (if they do
+not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please
+do so informally, and I will aggregate this information in some way.
+
+
+<h4>Ballot for programmers</h4>
+
+Just mark the statements that are correct for you (e.g., by putting an
+"x" between the brackets).  If some statements are true for some of
+your programs, but not others, please mark the statements for the
+dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from
+the proposal (especially if you have used that in your programs), make
+an informal comment, and I will collect these, too.  Note that the
+best time to voice such issues is the RfD stage.
+-->
+<hr><a href="/anton/">Anton Ertl</a>
+

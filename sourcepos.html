@@ -1,0 +1,137 @@
+<title>Source code position in files (Proposal)</title>
+
+<h3><a name="sourcepos">Source code position in files</a></h3>
+
+[<a href="proposals.html">Other proposals</a>]
+
+<h4>Problem</h4>
+
+Some applications (e.g., the parser generator Gray) need to remember
+the current position in the source code (e.g., to refer to the
+position in error messages).  If the source code is in blocks, the
+source position is available through BLK and >IN, but for source code
+in files there is currently no way to get at the file name and line
+number.
+
+<h4>Proposal</h4>
+
+<pre>
+SOURCEFILENAME ( -- c-addr u ) TOOLS-EXT
+</pre>
+
+The string specified by c-addr u is the filename of the file currently
+being processed by the text interpreter.  This string can be accessed
+during the whole lifetime of the system.  An ambiguous condition
+exists if the innermost instance of the text interpreter is not
+processing input from a file, or if it was invoked with INCLUDE-FILE.
+
+<pre>
+SOURCELINE# ( -- u ) TOOLS-EXT
+</pre>
+
+u is the line number of the line currently being processed by the text
+interpreter.  The first line of the file has line number 1.  An
+ambiguous condition exists if the innermost instance of the text
+interpreter is not processing input from a file.
+
+<h4>Typical Use</h4>
+
+<pre>
+sourcefilename filename 2! sourceline# line# !
+...
+filename 2@ type line# @ .
+</pre>
+
+<h4>Remarks</h4>
+
+Starting the line count with 1 is a convention used in all editors and
+compilers I know in Unix.
+
+<p>The requirement to have the name available forever avoids the need
+for programs to make their own copies of the file name (possibly many
+times); a system implementing NEEDS or REQUIRED usually stores the
+file names for the whole session anyway.
+
+<h4>Experience</h4>
+
+Gforth and iForth have had these words since 1995 (I don't know the
+lifetime of the filename in iForth).  I have not needed them often,
+but when I needed them, they were hard to replace (Marcel Hendrix
+replaced them in Gray by saving the current input buffer, once for
+every node (typically several per line, and hundreds or thousands in a
+real-world grammar); the result uses lots of memory, and is not as
+convenient to use as a version that can report line numbers.  The uses
+I remember are Gray and assert.fs (assertions are much more useful if
+you know easily which assertion failed).  AFAIK Marcel Hendrix used
+these words in his profiling utility.
+
+<p>Gforth relocates the filenames on SAVESYSTEM (transferring them
+from ALLOCATEd storage to ALLOTed storage).  This has led to using a
+more complex interface instead of SOURCEFILENAME in one case, because
+the result of SOURCEFILENAME would not be valid across sessions:
+LOADFILENAME# @ ( -- u ) LOADFILENAME#>STR ( u1 -- addr u ); I would
+probably use different names and avoid the @ if I intended this to be
+used by others.
+
+<h4>Comments</h4>
+
+Michael Gassenenko (in <3A40F494.64064BC6@my-deja.com>):
+
+<pre>
+There is a probability that a system will die from
+memory overflow after executing INCLUDED n times.
+
+For example, one person insisted that it must be 
+possible to invoke a Norton-Commander-like shell 
+from Forth, and to load Forth source files by
+pressing Enter on them. I attached the Volkov Commander
+(a free NC clone), and associated the action-on-enter
+with:
+- write the name of the file on which Enter is pressed
+the file zz.out
+- place the code of 'F10' to the keyboard buffer to
+force an exit from the Volkov Commander.
+(Note: the file zz.out is cleared before the commander invokation). 
+
+Nobody needs tens of the strings "zz.out" in the dictionary.
+But how can one desable their creation?
+</pre>
+
+The system could store the name only once.
+
+<p>Michael Gassanenko also suggested implementing SOURCELINE# in ANS
+Forth based on:
+
+<pre>
+FILE-LINE# ( ud fid -- n ior )
+
+Rewind the file specified by fid.
+While the value returned by FILE-POSITION is less than ud,
+perform the functionality of READ-LINE.
+If no error condition was encountered,
+return n, the number of encountered system-defined 
+end-of-line delimiters, and ior equal to zero.
+If an error has been encountered, ior is non-zero
+and n is undefined.
+If the end-of-file has been encountered before
+the value returned by FILE-POSITION has become greater or
+equal to ud, n is the number of lines in the file
+(whether the last line not followed by the end-of line delimiter
+is counted, is implementation-dependent).
+
+Note. When an end-of-line delimiter is 
+encountered, READ-LINE returns u2&lt;u1 and true.
+
+-------
+
+The user is allowed to do such things as
+PAD 100 SOURCE-ID READ-LINE
+and
+SOURCE-ID FILE-POSITION ... SOURCE-ID REPOSITION-FILE
+; how the system would know what has happened?
+IMO,
+: SOURCE-LINE#  SOURCE-ID FILE-POSITION ?IO  SOURCE-ID FILE-LINE# ?IO ;
+</pre>
+
+
+<hr><a href="/anton/">Anton Ertl</a>

@@ -1,0 +1,97 @@
+<title>Output redirection proposal</title>
+
+<h3><a name="output-redirection">Output redirection</a></h3>
+
+[<a href="proposals.html">Other proposals</a>]
+
+<h4>Problem</h4>
+
+Many words exist for convenient output to the user output device
+(e.g., ., .S, F.). Replicating this functionality for output to files
+is very cumbersome and a lot of work.
+
+<h4>Proposal</h4>
+
+<pre>
+redirect-output ( ... file-id xt -- ... ) file-ext
+</pre>
+
+Set the user output device to file-id, EXECUTE xt, restore the old
+user output device. If an exception is THROWn during the execution of
+xt, the old user output device is restored, and the exception is
+THROWn onwards.
+
+<h4>Typical Use</h4>
+
+<pre>
+... ( r ) report-file @ ['] f. redirect-output ...
+</pre>
+
+<h4>Remarks</h4>
+
+The syntax is CATCH-like to ensure proper restoration under all
+circumstances (including THROWs). A more convenient syntax should be
+found for CATCH as well as redirect-output.
+
+<p>Michael Gassanenko's point about output to memory is a good
+one. Either we address this by adding words for creating fids for
+memory buffers, or we change this proposal to take an xt ( c-addr u --
+) instead of a fid.
+
+<p>Why not simply have a variable for the output file, similar to
+BASE? Providing varying bases through a variable BASE was a mistake; I
+am sure no Forth programmer will have trouble reciting a story where
+BASE lead to problems. A similar design mistake for output redirection
+would cause more trouble (e.g., some bug causes a THROW while output
+is redirected -> the user does not even know that something happened).
+
+<p>STDOUT is used in Gforth for the default OUTFILE-ID (i.e., the
+standard output at the start of the system).
+
+<h4>Experience</h4>
+
+none
+
+<h4>Comments</h4>
+
+Michael L. Gassanenko:
+
+<pre>
+xt... It smells LISP, and I do not like LISP smell in Forth.
+
+maybe,
+
+<fid> redirect-output N>R .... NR> restore-output
+
+would be better than
+
+: aux14 ." xt=" MYVAR @ U. ;
+... <fid> ['] aux14 redirect-output
+
+?
+What about redirecting output to strings? (IMO, it would be more useful)
+</pre>
+
+Michael L. Gassanenko again, about redirection to memory:
+
+<pre>
+What hapens if the memory buffer being the current output device
+overflows?
+</pre>
+
+Peter Knaggs:
+
+<pre>
+REDIRECTE-OUTPUT
+OUTFILE-ID
+
+Not so sure about these two.  Why not define a STDIN and STDOUT words
+witch provide the standard fild-id for terminal I/O and redefine all I/O
+words to be file based.  Thus redirecting output would simply be a case
+of changing the output file id, simular to BASE if you like.
+
+Note that I did suggest something along these lines to the committee
+back in '90 but it was rejected.
+</pre>
+
+<hr><a href="/anton/">Anton Ertl</a>

@@ -1,0 +1,190 @@
+<title>PARSE-WORD</title>
+
+<h3><code>PARSE-WORD</code></h3>
+
+[ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
+
+<!--
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h5>Systems</h5>
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ]:
+[ ] implements the proposal in full in a development version:
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full:
+</pre>
+
+<h5>Programmers</h5>
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs:
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it:
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard:
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+<h5>Informal results</h5>
+
+-->
+
+<h4>Problem</h4>
+
+How do we parse a word from the input stream?
+
+<p>PARSE does not skip leading delimiters, and you cannot specify that
+you want to parse for white space. 
+
+<p>WORD skips leading delimiters, but you cannot specify parsing for
+white space, it creates a counted string (not the preferred
+representation), the length of the string is therefore limited (and by
+the buffer length), it requires a separate buffer (and the copying to
+that buffer consumes time); WORD also requires passing a delimiter,
+although skipping leading delimiters only makes sense for white-space
+delimiters.  ANS Forth does not specify the lifetime of the resulting
+string very much.
+
+<h4>Proposal</h4>
+
+<pre>
+PARSE-WORD  ( "<whitespaces>name<whitespace>" -- c-addr u ) CORE-EXT
+</pre>
+
+Skip leading white space and parse name delimited by a white space
+character.
+
+<p>c-addr is the address within the input buffer and u is the length
+of the selected string. If the parse area is empty or contains only
+white space, the resulting string has a zero length.
+
+
+<h4>Typical Use</h4>
+
+<pre>
+PARSE-WORD some-name TYPE
+</pre>
+
+<h4>Remarks</h4>
+
+<h5>Lifetime</h5>
+
+The lifetime of the resulting string is specified implicitly through
+"within the input buffer", as is done in PARSE; i.e., the string will
+be usable until the next input buffer is read, for whatever reason
+(REFILL, INCLUDED, etc.).  Should the lifetime be made more explicit.
+
+<h5>Existing practice</h5>
+
+ANS Forth mentions a PARSE-WORD with essentially the same definition
+in <a
+href="http://www.complang.tuwien.ac.at/forth/dpans-html/dpansa6.htm#A.6.2.2008">A.6.2.2008</a>.
+Open Firmware also defines PARSE-WORD with the same definition.  The
+only difference between these definitions and the current definition
+is that the current definition makes it explicit what happens when
+there is only white space in the input buffer.
+
+<p>Several systems have implemented a PARSE-WORD compatible with this
+specification, e.g., Gforth.
+
+<p>A number of systems have been named that define a PARSE-WORD
+incompatible with this specification (e.g., they often pass a
+delimiter on the stack).  The systems mentioned are MinForth, CHForth,
+Jforth, 4th.  Of these systems MinForth and CHForth are ANS Forth
+implementations, 4th and JForth are not (although 4th partially stays
+close to ANS Forth).  Coos Haak (CHForth) <a
+href="http://groups.google.at/groups?selm=4da9kpvgmu3s%24.gpk0xcgp5agg.dlg%4040tude.net&output=gplain">indicated</a>
+that the next version of CHForth will have a PARSE-WORD compatible to
+this specification.
+
+<h5>Implementation and Tests</h5>
+
+<ul>
+
+<li><a href="reference-implementations/parse-word.fs">Reference implementation</a>
+
+<li><a href="tests/parse-word.fs">Tests</a>
+
+</ul>
+
+
+<h4>Experience</h4>
+
+DEFER and IS have been used in many systems and programs for a long
+time.  ACTION-OF also has been used, often under a different name
+(WHAT'S, WHATIS, IS?).  DEFER@ and DEFER! also have been present in
+some systems (under different names); on many systems &gt;BODY @/!
+were used instead.
+
+
+<h4>Change history</h4>
+
+<dl>
+</dl>
+
+<h4>Comments</h4>
+
+
+<!--
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+<anton@mips.complang.tuwien.ac.at>.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+<h4>Ballot for systems</h4>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the
+brackets.  Multiple hits for the same system are possible (if they do
+not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please
+do so informally, and I will aggregate this information in some way.
+
+
+<h4>Ballot for programmers</h4>
+
+Just mark the statements that are correct for you (e.g., by putting an
+"x" between the brackets).  If some statements are true for some of
+your programs, but not others, please mark the statements for the
+dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from
+the proposal (especially if you have used that in your programs), make
+an informal comment, and I will collect these, too.  Note that the
+best time to voice such issues is the RfD stage.
+-->
+<hr><a href="/anton/">Anton Ertl</a>
+

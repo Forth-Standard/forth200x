@@ -1,0 +1,86 @@
+<title>How to write Forth extension RfDs</title>
+
+<h1>How to write Forth extension RfDs</h1>
+
+[<a href="rfds.html">existing RfDs</a>]
+
+<p>In addition to the guide below, you can look at the examples, e.g., <a
+href="deferred.html">an existing RfD</a>, or <a
+href="parse-word.html">PARSE-WORD</a> (not yet an RfD at this
+writing).
+
+<p>Here's a description of the parts, and what their purpose is:
+
+<h2>Normative parts</h2>
+
+<h3>Proposal</h3>
+
+This is the normative part, i.e., the meat of the RfD.
+
+<p>Before you go to a CfV, this should be as well-specified as
+possible, but you can start out with some issues undecided (that you
+want to decide in the RfD stage); mention these issues in the Remarks
+section, maybe also in the proposal section.  If you want to leave
+something open to the system implementor, make that explicit (possibly
+by making it an ambiguous condition).
+
+<p>For word definitions, you probably can get inspirations for the
+wording from similar word definitions in the ANS Forth document (e.g.,
+for DEFER I looked at existing defining words, and for IS at TO).
+
+<h2>Informative parts</h2>
+
+The rest of the RfD is informative stuff, giving a rationale for the
+proposal, so that system implementors and programmers will see what it
+is good for and why they should adopt it (and vote for it).  We have:
+
+<h3>Problem</h3>
+
+This states what problem your RfD attacks.  It usually comes before
+the proposal.
+
+<h3>Typical use</h3>
+
+Shows a typical use of the word/feature you propose; this should make
+the formal wording easier to understand.
+
+<h3>Remarks</h3>
+
+This gives the rationale for specific decisions you have taken in the
+proposal, or discusses specific issues that have not been decided yet.
+
+<h3>Reference implementation</h3>
+
+This makes it easier for system implementors to adopt your proposal.
+If you can provide an implementation in ANS Forth, great.  If you can
+provide an implementation that requires system-specific stuff, ok (but
+you may have to explain the system-specific stuff).  Otherwise, too
+bad.
+
+<h3>Test cases</h3>
+
+This should test the feature/words you propose, in particular, it
+should test corner cases.
+
+<h3>Experience</h3>
+
+Where is the proposal already implemented?  Where is it used?
+
+<h3>Comments</h3>
+
+Initially empty.  Once you get feedback for the RfD, this is the place
+for comments that you consider interesting, but don't find a different
+place for in the RfD.
+
+<h3>Voting stuff</h3>
+
+The voting stuff is only added once there is a CfV.  Let the votetaker
+worry about it (unless somebody else volunteers, I'll play the
+votetaker for now).
+
+<h2>Did I get my RfD right?</h2>
+
+If you want, you can ask me to read the RfD for completeness first.
+
+<hr><a href="/anton/">Anton Ertl</a>
+

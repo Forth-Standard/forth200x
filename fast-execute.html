@@ -1,0 +1,77 @@
+<title>FAST-EXECUTE proposal</title>
+
+<h3><a name="fast-execute">FAST-EXECUTE</a></h3>
+
+[<a href="proposals.html">Other proposals</a>]
+
+<h4>Problem</h4>
+
+The stack-effect of EXECUTE usually cannot be determined
+statically. In the context of an optimizing compiler this creates a
+significant performance problem: no register allocation can be
+performed across an EXECUTE or across any word that may call EXECUTE
+directly or indirectly.
+
+<p>The frequent invocation of EXECUTE in object-oriented programs makes
+it important to avoid this cost.
+
+<h4>Proposal</h4>
+
+<pre>
+FAST-EXECUTE core-ext
+</pre>
+
+<h5>Interpretation:</h5>
+
+Interpretation semantics for this word are undefined.
+
+<h5>Compilation: ( u1 u2 u3 u4 -- )</h5>
+
+Append the run-time semantics given below to the current definition.
+
+<h5>Run-time: ( u1*x u3*r xt -- u2*x u4*r )</h5>
+
+Remove xt from the stack and perform the semantics identified by
+it. Other stack effects are due to the word EXECUTEd. An ambiguous
+definition exists if xt does not have the stack effect ( u1*x u3*r --
+u2*x u4*r )
+
+<h4>Typical Use</h4>
+
+... ['] + [ 2 1 0 0 ] FAST-EXECUTE ...
+
+<h4>Remarks</h4>
+
+This word does not introduce new functionality. It can be implemented
+(without the performance-enhancing effect) on standard systems with
+
+<pre>
+: FAST-EXECUTE 2DROP 2DROP POSTPONE EXECUTE ; IMMEDIATE
+</pre>
+
+We can therefore wait safely until we have more experience with this
+word before adopting it.
+
+<h4>Experience</h4>
+
+none.
+
+<h4>Comments</h4>
+
+Michael L. Gassanenko:
+
+<pre>
+I think, the new standard must have a section of "experimental words",
+as FORTH-83 did, and this proposal can go only to this section.
+</pre>
+
+Peter Knaggs:
+
+<pre>
+I can see very much why you would want this, especially
+for optimising compilers.  However, using the assume command from my
+stack algebra will have the same effect.  (I must write up a version of
+that for JFAR.)
+</pre>
+
+<hr><a href="/anton/">Anton Ertl</a>

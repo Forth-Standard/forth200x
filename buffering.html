@@ -1,0 +1,66 @@
+<title>Buffering clarification</title>
+<h3><a name="buffering">Buffering clarification</a></h3>
+
+[<a href="proposals.html">Other proposals</a>]
+
+<h4>Problem</h4>
+
+The standard does not specify whether buffering is allowed for words
+dealing with the user input and output devices, and the file
+words. The existence of FLUSH-FILE indicates that buffering is allowed
+to some extent.
+
+<h4>Proposal</h4>
+
+No buffering is allowed for the user input device. No buffering is on
+the user output device, if it is a terminal. Buffering is allowed for
+the user output device, if it is no terminal (e.g., a file), and for
+the file wordset. The amount of buffering is system-defined.
+
+<pre>
+OUTFILE-ID ( -- file-id ) file-ext
+</pre>
+
+the file-id for the current user output device
+
+<h4>Remarks</h4>
+
+Allowing buffering for non-terminal user output device may increase
+the performance for filters.
+
+<p>Flushing the user output device can be achieved with
+
+<pre>
+OUTFILE-ID FLUSH-FILE ... 
+</pre>
+
+<h4>Experience</h4>
+
+Gforth <=0.3.0 used no buffering for KEY, line buffering for
+outputting to a terminal, and block buffering for outputting on
+non-terminals. Several users complained about the buffering for the
+user output device (they used a terminal), so starting with 0.4.0 we
+use no buffering for the user output device if it is a
+terminal. Nobody has complained about the file buffering.
+
+<p>Gforth has implemented OUTFILE-ID since 0.2, and it is in use
+(mainly internally).
+
+<p>Experiments with a filter we had on Gforth under Linux showed no
+significant performance advantage for buffering the user output
+device.  We should repeat this experiment with a more I/O-intensive
+filter (the one we measured produced only 94KB of output).
+
+<p>Another experiment with Gforth under Linux-Alpha resulted in a
+worst-case slow-down factor of 25 for turning off buffering. The
+benchmark used in this experiment was:
+
+<pre>
+: foo
+    10000000 0 +do
+        [char] x emit
+    loop ;
+</pre>
+
+
+<hr><a href="/anton/">Anton Ertl</a>

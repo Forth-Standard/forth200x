@@ -1,0 +1,142 @@
+<title>Extended characters</title>
+
+<h1>Extended characters</h1>
+
+This is not a proposal, these are just some thoughts on the topic.
+
+<pre>
+Background
+
+While ANS Forth is designed for dealing with fixed-size characters
+larger than 1 au, there are many programs that have an environmental
+dependency on 1 CHARS being 1 au (and that's an environmental
+dependency that is hard to get rid of).  One workaround would be to
+make the au larger, but that probably leads to problems when
+interfacing with the rest of the world.  An additional issue is that
+full-blown fixed-size Unicode characters take 4 bytes, resulting in 4
+times as much space consumption (compared to 8-bit or UTF-8 encoding)
+for plain-ASCII texts.
+
+So the approach proposed here is to use the UTF-8 encoding of Unicode.
+1 CHARS would continue to be 1 au on byte-addressed machines.  In
+addition to the type c (character(-part)), we introduce a type xc
+(extended character).  On the stack an xc takes a cell.  In memory an
+xc takes one or more cs.  Note that on a system with an 8bit encoding
+(e.g., Gforth when LANG does not match *UTF-8), an xc is the same as a
+c (i.e., in general the xc words do not deal with UTF-8, but with the
+(extended) characters in the encoding supported by the system).
+
+How do existing words relate to this?  Do they now deal with cs or
+with xcs?
+
+- The counts in any existing words dealing with strings refer to cs,
+not to xcs.  Thus all programs that use strings, but not individual
+characters, automatically work for systems with xcs (not quite:
+incomplete xcs must usually be avoided, so we will have to take a
+closer look at the various words and see how they are affected when
+dealing with full buffers).
+
+- Any words that deal with character addresses work in units of cs,
+not xcs.
+
+- Words that deal with characters, but not with addresses, e.g., EMIT
+and KEY (any others?): One might consider letting them process xcs, so
+that definitions using them would automatically also be usable for xcs
+without needing to be rewritten; however, most words using EMIT or KEY
+probably also do character-address arithmetic, so they have to be
+adapted to work with xcs anyway.  My gut feeling is that less programs
+need to be adapted, and in less problematic ways if we let EMIT and
+KEY work on cs, and introduce new words XEMIT and XKEY that deal with
+xcs:
+
+XEMIT ( xc -- )
+XKEY ( -- xc )
+
+- We need new words for doing xc address arithmetic and xc accesses:
+
+XCHAR+ ( xc-addr1 -- xc-addr2 )
+XCHAR- ( xc-addr1 -- xc-addr2 )
++X/STRING ( xc-addr1 u1 -- xc-addr2 u2 )
+-X/STRING ( xc-addr1 u1 -- xc-addr2 u2 )
+XC@ ( xc-addr -- xc )
+XC!+? ( xc xc-addr1 u1 -- xc-addr2 u2 f ) \ f if operation succeeded
+XC@+ ( xc-addr1 -- xc-addr2 xc )
+XC-SIZE ( xc -- u ) \ size in cs
+
+Note that the u2 here always refer to the number of cs, not xcs.
+
+Probably not all of these words are necessary, but we might want to
+implement all of them at first, in order to find out how useful they
+are.  Are there any that I missed?
+
+- We probably need some additional words, e.g., for getting the
+on-screen width of an xc, or for character classification and
+case-changes, but I'll propose them later (after rereading the UTF-8
+FAQ).
+
+
+Applicability of the concept
+
+This xc concept might be implemented on one system as referring to the
+UTF-8 encoding of characters, on another system as referring to the
+ordinary 8-bit encoding, on yet another system as referring to a
+fixed-size 32-bit encoding; other encodings may be possible (depending
+on the encoding; is going backwards through memory implementable for
+all variable-width encodings in common use?), but if they don't fit,
+too bad for them.  Programs using xcs would work correctly on all
+these systems.  Some systems might be configurable for different
+encodings (e.g., Gforth is configurable between 8bit and UTF-8
+encodings).
+
+Note that switching the encoding of xcs at run-time is a bad idea.
+Instead of providing a way to switch between encodings, provide access
+words for these encodings, and let the programmers use those if they
+need them.
+
+
+ANS Forth compatibility of a system with UTF-8 xcs
+
+The rules above ensure that most programs written for ANS Forth will
+work well even when processing UTF-8 data.  In any case, such a system
+is fully ANS Forth compliant, because, even in those cases where there
+is a difference in behaviour for multi-byte UTF-8 characters, the
+program will work correctly for the data supported by ANS Forth: plain
+ASCII, which is always encoded as one byte in UTF-8.
+
+
+Testing
+
+Testing a program written for using xcs is hard, if you only have
+systems with 8bit or UTF-8 encodings.  Bugs will often be hard to
+notice on such systems, since you will not notice problems resulting
+from using xcs where cs are expected or vice versa with ASCII
+characters (or, for the 8bit-system, all characters).  So, for testing
+such programs, it may be a good idea to have a system that has some
+other encoding available, e.g., UCS4 or UTF-16.
+
+
+I/O problems
+
+What do we do with files or network I/O that are encoded differently
+than our internal encoding (very frequent during the transition
+period)?
+
+- The best approach is probably to translate from the outside encoding
+to our internal encoding on (e.g., in READ-LINE or READ-FILE), and
+translate back on output (e.g., WRITE-FILE).  One would have to
+specify the file's encoding somehow, possibly via the fam parameter of
+OPEN-FILE (or maybe through the extension; Windows apparently also has
+some special prefix at the start of files).  The main problem with
+this approach is that FILE-POSITION and friends would not work as they
+should (arithmetic on the positions would not work correctly).
+
+- An alternative approach is to read the files in the original format,
+and then access the data using encoding-specific words.  For the
+newline issue (LF vs. CRLF vs. CR), Gforth eventually settled on that
+approach, but for character encodings this is probably not a good idea
+(and even for the newlines we had some difficulties).
+
+</pre>
+
+<hr>
+<a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>

@@ -1,0 +1,358 @@
+<title>CONST-DOES&gt; proposal</title>
+<h3><a name="const-does">CONST-DOES&gt;</a></h3>
+
+[<a href="proposals.html">Other proposals</a>]
+
+<h4>Problem</h4>
+
+Many uses of <code>create</code>...<code>does&gt;</code> are just for
+shifting data from the <code>create</code> time to the execution time
+of the code after <code>does&gt;</code>; i.e., after the word is fully
+defined, the data remains constant.  A prototypical example of this
+use is the definition
+
+<pre>
+: constant ( n "name" -- )
+  create ,
+does&gt; ( -- n )
+  @ ;
+
+42 constant answer
+</pre>
+
+Here, <em>n</em> is just shifted from <code>create</code> time to
+<em>name</em> execution time.
+
+<p>It would be nice if a native-code compiler could optimize a use of
+<code>answer</code> in the same way that it would optimize a use of
+<code>42</code>.  However, this is not possible, because the compiler
+has to consider the following possibility:
+
+<pre>
+5 ' answer &gt;body !
+</pre>
+
+I.e., the data in a
+<code>create</code>...<code>does&gt;</code>-defined word can change at
+almost any time.  So at best a compiler can compile
+<code>answer</code> to the same code as <code>[ ' answer &gt;body ]
+literal @</code>.
+
+<p>The effects of this difference on the resulting code depend on the
+context.  E.g., consider the code <code>answer cells + @</code>: If
+the compiler could optimize <code>answer</code> to <code>42</code>, it
+could compile this sequence to one instruction on the MIPS
+architecture:
+
+<pre>
+lw        v0,168(a0) ; 42 cells + @
+</pre>
+
+Without this optimization, it needs at least five instructions:
+
+<pre>
+lui       v1,...    ; [ ' answer &gt;body ] literal
+lw        v0,...(v1); @
+sll       v0,v0,2   ; cells
+addu      v0,v0,a0  ; +
+lw        v0,0(v0)  ; @
+</pre>
+
+So, the problem is how to communicate to the compiler that the data in
+<code>answer</code> will not change.
+
+<h4>Proposal</h4>
+
+(See <em>Remarks</em> for an informal, easier-to-understand
+description.)
+
+<p>
+<code>CONST-DOES&gt;</code> ``const-does'' core
+
+<dl>
+
+<dt>Interpretation:<dd> Interpretation semantics for this word are undefined.
+
+<dt>Compilation:<dd>( C: colon-sys1 -- colon-sys2 )
+
+<p>Append the run-time semantics below to the current definition. Whether
+or not the current definition is rendered findable in the dictionary
+by the compilation of <code>const-does&gt;</code> is implementation defined.
+
+<dt>Run-time:<dd> ( u1*x u2*r u1 u2 ``name'' R: nest-sys1 -- )
+
+<p>Create a word <em>name</em> with execution semantics given below.
+Return control to the calling definition specified by
+<em>nest-sys1</em>.  The <em>u1</em> cells and <em>u2</em> floats can
+be interleaved in any order.
+
+<dt><em>name</em> execution:<dd> ( ... -- ... ) 
+
+<p>Perform initiation semantics below.  Transfer control to the code
+right after the <code>const-does&gt;</code>.
+
+<dt>Initiation:<dd> ( -- u1*x u2*r R: nest-sys2 )
+
+<p>Save information <em>next-sys2</em> about the calling definition.
+After pushing the <em>u1</em> cells and <em>u2</em> floats, they are
+in the same order as they were at the start of the run-time semantics.
+
+</dl>
+
+<h4>Typical use</h4>
+
+<pre>
+: constant ( n "name" -- )
+1 0 const-does&gt; ( -- n )
+  ;
+
+: fconstant ( r "name" -- )
+0 1 const-does&gt; ( -- r )
+  ;
+
+: simple-field ( n "name" -- )
+1 0 const-does&gt; ( addr1 -- addr2 )
+  + ;
+</pre>
+
+Note that the stack comments after <code>const-does&gt;</code> reflect the
+total stack effect of <em>name</em> (including initiation semantics),
+not the stack effect of the following code.
+
+
+<h4>Remarks</h4>
+
+The ANS-Forth-style formal proposal may be a bit hard to penetrate, so
+here are the essentials: <code>Const-does&gt;</code> defines a word
+(the role of <code>create</code>) and its behaviour (the role of
+<code>does&gt;</code>).  The main other thing it does is to shift
+<em>u1</em> cells and <em>u2</em> floats from the definition time of
+<em>name</em> to its execution time.  As a consequence, a simple
+definition like <code>constant</code> specifies just how many cells
+and floats it wants to shift, and needs to do nothing else.
+
+<p>Note that this works for both separate and combined data/FP stacks: On
+a system with separate stacks <code>const-does&gt;</code> shifts <em>u1</em>
+cells and <em>u2</em> floats from definition to execution.  On system
+with a combined stack is just shifts as many cells as these cells and
+floats take.
+
+<p>An optimizing native code compiler could compile a word defined with
+<code>const-does&gt;</code> by compiling the <em>u1</em> cells and <em>u2</em>
+floats as literals, and then compiling (and possibly inlining) a call to
+the code behind the <code>const-does&gt;</code>.  The compiler would know that
+these literals are constant, and could optimize accordingly.
+
+<p>There are several alternative approaches to attack the problem:
+
+<ul>
+
+<li>An ANS-compliant way is to use colon definitions and
+literals. E.g.:
+
+<pre>
+: constant ( n "name" -- )
+\ name execution: ( -- n )
+  &gt;r : r&gt; POSTPONE literal POSTPONE ; ;
+
+: fconstant ( r "name" -- )
+\ name execution: ( -- r )
+\ environmental dependency: separate FP stack
+  : POSTPONE fliteral POSTPONE ; ;
+
+: simple-field ( n "name" -- )
+\ name execution: ( addr1 -- addr2 )
+  &gt;r : r&gt; POSTPONE literal POSTPONE + POSTPONE ; ;
+</pre>
+
+A good compiler could inline the resulting colon definitions and
+optimize the results.
+
+<p>The downside of this approach is that it is hard to read (even with
+<code>]]</code>...<code>[[</code> to eliminate the
+<code>POSTPONEs</code>).  And to avoid the environmental dependency
+for passing floats, we would have to save them in global variables,
+which would make the code even harder to read.
+
+<li>An alternative syntax would make <code>does-const&gt;</code> behave
+like <code>does&gt;</code>, but it would remove the ability to apply
+<code>&gt;body</code> to the execution token of words it is applied
+to.  Advantage: The syntax would be familiar and thus easier to learn.
+Disadvantages: Optimizing this would require a more complex compiler.
+The defining word is cluttered with code for saving and restoring the
+data to be shifted between definition and execution, making the code
+harder to read.  Simple implementations would not enforce the
+restriction on not applying <code>&gt;body</code>, leading to
+portability bugs (in contrast, the proposed
+<code>const-does&gt;</code> does not expose the placement of the data,
+so a programmer cannot even access the data without learning
+implementation details).
+
+<li>In a similar vein, Stephen Pelc suggested defining the idiom
+<code>constant</code>...<code>does&gt;</code> (currently non-standard,
+but widely used) to mean that the body must not be changed.  The
+advantages and disadvantages are similar to
+<code>does-const&gt;</code> above.  Additional disadvantages: hard to
+implement in Forth systems where constants are not implemented in the
+traditional way; the syntax becomes quite unnatural when more than two
+cells or one float have to be transferred from definition-time to
+run-time.
+
+<li>Stephen Pelc also suggested a word <code>invariant ( addr u --
+)</code> that would just tell the compiler that a memory area would
+not change; this could be used to solve the problem like this:
+
+<pre>
+: constant ( n "name" -- )
+  create here >r ,
+  r> 1 cells invariant
+does> ( -- n )
+  @ ;
+</pre>
+
+The advantage of this approach is that it is more general
+(<code>invariant</code> could also be used to optimize accesses to
+other unchanging memory areas).  The disadvantages are decreased
+readability and more complexity in optimizing (it requires a new
+optimization, whereas <code>const-does&gt;</code> can be optimized
+through inlining).
+
+<li>One implementation issue for this proposal is that <em>u1</em> and
+<em>u2</em> are supplied at run-time.  If the numbers were supplied at
+compile-time (with a syntax like <code>[ 1 0 ]does-code&gt;</code>), a
+native-code compiler using this for optimization could be slightly
+simpler (and the reference implementation below could be faster).
+However, a native-code compiler probably can use the same mechanism
+here that it uses for optimizing <code>pick</code>, and supplying the
+number at run-time is easier for the user (both syntactically and
+mentally) and more flexible.
+
+</ul>
+
+<h4>Reference implementation</h4>
+
+This ANS Forth implementation of <code>const-does&gt;</code> behaves as it
+should, but does not give you the performance advantages
+(rather to the contrary).
+
+<pre>
+: const-does&gt;-prelude ( u1*x u2*r u1 u2 ``name'' -- )
+    \ create name and store u1*x u2*r there
+    create 2dup 2,
+    over cells allot here &gt;r
+    falign dup floats allot here ( u1*x u2*r u1 u2 addr2 )
+    swap 0 ?do
+        -1 floats + dup f!
+    loop
+    drop r&gt; ( u1*x u1 addr1 )
+    swap 0 ?do
+        -1 cells + tuck !
+    loop
+    drop ;
+
+: const-does&gt;-postlude ( addr -- u1*x u2*r )
+    \ fetch u1*x u2*r from addr
+    dup 2 cells +
+    swap 2@ &gt;r
+    0 ?do
+        dup @ swap cell+
+    loop
+    faligned
+    r&gt; 0 ?do
+        dup f@ float+
+    loop
+    drop ;
+
+: const-does&gt; ( compilation: colon-sys1 -- colon-sys2 )
+    \ run-time: ( u1*x u2*r u1 u2 ``name'' R: nest-sys1 -- )
+    \ name initiation: ( -- u1*x u2*r R: nest-sys2 )
+    POSTPONE const-does&gt;-prelude
+    POSTPONE does&gt;
+    POSTPONE const-does&gt;-postlude
+; immediate
+</pre>
+
+The following implementation is used in Gforth; it translates the
+defined words into colon definitions containing literals and a call,
+like this:
+
+<pre>
+\ input:
+: simple-field ( n "name" -- )
+1 0 const-does&gt; ( addr1 -- addr2 )
+    + ;
+
+8 simple-field field1
+
+\ SEE output:
+: simple-field  
+  1 0 249544 (const-does&gt;) ;
+
+\ 249544 xt-see
+noname : 
+  + ;
+
+: field1  
+  8 &lt;249544&gt; ;
+</pre>
+
+The implementation code itself is not quite ANS Forth compliant, but
+porting it to other systems should not be hard:
+
+<pre>
+: compile-literals ( w*u u -- ; run-time: -- w*u ) recursive
+    \ compile u literals, starting with the bottommost one
+    ?dup-if
+	swap &gt;r 1- compile-literals
+	r&gt; POSTPONE literal
+    endif ;
+
+: compile-fliterals ( r*u u -- ; run-time: -- w*u ) recursive
+    \ compile u fliterals, starting with the bottommost one
+    ?dup-if
+	{ F: r } 1- compile-fliterals
+	r POSTPONE fliteral
+    endif ;
+
+: (const-does&gt;) ( w*uw r*ur uw ur target "name" -- )
+    \ define a colon definition "name" containing w*uw r*ur as
+    \ literals and a call to target.
+    { uw ur target }
+    header docol: cfa, \ start colon def without stack junk
+    ur compile-fliterals uw compile-literals
+    target compile, POSTPONE exit reveal ;
+
+: const-does&gt; ( run-time: w*uw r*ur uw ur "name" -- )
+    here &gt;r 0 POSTPONE literal
+    POSTPONE (const-does&gt;)
+    POSTPONE ;
+    noname : POSTPONE rdrop
+    lastxt r&gt; cell+ ! \ patch the literal
+; immediate
+</pre>
+
+<h4>Experience</h4>
+
+<code>Const-does&gt;</code> is implemented in Gforth since November 2000.
+
+<h4>Comments</h4>
+
+Stephen Pelc pointed out that <code>const-does&gt;</code> is not
+practical for defining words that contain larger tables (you don't
+want to pass the table from definition-time to use-time on the stack).  
+
+<p>This is true, but such words are rare in my experience, and uses of
+such words where the fetches can be optimized are probably even more
+rare (usually you will index the table with a value that has to be
+computed at run-time, and then you cannot optimize the fetch anyway).
+For the exceptions a solution based on <code>invariant</code> would
+help.
+
+Guido Draheim:
+<pre>
+`const-does>` is good stuff - although I would like to have an alias `does>@`
+where just the specification says that `to` won't work.
+</pre>
+
+
+<hr><a href="/anton/">Anton Ertl</a>

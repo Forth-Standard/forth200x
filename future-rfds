@@ -1,0 +1,13 @@
+parse-word
+case insensitivity
+number prefixes
+separate FP stack
+{ (locals), fp locals, buffer locals
+[defined] [undefined]
+required
+directory handling for included and required
+0 for NIL
+S\" .\"
+Using TAB, CR, LF, FF in source code
+feature requests (detect/ask for these extensions or Forth 200x)
+ALIAS
