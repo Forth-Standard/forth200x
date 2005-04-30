@@ -1,6 +1,6 @@
-<title>PARSE-WORD</title>
+<title>PARSE-NAME</title>
 
-<h3><code>PARSE-WORD</code></h3>
+<h3><code>PARSE-NAME</code></h3>
 
 [ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
 
@@ -37,19 +37,14 @@ There are no plans to implement the proposal in full in [ ].
 -->
 
 
-<h4>Status</h4>
-
-Due to the <a href="#name-conflict">name conflict</a>, I have shelved
-the RfD with this name.  However, there has been enough support for
-the new name PARSE-NAME for this functionality, so this RfD is
-replaced by the <a href="parse-name.html">PARSE-NAME RfD</a>.
-
 <h4>Change history</h4>
 
 <dl>
-2005-04-22 A section on white space was added.  A name conflict was
-discovered, a strawpoll for a new name was held, and this RfD was
-replaced by the one for PARSE-NAME.
+2005-04-22 This is a renamed version of the <a
+href="parse-word.html">PARSE-WORD RfD</a>.  Apart from the naming
+issue the main difference to the first PARSE-WORD RfD is the addition
+of a section on white space, and a section on passing an explicit
+delimiter.
 </dl>
 
 <h4>Problem</h4>
@@ -71,7 +66,7 @@ specify the lifetime of the resulting string precisely.
 <h4>Proposal</h4>
 
 <pre>
-PARSE-WORD  ( "<whitespaces>name<whitespace>" -- c-addr u ) CORE-EXT
+PARSE-NAME  ( "<whitespaces>name<whitespace>" -- c-addr u ) CORE-EXT
 </pre>
 
 Skip leading white space and parse name delimited by a white space
@@ -85,7 +80,7 @@ white space, the resulting string has length zero.
 <h4>Typical Use</h4>
 
 <pre>
-PARSE-WORD some-name TYPE
+PARSE-NAME some-name TYPE
 </pre>
 
 <h4>Remarks</h4>
@@ -110,61 +105,13 @@ there is only white space in the input buffer.
 <p>Several systems have implemented a PARSE-WORD compatible with this
 specification, e.g., Gforth and Quartus.
 
-<p><a name="name-conflict">A number of systems have been named that
-define a PARSE-WORD incompatible with this specification</a> (e.g.,
-they often pass a delimiter on the stack).  The systems mentioned are
-MPE's VFX Forth and all MPE v6+ embedded targets, MinForth, CHForth,
-F83, Jforth, 4th.  Of these systems VFX, MinForth and CHForth are ANS
-Forth implementations, F83, 4th and JForth are not (although 4th
-partially stays close to ANS Forth).  Coos Haak (CHForth) <a
-href="http://groups.google.at/groups?selm=4da9kpvgmu3s%24.gpk0xcgp5agg.dlg%4040tude.net&output=gplain">indicated</a>
-that the next version of CHForth will have a PARSE-WORD compatible to
-this specification.
+<p>However, several systems have implemented words called PARSE-WORD
+that are incompatible with this specification (e.g., MPE's Forths,
+MinForth, CHForth, F83, Jforth, 4th), and Stephen Pelc indicated that
+MPE's Forth would never implement this word with the name PARSE-WORD.
 
-<p>PARSE-WORD in Mops works like the one proposed here, but it refills
-the input buffer if the parse area is empty or contains only white
-space.
-
-<h5>Names</h5>
-
-Given the differences in behaviour of existing words with that name,
-we need a different name for this word.
-
-People have proposed the following names:
-
-<pre>
-NextWord (conflict: exists with different meaning in Win32Forth)
-         (existing practice: SP-Forth/4)
-TOKEN
-  Supported by: Alex McDonald
-  Could live with it: Bernd Paysan
-  Strongly opposed: Michael L Gassanenko
-NAME (existing practice: exists with this meaning in Gforth)
-  Supported by: Coos Haak
-  Supported by: Albert van der Horst
-  Could live with it: Bernd Paysan
-  (Michael Gassenenko points out that it does not fit with &gt;NAME NAME&gt;)
-EXTRACTWORD
-EXTRACT-WORD
-  Supported by: Ward McFarland
-GET-WORD
-GET-NAME
-GET-TOKEN
-PARSE-NAME
-  Supported by: Stephen Pelc
-  Second choice: Albert van der Horst
-  Could live with it: Ward McFarland
-  Could also support: Alex McDonald
-  Could live with it: Marcel Hendrix
-  Can live with it: David N. Williams
-  Supported by: Anton Ertl
-  Is happy with it: Mike Hore
-PARSE-STREAM
-</pre>
-
-Some people support PARSE-WORD despite the conflict: Charles Melice,
-Ward McFarland, Bernd Paysan.
-
+<p>Therefore, a new name is needed for this functionality, and a
+strawpoll indicated the most support for PARSE-NAME.
 
 
 <h5>What is white space?</h5>
@@ -184,13 +131,63 @@ systems.
 
 
 
-<h5>Implementation and Tests</h5>
+<h5>Why not take a delimiter?</h5>
+
+WORD takes a delimiter and does with it what PARSE-NAME does with
+white space.  Shouldn't PARSE-NAME also take a delimiter?  This is a
+bad idea, for the following reasons:
 
 <ul>
 
-<li><a href="reference-implementations/parse-word.fs">Reference implementation</a>
+<li>Skipping leading delimiters only makes sense when the delimiter is
+white space.
 
-<li><a href="tests/parse-word.fs">Tests</a>
+<li>Most Forth systems support more white space characters than just
+BL.  On these systems a word that takes a delimiter has to
+special-case the BL input and call a factor like PARSE-NAME.  This
+proposal is about the factor, not the word taking the delimiter.
+
+</ul>
+
+In a <a
+href="http://www.google.at/groups?as_umsgid=2005Apr19.191029%40mips.complang.tuwien.ac.at">posting</a>
+a number of uses (in iForth code) of a delimiter-taking word were
+analysed; the following uses of delimiters were found:
+
+<dl>
+
+<dt>BL<dd>The perfect application for PARSE-NAME.
+
+<dt>0<dd>Getting the rest of the line by parsing for an impossible
+delimiter.  <code>0 PARSE</code> would have given the same result.
+
+<dt>Other delimiters, e.g., "<dd>These uses were bugs, and PARSE
+should have been used instead of the skip-leading-delimiters word.
+One example of that was <code>.STATUS"</code>, which would have
+accepted
+
+<pre>
+.STATUS" """a string"
+</pre>
+
+and done the wrong thing for
+
+<pre>
+.STATUS" " DUP
+</pre>
+
+</dl>
+
+
+
+
+<h4>Implementation and Tests</h4>
+
+<ul>
+
+<li><a href="reference-implementations/parse-name.fs">Reference implementation</a>
+
+<li><a href="tests/parse-name.fs">Tests</a>
 
 </ul>
 
