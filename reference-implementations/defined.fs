@@ -1,0 +1,4 @@
+\ by Charles G Montgomery
+
+: [DEFINED]    BL WORD FIND NIP 0<> ;  IMMEDIATE
+: [UNDEFINED]  BL WORD FIND NIP 0=  ;  IMMEDIATE

@@ -1,0 +1,206 @@
+<title>[DEFINED] and [UNDEFINED] proposal</title>
+
+<h3><a name="deferred">[DEFINED] and [UNDEFINED]</a></h3>
+
+[ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
+
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h5>Systems</h5>
+
+<pre>
+[ ] conforms to ANS Forth.
+  VFX Forth for Windows, DOS, ... (Stephen Pelc)
+  Forth 6 cross compilers (Stephen Pelc)
+  Gforth (Anton Ertl)
+  Win32Forth (Alex McDonald)
+[ ] already implements the proposal in full since release [ ]:
+  VFX Forth 3.2 for Windows, DOS, ... (Stephen Pelc)
+  Forth 6 cross compilers 3.2 (Stephen Pelc)
+  Gforth 0.6 (Anton Ertl)
+  Win32Forth 4 (Alex McDonald)
+[ ] implements the proposal in full in a development version:
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full:
+</pre>
+
+<h5>Programmers</h5>
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs:
+  Stephen Pelc
+  Alex McDonald
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it:
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard:
+  Alex McDonald
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+<h5>Informal results</h5>
+
+<h6>Win32Forth</h6>
+
+Due to the nature of the OO support in a full Win32Forth system, 
+[DEFINED] returns TRUE for OBJECTs and CLASSes, but returns FALSE for 
+methods.
+
+<p>The current internal design returns FALSE for defined Windows API
+names (although, <em>if defined</em>, they act as normal Forth words;
+however, definition of an API name before its use is not required in
+Win32Forth.)  In a future version/release, programmer defined Windows
+API names may return TRUE.
+
+
+
+<h4>Proposal</h4>
+
+(will be reformatted in HTML later)
+
+<pre>
+Problem
+
+The need for a standard word to find whether some Forth word has 
+already been defined and is available.  The usefulness of such 
+words is indicated by how commonly they are available in one 
+form or another (see 'Experience' below).  The greatest value is
+probably for code expected to be run on different systems which 
+may differ in the words they provide.
+
+Proposal
+
+[DEFINED]   ( "<spaces>string<space>" -- flag )         SEARCH EXT
+Parse space-delimited string.  Return true flag if string is the 
+name of a word found in the current search order; otherwise return 
+false flag.  An Immediate word.
+
+[UNDEFINED]  ( "<spaces>string<space>" -- flag          SEARCH EXT
+Parse space-delimited string.  Return false flag if string is the 
+name of a word found in the current search order; otherwise return 
+true flag.  An Immediate word.
+
+Remarks
+
+The intent of the proposal is to establish a standard spelling for 
+a word widely used and commonly available, but with varying 
+orthography.  The spelling proposed here is one of the common ones, 
+but there are a number of others.
+
+It could be argued that adding to the Standard words so easily 
+defined (see below) just adds unnecessary bloat.  The counter 
+argument is the convenience for someone writing code that may be 
+used on several different systems in knowing what name is used 
+for a common capability that may well be present.
+
+Only one of the two is needed, since the other is obtained by 
+postpending 0=.  My guess would be that [UNDEFINED] is used more 
+often, as in the Typical use below.  But if a system has room to 
+provide one, why not both?
+
+Reference implementation
+
+: [DEFINED]    BL WORD FIND NIP 0<> ;  IMMEDIATE
+: [UNDEFINED]  BL WORD FIND NIP 0=  ;  IMMEDIATE
+
+Typical use
+
+[UNDEFINED] 4DUP [IF] : 4DUP  2OVER 2OVER ; [THEN]
+
+Experience
+
+Common as dirt.  With one spelling or another, the capability
+is provided in Wil Baden's Comus and toolkits and E. Rather's 
+Forth Programmer's Handbook.  Versions are included in Gforth, 
+PFE, Bigforth and Win32Forth.  I believe it is present in both 
+SwiftForth and VFX Forth for Windows, and Stephen Pelc says it 
+is part of the cross compiler draft standard.  I'm sure there 
+are more.
+
+The functionality is almost always equivalent to what is proposed 
+here, so it would seem that conforming to a standard spelling 
+should not be difficult for system developers.
+
+Comments
+
+(Summarized briefly.  Details and attributions can be seen in the 
+archives of postings to  groups.yahoo.com/group/forth200x and 
+comp.lang.forth.  I find there was also a discussion of these and 
+related words in comp.lang.forth in October, 2000, in which many 
+of the same points were mentioned.)
+
+There will always be a risk that on an unfamiliar system, a word 
+found might actually differ from the intended one, or a word sought 
+might be present but not found.
+
+In the great majority of uses of [DEFINED] and [UNDEFINED] they are 
+followed with [IF].  Thus it might be convenient to have words like 
+[IFDEF] which incorporate the action of IF.  The proposed words could 
+be factors for these.
+
+Standardization would be convenient.
+</pre>
+
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+&lt;anton@mips.complang.tuwien.ac.at&gt;.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+<h4>Ballot for systems</h4>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the
+brackets.  Multiple hits for the same system are possible (if they do
+not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please
+do so informally, and I will aggregate this information in some way.
+
+
+<h4>Ballot for programmers</h4>
+
+Just mark the statements that are correct for you (e.g., by putting an
+"x" between the brackets).  If some statements are true for some of
+your programs, but not others, please mark the statements for the
+dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from
+the proposal (especially if you have used that in your programs), make
+an informal comment, and I will collect these, too.  Note that the
+best time to voice such issues is the RfD stage.
+
+<h4>Credits</h4>
+
+Proponent: Charles G Montgomery<br>
+Votetaker: M. Anton Ertl
+
+<hr><a href="/anton/">Anton Ertl</a>

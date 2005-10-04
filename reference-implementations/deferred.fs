@@ -1,5 +1,7 @@
 \ example implementation
 
+\ public domain
+
 : defer ( "name" -- )
   create ['] abort ,
 does> ( ... -- ... )

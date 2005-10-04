@@ -4,7 +4,6 @@
 
 [ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
 
-<!--
 <h4>Poll standings</h4>
 
 See <a href="#voting">below</a> for voting instructions.
@@ -13,10 +12,21 @@ See <a href="#voting">below</a> for voting instructions.
 
 <pre>
 [ ] conforms to ANS Forth.
+ MPE VFX Forth for Windows/DOS/Linux
+ MPE Forth 6 cross compilers
+ Gforth
+ bigFORTH
 [ ] already implements the proposal in full since release [ ]:
 [ ] implements the proposal in full in a development version:
+ Gforth
+ bigFORTH
 [ ] will implement the proposal in full in release [ ].
+ VFX Forth 3.8 for Windows/DOS/Linux
+ Gforth 0.7
+ bigFORTH 2.1.1
 [ ] will implement the proposal in full in some future release.
+ MPE Forth 6 cross compilers (after 6.3)
+ Quartus Forth
 There are no plans to implement the proposal in full in [ ].
 [ ] will never implement the proposal in full:
 </pre>
@@ -25,17 +35,30 @@ There are no plans to implement the proposal in full in [ ].
 
 <pre>
 [ ] I have used (parts of) this proposal in my programs:
+ Ruvim Pinka
+ Robert Epprecht
 [ ] I would use (parts of) this proposal in my programs if the systems
     I am interested in implemented it:
+ Anton Ertl
+ Bernd Paysan
 [ ] I would use (parts of) this proposal in my programs if this
     proposal was in the Forth standard:
+ David N. Williams
+ Stephen Pelc
 [ ] I would not use (parts of) this proposal in my programs.
 </pre>
 
 <h5>Informal results</h5>
 
--->
+<ul>
 
+<li>Quartus Forth 2.0.0: After you add the following definition, Quartus Forth implements the proposal in full:
+
+<pre>
+' parse-word alias parse-name
+</pre>
+
+</ul>
 
 <h4>Change history</h4>
 

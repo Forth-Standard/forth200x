@@ -1,3 +1,5 @@
+\ public domain
+
 : isspace? ( c -- f )
     bl 1+ u< ;
 
