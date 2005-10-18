@@ -16,15 +16,22 @@ See <a href="#voting">below</a> for voting instructions.
   Forth 6 cross compilers (Stephen Pelc)
   Gforth (Anton Ertl)
   Win32Forth (Alex McDonald)
+  BigForth (Bernd Paysan)
+  iForth (Marcel Hendrix)
+  SwiftForth and SwiftX (Elizabeth Rather)
 [ ] already implements the proposal in full since release [ ]:
   VFX Forth 3.2 for Windows, DOS, ... (Stephen Pelc)
   Forth 6 cross compilers 3.2 (Stephen Pelc)
   Gforth 0.6 (Anton Ertl)
   Win32Forth 4 (Alex McDonald)
+  iForth 1.1 (Marcel Hendrix)
+  SwiftForth and SwiftX 1.0 (Elizabeth Rather)
+  4th 3.4e (Hans Bezemer)
 [ ] implements the proposal in full in a development version:
 [ ] will implement the proposal in full in release [ ].
 [ ] will implement the proposal in full in some future release.
 There are no plans to implement the proposal in full in [ ].
+  BigForth
 [ ] will never implement the proposal in full:
 </pre>
 
@@ -34,29 +41,36 @@ There are no plans to implement the proposal in full in [ ].
 [ ] I have used (parts of) this proposal in my programs:
   Stephen Pelc
   Alex McDonald
+  David N. Williams
+  Robert Epprecht
+  Richard Borrell
+  Bruce McFarling
+  Marcel Hendrix
+  Hans Bezemer
 [ ] I would use (parts of) this proposal in my programs if the systems
     I am interested in implemented it:
+  Chris Walton
+  David N. Williams
+  Marcel Hendrix
 [ ] I would use (parts of) this proposal in my programs if this
     proposal was in the Forth standard:
   Alex McDonald
+  Chris Walton
+  David N. Williams
+  Bernd Paysan
+  Marcel Hendrix
 [ ] I would not use (parts of) this proposal in my programs.
 </pre>
 
 <h5>Informal results</h5>
 
-<h6>Win32Forth</h6>
+In Win32Forth, local names return TRUE from [DEFINED] when in scope;
+[DEFINED] returns false for methods (in the OO extension); for Windows
+API names, the result depends on the Win32Forth version and whether
+the name has already been used.  For details, see <a
+href="http://groups.google.at/group/comp.lang.forth/msg/456531063dc8ca03?dmode=source">&lt;434270FC.4000408@btopenworld.com&gt;</a>
 
-Due to the nature of the OO support in a full Win32Forth system, 
-[DEFINED] returns TRUE for OBJECTs and CLASSes, but returns FALSE for 
-methods.
-
-<p>The current internal design returns FALSE for defined Windows API
-names (although, <em>if defined</em>, they act as normal Forth words;
-however, definition of an API name before its use is not required in
-Win32Forth.)  In a future version/release, programmer defined Windows
-API names may return TRUE.
-
-
+<p>BigForth has [IFDEF] and [IFUNDEF] instead.
 
 <h4>Proposal</h4>
 
