@@ -1,20 +1,23 @@
 case insensitivity
-number prefixes
-separate FP stack
-{ (locals), fp locals, buffer locals
-required
-directory stuff in general
-directory handling for included and required
-0 for NIL
-S\" .\"
-Using TAB, CR, LF, FF in source code
-! and @ for 16-bit and 32-bit signed and unsigned integers
+number prefixes (Federico de Ceballos)
+separate FP stack (M. Anton Ertl)
+{ (locals), fp locals, buffer locals (Stephen Pelc)
+required (M. Anton Ertl)
+directory stuff in general (M. Anton Ertl)
+directory handling for included and required (M. Anton Ertl)
+0 for NIL (Federico de Ceballos)
+S\" .\" (Stephen Pelc)
+Using TAB, CR, LF, FF in source code (Bill Stoddart)
+! and @ for 16-bit and 32-bit signed and unsigned integers, bytes, octets (Federico de Ceballos)
 WHILE stack effect (allow multiple WHILEs)
-iors can be THROWn
+iors can be THROWn (Stephen Pelc)
 IEEE-754 guarantees for existing FP ops
-additional FP words for IEEE-754 purposes
+additional FP words for IEEE-754 purposes (David N. Williams?)
 fcvt()-like word
-key names for EKEY results
+key names for EKEY results (M. Anton Ertl)
+SYNONYM (Stephen Pelc)
+structures (Stephen Pelc)
+timing words
 
 Probably not a good idea:
 ALIAS (inheritance of immediacy, combined words, etc.)

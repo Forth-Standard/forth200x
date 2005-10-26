@@ -1,0 +1,204 @@
+<title>Forth standards meeting at EuroForth 2005</title>
+
+<h1>Forth standards meeting at <a
+href="http://personales.unican.es/ceballof/ef05/">EuroForth 2005</a></h1>
+
+On 2005-10-20, 2005-10-21 and 2005-10-23 there was a Forth standards
+meeting, right before and partly during EuroForth 2005.  The
+participants were:
+
+<ul>
+
+<li>Willem Botha, CCS, South Africa
+<li>Federico de Ceballos, University of Cantabria, Spain
+<li>M. Anton Ertl, TU Wien, Austria
+<li>N. J. Nelson, Micross, England (Observer)
+<li>Peter Knaggs, University of Bournemouth, England
+<li>Stephen Pelc, MPE, England
+<li>Bill Stoddart, University of Teeside, England (Observer)
+
+</ul>
+
+The following topics were discussed:
+
+<h2>Accepting proposals into the standard document</h2>
+
+Federico de Ceballos chaired this part of the meeting.
+
+<p>The four proposals which had gone to a CfV were discussed:
+
+<ul>
+<li> <a href="../deferred.html">deferred</a>
+<li> <a href="../extension-query.html">extension-query</a>
+<li> <a href="../parse-name.html">parse-name</a>
+<li> <a href="../defined.html">defined</a>
+</ul>
+
+Various changes were suggested that were necessary for inclusion into
+the standards document.  These changes then resulted in adapted
+versions of the normative parts of these proposals (performed by Anton
+Ertl).  The resulting proposals were then discussed, and various small
+clarifications and changes were incorporated, resulting in the
+following normative parts.
+
+<ul>
+<li> <a href="../document/deferred.html">deferred</a>
+<li> <a href="../document/extension-query.html">extension-query</a>
+<li> <a href="../document/parse-name.html">parse-name</a>
+<li> <a href="../document/defined.html">defined</a>
+</ul>
+
+These proposals were all accepted with vote results 5Y:0N:0A.
+
+<h2>Future proposals</h2>
+
+A number of potential topics for future proposals were discussed, and
+eventually some participants volunteered to write RfDs for the
+following topics:
+
+<dl>
+
+<dt>Federico de Ceballos
+<dd>
+<pre>
+number prefixes 
+0 for NIL 
+! and @ for 16-bit and 32-bit signed and unsigned integers, bytes, octets 
+</pre>
+
+<dt>M. Anton Ertl
+<dd>
+<pre>
+separate FP stack 
+required 
+directory stuff in general 
+directory handling for included and required 
+key names for EKEY results 
+</pre>
+
+<dt>Stephen Pelc
+<dd>
+<pre>
+{ (locals), fp locals, buffer locals 
+S\" .\" 
+iors can be THROWn 
+SYNONYM 
+structures 
+</pre>
+
+<dt>Bill Stoddart
+<dd>
+<pre>
+Using TAB, CR, LF, FF in source code 
+</pre>
+
+</dl>
+
+<h2>Integration into the standards document</h2>
+
+Should new words be put into the established wordsets, or into new
+ones?
+
+<p>The eventual goal is to usually integrate the new words into
+existing functionality; in some cases it may be more appropriate to
+create a new word set.  However, as an intermediate step the new
+proposals will at first be kept separate, to make it easier for
+readers of the document to see what is changing.
+
+<p>How are the extension-query names reflected in the standard (if at
+all)?
+
+<p>The glossary header for new words includes the extension-query
+string for the extension that proposed it.  In addition, there will be
+a chapter or normative appendix that lists all the extensions, their
+extension-query strings and the component (word definitions etc.) that
+it consists of.
+
+<p>Should the tests of a proposal or the reference implementation
+become normative?  No.  This could lead to conflicting normative
+sections; also, making the reference implementation normative would
+lead to overspecification.
+
+<h2>Review of the RfD/CfV process</h2>
+
+How well is the RfD/CfV process working at generating high-quality
+proposals for standardisation and getting information about their
+popularity? What could be improved?  Or should we do something
+completely different?
+
+<p>Many of the participants were not very familar with how well the
+process worked in practice, and had no suggestions for improvements.
+
+<p>The (normative part of the) proposals required adaption before
+integrating them into the document, but there was a widespread feeling
+among the participants that proposals in the form of unambiguous
+instructions to the document editor (which is the form that would be
+voted on by the standards committee) would be harder to understand.
+
+<p>The resulting idea was to have two forms of the proposal, with the
+same content: First the not-so-formal form used in the CfV, and later
+a form for integrating it into the document.
+
+<h2>Official standards body</h2>
+
+Should we run the standard through a standards body like ANSI, ISO,
+IEEE, etc.? If so, which one?
+
+<p>Some participants consider the blessing of the future standards
+document by an official standards body very important, and we agreed
+to work towards this goal by writing the document in the appropriate
+style, and by keeping documentation about all our steps.  However, the
+general idea was to first develop the document without involving a
+standards body, and deal with them at the end.
+
+<p>Various candidate standards bodies were discussed; none was decided
+on, but it might be that going through ANSI again might be the easiest
+route.
+
+<h2>Chairman and Editor</h2>
+
+M. Anton Ertl was reelected as the chair of the committee (vote results?).
+
+<p>Peter Knaggs was elected editor (vote results?).
+
+<h2>Next meeting</h2>
+
+After some discussion about possibly having two meetings per year, we
+decided to just have one meeting per year for now.  The next meeting
+will again be on the day before the next EuroForth conference
+(probably in Cambridge, date to be announced).
+
+<h2>Open questions</h2>
+
+Which standard documents should we start from?  Peter Knaggs has a
+version of dpANS99a in LaTeX form, convertible in a fully hyperlinked
+PDF file.  However, it is yet unclear how this document differs from
+the ANS/ISO Forth documents and dpANS6.
+
+How do we get from the CfV proposal to the form for integration into
+the document?  One opinion was that the original proponent should do
+it.  On a related topic, there was the opinion that a proposal needs a
+champion in the committee to get approval by the standards committee.
+So, if the proponent finds a champion in the committee, they could
+produce the for-the-document version of the proposal together.
+
+
+<h2>Improvements for future standard meetings</h2>
+
+<ul>
+
+<li>The participants should familiarise themselves with the proposals
+beforehand.
+
+<li>Paper printouts of the proposals should be available at the
+meeting.
+
+<li>Proposals should be available in the form needed for integration
+into the standards document.
+
+<li>There should be a champion for the proposal in the meeting.
+
+</ul>
+
+<hr><a href="../">Anton Ertl</a>
+

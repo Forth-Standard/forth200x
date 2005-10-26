@@ -1,0 +1,24 @@
+<title>Extension queries</title>
+
+<h4>Proposal</h4>
+
+Add the following to table 3.5:
+
+<pre>
+String           Value data type  Constant?
+X:deferred              -           -       string present only if DEFER, DEFER@, DEFER!, IS and ACTION-OF are present
+X:extension-query       -           -       string present
+X:parse-name            -           -       string present only if PARSE-NAME is present
+</pre>
+
+Add the following to table 15.1:
+
+<pre>
+X:defined               -           -       string present only if [DEFINED] and [UNDEFINED] are present
+</pre>
+
+Append in Section 2.2.4.1:
+
+<pre>
+- ENVIRONMENT? string if the word belongs to a Forth200x extension.
+</pre>

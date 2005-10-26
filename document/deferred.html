@@ -1,0 +1,87 @@
+<title>Deferred Words proposal</title>
+
+<pre>
+DEFER ( "&lt;spaces&gt;name" -- ) CORE-EXT X:deferred
+</pre>
+
+Skip leading space delimiters. Parse name delimited by a space. Create
+a definition for name with the execution semantics defined below.
+
+<pre>
+<em>name</em> Execution: ( i*x -- j*x )
+</pre>
+
+Execute xt associated with name.  An ambiguous condition exists if
+name has not been associated with an xt yet.
+
+<p>
+<pre>
+IS CORE-EXT X:deferred
+</pre>
+
+<dl>
+<dt>Interpretation: ( xt "&lt;spaces&gt;name" -- )
+
+<dd>Skip leading spaces and parse name delimited by a space. Set
+name to execute xt.  An ambiguous condition exists if name was not defined
+by <code>DEFER</code>.
+
+<dt>Compilation: ( "&lt;spaces&gt;name" -- ) <dd>Skip leading spaces
+and parse name delimited by a space. Append the run-time semantics
+given below to the current definition. An ambiguous condition exists
+if name was not defined by <code>DEFER</code>.
+
+<dt>Run-time: ( xt -- )
+<dd>Set name to execute xt.
+
+</dl>
+
+An ambiguous condition exists if POSTPONE, [COMPILE], ['] or ' is applied
+to IS.
+
+<pre>
+DEFER@ ( xt1 -- xt2 ) CORE-EXT X:deferred
+</pre>
+
+xt2 is the xt associated with the deferred word corresponding to xt1.
+An ambiguous condition exists if xt1 is not for a word defined via
+DEFER, or if the deferred word has not been associated with an xt yet.
+
+<pre>
+DEFER! ( xt2 xt1 -- ) CORE-EXT X:deferred
+</pre>
+
+Set the word xt1 to execute xt2.  An ambiguous condition exists if xt1
+is not for a word defined via DEFER.
+
+<p>
+<pre>
+ACTION-OF CORE-EXT X:deferred
+</pre>
+
+<dl>
+<dt>Interpretation: ( "&lt;spaces&gt;name" -- xt )
+
+<dd>Skip leading spaces and parse name delimited by a space.  xt is
+the xt associated with name.  An ambiguous condition exists if name
+was not defined by <code>DEFER</code>, or if the name has not been
+associated with an xt yet.
+
+<dt>Compilation: ( "&lt;spaces&gt;name" -- )
+
+<dd>Skip leading spaces and parse name delimited by a space. Append
+the run-time semantics given below to the current definition. An
+ambiguous condition exists if name was not defined by
+<code>DEFER</code>.
+
+<dt>Run-time: ( -- xt )
+
+<dd>xt is the execution token associated with name when the run-time
+semantics is performed.  An ambiguous condition exists if name has not
+been associated with an xt yet.
+
+</dl>
+
+An ambiguous condition exists if POSTPONE, [COMPILE], ['] or ' is applied
+to ACTION-OF.
+

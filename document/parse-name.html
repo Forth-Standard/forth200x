@@ -1,0 +1,16 @@
+<title>PARSE-NAME</title>
+
+<h4>Proposal</h4>
+
+<pre>
+PARSE-NAME  CORE EXT X:parse-name
+</pre>
+
+( "&lt;spaces&gt;name" -- c-addr u )
+
+<p>Skip leading space delimiters.  Parse name delimited by a space.
+
+<p>c-addr is the address of the selected string within the input
+buffer and u is its length in characters. If the parse area is empty
+or contains only white space, the resulting string has length zero.
+

@@ -1,0 +1,30 @@
+<title>[DEFINED] and [UNDEFINED] proposal</title>
+
+<pre>
+Proposal
+
+[DEFINED]    "bracket-defined" TOOLS EXT X:defined
+
+Compilation: Perform the execution semantics given below.
+
+Execution: ( "&lt;spaces&gt;name" -- flag )
+
+Skip leading space delimiters.  Parse name delimited by a space.
+Return a true flag if /name/ is the name of a word that can be found
+(according to the rules in the system's FIND); otherwise return a
+false flag.  [DEFINED] is an immediate word.
+
+
+[UNDEFINED]  "bracket-undefined" TOOLS EXT X:defined
+
+Compilation: Perform the execution semantics given below.
+
+Execution: ( "&lt;spaces&gt;name" -- flag )
+
+Skip leading space delimiters.  Parse name delimited by a space.
+Return a false flag if /name/ is the name of a word that can be found
+(according to the rules in the system's FIND); otherwise return a true
+flag.  [UNDEFINED] is an immediate word.
+
+</pre>
+
