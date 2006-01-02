@@ -2,12 +2,19 @@
 
 <h3><a name="required">One-time file loading</a></h3>
 
-[<a href="proposals.html">Other proposals</a>]
+[ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
+
+<h4>Change History</h4>
+
+2001-08-14: Changed stack effect from ( i*x c-addr u -- j*x ) to (
+i*x c-addr u -- i*x ), following a suggestion from Guido Draheim, and
+related changes in the text.
+
 
 <h4>Problem</h4>
 
-A library is needed by several parts of the source code, but it should
-be loaded only once.
+A library is needed by several parts of the source code (e.g., in
+other libraries), but it should be loaded only once.
 
 <h4>Proposal</h4>
 
@@ -18,31 +25,98 @@ REQUIRED ( i*x c-addr u -- i*x )
 If the file specified by c-addr u has been INCLUDED or REQUIRED
 already, discard c-addr u; otherwise, perform INCLUDED.
 
-<p>If the same file is REQUIRED twice using different names (e.g.,
-through symbolic links), or different files with the same name are
-REQUIRED (by doing some renaming between the invocations of REQUIRED),
-the file will be INCLUDED the first time, but not necessarily several
-times.
+<p>An ambiguous condition exists if a file is REQUIRED while it is
+being REQUIRED or INCLUDED.
 
-<p>An ambiguous conditionm exists if the stack effect of including the
+<p>An ambiguous condition exists if the same file is REQUIRED twice
+using different names (e.g., through symbolic links), or different
+files with the same name are REQUIRED (by doing some renaming between
+the invocations of REQUIRED).
+
+<p>An ambiguous condition exists if the stack effect of including the
 file is not ( i*x -- i*x ).
+
+<pre>
+REQUIRE ( i*x "name" -- i*x )
+</pre>
+
+Skip leading white space and parse name delimited by a white space
+character.  Push the address and length of the name on the stack and
+perform REQUIRED.
+
+<pre>
+INCLUDE ( i*x "name" -- j*x )
+</pre>
+
+Skip leading white space and parse name delimited by a white space
+character.  Push the address and length of the name on the stack and
+perform INCLUDED.
 
 
 <h4>Typical Use</h4>
 
 <pre>
 ... s" filename" required ...
+require filename
+include filename
 </pre>
 
 <h4>Remarks</h4>
 
-The syntax follows the good example of INCLUDED in being
-non-parsing. A parsing version like NEEDS can be easily defined from
-it with:
+<h5>REQUIRED syntax</h5>
 
-<pre>
-: NEEDS BL WORD COUNT REQUIRED ;
-</pre>
+The syntax follows the good example of INCLUDED in being non-parsing.
+That syntax allows more flexible uses and it allows REQUIREing
+filenames containing spaces.
+
+<h5>INCLUDE</h5>
+
+INCLUDE is implemented and used widely, so we might just as well
+standardize it (and why not in this RfD).  OTOH, once REQUIRE is
+widely implemented, it might see much less use.  if enough people
+argue against its inclusion, I will remove it from this RfD.
+
+<h5>REQUIRE</h5>
+
+Given what happened with INCLUDED and INCLUDE, we might just as well
+provide a parsing variant of REQUIRED right from the start.  However,
+the essential word is REQUIRED, the parsing variant is just syntactic
+sugar.
+
+<h5>REQUIRE name</h5>
+
+The name is modeled on the relation between INCLUDED and INCLUDE, and
+also on Emacs Lisp's <code>require</code>.  However, this word has
+been implemented under other names: NEEDS in various systems, REQUIRES
+in PFE and MPE's systems.
+
+<p>What's worse, some systems have used these names for other
+purposes: PFE has a NEEDS with a different meaning, and ciforth has a
+REQUIRE with a different meaning (but ciforth's author thinks that
+ciforth is not significant and has promised to rename/drop his word if
+consensus on using REQUIRE for another purpose is reached <a
+href="http://groups.google.com/group/comp.lang.forth/msg/fbead31cda1c3c4a?dmode=source">&lt;ielhfd.416@spenarnc.xs4all.nl&gt;</a>).
+
+<p>So, which of the names would you prefer?  Please post or mail me
+your preferences, and I will collect them and then decide on the final
+name, if any.  Also, if you know of other conflicts for these names,
+please let me know.
+
+<h5>Why not use load screens?</h5>
+
+Some people prefer to have a single file that contains INCLUDEs for
+all the other files in a program.  These people do not need REQUIRED.
+
+<p>However, other people want to build programs out of reusable (and
+possibly independently developed) libraries, and the load-screen
+approach causes increased maintenance work in this context: E.g., if a
+new version of a library needs to load an additional sublibrary, the
+load screens of all programs using the library would have to be
+changed.  In contrast, with REQUIRED, the library REQUIREs the
+sublibrary itself, and REQUIRED makes sure that it is not loaded
+twice.
+
+<h5>What about the C approach</h5>
 
 Some might say: Why not use the C solution: The C solution to this
 problem is putting a wrapper like
@@ -56,37 +130,45 @@ problem is putting a wrapper like
 
 around every source file. This is inefficient (the whole file has to
 be read again, unless the compiler does some pretty sophisticated
-stuff), requires cooperation from the author of the file (which is
+stuff), and requires cooperation from the author of the file (which is
 problematic, because not the author, but the users of the file have
-the trouble), and is cumbersome to express in standard Forth (there is
-no direct equivalent to #ifdef).
+the trouble).
 
 <h4>Experience</h4>
 
-Gforth has REQUIRED. Many systems, including F-PC, Gforth, and
-Win32Forth, have NEEDS, a parsing version of REQUIRED. I use it
-extensively, and so do others.
+Many systems have REQUIRED, REQUIRE, REQUIRES, and/or NEEDS.  Many
+systems contain INCLUDE.  The occurences of these words in the Gforth
+sources are:
 
-<h4>Change History</h4>
+<pre>
+occurences regexp
+ 88        "^require "
+ 45        "^include "
+  4        " included$"
+  2        " required$"
+</pre>
 
-Aug 14,2001: Changed stack effect from ( i*x c-addr u -- j*x ) to (
-i*x c-addr u -- i*x ), following a suggestion from Guido Draheim, and
-related changes in the text.
+
+<h4>Implementation and Tests</h4>
+
+<ul>
+
+<li><a href="reference-implementations/required.fs">Reference implementation</a>
+
+<li><a href="tests/required.fs">Tests</a>
+
+</ul>
+
 
 <h4>Comments</h4>
 
+from an earlier (Pre-RfD) version of the proposal:
+
+<p>
 Michael L. Gassanenko:
 
 <pre>
 Yes. I do use NEEDS.
-
-> (there is no direct equivalent to #ifdef).
-
-I often invent analogs to #ifdef , namely,
-if a name is defined, interpret the following line.
-AFAIK, both F-PC and WIN32FOR have such words,
-but the only name I can remember is #ifdef / #ifndef (it seems, I myself
-used this name, because the others were not much meaningful).
 </pre>
 
 Peter Knaggs:
