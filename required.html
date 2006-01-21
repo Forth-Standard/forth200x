@@ -6,10 +6,41 @@
 
 <h4>Change History</h4>
 
-2001-08-14: Changed stack effect from ( i*x c-addr u -- j*x ) to (
-i*x c-addr u -- i*x ), following a suggestion from Guido Draheim, and
-related changes in the text.
+<dl>
+<dt>2006-01-21<dd>
 
+<ul>
+
+<li>Normative: Added memory allocation restriction to INCLUDED (and a
+related section in the informative parts).
+
+<li>Normative: After forgetting the contents of a file with FORGET or
+a marker, REQUIRED will include the file again (plus an informative
+section on that; the reference implementation does not implement that
+yet).
+
+<li>Normative: Put the new words in the FILE EXT word set.
+
+<li>Normative: replaced "perform <em>word</em>" with "perform the
+function of <em>word</em>".
+
+<li>Recorded answers to the question about the name of
+REQUIRE/NEEDS/REQUIRES, and corrected information about REQUIRES in
+MPE systems (it does not perform what is proposed).
+
+<li>Added a section on INCLUDE interacting with BASE.
+
+<li>Added information about features to increase the efficiency of the
+C approach.
+
+</ul>
+
+
+<dt>2001-08-14 <dd>Changed stack effect from ( i*x c-addr u -- j*x )
+to ( i*x c-addr u -- i*x ), following a suggestion from Guido Draheim,
+and related changes in the text.
+
+</dl>
 
 <h4>Problem</h4>
 
@@ -18,15 +49,33 @@ other libraries), but it should be loaded only once.
 
 <h4>Proposal</h4>
 
+Add the following restriction to the definition of INCLUDED:
+
+<blockquote>
+INCLUDED may allocate memory in data space before it starts
+interpreting the file.
+</blockquote>
+
+In the definition of INCLUDED, change <em>Text interpretation begins
+at the file position where the next file read would occur</em> into
+<em>Text interpretation begins at the start of the file</em>.
+
+<p>Define the following words:
+
 <pre>
-REQUIRED ( i*x c-addr u -- i*x )
+REQUIRED   FILE-EXT ( i*x c-addr u -- i*x )
 </pre>
 
 If the file specified by c-addr u has been INCLUDED or REQUIRED
-already, discard c-addr u; otherwise, perform INCLUDED.
+already, but not between the definition and execution of a marker (or
+equivalent usage of FORGET), discard c-addr u; otherwise, perform the
+function of INCLUDED.
 
 <p>An ambiguous condition exists if a file is REQUIRED while it is
 being REQUIRED or INCLUDED.
+
+<p>An ambiguous condition exists, if a marker is defined outside and
+executed inside a file or vice versa, and the file is REQUIRED again.
 
 <p>An ambiguous condition exists if the same file is REQUIRED twice
 using different names (e.g., through symbolic links), or different
@@ -37,20 +86,20 @@ the invocations of REQUIRED).
 file is not ( i*x -- i*x ).
 
 <pre>
-REQUIRE ( i*x "name" -- i*x )
+REQUIRE   FILE-EXT ( i*x "name" -- i*x )
 </pre>
 
 Skip leading white space and parse name delimited by a white space
 character.  Push the address and length of the name on the stack and
-perform REQUIRED.
+perform the function of REQUIRED.
 
 <pre>
-INCLUDE ( i*x "name" -- j*x )
+INCLUDE   FILE-EXT ( i*x "name" -- j*x )
 </pre>
 
 Skip leading white space and parse name delimited by a white space
 character.  Push the address and length of the name on the stack and
-perform INCLUDED.
+perform the function of INCLUDED.
 
 
 <h4>Typical Use</h4>
@@ -62,6 +111,21 @@ include filename
 </pre>
 
 <h4>Remarks</h4>
+
+<h5>Changes to included</h5>
+
+The added restriction codifies an existing environmental restriction
+in widely-used systems (at least Win32Forth and MPE's systems) that
+has not led to problems in programs.  In the context of REQUIRED this
+restriction allows a simpler implementation.  In effect this
+restriction means that colon definitions or contiguous data regions
+cannot extend across calls to INCLUDED (one can use INCLUDE-FILE
+instead).
+
+<p>Should we also add a restriction that allows INCLUDED to allocate
+data space after the interpretation of the included file ends?
+
+<p>The change in the definition fixes an obvious copy-and-paste error.
 
 <h5>REQUIRED syntax</h5>
 
@@ -76,6 +140,24 @@ standardize it (and why not in this RfD).  OTOH, once REQUIRE is
 widely implemented, it might see much less use.  if enough people
 argue against its inclusion, I will remove it from this RfD.
 
+<h5>INCLUDE and BASE</h5>
+
+There are supposedly systems that set BASE to decimal at the start of
+INCLUDE.  One could accomodate such systems by adding a restriction:
+
+<blockquote>
+An ambiguous condition exists if the value of BASE is not
+(decimal) ten.
+</blockquote>
+
+However, IMO it is confusing if INCLUDE silently changes BASE and
+INCLUDED does not, so I will only add this restriction if somebody can
+name such a system (that is a necessary, not a sufficient condition).
+
+<p>A better approach IMO is to warn the user if BASE is not decimal
+when starting INCLUDE, and if the BASE has changed when ending INCLUDE
+(and probably for INCLUDED and INCLUDE-FILE, too).
+
 <h5>REQUIRE</h5>
 
 Given what happened with INCLUDED and INCLUDE, we might just as well
@@ -88,19 +170,35 @@ sugar.
 The name is modeled on the relation between INCLUDED and INCLUDE, and
 also on Emacs Lisp's <code>require</code>.  However, this word has
 been implemented under other names: NEEDS in various systems, REQUIRES
-in PFE and MPE's systems.
+in PFE.
 
 <p>What's worse, some systems have used these names for other
-purposes: PFE has a NEEDS with a different meaning, and ciforth has a
-REQUIRE with a different meaning (but ciforth's author thinks that
-ciforth is not significant and has promised to rename/drop his word if
-consensus on using REQUIRE for another purpose is reached <a
+purposes: MPE's systems have REQUIRES with a different meaning, PFE
+has a NEEDS with a different meaning, and ciforth has a REQUIRE with a
+different meaning (but ciforth's author thinks that ciforth is not
+significant and has promised to rename/drop his word if consensus on
+using REQUIRE for another purpose is reached <a
 href="http://groups.google.com/group/comp.lang.forth/msg/fbead31cda1c3c4a?dmode=source">&lt;ielhfd.416@spenarnc.xs4all.nl&gt;</a>).
 
 <p>So, which of the names would you prefer?  Please post or mail me
 your preferences, and I will collect them and then decide on the final
 name, if any.  Also, if you know of other conflicts for these names,
 please let me know.
+
+<p>Results from the RfDs:
+
+<ul>
+
+<li>Stephen Pelc (MPE) can live with REQUIRED and REQUIRE.  REQUIRES would
+conflict with MPE's systems.
+
+<li>Alex McDonald (Win32Forth) can live with REQUIRE
+&lt;1137148722.722401.233900@f14g2000cwb.googlegroups.com&gt;;
+currently Win32Forth supports NEEDS and REQUIRES (with ideas to drop
+REQUIRES).
+
+</ul>
+
 
 <h5>Why not use load screens?</h5>
 
@@ -134,6 +232,34 @@ stuff), and requires cooperation from the author of the file (which is
 problematic, because not the author, but the users of the file have
 the trouble).
 
+<p>SwiftForth has a word \\ that can be used to mostly eliminate the
+inefficiency mentioned above: it ends interpreting the current file;
+Win32Forth has an equivalent word \s.  SwiftForth also has a word
+OPTIONAL that supports the C-like technique
+&lt;43bc4e10$0$14122$ba620e4c@news.skynet.be&gt;,
+&lt;43c12a85$0$29455$ba620e4c@news.skynet.be&gt;.
+
+<h5>Using the dictionary for implementation</h5>
+
+One thing that could be done to make the implementations simpler is to
+specify that INCLUDED and REQUIRED can change the dictionary before or
+after text-interpreting the file; that would allow the implementation
+to store the names of the included files in a wordlist.  The downside
+would be that INCLUDED could not be used for including parts of colon
+definitions or the data part of CREATEd words.  However, such uses are
+probably rare (if they occur at all in existing code), and they can
+still be performed (although in a more cumbersome way) with
+INCLUDE-FILE.  What do you think?
+
+<h5>What about MARKER and FORGET?</h5>
+
+The proposed behaviour is probably what the users are expecting, and
+AFAIK all implementations of such words already support that
+behaviour.  The ambiguous condition allows different implementation
+approaches, and the usage that is explicitly unspecified in this way
+probably does not matter to users.
+
+
 <h4>Experience</h4>
 
 Many systems have REQUIRED, REQUIRE, REQUIRES, and/or NEEDS.  Many
@@ -153,7 +279,9 @@ occurences regexp
 
 <ul>
 
-<li><a href="reference-implementations/required.fs">Reference implementation</a>
+<li><a href="reference-implementations/required.fs">Reference
+implementation</a> (does not yet deal as proposed with markers and
+FORGET).
 
 <li><a href="tests/required.fs">Tests</a>
 
@@ -162,7 +290,30 @@ occurences regexp
 
 <h4>Comments</h4>
 
-from an earlier (Pre-RfD) version of the proposal:
+Albert van der Horst suggested that REQUIRE should in some way be able
+to use LOAD &lt;isj83k.igv@spenarnc.xs4all.nl&gt;.  However, I believe that
+such a word, if needed, should have a different name.
+
+<p>Hans Bezemer writes that 4th has a parsing [NEEDS (apparently used
+like "[NEEDS file name ]").  4th also has INCLUDE
+&lt;1136473379.719600.193630@g49g2000cwa.googlegroups.com&gt;.  
+
+<p>Stephen Pelc:
+
+<pre>
+In order to ease use of library code, it may be as well to 
+consider specifying how the following items are handled when the 
+file/source is INCLUDED:
+  BASE   decimal?
+  search order
+  ...
+</pre>
+
+<p>Phil Budne writes that SNOBOL4 has a -INCLUDE that behaves like the
+proposed REQUIRE.
+
+
+<h5>from an earlier (Pre-RfD) version of the proposal</h5>
 
 <p>
 Michael L. Gassanenko:
@@ -184,9 +335,10 @@ using standard ANS.
 Guido Draheim:
 
 <pre>
-* Both Forth.com's Swiftforth and MPE's ProforthVFX have defined `requires`
-as the selfparsing version of `required`, and they use it. PFE will adopt
-this in the next version (> 0.30.30)
+* Both Forth.com's Swiftforth and MPE's ProforthVFX have defined
+`requires` as the selfparsing version of `required`, and they use it
+[It turns out that REQUIRES in MPE's systems has a different
+meaning]. PFE will adopt this in the next version (> 0.30.30)
 
 * The specification is non-deterministic in its stack effect - the user of
 `required` has no way to check in advance if a file will get `included`.
