@@ -2,30 +2,29 @@
 
 \ This file is in the public domain. NO WARRANTY.
 
-\ s" filename" required
-\ includes the file if no file name "filename" has been included before
-\ warning: does not deal correctly with accesses to the same file through
-\ different path names; but since ANS Forth does not specify path handling...
+\ This implementation does not implement the requirements wrt MARKER
+\ and FORGET (REQUIRED only includes each file once, whether a marker
+\ was executed or not), so it is not a correct implementation on
+\ systems that support these words.
 
 \ The program uses the following words
 \ from CORE :
-\ environment? 0= : bl 1+ u< ; >r BEGIN dup WHILE over c@ r@ execute
-\ REPEAT THEN r> drop source >in @ ['] 2dup min + - ! swap rot move
-\ cells cell+ 2! 2@ IF 2drop EXIT ELSE Variable
+\  environment? 0= : swap >r dup 2dup r> rot move ; cells r@ @ over ! cell+ 
+\  2! BEGIN WHILE 2@ IF drop 2drop EXIT THEN REPEAT ELSE Variable 
 \ from CORE-EXT :
-\ tuck 2>r 2r@ 2r> true 
+\  2>r 2r@ 2r> true 
 \ from BLOCK-EXT :
-\ \ 
+\  \ 
 \ from EXCEPTION :
-\ throw 
+\  throw 
 \ from FILE :
-\ S" included ( 
+\  S" ( included 
 \ from MEMORY :
-\ allocate 
+\  allocate 
 \ from STRING :
-\ /string compare 
+\  compare 
 \ from TOOLS-EXT :
-\ [IF] [THEN] 
+\  [IF] [THEN]
 
 \ we use a linked list of names
 
