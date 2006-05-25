@@ -1,0 +1,116 @@
+<title>EKEY return values</title>
+
+<h3><a name="required"><code>EKEY</code> return values</a></h3>
+
+[ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
+
+<!--
+<h4>Change History</h4>
+
+<dl>
+
+
+</dl>
+-->
+
+<h4>Problem</h4>
+
+How do I write a portable Forth program that reacts to key presses of
+cursor keys (and possibly other keys not represented by ASCII), e.g.,
+an editor?
+
+
+<h4>Proposal</h4>
+
+The following words produce the same values that <code>EKEY</code>
+produces when the user presses the corresponding key.
+
+<pre>
+K-LEFT  ( -- u ) facility ext
+The "cursor left" key
+
+K-RIGHT ( -- u ) facility ext
+The "cursor right" key
+
+K-UP    ( -- u ) facility ext
+The "cursor up" key
+
+K-DOWN  ( -- u ) facility ext
+The "cursor down" key
+
+K-HOME  ( -- u ) facility ext
+The "home" or "Pos1" key
+
+K-END   ( -- u ) facility ext
+The "End" key
+
+K-PRIOR ( -- u ) facility ext
+The "PgUp" or "Prior" key
+
+K-NEXT  ( -- u ) facility ext
+The "PgDn" or "Next" key
+</pre>
+
+
+<h4>Typical Use</h4>
+
+<pre>
+... ekey case
+  k-up   of ... endof
+  k-down of ... endof
+  ...
+endcase
+</pre>
+
+<h4>Remarks</h4>
+
+
+<h5>Other Keys</h5>
+
+Gforth and PFE also have words <code>K1</code>...<code>K10</code> for
+the function/keypad keys; they also contain
+<code>S-K1</code>...<code>S-K10</code> for shifted function/keypad
+keys, but they don't work as widely.  Moreover, Gforth (but not PFE)
+also has <code>K-INSERT K-DELETE K11 K12 S-K11 S-K12</code>.  Should
+any of these words be added to this proposal?
+
+
+<h4>Experience</h4>
+
+These words have been implemented for several years in PFE and Gforth.
+They are not used much; however, several editors have been published
+in ANS Forth that would have profited from these words.  Also, the
+original version of the <a
+href="http://wiki.forthfreak.net/index.cgi?MiniSpreadsheet">MiniSpreadsheet</a>
+hardcoded the values for the keys for one platform; I then fixed it to
+use the words proposed above.
+
+<h4>Implementation and Tests</h4>
+
+The implementation is closely tied to the implementation of
+<code>EKEY</code>, and therefore unportable, so I don't provide a
+reference implementation.  However, you can look at the <a
+href="http://b2.complang.tuwien.ac.at/cgi-bin/cvsweb/~checkout~/gforth/ekey.fs?rev=HEAD;content-type=text%2Fplain;cvsroot=gforth">Gforth
+implementation</a> of EKEY and these words (based on ANSI terminal
+escape sequences).
+
+<p><a href="tests/ekeys.fs">Tests</a>
+
+
+<h4>Comments</h4>
+
+Alex McDonald writes:
+
+<pre>
+Win32Forth provides;
+
+k_home k_up k_pgup k_left k_right  k_end k_down k_pgdn k_insert
+k_delete k_scroll
+
+plus k_1 through k_12 for function keys.
+
++k_control +k_alt +k_shift provide a mask when these keys are depressed
+with any of the above.
+</pre>
+
+<hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
