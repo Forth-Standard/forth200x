@@ -4,14 +4,16 @@
 
 [ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
 
-<!--
 <h4>Change History</h4>
 
 <dl>
-
+<dt>2006-05-28 <dd>Added K-INSERT, K-DELETE, K-F* and K-*-MASK.  Added
+Sections <a href="#advice">Programming Advice</a> and <a
+href="#shift-keys">Shift Keys</a>.  Reported comments by various
+people.
 
 </dl>
--->
+
 
 <h4>Problem</h4>
 
@@ -49,6 +51,63 @@ The "PgUp" or "Prior" key
 
 K-NEXT  ( -- u ) facility ext
 The "PgDn" or "Next" key
+
+K-INSERT  ( -- u ) facility ext
+The "Insert" key
+
+K-DELETE  ( -- u ) facility ext
+The "Delete" key
+
+K-F1    ( -- u ) facility ext
+The "F1" key
+
+K-F2    ( -- u ) facility ext
+The "F2" key
+
+K-F3    ( -- u ) facility ext
+The "F3" key
+
+K-F4    ( -- u ) facility ext
+The "F4" key
+
+K-F5    ( -- u ) facility ext
+The "F5" key
+
+K-F6    ( -- u ) facility ext
+The "F6" key
+
+K-F7    ( -- u ) facility ext
+The "F7" key
+
+K-F8    ( -- u ) facility ext
+The "F8" key
+
+K-F9    ( -- u ) facility ext
+The "F9" key
+
+K-F10    ( -- u ) facility ext
+The "F10" key
+
+K-F11    ( -- u ) facility ext
+The "F11" key
+
+K-F12    ( -- u ) facility ext
+The "F12" key
+</pre>
+
+The following words procude a mask, that you can OR with the key
+values above to produce a value that EKEY may produce when the user
+presses the corresponding key combination.
+
+<pre>
+K-SHIFT-MASK ( -- u ) facility ext
+Mask for the shift key
+
+K-CTRL-MASK ( -- u ) facility ext
+Mask for the ctrl key
+
+K-ALT-MASK ( -- u ) facility ext
+Mask for the alt key
 </pre>
 
 
@@ -56,34 +115,56 @@ The "PgDn" or "Next" key
 
 <pre>
 ... ekey case
-  k-up   of ... endof
-  k-down of ... endof
+  k-up                        of ... endof
+  k-f1                        of ... endof
+  k-left k-shift or k-ctrl or of ... endof
   ...
 endcase
 </pre>
 
 <h4>Remarks</h4>
 
+<h5><a name="advice">Programming advice</a></h5>
+
+Note that, even if a Forth system supports these words, many
+environments do not have or do not report all these keys and key
+combinations, so it is a good idea to write your program such that it
+is still useful even if these keys and key combinations cannot be
+pressed or are not recognized.
+
+
+<h5><a name="shift-keys">Shift keys</a></h5>
+
+Note that, as defined, the shift key masks defined above are only
+useful for recognizing shifted cursor and function keys, because these
+are the only keys that EKEY return values are defined for.  E.g., we
+cannot program Forth to recognize recognize ALT-T, because no EKEY
+return value for T has been defined.
+
 
 <h5>Other Keys</h5>
 
-Gforth and PFE also have words <code>K1</code>...<code>K10</code> for
-the function/keypad keys; they also contain
+Gforth and PFE have words <code>K1</code>...<code>K10</code> for the
+function/keypad keys; they also contain
 <code>S-K1</code>...<code>S-K10</code> for shifted function/keypad
 keys, but they don't work as widely.  Moreover, Gforth (but not PFE)
 also has <code>K-INSERT K-DELETE K11 K12 S-K11 S-K12</code>.  Should
-any of these words be added to this proposal?
+any of these words be added to this proposal?  After the first RfD,
+several people were in favour of adding such words and nobody spoke
+out against, so I added the words after K-NEXT.  If you don't like
+such words in general, or would like them, but differently, please
+speak up now.
 
 
 <h4>Experience</h4>
 
 These words have been implemented for several years in PFE and Gforth.
-They are not used much; however, several editors have been published
-in ANS Forth that would have profited from these words.  Also, the
-original version of the <a
+Several editors have been published in ANS Forth that would have
+profited from these words.  Also, the original version of the <a
 href="http://wiki.forthfreak.net/index.cgi?MiniSpreadsheet">MiniSpreadsheet</a>
 hardcoded the values for the keys for one platform; I then fixed it to
-use the words proposed above.
+use the cursor-key words proposed above.
+
 
 <h4>Implementation and Tests</h4>
 
@@ -91,8 +172,8 @@ The implementation is closely tied to the implementation of
 <code>EKEY</code>, and therefore unportable, so I don't provide a
 reference implementation.  However, you can look at the <a
 href="http://b2.complang.tuwien.ac.at/cgi-bin/cvsweb/~checkout~/gforth/ekey.fs?rev=HEAD;content-type=text%2Fplain;cvsroot=gforth">Gforth
-implementation</a> of EKEY and these words (based on ANSI terminal
-escape sequences).
+implementation</a> of EKEY and many of these words (based on ANSI
+terminal escape sequences).
 
 <p><a href="tests/ekeys.fs">Tests</a>
 
@@ -112,5 +193,21 @@ plus k_1 through k_12 for function keys.
 +k_control +k_alt +k_shift provide a mask when these keys are depressed
 with any of the above.
 </pre>
+
+<p>Marcel Hendrix writes &lt;13073534183561@frunobulax.edu&gt; that
+iForth implements this functionality, but with different key names.
+
+<p>Charles Melice and Alex McDonald would prefer K-F1 etc. for
+function keys, and masks for shifted keys etc.
+
+<p>Charles Melice would also like to see some events defined for mouse
+events (&lt;44734824$0$20278$ba620e4c@news.skynet.be&gt; ff.).  There
+was some discussion on how that should be done; however, it will not
+be done in this proposal.
+
+<p>Robert Epprecht uses these words and would like to have them
+available in different Forth implementations.  Also, he would like to
+see the words for the function keys.
+
 
 <hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
