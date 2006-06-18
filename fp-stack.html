@@ -1,0 +1,103 @@
+<title>Separate FP Stack</title>
+
+<h3>Separate FP Stack</h3>
+
+[ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
+
+<!--
+<h4>Change History</h4>
+
+<dl>
+
+</dl>
+-->
+
+<h4>Problem</h4>
+
+Writing floating-point code such that it can run on a unified stack is
+such a pain that most programmers don't do it.
+
+
+<h4>Proposal</h4>
+
+The floating-point stack is separate from the data stack.
+
+
+<h4>Typical Use</h4>
+
+<pre>
+\ from &lt;126r7o1srr8aof0@news.supernews.com&gt;
+: square ( f - f')  fdup f* ;
+: pow ( n) ( f - f')
+   ?dup 0= if  fdrop 1e0 exit  then
+   dup 1 = if  drop exit  then
+   2 /mod  fdup square recurse  fswap recurse f* ;
+</pre>
+
+<!--
+<h4>Remarks</h4>
+
+<h5>Compatibility</h5>
+
+Existing ANS Forth programs continue to work (they support both
+separate and unified stacks).
+
+<p>Existing ANS Forth programs with an environmental dependency on a
+separate stack continue to work (of course).
+
+<p>Existing ANS Forth programs with an environmental dependency on a
+unified stack and a specific size for FP stack items will break, but
+they also break when moved to a system with a unified stack with a
+different FP stack size.
+
+<p>ANS Forth programs with an environmental dependency on a unified
+stack without a dependency on the FP stack item size cannot exist.
+
+
+<h5>Standardisation</h5>
+
+How should this proposal be integrated into the Forth200x standard?
+As extension (i.e. optional) or as requirement.  That's up to the
+standardisation committee to decide, but here are some thoughts on the
+effects:
+
+<p>This is an option already, so the only effect that making it an
+option in the standard would have is that an extension query
+<code>X:fp-stack</code> might be a stronger hint to the system that
+the programmer wants a separate FP stack than the environmental query
+<code>FLOATING-STACK</code>.
+
+<p>All other RfDs until now have been optional, so if this was a
+requirement, this would be a first.
+-->
+
+<h4>Experience</h4>
+
+All ANS Forth systems that I know implement a separate floating-point
+stack.  Kforth implements a subset of ANS Forth subset and has a
+unified FP stack.
+
+<p>All ANS Forth programs dealing with FP numbers that I know except
+code written specifically for kforth just assumes a separate
+floating-point stack.
+
+
+
+<h4>Implementation and Tests</h4>
+
+<ul>
+
+<li><a href="reference-implementations/fp-stack.fs">Incomplete
+Implementation</a>; the main missing piece is the (system-specific)
+text-interpreter floating-point input.
+
+<li>No tests yet<!--<a href="tests/fp-stack.fs">tests</a>-->
+
+</ul>
+
+<!--
+<h4>Comments</h4>
+
+-->
+
+<hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>

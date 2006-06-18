@@ -1,6 +1,6 @@
 <title>EKEY return values</title>
 
-<h3><a name="required"><code>EKEY</code> return values</a></h3>
+<h3><code>EKEY</code> return values</h3>
 
 [ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
 
@@ -115,9 +115,9 @@ Mask for the alt key
 
 <pre>
 ... ekey case
-  k-up                        of ... endof
-  k-f1                        of ... endof
-  k-left k-shift or k-ctrl or of ... endof
+  k-up                                  of ... endof
+  k-f1                                  of ... endof
+  k-left k-shift-mask or k-ctrl-mask or of ... endof
   ...
 endcase
 </pre>
@@ -205,9 +205,17 @@ events (&lt;44734824$0$20278$ba620e4c@news.skynet.be&gt; ff.).  There
 was some discussion on how that should be done; however, it will not
 be done in this proposal.
 
+<p>Sam Falvo also has some interesting suggestions in this area
+&lt;1149102251.881940.142140@j55g2000cwa.googlegroups.com&gt; that
+might be interesting for a future RfD.
+
+<p>Charles Melice also proposed
+&lt;447c27b5$0$23533$ba620e4c@news.skynet.be&gt; having a word
+EKEY>FKEY and standardizing the numeric FKEY values to make it easier
+to save, exchange, and replay these keys between systems.
+
 <p>Robert Epprecht uses these words and would like to have them
 available in different Forth implementations.  Also, he would like to
 see the words for the function keys.
-
 
 <hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
