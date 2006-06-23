@@ -1,12 +1,17 @@
 <title>EKEY return values</title>
 
-<h3><code>EKEY</code> return values</h3>
+<h3><code>EKEY</code> return values for some keyboard events</h3>
 
 [ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
 
 <h4>Change History</h4>
 
 <dl>
+<dt>2006-06-23 <dd>Added EKEY&gt;FKEY after private discussions with
+Neal Bridges.  Wording change in the intro to the actual keys to make
+their optionality clear.  Added some remarks and comments, and adapted
+title to satisfy commenters.
+
 <dt>2006-05-28 <dd>Added K-INSERT, K-DELETE, K-F* and K-*-MASK.  Added
 Sections <a href="#advice">Programming Advice</a> and <a
 href="#shift-keys">Shift Keys</a>.  Reported comments by various
@@ -24,8 +29,20 @@ an editor?
 
 <h4>Proposal</h4>
 
-The following words produce the same values that <code>EKEY</code>
-produces when the user presses the corresponding key.
+<pre>
+EKEY&gt;FKEY ( u1 -- u2 f ) facility ext
+If the keyboard event u1 corresponds to a keypress in the
+implementation-defined special key set, return that key's id u2 and
+true. Otherwise return u1 and false.
+</pre>
+
+The following words produce the same values that
+<code>EKEY EKEY&gt;FKEY</code> may produce when the user presses the
+corresponding key.  Note that, even if this extension is present, the
+keyboard may lack some of the keys, or the system the capability to
+report them, so programs should be written such that they also work
+(although less conveniently or with less functionality) if these key
+numbers cannot be produced.
 
 <pre>
 K-LEFT  ( -- u ) facility ext
@@ -114,15 +131,51 @@ Mask for the alt key
 <h4>Typical Use</h4>
 
 <pre>
-... ekey case
+... ekey ekey&gt;fkey if
+ case
   k-up                                  of ... endof
   k-f1                                  of ... endof
   k-left k-shift-mask or k-ctrl-mask or of ... endof
   ...
-endcase
+ endcase
+else
+ ...
+then
 </pre>
 
 <h4>Remarks</h4>
+
+<h5>EKEY&gt;FKEY</h5>
+
+Introducing that word leaves more freedom to implementations about the
+representation of EKEY results.  In particular, based on private
+discussions, it would be easier for Neal Bridges to implement the
+proposal in Quartus Forth.  Systems that do not need this additional
+freedom could use the same representation for the EKEY and
+EKEY&gt;FKEY results; a simple implementation of EKEY&gt;FKEY on such
+a system would be:
+
+<pre>
+: EKEY&gt;FKEY ( u1 -- u2 flag )
+  dup ekey>char nip 0= ;
+</pre>
+
+
+<h5>EKEY return values</h5>
+
+There was a discussion about what the standard says about EKEY return
+values.  In particular, I interpret the standard's non-specification
+of a lifetime for the return value as meaning that it has unlimited
+lifetime and thus an implementation where the return value is an
+address of an overwritable buffer is non-standard; whereas Elizabeth
+Rather believes that the implementation-defined nature of the result
+would make such an EKEY implementation standard.  However, no such
+implementation of EKEY is known, and a clarification of that aspect is
+desirable.  However, with the introduction of EKEY&gt;FKEY the
+proposal could even be implemented on a system with such an EKEY
+implemenmtation, so the place for the clarification is probably not in
+this proposal (unless we take EKEY&gt;FKEY out again).
+
 
 <h5><a name="advice">Programming advice</a></h5>
 
@@ -196,6 +249,12 @@ with any of the above.
 
 <p>Marcel Hendrix writes &lt;13073534183561@frunobulax.edu&gt; that
 iForth implements this functionality, but with different key names.
+
+<p>Mitch Bradley reports that the current proposal cannot be
+implemented in a useful way on the current Quartus Forth even though
+the platform has some arrow buttons.  Quartus Forth implements an EKEY
+that just returns an event type (and requires the use of another word
+to get more information).
 
 <p>Charles Melice and Alex McDonald would prefer K-F1 etc. for
 function keys, and masks for shifted keys etc.
