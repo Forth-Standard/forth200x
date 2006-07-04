@@ -4,13 +4,14 @@
 
 [ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
 
-<!--
 <h4>Change History</h4>
 
 <dl>
+<dt>2006-06-27 <dd>No normative changes.  Updated Section Experience
+with material from feedback on the 1st RfD.  Added Section Remarks.
 
 </dl>
--->
+
 
 <h4>Problem</h4>
 
@@ -34,8 +35,31 @@ The floating-point stack is separate from the data stack.
    2 /mod  fdup square recurse  fswap recurse f* ;
 </pre>
 
-<!--
 <h4>Remarks</h4>
+
+<h5>Unified stacks with a specified size for FP values</h5>
+
+While many agreed with the "pain" assessment above, several comments
+pointed out that the unified stack is not as big a pain if the
+programmer programs for a specific on-stack size of FP values (e.g.,
+double-cells), if that size is not larger than double-cells.
+
+<p>However, such a dependency on a specific size of FP values reduces the
+portability even to other systems with a unified stack (and maybe even
+to other platforms for the same system) as well as eliminating the
+portability to systems with a separate FP stack.
+
+<h5>Temporary storage</h5>
+
+C. G. Montgomery proposed adding words for transferring values between
+the FP stack and the data stack for temporary storage
+&lt;e5vtr3$qv3$1@pyrite.mv.net&gt;.  The return stack seems to be a
+better place for temporary storage, though.  Marcel Hendrix would
+prefer to see FP locals instead &lt;03191418173561@frunobulax.edu&gt;.
+Since there is a promise for an upcoming proposal for FP locals, I
+will not propose any such words in this proposal.
+
+<!--
 
 <h5>Compatibility</h5>
 
@@ -73,14 +97,18 @@ requirement, this would be a first.
 
 <h4>Experience</h4>
 
-All ANS Forth systems that I know implement a separate floating-point
-stack.  Kforth implements a subset of ANS Forth subset and has a
-unified FP stack.
+Most ANS Forth systems that I know implement a separate floating-point
+stack.  MPE's embedded systems use a unified stack (their desktop
+system use separated stacks).  Kforth implements a subset of ANS Forth
+subset and has a unified FP stack.  PFE implements ANS Forth and has
+an optional module for a unified stack (it also supports a separate FP
+stack).  COLDFORTH and uCFORTH use a unified stack (ANS Forth status
+unknown).
+
 
 <p>All ANS Forth programs dealing with FP numbers that I know except
-code written specifically for kforth just assumes a separate
-floating-point stack.
-
+code written specifically for kforth just assume a separate
+floating-point stack, including the Forth Scientific Library.
 
 
 <h4>Implementation and Tests</h4>
@@ -97,7 +125,6 @@ text-interpreter floating-point input.
 
 <!--
 <h4>Comments</h4>
-
 -->
 
 <hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
