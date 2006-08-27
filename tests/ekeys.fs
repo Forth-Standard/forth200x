@@ -1,27 +1,29 @@
 require test/tester.fs
 
-{ k-left  -> cr ." Please press <left>" ekey }
-{ k-right -> cr ." Please press <right>" ekey }
-{ k-up    -> cr ." Please press <up>" ekey }
-{ k-down  -> cr ." Please press <down>" ekey }
-{ k-home  -> cr ." Please press <home>" ekey }
-{ k-end   -> cr ." Please press <end>" ekey }
-{ k-prior -> cr ." Please press <prior>" ekey }
-{ k-next  -> cr ." Please press <next>" ekey }
+{ k-left  true -> cr ." Please press <left>" ekey ekey>fkey }
+{ k-right true -> cr ." Please press <right>" ekey ekey>fkey }
+{ k-up    true -> cr ." Please press <up>" ekey ekey>fkey }
+{ k-down  true -> cr ." Please press <down>" ekey ekey>fkey }
+{ k-home  true -> cr ." Please press <home>" ekey ekey>fkey }
+{ k-end   true -> cr ." Please press <end>" ekey ekey>fkey }
+{ k-prior true -> cr ." Please press <prior>" ekey ekey>fkey }
+{ k-next  true -> cr ." Please press <next>" ekey ekey>fkey }
 
-{ k-f1  -> cr ." Please press <F1>" ekey }
-{ k-f2  -> cr ." Please press <F2>" ekey }
-{ k-f3  -> cr ." Please press <F3>" ekey }
-{ k-f4  -> cr ." Please press <F4>" ekey }
-{ k-f5  -> cr ." Please press <F5>" ekey }
-{ k-f6  -> cr ." Please press <F6>" ekey }
-{ k-f7  -> cr ." Please press <F7>" ekey }
-{ k-f8  -> cr ." Please press <F8>" ekey }
-{ k-f9  -> cr ." Please press <F9>" ekey }
-{ k-f10 -> cr ." Please press <F10>" ekey }
-{ k-f11 -> cr ." Please press <F11>" ekey }
-{ k-f12 -> cr ." Please press <F12>" ekey }
+{ k-f1  true -> cr ." Please press <F1>" ekey ekey>fkey }
+{ k-f2  true -> cr ." Please press <F2>" ekey ekey>fkey }
+{ k-f3  true -> cr ." Please press <F3>" ekey ekey>fkey }
+{ k-f4  true -> cr ." Please press <F4>" ekey ekey>fkey }
+{ k-f5  true -> cr ." Please press <F5>" ekey ekey>fkey }
+{ k-f6  true -> cr ." Please press <F6>" ekey ekey>fkey }
+{ k-f7  true -> cr ." Please press <F7>" ekey ekey>fkey }
+{ k-f8  true -> cr ." Please press <F8>" ekey ekey>fkey }
+{ k-f9  true -> cr ." Please press <F9>" ekey ekey>fkey }
+{ k-f10 true -> cr ." Please press <F10>" ekey ekey>fkey }
+{ k-f11 true -> cr ." Please press <F11>" ekey ekey>fkey }
+{ k-f12 true -> cr ." Please press <F12>" ekey ekey>fkey }
 
-{ k-left k-shift-mask or -> cr ." Please press <shift-left>" ekey }
-{ k-left k-ctrl-mask  or -> cr ." Please press <ctrl-left>" ekey }
-{ k-left k-alt-mask   or -> cr ." Please press <alt-left>" ekey }
+{ k-left k-shift-mask or true -> cr ." Please press <shift-left>" ekey ekey>fkey }
+{ k-left k-ctrl-mask  or true -> cr ." Please press <ctrl-left>" ekey ekey>fkey }
+{ k-left k-alt-mask   or true -> cr ." Please press <alt-left>" ekey ekey>fkey }
+
+{ cr ." Please press <a>" ekey ekey>fkey nip swap ekey>char -> false char a true }

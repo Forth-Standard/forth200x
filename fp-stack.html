@@ -4,9 +4,83 @@
 
 [ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
 
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+The results will be shown here in late August 2006.
+
+<h5>Systems</h5>
+
+<pre>
+[ ] conforms to ANS Forth.
+ Mops/PowerMops (Mike Hore)
+ ForthCAD (Charles Melice)
+ iForth (Marcel Hendrix)
+ bigForth (Bernd Paysan)
+ Gforth (Anton Ertl)
+ VFX Forth for Windows/DOS/Linux (Stephen Pelc)
+ MPE Forth cross compilers
+ MacForth/Power MacForth/Carbon MacForth (Ward McFarland)
+[ ] already implements the proposal in full since release [ ]:
+ PowerMops 3
+ iForth 1
+ bigForth 1.0
+ Gforth 0.1
+ VFX Forth for Windows/DOS/Linux 3.0
+ MacForth/Power MacForth/Carbon MacForth since at least 10 years
+[ ] implements the proposal in full in a development version:
+[ ] will implement the proposal in full in release [ ].
+ MPE Forth cross compilers 7.0
+[ ] will implement the proposal in full in some future release.
+ ForthCAD
+There are no plans to implement the proposal in full in [ ].
+ 4th V3.5a (no FLOAT wordset at all)
+[ ] will never implement the proposal in full:
+</pre>
+
+<h5>Programmers</h5>
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs:
+ David N. Williams
+ Charles Melice
+ Julian V. Noble
+ Bernd Paysan
+ Anton Ertl
+ Stephen Pelc
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it:
+ David N. Williams
+ Charles Melice
+ Stephen Pelc
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard:
+ David N. Williams
+ Stephen Pelc
+[ ] I would not use (parts of) this proposal in my programs.
+ Hans Bezemer (does not use FP)
+</pre>
+
+<h5>Informal results</h5>
+
+Charles Melice has developed a program that allows running his
+unified-stack 1-cell-per-fp legacy code on a separate-stack system.
+
+<p>Julian V. Noble would never use a system with a unified stack.
+
+<p>BigForth: The 68k software FP implementation of bigFORTH containes
+an optional mode where the stack is unified. The x86 version uses the
+native stack of the x87 FPU, and didn't offer this unified stack
+option.
+
+
 <h4>Change History</h4>
 
 <dl>
+<dt>2006-07-04 <dd>No normative changes.  Updated Section Experience
+with ForthCAD material.  Added Testst.
+
 <dt>2006-06-27 <dd>No normative changes.  Updated Section Experience
 with material from feedback on the 1st RfD.  Added Section Remarks.
 
@@ -102,12 +176,14 @@ stack.  MPE's embedded systems use a unified stack (their desktop
 system use separated stacks).  Kforth implements a subset of ANS Forth
 subset and has a unified FP stack.  PFE implements ANS Forth and has
 an optional module for a unified stack (it also supports a separate FP
-stack).  COLDFORTH and uCFORTH use a unified stack (ANS Forth status
-unknown).
+stack).  ForthCAD (ANS Forth status unknown), COLDFORTH (ANS
+compliant) and uCFORTH (ANS compliant) use a unified stack.  ForthCAD
+originally used this to make the implementation of the C call
+interface simpler on the IA-32 architecture, and sticks with it
+because there is too much code that relies on this.
 
-
-<p>All ANS Forth programs dealing with FP numbers that I know except
-code written specifically for kforth just assume a separate
+<p>All (near-)ANS Forth programs dealing with FP numbers that I know
+except code written specifically for kforth just assume a separate
 floating-point stack, including the Forth Scientific Library.
 
 
@@ -119,12 +195,65 @@ floating-point stack, including the Forth Scientific Library.
 Implementation</a>; the main missing piece is the (system-specific)
 text-interpreter floating-point input.
 
-<li>No tests yet<!--<a href="tests/fp-stack.fs">tests</a>-->
+<li> <a href="tests/fp-stack.fs">Tests</a>
 
 </ul>
 
 <!--
 <h4>Comments</h4>
 -->
+
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+&lt;anton@mips.complang.tuwien.ac.at&gt;.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+<h4>Ballot for systems</h4>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the
+brackets.  Multiple hits for the same system are possible (if they do
+not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please
+do so informally, and I will aggregate this information in some way.
+
+
+<h4>Ballot for programmers</h4>
+
+Just mark the statements that are correct for you (e.g., by putting an
+"x" between the brackets).  If some statements are true for some of
+your programs, but not others, please mark the statements for the
+dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from
+the proposal (especially if you have used that in your programs), make
+an informal comment, and I will collect these, too.  Note that the
+best time to voice such issues is the RfD stage.
 
 <hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>

@@ -4,6 +4,60 @@
 
 [ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
 
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+The results will be shown here in late August 2006.
+
+<h5>Systems</h5>
+
+<pre>
+[ ] conforms to ANS Forth.
+ iForth
+ Gforth
+ VFX Forth for Windows/DOS/Linux
+ MPE Forth cross compilers
+[ ] already implements the proposal in full since release [ ]:
+[ ] implements the proposal in full in a development version:
+[ ] will implement the proposal in full in release [ ].
+ Gforth 0.7
+[ ] will implement the proposal in full in some future release.
+ iForth
+ VFX Forth for Windows/DOS/Linux
+There are no plans to implement the proposal in full in [ ].
+ 4th V3.5a (no EKEY support)
+[ ] will never implement the proposal in full:
+ MPE Forth cross compilers 
+</pre>
+
+<h5>Programmers</h5>
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs:
+ Robert Epprecht
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it:
+ David N. Williams
+ Graham Smith
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard:
+ Charles Melice
+ David N. Williams
+ Graham Smith
+[ ] I would not use (parts of) this proposal in my programs.
+ Hans Bezemer (does not use EKEY)
+</pre>
+
+<!--
+<h5>Informal results</h5>
+
+<ul>
+</ul>
+-->
+
+
+
 <h4>Change History</h4>
 
 <dl>
@@ -112,9 +166,9 @@ K-F12    ( -- u ) facility ext
 The "F12" key
 </pre>
 
-The following words procude a mask, that you can OR with the key
-values above to produce a value that EKEY may produce when the user
-presses the corresponding key combination.
+The following words produce a mask, that you can OR with the key
+values above to produce a value that <code>EKEY EKEY&gt;FKEY</code>
+may produce when the user presses the corresponding key combination.
 
 <pre>
 K-SHIFT-MASK ( -- u ) facility ext
@@ -191,7 +245,7 @@ pressed or are not recognized.
 Note that, as defined, the shift key masks defined above are only
 useful for recognizing shifted cursor and function keys, because these
 are the only keys that EKEY return values are defined for.  E.g., we
-cannot program Forth to recognize recognize ALT-T, because no EKEY
+cannot program Forth to recognize ALT-T, because no EKEY
 return value for T has been defined.
 
 
@@ -276,5 +330,59 @@ to save, exchange, and replay these keys between systems.
 <p>Robert Epprecht uses these words and would like to have them
 available in different Forth implementations.  Also, he would like to
 see the words for the function keys.
+
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+&lt;anton@mips.complang.tuwien.ac.at&gt;.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+<h4>Ballot for systems</h4>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the
+brackets.  Multiple hits for the same system are possible (if they do
+not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please
+do so informally, and I will aggregate this information in some way.
+
+
+<h4>Ballot for programmers</h4>
+
+Just mark the statements that are correct for you (e.g., by putting an
+"x" between the brackets).  If some statements are true for some of
+your programs, but not others, please mark the statements for the
+dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from
+the proposal (especially if you have used that in your programs), make
+an informal comment, and I will collect these, too.  Note that the
+best time to voice such issues is the RfD stage.
+
 
 <hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
