@@ -1,0 +1,135 @@
+<title>Directories</title>
+
+<h3>Directories</h3>
+
+<pre>
+Problem:
+
+Summary: How do I refer to another file that is distributed with the
+Forth file at hand, in the presence of directories?
+
+Example: Let us assume that the current working directory is /wd/, and
+that we have a program installed in directory /prog1/, but on the next
+installation it might be installed in /prog2/.  The file to be
+INCLUDEd by the user is /prog1/prog.fs, and it is supposed to INCLUDE
+/prog1/library.fs and read a data file /prog1/data.  How should
+prog.fs refer to library.fs and data?  Remember that on the next
+installation they might be in a different directory.
+
+As an additional complication, consider the case where prog.fs loads a
+library /prog1/lib1/lib.fs, that refers to another file
+/prog1/lib1/foo.fs, and has been developed independently of prog.fs,
+without knowledge that it would later wind up in /prog1/lib1.  How
+should Forth code in the library refer to other files of the library?
+
+
+Solution outline:
+
+First we need to specify a directory separator.  The "/" is supported
+in all important OSs, so we specify it for Forth.
+
+Next, we need a way to specify a file name relative to the directory
+that contains the Forth source file that contains the file name (as a
+string): The prefix "./" refers to this directory.  E.g., in the
+example above, the prog.fs file would contain references to
+"./library.fs", "./data" and "./lib1/lib.fs".  The lib.fs file would
+contain a reference to "./foo.fs".
+
+Finally, how do we expand these filenames to a sourcefile-independent
+form?  The source file of the string is important for the expansion,
+not the source file of the consumer of the string (in the rare cases
+where the consumer is not in the same file as the string); so the best
+option is probably to have a special filename-string word like F" and
+not perform the expansion in the consumer (INCLUDED, OPEN-FILE etc.).
+In order to keep the conveniences of the parsing INCLUDE and REQUIRE,
+these should expand the string after parsing.
+
+
+Typical usage:
+
+REQUIRE ./lib1/lib.fs
+F" ./data" r/o open-file
+
+
+Proposal, reference implementation and tests:
+
+Will be done after the solution has solidified after some discussion.
+
+
+Existing practice and experience:
+
+Gforth uses the ./ prefix in INCLUDED and friends (i.e., in the
+consumer, not in the producer, as suggested here).  We have had very
+good experiences with that (consumer and producer are usually in the
+same file).
+
+Modern C compilers like gcc do
+
+#include "bla.h"
+
+relative to the directory of the currently-included file.  The
+proposed equivalent would be "INCLUDE ./bla.h".
+
+When executing a program or script, the Unix shell searches relative
+names like bla.sh in the path (which often does not include "."), but
+if you write ./bla.sh, this refers to and only to the bla.sh in the
+current working directory (unfortunately not the directory containing
+the current file, but the shell offers ways to work around this
+shortcoming).
+
+
+Remarks:
+
+What about string macros?
+
+String macro expansion has been proposed as a way to solve the problem
+above, and it is implemented by MPEs Forth systems.  While I am not
+familiar enough with this system to produce a typical-code example for
+the example above, it appears to be more cumbersome to use than the
+present proposal (at the very least one has to write "%load_path%/"
+instead of "./").  Moreover, depending on the exact usage, there might
+be problems with name collisions and nesting.
+
+That being said, string macros are a general-purpose concept that has
+applications in other areas as well as in file names, and is probably
+a good candidate for another RfD.
+
+
+Is the "./" necessary?
+
+It is necessary for use with INCLUDE (and REQUIRE); if we did not
+require that, some systems would have to be changed in ways that might
+break their legacy programs; it is unlikely that legacy programs use
+"./" in a way that conflicts with the usage discussed here.
+
+Since F" is new, "./" would not be strictly necessary there (no legacy
+programs broken).  However, requiring it makes the usage consistent,
+and allows putting a standard meaning to an unprefixed relative name,
+if there is ever consensus on that.
+
+
+What about other file names?
+
+How other file names than those starting with "./" are interpreted is
+not specified, at least in the first draft: absolute file names are
+OS-specific and often user-specific and thus inherently non-portable;
+the interpetation of other relative filenames depends on the system
+(some do path searching, some perform macro expansion etc.); it is
+probably hard to find a consensus here, and these issues are not as
+important for writing portable programs (to make using these programs
+nicer, it would still be nice if a consensus was found).
+
+
+Why not use a CD word for this purpose?
+
+While a word for changing the current working directory may have its
+uses in Forth, it is usually not a good idea to change the working
+directory for loading code.  Apart from the usual nesting/unnesting
+complications, the user usually sets the working directory to some
+directory on purpose, because that's where he is working; the program
+or library directory is usually not where he is working.  If the user
+passes a data file name to the included file, he expects it to be
+interpreted in the context of his working directory, not the program's
+directory.
+</pre>
+<hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
