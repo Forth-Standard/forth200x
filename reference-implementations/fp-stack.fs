@@ -109,7 +109,7 @@ fp-stack fp !
     fs> fdup 2>fs ;
 
 : fliteral ( compilation: F: r -- ) ( run-time: F: -- r )
-    postpone fliteral postpone >fs ; immediate
+    fs> postpone fliteral postpone >fs ; immediate
 
 : floor ( F: r1 -- r2 )
     fs> floor >fs ;
@@ -230,3 +230,31 @@ fp-stack fp !
 
 : sf@ ( sf-addr -- ) ( F: -- r )
     sf@ >fs ;
+
+\ code for FP number input
+s" gforth" environment? [if]
+    s" 0.6.2" compare 0> [if]
+:noname ( c-addr u -- ... xt )
+    2dup sfnumber
+    IF
+	>fs 2drop [comp'] FLiteral
+    ELSE
+	defers compiler-notfound1
+    ENDIF ;
+IS compiler-notfound1
+
+:noname ( c-addr u -- ... xt )
+    2dup sfnumber
+    IF
+	>fs 2drop ['] noop
+    ELSE
+	defers interpreter-notfound1
+    ENDIF ;
+IS interpreter-notfound1
+    [else]
+      .( Please insert adapted FP number input code for your Gforth here ) abort
+    [then]
+[else]
+    \ for other systems than Gforth
+    .( Please insert adapted FP number input code for your system here ) abort
+[then]
