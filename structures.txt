@@ -1,0 +1,367 @@
+Article: 124278 of comp.lang.forth
+Path: tunews.univie.ac.at!aconews-feed.univie.ac.at!newsfeed.wu-wien.ac.at!newsfeed.utanet.at!feeder1.cambrium.nl!feed.tweaknews.nl!62.216.30.27.MISMATCH!newsgate.cistron.nl!xs4all!news.tele.dk!news.tele.dk!small.news.tele.dk!lnewsinpeer00.lnd.ops.eu.uu.net!emea.uu.net!peer-uk.news.demon.net!kibo.news.demon.net!news.demon.co.uk!demon!connector.mpeforth.com!news
+From: stephenXXX@mpeforth.com (Stephen Pelc)
+Newsgroups: comp.lang.forth
+Subject: RfD - Forth 200x structures v3
+Date: Mon, 05 Feb 2007 12:57:27 GMT
+Organization: MPE
+Lines: 348
+Message-ID: <45c72639.1044781578@192.168.0.50>
+Reply-To: stephenXXX@INVALID.mpeforth.com
+NNTP-Posting-Host: mpeltd-adsl.demon.co.uk
+X-Trace: news.demon.co.uk 1170680403 14152 80.176.152.87 (5 Feb 2007 13:00:03 GMT)
+X-Complaints-To: abuse@demon.net
+NNTP-Posting-Date: Mon, 5 Feb 2007 13:00:03 +0000 (UTC)
+X-Newsreader: Forte Free Agent 1.21/32.243
+Xref: tunews.univie.ac.at comp.lang.forth:124278
+
+I'm reposting v3 of the structures proposal before making what I hope
+will be the last draft.
+
+The last standards meeting at EuroForth 2006 was broadly in
+agreement, except for Anton who said that in analogy with
+  C@ W@ @ F@ SF@ DF@
+the word FIELD: should refer to a cell, and another word name
+should be chosen for the word that defines a field using the size
+as a parameter.
+
+I have surveyed the Forths on my development box again and find
+that the use of FIELD: below is also used in FCOM.F in Win32Forth.
+Thus Anton's proposal for FIELD: is a potential code-breaker.
+
+I am therefore minded to leave this draft alone except for
+"wordsmithery". The alternative is to rename FIELD: to GFIELD:
+or some such for the general field definer, but then have to
+find another name for FIELD: to avoid name conflicts. FLD: is
+a possibility, but it doesn't read well. Another option is to
+leave FIELD: alone and to remove CFIELD: FFIELD: and friends.
+The downside of this is that nearly all creators and users of
+structure systems provide short-hand for common field sizes, and
+it is then important to define any alignment restrictions.
+
+Comments and suggestions please.
+
+Stephen
+
+
+==========================
+RfD: Structures - Version 3
+30 August 2006, Stephen Pelc
+
+Change History
+==============
+20060830 Removed some restrictions on FIELD: and children.
+         Moved some words to FLOATING EXT.
+20060827 Added alignment to discussion.
+20060822 Rewrite after criticism
+20060821 First draft
+
+To Do
+=====
+Test cases.
+
+
+Rationale
+=========
+
+Problem
+-------
+Virtually all serious Forth systems provide a means of defining
+data structures. The notation is different for nearly all of them.
+
+Current practice
+----------------
+Current practice is too varied to merge or agree on one word set,
+either of names or of stack effects. In particular there are two
+camps, one which defines the name of the structure at the start,
+and one which defines it at the end. Examples are:
+
+STRUCT POINT   \ -- len
+  1 CELLS FIELD: P.X
+  1 CELLS FIELD: P.Y
+END-STRUCT
+
+STRUCT{
+  1 CELLS FIELD: P.X
+  1 CELLS FIELD: P.Y
+}STRUCT POINT   \ -- len
+
+Discussion
+----------
+The name first implementation of STRUCT and END-STRUCT is not
+difficult.
+
+: STRUCT        \ -- addr 0 ; -- size
+  CREATE  HERE 0  0 ,  DOES> @  ;
+: END-STRUCT    \ addr n --
+  SWAP !  ;                             \ set size
+: FIELD:         \ n1 n2 "name" -- n3 ; addr -- addr+n1
+  CREATE  OVER , +  DOES>  @ +  ;
+
+The name last implementations of STRUCT{ and }STRUCT are trivial
+even for native code compilers:
+
+: STRUCT{       \ -- 0
+  0  ;
+: }STRUCT       \ size "name" --
+  CONSTANT  ;
+: FIELD:         \ n1 n2 "name" -- n3 ; addr -- addr+n1
+  CREATE  OVER , +  DOES>  @ +  ;
+
+In both cases the definition of FIELD: is the same. Further words
+that operate on types can all use FIELD: and so can be common to
+both camps.
+
+For many modern compilers, implementing FIELD: to provide efficient
+execution requires carnal knowledge of the system.
+
+Compatibility between the name first and name last camps is by
+defining the stack item struct-sys, which is implementation
+dependent and can be 0 or more cells. In the name-first example
+above, struct-sys corresponds to the "addr" stack items in the
+stack comments of STRUCT and END-STRUCT above. After some
+discussion on newsgroups and mailing lists, the consensus is that
+struct-sys should not appear in the specification of FIELD:.
+
+Mitch Bradley wrote the following about structure alignment:
+"In practice, structures are used for two different purposes with 
+incompatible requirements:
+a) For collecting related internal-use data into a convenient
+   "package" that can be referred to by a single "handle". For
+   this use, alignment is important, so that efficient native
+   fetch and store instructions can be used.
+b) For mapping external data structures like hardware register
+   maps and protocol packets. For this use, automatic alignment
+  is inappropriate, because the alignment of the external data
+  structure often doesn't match the rules for a given processor.
+
+C caters to requirement (a) but essentially ignores (b).  Yet people
+use
+C structures for external data structures all the time, leading to 
+various custom macro sets, usage requirements, portability problems, 
+bugs, etc.
+
+Since I do much more (b) than (a), I prefer a structure definition
+basis
+that is fundamentally unaligned. It is much easier to add alignment 
+than to undo it."
+
+Solution
+--------
+The intention of this proposal is to find a portable notation
+for defining data structures using word names that do not
+conflict with existing systems, and to provide easy portability
+of code between systems.
+
+System implementors can then define these words in terms of
+their existing structure definition words to enhance performance.
+
+Authors of portable code will have a common point of
+reference.
+
+The approach is to define FIELD: so as to enable both camps to
+co-exist. Since the name last approach is the simplest and only
+requires synonyms to define the start and end words, we simply
+recommend that these users write portable code in the form:
+
+0
+  a FIELD: b
+  c FIELD: d
+CONSTANT somestruct
+
+We now turn to considering name first implementations, with the
+objective of providing a simple means of porting to name last
+implementations. Using the usual point and rectangle example,
+we can define structures:
+
+BEGIN-STRUCTURE point \ -- a-addr 0 ; -- lenp
+  1 CELLS FIELD: p.x     \ -- a-addr cell
+  1 CELLS FIELD: p.y     \ -- a-addr cell*2
+END-STRUCTURE
+
+BEGIN-STRUCTURE rect  \ -- a-addr 0 ; -- lenr
+  point FIELD: r.tlhc    \ -- a-addr cell*2
+  point FIELD: r.brhc    \ -- a-addr cell*4
+END-STRUCTURE
+
+The proposal text below does not require FIELD: to align any
+item. This is deliberate, and allows the construction of groups of
+bytes. Because the current size of the structure is available on
+the top of the stack, words such as ALIGNED (6.1.0706) can be used.
+
+Although this is a sufficient set, most systems provide facilities
+to define field defining words for standard data types. Note that
+these also satisfy the alignment requirements of the host system,
+whereas FIELD: does not.
+
+The recommended field type definers are:
+  CFIELD:  1 character
+  IFIELD:  native integer (single cell)
+  FFIELD:  native float
+  SFFIELD: 32 bit float
+  DFFIELD: 64 bit float
+The following cannot be done until the required addressing has
+been defined. The names hould be considered reserved until then.
+  BFIELD:  1 byte (8 bit) field.
+  WFIELD:  16 bit
+  LFIELD:  32 bit field
+  XFIELD:  64 bit field
+
+Name first minimalists are reminded that it is adequate to provide
+the source code (even by reference) in this proposal.
+
+Proposal
+========
+10.6.2.aaaa FIELD:
+field-colon FACILITY EXT
+
+( n1 n2 "<spaces>name" -- n3 )
+Skip leading space delimiters. Parse name delimited by a space.
+Create a definition for name with the execution semantics defined
+below. Return n3=n1+n2 where n1 is the offset in the data
+structure before FIELD: executes, and n2 is the size of the data
+to be added to the data structure. N1 and n2 are in address units.
+
+name Exection:
+( addr -- addr+n1 )
+Add n1 from the execution of FIELD: above to addr.
+
+
+10.6.2.cccc BEGIN-STRUCTURE
+struct FACILITY EXT
+
+( "<spaces>name" -- struct-sys 0 )
+Skip leading space delimiters. Parse name delimited by a space.
+Create a definition for name with the execution semantics defined
+below. Return a struct-sys (zero or more implementation dependent 
+items) that will be used by END-STRUCTURE
+(10.6.2.dddd) and an initial offset of 0.
+
+name Execution: ( -- +n )
++n is the size in memory expressed in adress units of the data
+structure.
+
+Ambiguous conditions:
+  If name is executed before the closing END-STRUCTURE has been
+  executed.
+
+10.6.2.dddd END-STRUCTURE
+end-structure FACILITY EXT
+( struct-sys +n -- )
+Terminate definition of a structure started by BEGIN-STRUCTURE
+(10.6.2.cccc).
+
+
+10.6.2.eeee CFIELD:
+c-field-colon FACILITY EXT
+The semantics of CFIELD: are identical to the execution
+semantics of the phrase
+  1 CHARS FIELD:
+
+
+10.6.2.ffff IFIELD:
+i-field-colon FACILITY EXT
+The semantics of IFIELD: are identical to the execution
+semantics of the phrase
+  ALIGNED  1 CELLS FIELD:
+
+
+12.6.2.gggg FFIELD:
+f-field-colon FLOATING EXT
+The semantics of FFIELD: are identical to the execution
+semantics of the phrase
+  FALIGNED  1 FLOATS FIELD:
+
+
+12.6.2.hhhh SFFIELD:
+s-f-field-colon FLOATING EXT
+The semantics of SFFIELD: are identical to the execution
+semantics of the phrase
+  SFALIGNED  1 SFLOATS FIELD:
+
+
+12.6.2.iiii DFFIELD:
+d-f-field-colon FLOATING EXT
+The semantics of DFFIELD: are identical to the execution
+semantics of the phrase
+  DFALIGNED  1 DFLOATS FIELD:
+
+Labelling
+=========
+ENVIRONMENT? impact - table 3.5 in Basis1
+  name   stack   condition
+
+THROW/ior impact - table 9.2 in Basis1
+  value  text
+
+
+Reference Implementation
+========================
+Modified from the original code in VFX Forth for Windows.
+
+: begin-structure       \ -- addr 0 ; -- size
+\ *G Begin definition of a new structure. Use in the form
+\ ** *\fo{BEGIN-STRUCTURE <name>}. At run time *\fo{<name>}
+\ ** returns the size of the structure.
+  create
+    here 0  0 ,                         \ mark stack, lay dummy
+  does> @  ;                            \ -- rec-len
+
+: end-structure         \ addr n --
+\ *G Terminate definition of a structure.
+  swap !  ;                             \ set len
+
+: field:                 \ n <"name"> -- ; Exec: addr -- 'addr
+\ *G Create a new field within a structure definition of size n bytes.
+  create
+    over , +
+  does>
+    @ +
+;
+
+: cfield:       \ n1 <"name"> -- n2 ; Exec: addr -- 'addr
+\ *G Create a new field within a structure definition of size 1 CHARS.
+  1 chars field:
+;
+
+: ifield:       \ n1 <"name"> -- n2 ; Exec: addr -- 'addr
+\ *G Create a new field within a structure definition of size 1 CELLS.
+\ ** The field is ALIGNED.
+  aligned  1 cells field:
+;
+
+: ffield:       \ n1 <"name"> -- n2 ; Exec: addr -- 'addr
+\ *G Create a new field within a structure definition of size 1
+FLOATS.
+\ ** The field is FALIGNED.
+  faligned  1 floats field:
+;
+
+: sffield:      \ n1 <"name"> -- n2 ; Exec: addr -- 'addr
+\ *G Create a new field within a structure definition of size 1
+SFLOATS.
+\ ** The field is SFALIGNED.
+  sfaligned  1 sfloats field:
+;
+
+: dffield:      \ n1 <"name"> -- n2 ; Exec: addr -- 'addr
+\ *G Create a new field within a structure definition of size 1
+DFLOATS.
+\ ** The field is DFALIGNED.
+  dfaligned  1 dfloats field:
+;
+
+
+Test Cases
+==========
+TBD.
+
+
+-- 
+Stephen Pelc, stephenXXX@mpeforth.com
+MicroProcessor Engineering Ltd - More Real, Less Time
+133 Hill Lane, Southampton SO15 5AF, England
+tel: +44 (0)23 8063 1441, fax: +44 (0)23 8033 9691
+web: http://www.mpeforth.com - free VFX Forth downloads
+
+
