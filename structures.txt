@@ -1,30 +1,3 @@
-Article: 124356 of comp.lang.forth
-Path: tunews.univie.ac.at!aconews-feed.univie.ac.at!newsfeed.wu-wien.ac.at!newsfeed.utanet.at!news.germany.com!newsfeed01.sul.t-online.de!newsfeed00.sul.t-online.de!t-online.de!peer-uk.news.demon.net!kibo.news.demon.net!mutlu.news.demon.net!news.demon.co.uk!demon!connector.mpeforth.com!news
-From: stephenXXX@mpeforth.com (Stephen Pelc)
-Newsgroups: comp.lang.forth
-Subject: RfD: Forth 200x structures version 4
-Date: Wed, 07 Feb 2007 10:37:40 GMT
-Organization: MPE
-Lines: 332
-Message-ID: <45c9aa75.1209848203@192.168.0.50>
-Reply-To: stephenXXX@INVALID.mpeforth.com
-NNTP-Posting-Host: mpeltd-adsl.demon.co.uk
-X-Trace: news.demon.co.uk 1170844802 8731 80.176.152.87 (7 Feb 2007 10:40:02 GMT)
-X-Complaints-To: abuse@demon.net
-NNTP-Posting-Date: Wed, 7 Feb 2007 10:40:02 +0000 (UTC)
-X-Newsreader: Forte Free Agent 1.21/32.243
-Xref: tunews.univie.ac.at comp.lang.forth:124356
-
-The following text is draft 4 of the Forth200x structures proposal.
-I hope it is the last draft except for minor wordsmithing. If there
-are no substantial objections it will go to a CfV (Call for Votes)
-in May 2007 after the test cases have been added.
-
-Some discussion of negative offsets may be appropriate, e.g.
-for ambiguous conditions.
-
-Stephen
-============================================================
 RfD: Structures - Version 4
 6 February 2007, Stephen Pelc
 
@@ -41,6 +14,8 @@ Change History
 To Do
 =====
 Test cases.
+
+Add UNION and VARIANT examples in non-normative section.
 
 
 Rationale
@@ -117,14 +92,12 @@ b) For mapping external data structures like hardware register
   is inappropriate, because the alignment of the external data
   structure often doesn't match the rules for a given processor.
 
-C caters to requirement (a) but essentially ignores (b).  Yet people
-use
+C caters to requirement (a) but essentially ignores (b).  Yet people use
 C structures for external data structures all the time, leading to 
 various custom macro sets, usage requirements, portability problems, 
 bugs, etc.
 
-Since I do much more (b) than (a), I prefer a structure definition
-basis
+Since I do much more (b) than (a), I prefer a structure definition basis
 that is fundamentally unaligned. It is much easier to add alignment 
 than to undo it."
 
@@ -315,22 +288,19 @@ Reference Implementation
 ;
 
 : ffield:       \ n1 <"name"> -- n2 ; Exec: addr -- 'addr
-\ *G Create a new field within a structure definition of size 1
-FLOATS.
+\ *G Create a new field within a structure definition of size 1 FLOATS.
 \ ** The field is FALIGNED.
   faligned  1 floats +FIELD
 ;
 
 : sffield:      \ n1 <"name"> -- n2 ; Exec: addr -- 'addr
-\ *G Create a new field within a structure definition of size 1
-SFLOATS.
+\ *G Create a new field within a structure definition of size 1 SFLOATS.
 \ ** The field is SFALIGNED.
   sfaligned  1 sfloats +FIELD
 ;
 
 : dffield:      \ n1 <"name"> -- n2 ; Exec: addr -- 'addr
-\ *G Create a new field within a structure definition of size 1
-DFLOATS.
+\ *G Create a new field within a structure definition of size 1 DFLOATS.
 \ ** The field is DFALIGNED.
   dfaligned  1 dfloats +FIELD
 ;
@@ -339,13 +309,3 @@ DFLOATS.
 Test Cases
 ==========
 TBD.
-
-
--- 
-Stephen Pelc, stephenXXX@mpeforth.com
-MicroProcessor Engineering Ltd - More Real, Less Time
-133 Hill Lane, Southampton SO15 5AF, England
-tel: +44 (0)23 8063 1441, fax: +44 (0)23 8033 9691
-web: http://www.mpeforth.com - free VFX Forth downloads
-
-
