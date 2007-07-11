@@ -1,0 +1,489 @@
+<title>Structures proposal</title>
+
+<h3><a name="deferred">Structures</a></h3>
+
+[ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
+
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h5>Systems</h5>
+
+<pre>
+[ ] conforms to ANS Forth.
+ Win32Forth
+ Gforth
+ bigForth
+ Gerry Jackson's system
+[ ] already implements the proposal in full since release [ ]:
+[ ] implements the proposal in full in a development version:
+ Gforth
+ Win32Forth
+[ ] will implement the proposal in full in release [ ].
+ Win32Forth v7
+[ ] will implement the proposal in full in some future release.
+ bigForth
+ Gerry Jackson's system
+There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full:
+</pre>
+
+<h5>Programmers</h5>
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs:
+ David N. Williams
+ Alex McDonald
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it:
+ Bruce McFarling
+ Bernd Paysan
+ David N. Williams
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard:
+ Bruce McFarling
+ Bernd Paysan
+ Dick van Oudheusden
+ David N. Williams
+ Gerry Jackson
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+<h5>Informal results</h5>
+
+Dick van Oudheusden will change the structures in ffl version
+0.6.0, if the proposal is accepted.
+
+<p>David N. Williams writes:
+<pre>
+I would have added the recommended field type definers:
+   DFIELD:  2 cells
+   SFIELD:  2 cells  (caddr len)
+
+And the specifications:
+
+12.6.2.jjj DFIELD:
+d-field-colon FACILITY EXT
+The semantics of DFIELD: are identical to the execution
+semantics of the phrase
+   ALIGNED  2 CELLS +FIELD
+
+12.6.2.kkk SFIELD:
+s-field-colon FACILITY EXT
+The semantics of SFIELD: are identical to the execution
+semantics of the phrase
+   ALIGNED  2 CELLS +FIELD
+</pre>
+
+<p>Anton Ertl writes that Gforth implements <code>2FIELD:</code>.
+
+<p>Alex McDonald writes:
+
+<pre>
+Parts of Win32Forth use an alternative "based" structure.
+
+: FLD ( basevar offset len -<name>- -- basevar offset+len ) \
+definer for fields
+create
+3dup + 2>R \ n1 n2 n3 r: n1 n2+n3
+drop \ n1 n2 r: n1 n2+n3
+, , 2R> \ build n2 n1
+DOES> ( -- baseaddr )
+dup @ \ fetch n2
+swap cell+ @ @ + ; \ fetch n1 value, add
+
+: FLDBASE ( -<name>- ) \ set field base name (starts field)
+CREATE here 0 , 0 ; \ base of record
+
+Example:
+
+FLDBASE BASE-IID
+4 FLD IID-RVA-ILT \ import lookup table
+4 FLD IID-TIMEDATE \ time date of binding
+4 FLD IID-FORWARDER \ forwarder index
+4 FLD IID-RVA-NAME \ RVA to name
+4 FLD IID-RVA-IAT \ import address table
+CONSTANT LEN-IID DROP
+
+Usage:
+
+<value> BASE-IID ! \ set base of IID
+<value> IID-RVA-NAME ! \ i.e. BASE-IID+12
+</pre>
+
+<h4>Proposal</h4>
+
+<pre>
+RfD: Structures - Version 4
+6 February 2007, Stephen Pelc
+
+Change History
+==============
+20070206 Renamed general field definer from FIELD: to +FIELD
+	 Added more rationale.
+20060830 Removed some restrictions on FIELD: and children.
+         Moved some words to FLOATING EXT.
+20060827 Added alignment to discussion.
+20060822 Rewrite after criticism
+20060821 First draft
+
+To Do
+=====
+Test cases.
+
+Add UNION and VARIANT examples in non-normative section.
+
+
+Rationale
+=========
+
+Problem
+-------
+Virtually all serious Forth systems provide a means of defining
+data structures. The notation is different for nearly all of them.
+
+Current practice
+----------------
+Current practice is too varied to merge or agree on one word set,
+either of names or of stack effects. In particular there are two
+camps, one which defines the name of the structure at the start,
+and one which defines it at the end. Examples are:
+
+STRUCT POINT   \ -- len
+  1 CELLS +FIELD P.X
+  1 CELLS +FIELD P.Y
+END-STRUCT
+
+STRUCT{
+  1 CELLS +FIELD P.X
+  1 CELLS +FIELD P.Y
+}STRUCT POINT   \ -- len
+
+Discussion
+----------
+The name first implementation of STRUCT and END-STRUCT is not
+difficult.
+
+: STRUCT        \ -- addr 0 ; -- size
+  CREATE  HERE 0  0 ,  DOES> @  ;
+: END-STRUCT    \ addr n --
+  SWAP !  ;                             \ set size
+: +FIELD         \ n1 n2 "name" -- n3 ; addr -- addr+n1
+  CREATE  OVER , +  DOES>  @ +  ;
+
+The name last implementations of STRUCT{ and }STRUCT are trivial
+even for native code compilers:
+
+: STRUCT{       \ -- 0
+  0  ;
+: }STRUCT       \ size "name" --
+  CONSTANT  ;
+: +FIELD         \ n1 n2 "name" -- n3 ; addr -- addr+n1
+  CREATE  OVER , +  DOES>  @ +  ;
+
+In both cases the definition of +FIELD is the same. Further words
+that operate on types can all use +FIELD and so can be common to
+both camps.
+
+For many modern compilers, implementing +FIELD to provide efficient
+execution requires carnal knowledge of the system.
+
+Compatibility between the name first and name last camps is by
+defining the stack item struct-sys, which is implementation
+dependent and can be 0 or more cells. In the name-first example
+above, struct-sys corresponds to the "addr" stack items in the
+stack comments of STRUCT and END-STRUCT above. After some
+discussion on newsgroups and mailing lists, the consensus is that
+struct-sys should not appear in the specification of +FIELD.
+
+Mitch Bradley wrote the following about structure alignment:
+"In practice, structures are used for two different purposes with 
+incompatible requirements:
+a) For collecting related internal-use data into a convenient
+   "package" that can be referred to by a single "handle". For
+   this use, alignment is important, so that efficient native
+   fetch and store instructions can be used.
+b) For mapping external data structures like hardware register
+   maps and protocol packets. For this use, automatic alignment
+  is inappropriate, because the alignment of the external data
+  structure often doesn't match the rules for a given processor.
+
+C caters to requirement (a) but essentially ignores (b).  Yet people use
+C structures for external data structures all the time, leading to 
+various custom macro sets, usage requirements, portability problems, 
+bugs, etc.
+
+Since I do much more (b) than (a), I prefer a structure definition basis
+that is fundamentally unaligned. It is much easier to add alignment 
+than to undo it."
+
+Solution
+--------
+The intention of this proposal is to find a portable notation
+for defining data structures using word names that do not
+conflict with existing systems, and to provide easy portability
+of code between systems.
+
+System implementors can then define these words in terms of
+their existing structure definition words to enhance performance.
+
+Authors of portable code will have a common point of
+reference.
+
+The approach is to define +FIELD so as to enable both camps to
+co-exist. Since the name last approach is the simplest and only
+requires synonyms to define the start and end words, we simply
+recommend that these users write portable code in the form:
+
+0
+  a +FIELD b
+  c +FIELD d
+CONSTANT somestruct
+
+We now turn to considering name first implementations, with the
+objective of providing a simple means of porting to name last
+implementations. Using the usual point and rectangle example,
+we can define structures:
+
+BEGIN-STRUCTURE point \ -- a-addr 0 ; -- lenp
+  1 CELLS +FIELD p.x     \ -- a-addr cell
+  1 CELLS +FIELD p.y     \ -- a-addr cell*2
+END-STRUCTURE
+
+BEGIN-STRUCTURE rect  \ -- a-addr 0 ; -- lenr
+  point +FIELD r.tlhc    \ -- a-addr cell*2
+  point +FIELD r.brhc    \ -- a-addr cell*4
+END-STRUCTURE
+
+The proposal text below does not require +FIELD to align any
+item. This is deliberate, and allows the construction of groups of
+bytes. Because the current size of the structure is available on
+the top of the stack, words such as ALIGNED (6.1.0706) can be used.
+I realise that this is a compromise following common practice at
+the expense of users requiring alignment. However, alignment is
+provided by the xFIELD: words below.
+
+Although this is a sufficient set, most systems provide facilities
+to define field defining words for standard data types. Note that
+these also satisfy the alignment requirements of the host system,
+whereas +FIELD does not.
+
+The recommended field type definers are:
+  CFIELD:  1 character
+  FIELD:   native integer (single cell)
+  FFIELD:  native float
+  SFFIELD: 32 bit float
+  DFFIELD: 64 bit float
+The following cannot be done until the required addressing has
+been defined. The names should be considered reserved until then.
+  BFIELD:  1 byte (8 bit) field.
+  WFIELD:  16 bit field
+  LFIELD:  32 bit field
+  XFIELD:  64 bit field
+
+Name first minimalists are reminded that it is adequate to provide
+the source code (even by reference) in this proposal.
+
+Proposal
+========
+10.6.2.aaaa +FIELD
+field-colon FACILITY EXT
+
+( n1 n2 "<spaces>name" -- n3 )
+Skip leading space delimiters. Parse name delimited by a space.
+Create a definition for name with the execution semantics defined
+below. Return n3=n1+n2 where n1 is the offset in the data
+structure before +FIELD executes, and n2 is the size of the data
+to be added to the data structure. N1 and n2 are in address units.
+
+name Exection:
+( addr -- addr+n1 )
+Add n1 from the execution of +FIELD above to addr.
+
+
+10.6.2.cccc BEGIN-STRUCTURE
+struct FACILITY EXT
+
+( "<spaces>name" -- struct-sys 0 )
+Skip leading space delimiters. Parse name delimited by a space.
+Create a definition for name with the execution semantics defined
+below. Return a struct-sys (zero or more implementation dependent 
+items) that will be used by END-STRUCTURE
+(10.6.2.dddd) and an initial offset of 0.
+
+name Execution: ( -- +n )
++n is the size in memory expressed in adress units of the data
+structure.
+
+Ambiguous conditions:
+  If name is executed before the closing END-STRUCTURE has been
+  executed.
+
+10.6.2.dddd END-STRUCTURE
+end-structure FACILITY EXT
+( struct-sys +n -- )
+Terminate definition of a structure started by BEGIN-STRUCTURE
+(10.6.2.cccc).
+
+
+10.6.2.eeee CFIELD:
+c-field-colon FACILITY EXT
+The semantics of CFIELD: are identical to the execution
+semantics of the phrase
+  1 CHARS +FIELD
+
+
+10.6.2.ffff FIELD:
+i-field-colon FACILITY EXT
+The semantics of FIELD: are identical to the execution
+semantics of the phrase
+  ALIGNED  1 CELLS +FIELD
+
+
+12.6.2.gggg FFIELD:
+f-field-colon FLOATING EXT
+The semantics of FFIELD: are identical to the execution
+semantics of the phrase
+  FALIGNED  1 FLOATS +FIELD
+
+
+12.6.2.hhhh SFFIELD:
+s-f-field-colon FLOATING EXT
+The semantics of SFFIELD: are identical to the execution
+semantics of the phrase
+  SFALIGNED  1 SFLOATS +FIELD
+
+
+12.6.2.iiii DFFIELD:
+d-f-field-colon FLOATING EXT
+The semantics of DFFIELD: are identical to the execution
+semantics of the phrase
+  DFALIGNED  1 DFLOATS +FIELD
+
+Labelling
+=========
+ENVIRONMENT? impact - table 3.5 in Basis1
+  name   stack   condition
+
+THROW/ior impact - table 9.2 in Basis1
+  value  text
+
+
+<a href="reference-implementations/structures.fs">Reference Implementation</a>
+========================
+
+: begin-structure       \ -- addr 0 ; -- size
+\ *G Begin definition of a new structure. Use in the form
+\ ** *\fo{BEGIN-STRUCTURE <name>}. At run time *\fo{<name>}
+\ ** returns the size of the structure.
+  create
+    here 0  0 ,                         \ mark stack, lay dummy
+  does> @  ;                            \ -- rec-len
+
+: end-structure         \ addr n --
+\ *G Terminate definition of a structure.
+  swap !  ;                             \ set len
+
+: +FIELD                 \ n <"name"> -- ; Exec: addr -- 'addr
+\ *G Create a new field within a structure definition of size n bytes.
+  create
+    over , +
+  does>
+    @ +
+;
+
+: cfield:       \ n1 <"name"> -- n2 ; Exec: addr -- 'addr
+\ *G Create a new field within a structure definition of size 1 CHARS.
+  1 chars +FIELD
+;
+
+: field:        \ n1 <"name"> -- n2 ; Exec: addr -- 'addr
+\ *G Create a new field within a structure definition of size 1 CELLS.
+\ ** The field is ALIGNED.
+  aligned  1 cells +FIELD
+;
+
+: ffield:       \ n1 <"name"> -- n2 ; Exec: addr -- 'addr
+\ *G Create a new field within a structure definition of size 1 FLOATS.
+\ ** The field is FALIGNED.
+  faligned  1 floats +FIELD
+;
+
+: sffield:      \ n1 <"name"> -- n2 ; Exec: addr -- 'addr
+\ *G Create a new field within a structure definition of size 1 SFLOATS.
+\ ** The field is SFALIGNED.
+  sfaligned  1 sfloats +FIELD
+;
+
+: dffield:      \ n1 <"name"> -- n2 ; Exec: addr -- 'addr
+\ *G Create a new field within a structure definition of size 1 DFLOATS.
+\ ** The field is DFALIGNED.
+  dfaligned  1 dfloats +FIELD
+;
+
+
+Test Cases
+==========
+TBD.
+</pre>
+
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+(anton@mips<em>.</em>complang.tuwien.ac.at).  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+<h4>Ballot for systems</h4>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the
+brackets.  Multiple hits for the same system are possible (if they do
+not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please
+do so informally, and I will aggregate this information in some way.
+
+
+<h4>Ballot for programmers</h4>
+
+Just mark the statements that are correct for you (e.g., by putting an
+"x" between the brackets).  If some statements are true for some of
+your programs, but not others, please mark the statements for the
+dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from
+the proposal (especially if you have used that in your programs), make
+an informal comment, and I will collect these, too.  Note that the
+best time to voice such issues is the RfD stage.
+
+<h4>Credits</h4>
+
+Proponent: Stephen Pelc<br>
+Votetaker: M. Anton Ertl
+
+<hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
