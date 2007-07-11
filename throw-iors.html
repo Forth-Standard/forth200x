@@ -28,9 +28,31 @@ See <a href="#voting">below</a> for voting instructions.
 <dt> [ ] I would not use (parts of) this proposal in my programs.
 </dl>
 
-<!--
 <h5>Informal results</h5>
--->
+
+<b>Bernd Paysan</b>
+
+The ballot system doesn't work well to describe how Gforth and bigFORTH do
+it, so I explain it in words:
+<p>
+Gforth and bigFORTH have made IORs throwable since the dawn of their ANS
+Forth compatibility (both during the draft process). However, we use the
+system-specific part of the throw code table, and have a way how to convert
+signal and errno numbers into the THROW space.
+<p>
+If you relax your proposal in such a way that IORs must be throwable, and
+the system also must provide a way to print out diagnostic strings (e.g.
+the <code>.ERROR</code> we have in Gforth), a consent is easier to reach.
+I like to keep as much information as possible about the original error,
+so mapping errors to words that misbehave isn't such a good idea - a word
+like <code>WRITE-FILE</code> can fail for quite a number of reasons (no
+space left on device, pipe closed, low-level IO error, buffer outside address
+space, etc.). A backtracing utility is a better way to locate the error, and
+you'll then see which word misbehaved, as well.
+<p>
+So in general, I fully support the part of your proposal where IORs are made
+throwable, but I don't support your throw code scheme.
+
 
 <h4>Problem</h4>
 
