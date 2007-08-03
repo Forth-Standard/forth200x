@@ -1,0 +1,176 @@
+<title>Number prefixes</title>
+
+<h3>Number prefixes</h3>
+
+<pre>
+Problem
+
+It is often useful to write numbers in other than the current BASE.
+Changing BASE to do this is often inconvenient and has lead to
+hard-to-find errors.
+
+
+Solution
+
+The Forth text interpreter should accept numbers like the following ones:
+
+#-12346789. \ decimal double
+$-1234cDeF. \ hex double
+%-10101010. \ binary double
+'a'         \ equivalent to char a or [char] a
+
+(and of course without "." for single-cell and without - for positive
+and unsigned numbers; the text interpreter only has to accept
+single-cell numbers if the double-cell wordset is absent).
+
+
+Typical usage:
+
+#99
+#-99.
+$-ff
+$ff.
+$FF
+$-FF.
+%-11
+%11.
+'a'
+
+
+Existing Practice
+
+Many Forth systems support various number prefixes already in the
+interpreter:
+
+#10 $10 %10 &10 0x10 0X10 10h 10H $f $F 'a 'a' input
+ 10  16   2   -    -    -   -   -  - 15  -  97 iforth 2.1.2541, CHForth 1.2.5, 1.3.9
+ 10  16   2  10    -    -   -   - 15 15 97 24871 bigFORTH rev. 2.1.6
+  -  16   2  10   16   16   -   - 15 15  -   - PFE 0.33.34
+  -  16   2  10    -    -   -   - 15 15 97 24871 Gforth-0.6.2
+ 10  16   2  10   16   16   -   - 15 15 97  97 Gforth 0.6.9
+  -  16   -   -   16   16   -   - 15 15  -  97 Win32Forth version 4.xxx
+ 10  16   2  10   16   16  16  16 15 15  -  97 Win32Forth version 6.xx, Win32Forth-STC version 0.02.xx
+ 10  16   2   8    -    -   -   - 15 15  -   - SwiftForth
+ 10  16   2   -   16   16  16  16 15 15  -   - VFX Forth 4.0.2 build 2428
+ 10  16   2   8    -    -   -   - 15 15  -   - ntf/lxf (Peter Fälth)
+
+ #9. #9 -#9. -#9 #-9. #-9 $F. $F -$F. -$F $-F. $-F %1. %1 -%1. -%1 %-1. %-1
+   9  9    -   -   -9  -9  15 15    -   -  -15 -15   1  1    -   -   -1  -1 iForth 2.1.2541
+   9  9   -9  -9    -   -  15 15  -15 -15    -   -   1  1   -1  -1    -   - bigForth 2.1.6
+   -  -    -   -    -   -  15 15  -15 -15  -15 -15   1  1   -1  -1   -1  -1 PFE 0.33.34
+   9  9   -9  -9    -   -  15 15  -15 -15    -   -   1  1   -1  -1    -   - gforth 0.6.9
+   9  9   -9  -9   -9  -9  15 15  -15 -15  -15 -15   1  1   -1  -1   -1  -1 Win32Forth 6.xx
+   9  9    -   -   -9  -9  15 15    -   -  -15 -15   1  1    -   -   -1  -1 SwiftForth 3.0.11
+   9  9    -   -   -9  -9  15 15    -   -  -15 -15   1  1    -   -   -1  -1 ntf/lxf (Peter Fälth)
+
+The programs used to produce these outputs are: <a
+href="http://www.complang.tuwien.ac.at/forth/programs/test-num-prefixes.fs">test-num-prefixes.fs</a>
+and <a
+href="http://www.complang.tuwien.ac.at/forth/programs/test-num-prefixes2.fs">test-num-prefixes2.fs</a>
+
+None of these systems accept !10, @10 or ^10, and none accept these
+prefixes in >NUMBER.
+
+Also:
+iForth and CHForth support the following prefixes
+
+^ for control characters, e.g., ^G for 7.
+& for characters, e.g., &" for 34 and &1 for 49.
+" for single characters, e.g. "a" for 97.
+
+nft/lxf supports the prefix U for a Unicode codepoint, e.g., U20AC for
+the Euro sign (to convert from the Unicode number to the on-stack
+format in this system for xchars).
+
+Open Firmware, eforth, and Swiftforth support the parsing words H# D#
+B# O# to determine the base, used as in "H# FF".
+
+
+Remarks
+
+Character value syntax
+
+The '<char>' syntax does not have as much support in existing systems
+as the others; if there is too much resistance against that, I will
+take it out.
+
+
+Sign or base prefix first?
+
+Some people find it more intuitive to place the sign in front of the
+base prefix, some find it more natural to do it the other way round.
+That's probably a good reason for systems to accept both variants.
+However, currently slightly more systems support the base-prefix-first
+approach, so that's what is proposed here.  Systems can also implement
+to other variant, but programs making use of that would not conform to
+this proposal.
+
+
+Proposal
+
+Move "12.2.2.1 Numeric notation" to "2.2.1 Numeric Notation",
+with appropriate editing.
+
+Replace "3.4.1.3 Text interpreter input number conversion" with:
+
+|When converting input numbers, the text interpreter shall recognize
+|integer numbers in the following form:
+|
+|Convertible string := { <BASEnum> | <decnum> | <hexnum> | <binnum> | <cnum> }
+|<BASEnum>  := [-]<bdigit><bdigit>*
+|<decnum>   := #[-]<decdigit><decdigit>*
+|<hexnum>   := $[-]<hexdigit><hexdigit>*
+|<binnum>   := %[-]<bindigit><bindigit>*
+|<cnum>     := '<char>'
+|<bindigit> := { 0 | 1 }
+|<decdigit> := { 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 }
+|<hexdigit> := { <decdigit> | a | b | c | d | e | f | A | B | C | D | E | F }
+|
+|<bdigit> represents a digit according to the value of BASE (see
+|"3.2.1.2 Digit conversion").  For <hdigit>, the digits a..f have the
+|values 10..15.  <char> represents any printable character.
+|
+|The radix used for number conversion is: for <BASEnum>, the value in
+|BASE; for <decnum> 10; for <hexnum> 16; for <binnum> 2.  For <cnum>,
+|the number is the value of <char>.
+
+Change "8.3.2 Text interpreter input number conversion" as follows:
+
+|When the text interpreter processes a number except a <cnum> that is
+                                             ^^^^^^^^^^^^^^^ new
+|immediately followed by a decimal point and is not found as a
+|definition name, the text interpreter shall convert it to a
+|double-cell number.
+|
+|For example, entering DECIMAL 1234 leaves the single-cell number 1234
+|on the stack, and entering DECIMAL 1234. leaves the double-cell number
+|1234 0 on the stack.
+
+
+Reference implementation
+
+Implementing this proposal requires changes in places that are quite
+system-specific, therefore a reference implementation is not useful.
+
+
+<a href="tests/number-prefixes.fs">Tests</a>
+
+require test/tester.fs
+decimal
+
+{ #1289       -> 1289 }
+{ #12346789.  -> 12346789. }
+{ #-1289      -> -1289 }
+{ #-12346789. -> -12346789. }
+{ $12eF       -> 4847 }
+{ $12aBcDeF.  -> 313249263. }
+{ $-12eF      -> -4847 }
+{ $-12AbCdEf. -> -313249263. }
+{ %10010110   -> 150 }
+{ %10010110.  -> 150. }
+{ %-10010110  -> -150 }
+{ %-10010110. -> -150. }
+{ 'z'         -> 122 }
+</pre>
+<hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
+
