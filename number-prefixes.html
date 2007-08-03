@@ -69,7 +69,7 @@ and <a
 href="http://www.complang.tuwien.ac.at/forth/programs/test-num-prefixes2.fs">test-num-prefixes2.fs</a>
 
 None of these systems accept !10, @10 or ^10, and none accept these
-prefixes in >NUMBER.
+prefixes in &gt;NUMBER.
 
 Also:
 iForth and CHForth support the following prefixes
@@ -90,7 +90,7 @@ Remarks
 
 Character value syntax
 
-The '<char>' syntax does not have as much support in existing systems
+The '&lt;char&gt;' syntax does not have as much support in existing systems
 as the others; if there is too much resistance against that, I will
 take it out.
 
@@ -116,27 +116,27 @@ Replace "3.4.1.3 Text interpreter input number conversion" with:
 |When converting input numbers, the text interpreter shall recognize
 |integer numbers in the following form:
 |
-|Convertible string := { <BASEnum> | <decnum> | <hexnum> | <binnum> | <cnum> }
-|<BASEnum>  := [-]<bdigit><bdigit>*
-|<decnum>   := #[-]<decdigit><decdigit>*
-|<hexnum>   := $[-]<hexdigit><hexdigit>*
-|<binnum>   := %[-]<bindigit><bindigit>*
-|<cnum>     := '<char>'
-|<bindigit> := { 0 | 1 }
-|<decdigit> := { 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 }
-|<hexdigit> := { <decdigit> | a | b | c | d | e | f | A | B | C | D | E | F }
+|Convertible string := { &lt;BASEnum&gt; | &lt;decnum&gt; | &lt;hexnum&gt; | &lt;binnum&gt; | &lt;cnum&gt; }
+|&lt;BASEnum&gt;  := [-]&lt;bdigit&gt;&lt;bdigit&gt;*
+|&lt;decnum&gt;   := #[-]&lt;decdigit&gt;&lt;decdigit&gt;*
+|&lt;hexnum&gt;   := $[-]&lt;hexdigit&gt;&lt;hexdigit&gt;*
+|&lt;binnum&gt;   := %[-]&lt;bindigit&gt;&lt;bindigit&gt;*
+|&lt;cnum&gt;     := '&lt;char&gt;'
+|&lt;bindigit&gt; := { 0 | 1 }
+|&lt;decdigit&gt; := { 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 }
+|&lt;hexdigit&gt; := { &lt;decdigit&gt; | a | b | c | d | e | f | A | B | C | D | E | F }
 |
-|<bdigit> represents a digit according to the value of BASE (see
-|"3.2.1.2 Digit conversion").  For <hdigit>, the digits a..f have the
-|values 10..15.  <char> represents any printable character.
+|&lt;bdigit&gt; represents a digit according to the value of BASE (see
+|"3.2.1.2 Digit conversion").  For &lt;hdigit&gt;, the digits a..f have the
+|values 10..15.  &lt;char&gt; represents any printable character.
 |
-|The radix used for number conversion is: for <BASEnum>, the value in
-|BASE; for <decnum> 10; for <hexnum> 16; for <binnum> 2.  For <cnum>,
-|the number is the value of <char>.
+|The radix used for number conversion is: for &lt;BASEnum&gt;, the value in
+|BASE; for &lt;decnum&gt; 10; for &lt;hexnum&gt; 16; for &lt;binnum&gt; 2.  For &lt;cnum&gt;,
+|the number is the value of &lt;char&gt;.
 
 Change "8.3.2 Text interpreter input number conversion" as follows:
 
-|When the text interpreter processes a number except a <cnum> that is
+|When the text interpreter processes a number except a &lt;cnum&gt; that is
                                              ^^^^^^^^^^^^^^^ new
 |immediately followed by a decimal point and is not found as a
 |definition name, the text interpreter shall convert it to a
@@ -158,19 +158,19 @@ system-specific, therefore a reference implementation is not useful.
 require test/tester.fs
 decimal
 
-{ #1289       -> 1289 }
-{ #12346789.  -> 12346789. }
-{ #-1289      -> -1289 }
-{ #-12346789. -> -12346789. }
-{ $12eF       -> 4847 }
-{ $12aBcDeF.  -> 313249263. }
-{ $-12eF      -> -4847 }
-{ $-12AbCdEf. -> -313249263. }
-{ %10010110   -> 150 }
-{ %10010110.  -> 150. }
-{ %-10010110  -> -150 }
-{ %-10010110. -> -150. }
-{ 'z'         -> 122 }
+{ #1289       -&gt; 1289 }
+{ #12346789.  -&gt; 12346789. }
+{ #-1289      -&gt; -1289 }
+{ #-12346789. -&gt; -12346789. }
+{ $12eF       -&gt; 4847 }
+{ $12aBcDeF.  -&gt; 313249263. }
+{ $-12eF      -&gt; -4847 }
+{ $-12AbCdEf. -&gt; -313249263. }
+{ %10010110   -&gt; 150 }
+{ %10010110.  -&gt; 150. }
+{ %-10010110  -&gt; -150 }
+{ %-10010110. -&gt; -150. }
+{ 'z'         -&gt; 122 }
 </pre>
 <hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
 
