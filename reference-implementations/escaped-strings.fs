@@ -5,6 +5,8 @@ decimal
 : c+! ( c c-addr1 -- )
     tuck c@ + swap c! ;
 
+: endif postpone then ; immediate
+
 \ from RfD v4
 
 : PLACE         \ c-addr1 u c-addr2 --
