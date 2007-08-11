@@ -3,6 +3,24 @@
 <h3>Number prefixes</h3>
 
 <pre>
+Change History
+
+2007-08-11 Second RfD
+  No significant change in the actual proposal (still waiting on more
+    feedback before deciding on whether to keep '<char>').
+  Existing Practice: extended with information about ASCII, CONTROL,
+    and Forth Inc's '<char>' naming convention, and occurence
+    frequencies of character literals and (for comparison) some CORE
+    words.
+  Remarks: Preliminary informal straw poll results on '<char>' (more
+    feedback wanted).
+  Comments: added Section and comments from Mitch Bradley and
+    Elizabeth Rather.
+  Proposal: Rewrote it in a way that makes it optional.  Fixed a
+    buglet.
+
+2007-08-03 First RfD
+
 Problem
 
 It is often useful to write numbers in other than the current BASE.
@@ -78,12 +96,45 @@ iForth and CHForth support the following prefixes
 & for characters, e.g., &" for 34 and &1 for 49.
 " for single characters, e.g. "a" for 97.
 
-nft/lxf supports the prefix U for a Unicode codepoint, e.g., U20AC for
+ntf/lxf supports the prefix U for a Unicode codepoint, e.g., U20AC for
 the Euro sign (to convert from the Unicode number to the on-stack
-format in this system for xchars).
+format of ntf/lxf for xchars).
 
 Open Firmware, eforth, and Swiftforth support the parsing words H# D#
-B# O# to determine the base, used as in "H# FF".
+B# O# to determine the base, used as in "H# FF".  Open Firmware also
+has the parsing word ASCII (a STATE-smart ancestor of CHAR/[CHAR]) and
+CONTROL (a variant of ASCII intended to produce the values of control
+characters).
+
+Forth, Inc. uses and promotes (e.g., in Forth Programmer's Handbook) a
+convention for word names of the form '<char>' for words that do
+
+: '<char>' [char] <char> hold ;
+
+There was a claim that there are few uses of CHAR/[CHAR] so the
+'<char>' syntax would save nothing.  In response three corpi of code
+were searched for uses of [CHAR], CHAR, or '<char>/'<char>'; the
+number of occurences were:
+
+[CHAR]    CHAR    'x/'x'
+ 245       141     443    Gforth sources
+1087       155     ---    benchmarks collected by Anton Ertl
+ 711      3982    6969    Marcel Hendrix' corpus &lt;04153616153560@frunobulax.edu&gt;
+
+So '<char>' does not just have a large potential for use, it is
+already used a lot.  For comparison, here are some frequencies of some
+CORE words that could be easily replaced with slightly longer
+sequences in the Gforth sources (829 occurences of character
+literals):
+
+298 1+
+223 1-
+132 2*
+345 2DROP
+401 2DUP
+ 79 >
+107 NEGATE
+211 SPACE
 
 
 Remarks
@@ -103,7 +154,22 @@ That's probably a good reason for systems to accept both variants.
 However, currently slightly more systems support the base-prefix-first
 approach, so that's what is proposed here.  Systems can also implement
 to other variant, but programs making use of that would not conform to
-this proposal.
+this proposal.  A very informal strawpoll had the following result:
+
+In favour: Marcel Hendrix, Alex McDonald
+Against:   Ed, Elisabeth Rather
+
+
+Comments
+
+Mitch Bradley pointed out that the parsing word approach (H# etc.) has
+a compilation speed advantage on systems that cache dictionary lookups
+but where the dictionary is slow otherwise.
+
+Elizabeth Rather thinks that it's inadvisable to put any kind of
+optional extension in the main body of the Standard, and that it
+should go in the appropriate *.3.* of TOOLS or whatever wordset, with
+a reference to it in the main body.
 
 
 Proposal
@@ -114,9 +180,11 @@ with appropriate editing.
 Replace "3.4.1.3 Text interpreter input number conversion" with:
 
 |When converting input numbers, the text interpreter shall recognize
-|integer numbers in the following form:
+|integer numbers in the form &lt;BASEnum&gt;; if X:number-prefixes is
+|present, the text interpreter shall recognize integer numbers in the
+|form &lt;anynum&gt;.
 |
-|Convertible string := { &lt;BASEnum&gt; | &lt;decnum&gt; | &lt;hexnum&gt; | &lt;binnum&gt; | &lt;cnum&gt; }
+|&lt;anynum&gt;   := { &lt;BASEnum&gt; | &lt;decnum&gt; | &lt;hexnum&gt; | &lt;binnum&gt; | &lt;cnum&gt; }
 |&lt;BASEnum&gt;  := [-]&lt;bdigit&gt;&lt;bdigit&gt;*
 |&lt;decnum&gt;   := #[-]&lt;decdigit&gt;&lt;decdigit&gt;*
 |&lt;hexnum&gt;   := $[-]&lt;hexdigit&gt;&lt;hexdigit&gt;*
@@ -127,12 +195,13 @@ Replace "3.4.1.3 Text interpreter input number conversion" with:
 |&lt;hexdigit&gt; := { &lt;decdigit&gt; | a | b | c | d | e | f | A | B | C | D | E | F }
 |
 |&lt;bdigit&gt; represents a digit according to the value of BASE (see
-|"3.2.1.2 Digit conversion").  For &lt;hdigit&gt;, the digits a..f have the
+|"3.2.1.2 Digit conversion").  For &lt;hexdigit&gt;, the digits a..f have the
 |values 10..15.  &lt;char&gt; represents any printable character.
 |
 |The radix used for number conversion is: for &lt;BASEnum&gt;, the value in
 |BASE; for &lt;decnum&gt; 10; for &lt;hexnum&gt; 16; for &lt;binnum&gt; 2.  For &lt;cnum&gt;,
 |the number is the value of &lt;char&gt;.
+
 
 Change "8.3.2 Text interpreter input number conversion" as follows:
 
