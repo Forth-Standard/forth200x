@@ -1,4 +1,4 @@
-require test/tester.fs
+require ./tester.fs
 
 { k-left  true -> cr ." Please press <left>" ekey ekey>fkey }
 { k-right true -> cr ." Please press <right>" ekey ekey>fkey }
@@ -26,4 +26,4 @@ require test/tester.fs
 { k-left k-ctrl-mask  or true -> cr ." Please press <ctrl-left>" ekey ekey>fkey }
 { k-left k-alt-mask   or true -> cr ." Please press <alt-left>" ekey ekey>fkey }
 
-{ cr ." Please press <a>" ekey ekey>fkey nip swap ekey>char -> false char a true }
+{ cr ." Please press <a>" ekey ekey>fkey swap ekey>char -> false char a true }

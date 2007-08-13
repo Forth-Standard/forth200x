@@ -1,4 +1,4 @@
-require test/tester.fs
+require ./tester.fs
 base @ decimal
 
 { #1289       -> 1289 }
