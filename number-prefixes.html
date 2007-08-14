@@ -2,9 +2,48 @@
 
 <h3>Number prefixes</h3>
 
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h5>Systems</h5>
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+    Win32Forth 6.xx, STC version 0.02
+[ ] implements the proposal in full in a development version.
+    Gforth
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+<h5>Programmers</h5>
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs:
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it:
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard:
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+<!--<h5>Informal results</h5>-->
+
+
+<h4>Proposal</h4>
+
 <pre>
 Change History
 
+2007-08-14 CfV
+  No change in the actual proposal
+  Updated informal straw poll results
+  Corrected information of the meaning of a " prefix in CHForth
+  Added CfV stuff
 2007-08-11 Second RfD
   No significant change in the actual proposal (still waiting on more
     feedback before deciding on whether to keep '<char>').
@@ -94,7 +133,8 @@ iForth and CHForth support the following prefixes
 
 ^ for control characters, e.g., ^G for 7.
 & for characters, e.g., &" for 34 and &1 for 49.
-" for single characters, e.g. "a" for 97.
+" for single characters, e.g. "a" for 97 (in iForth,
+                                          in CHForth this is a string)
 
 ntf/lxf supports the prefix U for a Unicode codepoint, e.g., U20AC for
 the Euro sign (to convert from the Unicode number to the on-stack
@@ -156,7 +196,8 @@ approach, so that's what is proposed here.  Systems can also implement
 to other variant, but programs making use of that would not conform to
 this proposal.  A very informal strawpoll had the following result:
 
-In favour: Marcel Hendrix, Alex McDonald
+In favour: Marcel Hendrix, Alex McDonald, helmwo@gmail.com, Gerry,
+           Stephen Pelc, Anton Ertl
 Against:   Ed, Elisabeth Rather
 
 
@@ -241,5 +282,60 @@ decimal
 { %-10010110. -&gt; -150. }
 { 'z'         -&gt; 122 }
 </pre>
+
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+&lt;anton@mips.complang.tuwien.ac.at&gt;.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+
+<h5>Ballot for systems</h5>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the brackets
+or in the line below the statement.  Multiple hits for the same system
+are possible (if they do not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please
+do so informally, and I will aggregate this information in some way.
+
+
+<h5>Ballot for programmers</h5>
+
+Just mark the statements that are correct for you (e.g., by putting an
+"x" between the brackets).  If some statements are true for some of
+your programs, but not others, please mark the statements for the
+dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from
+the proposal (especially if you have used that in your programs), make
+an informal comment, and I will collect these, too.  Note that the
+best time to voice such issues is the RfD stage.
+
 <hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
 
