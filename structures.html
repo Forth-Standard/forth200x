@@ -27,6 +27,7 @@ See <a href="#voting">below</a> for voting instructions.
  Gerry Jackson's system
 There are no plans to implement the proposal in full in [ ].
 [ ] will never implement the proposal in full:
+ 4th (Hans Bezemer)
 </pre>
 
 <h5>Programmers</h5>
@@ -35,6 +36,7 @@ There are no plans to implement the proposal in full in [ ].
 [ ] I have used (parts of) this proposal in my programs:
  David N. Williams
  Alex McDonald
+ Hanz Bezemer
 [ ] I would use (parts of) this proposal in my programs if the systems
     I am interested in implemented it:
  Bruce McFarling
@@ -111,6 +113,24 @@ Usage:
 <value> BASE-IID ! \ set base of IID
 <value> IID-RVA-NAME ! \ i.e. BASE-IID+12
 </pre>
+
+Hans Bezemer writes:
+
+<pre>
+I'm one of the guys that prefer the 
+
+        0
+          a +FIELD b
+          c +FIELD d
+        CONSTANT somestruct
+
+notation, simply because it is more elegant IMHO: no expectations. There is a 
+FIELD implementation since 4tH 3.4x which will be renamed to +FIELD in "4tH 
+3.5b, release 2". The rest (STRUCT/END-STRUCT) is taken from gForth. Due to 
+4tH's structure there is little sense in supporting the other stuff, except 
+for maybe CFIELD. 
+</pre>
+
 
 <h4>Proposal</h4>
 
