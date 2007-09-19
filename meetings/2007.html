@@ -1,0 +1,366 @@
+<title>Forth standards meeting at EuroForth 2007</title>
+
+<h1>Forth standards meeting at EuroForth 2007</h1>
+
+On 2007-09-13 and 2005-09-14 there was a Forth standards
+meeting, right before and partly during EuroForth 2007.  The
+participants were:
+
+<ul>
+<li>Sergey N. Baranov, Motorola St. Petersburg, Russia (observer)
+<li>Willem Botha, CCS, South Africa
+<li>Federico de Ceballos, University of Cantabria, Spain
+<li>M. Anton Ertl, TU Wien, Austria
+<li>Ulrich Hoffmann, Heidelberger Druckmaschinen, Germany (observer, late)
+<li>Peter Knaggs, University of Bournemouth, England
+<li>Dagobert Michelsen, Baltic Online Computer GmbH, Germany (observer, late)
+<li>Bernd Paysan, Germany
+<li>Stephen Pelc, MPE, England
+<li>Carsten Strotmann, Germany (observer, late)
+</ul>
+
+At this meeting the observers were allowed to vote.  Anton Ertl
+chaired most of the meeting, Peter Knaggs chaired the discussions on
+proposals by Anton Ertl.
+
+<p>The following topics were discussed (not always in this order):
+
+<h2>Accepting proposals into the standard document</h2>
+
+<p>The following proposals which had gone to a CfV were discussed and voted on:
+
+<dl>
+<dt> <a href="../structures.html">Structures</a> <dd>There was some
+grumbling about the absence of test cases, but eventually the proposal
+was accepted: 7Y:0N:0N
+
+<dt> <a href="../throw-iors.html">Throw IORs</a> <dd>After some
+discussion, where Stephen Pelc argued that the presence of the new
+throw values was necessary to convince Forth implementors for embedded
+systems to return IORs that are useful for THROWing, this proposal was
+accepted: 7Y:0N:0A.
+
+<dt> <a href="../ekeys.html">EKEY return values for some keyboard
+events</a> <dd>Discussion focused on the interaction between
+EKEY?/EKEY and KEY?/KEY.  Anton Ertl then produced <a
+href="../ekeys-clarification">a description of one way in which a
+standard program might deal with this issue</a>; that description was
+to be added to the rationale of EKEY.  This settled the issue, and the
+proposal was accepted: 9Y:0N:1A (the abstention was from an observer).
+
+<dt> <a href="../fp-stack.html">Separate FP stack</a> <dd>In the 2006
+meeting it had been unclear to some participants what the effect of
+making separate stacks standard would be on existing programs and
+systems.  Anton Ertl produced a <a
+href="../fp-stack-clarification">description of that effect</a>.  This
+description satisfied the participants.  Anton Ertl then proposed that
+he would write up the appropriate changes for the standard document,
+and that this should be voted on in the next meeting.
+
+<dt> <a href="../number-prefixes.html">Number Prefixes</a> <dd>The CfV
+and the announcement current standings had been too late for this
+meeting (according to the rules set up last time), but the committee
+decided to process this proposal at its discretion.  Accepted
+7Y:0N:0A.
+
+<dt> <a href="../to.html">Rewrite of TO</a> (Wording change, no effect
+on systems or programs) <dd>Accepted: 8Y:0N:0A
+
+<dt> <a href="../front-matter.html">Front Matter (Meta-Information, no
+effect on systems or programs)</a> <dd>Accepted: 8Y:0N:0A
+
+</dl>
+
+The presence of a <a href="../forth07-1.pdf">version of the standards
+document</a> that had all the proposals incorporated in a way that
+made the proposed changes visible was a great help in these
+discussions.
+
+
+<h2>RfDs</h2>
+
+The following proposals (currently in RfD phase) were
+discussed:
+
+<dt> <a href="../.html">Enhanced locals</a> <dd>The discussion mainly
+centered around the following points: whether to split the present RfD
+into several RfDs (yes, '{' syntax and buffer locals); whether to
+include BUILDLV (no); syntax for buffer locals (feedback on earlier
+RfDs indicates that using the last character of the word to be
+declared is deemed un-Forth-like by many); how useful buffer locals
+are and for what applications.
+
+<dt> <a href="../escaped-strings.html">Escaped strings</a> <dd>There
+were discussions about the following topics: the presence and absence
+of specific escapes (some changes in that respect were suggested by
+some committee members, but none had wide support); whether the escape
+characters should be case sensitive (yes); whether the hex digits in
+\xAB should be case insensitive (yes).
+
+<dt> <a href="../synonym.html">Synonyms</a> <dd>Some of the
+discussions that had been led electronically, were repeated (using
+AKA; argument order).
+
+<dt> <a href="../xchars.html">Extended characters</a> <dd>The name of
+Forth chars was deemed to be confusing in the presence of xchars, and
+it was suggested that they should be renamed into pchars (for
+<em>primitive characters</em>) in a separate wording change proposal.
+Bernd Paysan reported the changes he intended to apply to his latest
+xchars proposal.  The question of how to interface to various other
+character sets and encodings on I/O inspired a lot of discussion;
+Anton Ertl outlined his ideas for a solution (conversion on I/O, with
+encoding possibly specified in the fam passed to OPEN-FILE), which was
+not widely supported; the final recommendation to Bernd Paysan was not
+to lead his RfD to CfV without addressing this issue; the I/O issue
+should be covered in another RfD, but only after gaining some more
+experience with it.  Several of these discussions were continued in
+more depth in the EuroForth Internationalisation workshop.
+
+<dt> <a href="../2value.html">2VALUE</a> and <a
+href="../fvalue.html">FVALUE</a> <dd>It was agreed that these
+proposals should be rewritten for to new TO wording and then proceed
+to a CfV.
+
+<dt> <a href="../directories.html">Directories</a> <dd>Anton Ertl
+presented the problem of referring to files relative to the directory
+of the currently included file.  Stephen Pelc pointed out that this is
+not the only problem related to directories.  The discussion
+eventuelly suggested a solution that would not not be a one-off
+solution, but would lead the door open to a macro solution that would
+also be useful for the other problems.  The suggested prefix for
+referring to the include directory was <code>%inc%/</code>.
+
+</dl>
+
+
+<h2>Future RfDs</h2>
+
+Federico de Ceballos presented some proposals that he plans to submit
+as RfDs:
+
+<dl>
+
+<dt> 0 as NIL <dd> His proto-RfD changes HERE and ALLOCATE.  Some
+alternative suggestions were made, in particular changing the
+definition of <em>contiguous region</em>.
+
+<dt> 8-bit, 16-bit, 32-bit memory access <dd>He presented a
+comprehensive set of words for the purpose.  There was some discussion
+about naming (U@16 vs. W@; some approvement was expressed for
+Federicos naming despite its deviation from common practice), about
+alignment (network order accesses should not require alignment, native
+accesses should).
+
+</dl>
+
+Federico de Ceballos promised to submit RfDs on these topics soon.
+
+
+<h2>Other topics</h2>
+
+Peter Knaggs presented the current draft of the standard document and
+the committee discussed it.  One suggestion was that it should be
+clearer what is normative and what is not (through colour or font).
+The inlining of the tests was criticised as distracting.
+
+<p>The document and its source are now on www.forth200x.org, but not
+yet linked.
+
+<p>A German version of the minutes of the 2006 meeting were published
+in the Vierte Dimension (Forth-Gesellschaft).  Peter Knaggs has
+contacted Paul Frenger about publishing the minutes in SIGPLAN
+Notices.
+
+<p>The next voting meeting is to be again on the day before the next
+EuroForth (probably on September 25th/26th, 2008 in Vienna).  In
+addition, a non-voting review meeting was suggested on the Thursday
+before the Forth-Tagung (near Ulm in April/May 2008); Ulrich Hoffmann
+said that he would check whether that could be arranged.
+
+<p>Rules for becoming a voting member were discussed and decided: On
+the first meeting, a person would become observer, or, on the
+discretion of the committee, a voting member; on the second
+consecutive meeting, the person would become a voting member.  After
+missing two consecutive voting meetings, the person would revert to
+non-member status.
+
+<p>Words that were obsolescent in Forth-94 should be moved into a
+separate "obsolete" wordset.
+
+<p>[I have here a note saying "numbering", but cannot say what this
+was about.]
+
+
+
+
+
+
+
+
+
+
+<li> <a href="../.html"></a>
+<li> <a href="../.html"></a>
+<li> <a href="../.html"></a>
+<li> <a href="../.html"></a>
+<li> <a href="../.html"></a>
+<li> <a href="../extension-query.html">extension-query</a>
+<li> <a href="../parse-name.html">parse-name</a>
+<li> <a href="../defined.html">defined</a>
+</ul>
+
+
+<h2>Future proposals</h2>
+
+A number of potential topics for future proposals were discussed, and
+eventually some participants volunteered to write RfDs for the
+following topics:
+
+<dl>
+
+<dt>Federico de Ceballos
+<dd>
+<pre>
+number prefixes 
+0 for NIL 
+! and @ for 16-bit and 32-bit signed and unsigned integers, bytes, octets 
+</pre>
+
+<dt>M. Anton Ertl
+<dd>
+<pre>
+separate FP stack 
+required 
+directory stuff in general 
+directory handling for included and required 
+key names for EKEY results 
+</pre>
+
+<dt>Stephen Pelc
+<dd>
+<pre>
+{ (locals), fp locals, buffer locals 
+S\" .\" 
+iors can be THROWn 
+SYNONYM 
+structures 
+</pre>
+
+<dt>Bill Stoddart
+<dd>
+<pre>
+Using TAB, CR, LF, FF in source code 
+</pre>
+
+</dl>
+
+<h2>Integration into the standards document</h2>
+
+Should new words be put into the established wordsets, or into new
+ones?
+
+<p>The eventual goal is to usually integrate the new words into
+existing wordsets with related functionality; in some cases it may be
+more appropriate to create a new word set.  However, as an
+intermediate step the new proposals will at first be kept separate, to
+make it easier for readers of the document to see what is changing.
+
+<p>How are the extension-query names reflected in the standard (if at
+all)?
+
+<p>The glossary header for new words includes the extension-query
+string for the extension that proposed it.  In addition, there will be
+a chapter or normative appendix that lists all the extensions, their
+extension-query strings and the components (word definitions etc.) that
+it consists of.
+
+<p>Should the tests of a proposal or the reference implementation
+become normative?  No.  This could lead to conflicting normative
+sections; also, making the reference implementation normative would
+lead to overspecification.
+
+<h2>Review of the RfD/CfV process</h2>
+
+How well is the RfD/CfV process working at generating high-quality
+proposals for standardisation and getting information about their
+popularity? What could be improved?  Or should we do something
+completely different?
+
+<p>Many of the participants were not very familar with how well the
+process worked in practice, and had no suggestions for improvements.
+
+<p>The (normative part of the) proposals required adaption before
+integrating them into the document, but there was a widespread feeling
+among the participants that proposals in the form of unambiguous
+instructions to the document editor (which is the form that would be
+voted on by the standards committee) would be harder to understand for
+the CfV audience.
+
+<p>The resulting idea was to have two forms of the proposal, with the
+same content: First the not-so-formal form used in the CfV, and later
+a form for integrating it into the document.
+
+<h2>Official standards body</h2>
+
+Should we run the standard through a standards body like ANSI, ISO,
+IEEE, etc.? If so, which one?
+
+<p>Some participants consider the blessing of the future standards
+document by an official standards body very important, and we agreed
+to work towards this goal by writing the document in the appropriate
+style, and by keeping documentation about all our steps.  However, the
+general idea was to first develop the document without involving a
+standards body, and deal with them at the end.
+
+<p>Various candidate standards bodies were discussed; none was decided
+on, but it might be that going through ANSI again might be the easiest
+route.
+
+<h2>Chairman and Editor</h2>
+
+M. Anton Ertl was appointed as the chair of the committee unopposed.
+
+<p>Peter Knaggs was appointed editor unopposed.
+
+<h2>Next meeting</h2>
+
+After some discussion about possibly having two meetings per year, we
+decided to just have one meeting per year for now.  The next meeting
+will again be on the day before the next EuroForth conference
+(probably in Cambridge, date to be announced).
+
+<h2>Open questions</h2>
+
+Which standard documents should we start from?  Peter Knaggs has a
+version of dpANS99a in LaTeX form, convertible into a fully hyperlinked
+PDF file.  However, it is yet unclear how this document differs from
+the ANS/ISO Forth documents and dpANS6.
+
+<p>How do we get from the CfV proposal to the form for integration
+into the document?  One opinion was that the original proponent should
+do it.  On a related topic, there was the opinion that a proposal
+(de-facto) needs a champion in the committee to get approval by the
+standards committee.  So, if the proponent finds a champion in the
+committee, they could produce the for-the-document version of the
+proposal together.
+
+
+<h2>Improvements for future standard meetings</h2>
+
+<ul>
+
+<li>The participants should familiarise themselves with the proposals
+beforehand.
+
+<li>Paper printouts of the proposals should be available at the
+meeting.
+
+<li>Proposals should be available in the form needed for integration
+into the standards document in addition to the CfV form.
+
+<li>There should be a champion for the proposal in the meeting.
+
+</ul>
+
+<hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
+
