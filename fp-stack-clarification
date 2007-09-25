@@ -1,0 +1,27 @@
+The effect of the fp-stack proposal would be:
+
+On Forth-94 standard systems:
+
+- with a separate FP stack: none
+
+- with a unified data/FP stack: The system could be labeled as being a
+standard system with an environmental restriction of having a unified
+data/FP stack.  Alternatively, the system could also come with a
+suitably adapted version of the reference implementation of the
+fp-stacks proposal, and after including it can claim full compliance.
+
+
+On programs:
+
+- Most FP-using programs have an environmental dependency on a
+separate FP stack in Forth-94.  With this proposal these programs
+would become compliant without that dependence.
+
+- A few programs are standard according to Forth-94, and work with
+both unified and separate FP stacks.  These programs are still
+standard with the proposal.
+
+- Some programs have an environmental dependency on a unified data/FP
+stack with a specific number of cells per FP item.  These programs
+continue to have that dependency.
+

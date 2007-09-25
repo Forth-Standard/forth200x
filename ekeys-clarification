@@ -1,0 +1,5 @@
+While the standard specifies a timing relationship between EKEY?,
+KEY?, EKEY and KEY, one way to avoid any potential problems in this
+respect is as follows: If you use EKEY at all, use only EKEY and
+EKEY?; when you want a character and nothing else, drop all EKEY
+results that are not characters (as recognized by EKEY>CHAR).
