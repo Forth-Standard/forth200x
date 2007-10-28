@@ -30,44 +30,47 @@ proposals by Anton Ertl.
 <p>The following proposals which had gone to a CfV were discussed and voted on:
 
 <dl>
-<dt> <a href="../structures.html">Structures</a> <dd>There was some
-grumbling about the absence of test cases, but eventually the proposal
-was accepted: 7Y:0N:0N
+<dt> <a href="../structures.html">Structures</a>
+<dd>There was some grumbling about the absence of test cases, but
+eventually the proposal was accepted: 7Y:0N:0N</dd>
 
-<dt> <a href="../throw-iors.html">Throw IORs</a> <dd>After some
-discussion, where Stephen Pelc argued that the presence of the new
-throw values was necessary to convince Forth implementors for embedded
-systems to return IORs that are useful for THROWing, this proposal was
-accepted: 7Y:0N:0A.
+<dt> <a href="../throw-iors.html">Throw IORs</a>
+<dd>After some discussion, where Stephen Pelc argued that the presence
+of the new throw values was necessary to convince Forth implementors
+for embedded systems to return IORs that are useful for THROWing, this
+proposal was accepted: 7Y:0N:0A.</dd>
 
 <dt> <a href="../ekeys.html">EKEY return values for some keyboard
-events</a> <dd>Discussion focused on the interaction between
-EKEY?/EKEY and KEY?/KEY.  Anton Ertl then produced <a
-href="../ekeys-clarification">a description of one way in which a
-standard program might deal with this issue</a>; that description was
-to be added to the rationale of EKEY.  This settled the issue, and the
-proposal was accepted: 9Y:0N:1A (the abstention was from an observer).
+events</a>
+<dd>Discussion focused on the interaction between EKEY?/EKEY and
+KEY?/KEY.  Anton Ertl then produced <a href="../ekeys-clarification">a
+description of one way in which a standard program might deal with
+this issue</a>; that description was to be added to the rationale
+of EKEY.  This settled the issue, and the proposal was accepted:
+9Y:0N:1A (the abstention was from an observer).</dd>
 
-<dt> <a href="../fp-stack.html">Separate FP stack</a> <dd>In the 2006
-meeting it had been unclear to some participants what the effect of
-making separate stacks standard would be on existing programs and
-systems.  Anton Ertl produced a <a
-href="../fp-stack-clarification">description of that effect</a>.  This
-description satisfied the participants.  Anton Ertl then proposed that
-he would write up the appropriate changes for the standard document,
-and that this should be voted on in the next meeting.
+<dt> <a href="../fp-stack.html">Separate FP stack</a>
+<dd>In the 2006 meeting it had been unclear to some participants
+what the effect of making separate stacks standard would be on
+existing programs and systems.  Anton Ertl produced a <a
+href="../fp-stack-clarification">description of that effect</a>.
+This description satisfied the participants.  Anton Ertl then proposed
+that he would write up the appropriate changes for the standard
+document, and that this should be voted on in the next meeting.</dd>
 
-<dt> <a href="../number-prefixes.html">Number Prefixes</a> <dd>The CfV
-and the announcement current standings had been too late for this
-meeting (according to the rules set up last time), but the committee
-decided to process this proposal at its discretion.  Accepted
-7Y:0N:0A.
+<dt> <a href="../number-prefixes.html">Number Prefixes</a>
+<dd>The CfV and the announcement current standings had been too late
+for this meeting (according to the rules set up last time), but the
+committee decided to process this proposal at its discretion.
+Accepted 7Y:0N:0A.</dd>
 
 <dt> <a href="../to.html">Rewrite of TO</a> (Wording change, no effect
-on systems or programs) <dd>Accepted: 8Y:0N:0A
+on systems or programs)
+<dd>Accepted: 8Y:0N:0A</dd>
 
 <dt> <a href="../front-matter.html">Front Matter (Meta-Information, no
-effect on systems or programs)</a> <dd>Accepted: 8Y:0N:0A
+effect on systems or programs)</a>
+<dd>Accepted: 8Y:0N:0A</dd>
 
 </dl>
 
@@ -82,54 +85,56 @@ discussions.
 The following proposals (currently in RfD phase) were
 discussed:
 
-<dt> <a href="../.html">Enhanced locals</a> <dd>The discussion mainly
-centered around the following points: whether to split the present RfD
-into several RfDs (yes, '{' syntax and buffer locals); whether to
-include BUILDLV (no); syntax for buffer locals (feedback on earlier
-RfDs indicates that using the last character of the word to be
-declared is deemed un-Forth-like by many); how useful buffer locals
-are and for what applications.
+<dl>
+<dt> <a href="../.html">Enhanced locals</a>
+<dd>The discussion mainly centered around the following points:
+whether to split the present RfD into several RfDs (yes, '{' syntax
+and buffer locals); whether to include BUILDLV (no); syntax for
+buffer locals (feedback on earlier RfDs indicates that using the
+last character of the word to be declared is deemed un-Forth-like
+by many); how useful buffer locals are and for what applications.</dd>
 
-<dt> <a href="../escaped-strings.html">Escaped strings</a> <dd>There
-were discussions about the following topics: the presence and absence
-of specific escapes (some changes in that respect were suggested by
-some committee members, but none had wide support); whether the escape
-characters should be case sensitive (yes); whether the hex digits in
-\xAB should be case insensitive (yes).
+<dt> <a href="../escaped-strings.html">Escaped strings</a>
+<dd>There were discussions about the following topics: the presence
+and absence of specific escapes (some changes in that respect were
+suggested by some committee members, but none had wide support);
+whether the escape characters should be case sensitive (yes);
+whether the hex digits in \xAB should be case insensitive (yes).</dd>
 
-<dt> <a href="../synonym.html">Synonyms</a> <dd>Some of the
-discussions that had been led electronically, were repeated (using
-AKA; argument order).
+<dt> <a href="../synonym.html">Synonyms</a>
+<dd>Some of the discussions that had been led electronically, were
+repeated (using AKA; argument order).</dd>
 
-<dt> <a href="../xchars.html">Extended characters</a> <dd>The name of
-Forth chars was deemed to be confusing in the presence of xchars, and
-it was suggested that they should be renamed into pchars (for
-<em>primitive characters</em>) in a separate wording change proposal.
-Bernd Paysan reported the changes he intended to apply to his latest
-xchars proposal.  The question of how to interface to various other
-character sets and encodings on I/O inspired a lot of discussion;
-Anton Ertl outlined his ideas for a solution (conversion on I/O, with
-encoding possibly specified in the fam passed to OPEN-FILE), which was
-not widely supported; the final recommendation to Bernd Paysan was not
-to lead his RfD to CfV without addressing this issue; the I/O issue
-should be covered in another RfD, but only after gaining some more
-experience with it.  Several of these discussions were continued in
-more depth in the EuroForth Internationalisation workshop.
+<dt> <a href="../xchars.html">Extended characters</a>
+<dd>The name of Forth chars was deemed to be confusing in the presence
+of xchars, and it was suggested that they should be renamed into
+pchars (for <em>primitive characters</em>) in a separate wording
+change proposal. Bernd Paysan reported the changes he intended to
+apply to his latest xchars proposal.  The question of how to
+interface to various other character sets and encodings on I/O
+inspired a lot of discussion; Anton Ertl outlined his ideas for a
+solution (conversion on I/O, with encoding possibly specified in the
+fam passed to OPEN-FILE), which was not widely supported; the final
+recommendation to Bernd Paysan was not to lead his RfD to CfV without
+addressing this issue; the I/O issue should be covered in another
+RfD, but only after gaining some more experience with it.  Several
+of these discussions were continued in more depth in the EuroForth
+Internationalisation workshop.</dd>
 
 <dt> <a href="../2value.html">2VALUE</a> and <a
-href="../fvalue.html">FVALUE</a> <dd>It was agreed that these
-proposals should be rewritten for to new TO wording and then proceed
-to a CfV.
+href="../fvalue.html">FVALUE</a>
+<dd>It was agreed that these proposals should be rewritten for to
+new TO wording and then proceed to a CfV.</dd>
 
-<dt> <a href="../directories.html">Directories</a> <dd>Anton Ertl
-presented the problem of referring to files relative to the directory
-of the currently included file.  Stephen Pelc pointed out that this is
-not the only problem related to directories.  The discussion
-eventuelly suggested a solution that would not not be a one-off
-solution, but would lead the door open to a macro solution that would
-also be useful for the other problems.  The suggested prefix for
-referring to the include directory was <code>%inc%/</code>.
-
+<dt> <a href="../directories.html">Directories</a>
+<dd>Anton Ertl presented the problem of referring to files relative
+to the directory of the currently included file.  Stephen Pelc
+pointed out that this is not the only problem related to directories.
+The discussion eventuelly suggested a solution that would not not be
+a one-off solution, but would lead the door open to a macro solution
+that would also be useful for the other problems.  The suggested
+prefix for referring to the include directory was <code>%inc%/</code>.
+</dd>
 </dl>
 
 
@@ -140,17 +145,19 @@ as RfDs:
 
 <dl>
 
-<dt> 0 as NIL <dd> His proto-RfD changes HERE and ALLOCATE.  Some
-alternative suggestions were made, in particular changing the
-definition of <em>contiguous region</em>.
+<dt> 0 as NIL
+<dd> His proto-RfD changes HERE and ALLOCATE.  Some alternative
+suggestions were made, in particular changing the definition of
+<em>contiguous region</em>.
+</dd>
 
-<dt> 8-bit, 16-bit, 32-bit memory access <dd>He presented a
-comprehensive set of words for the purpose.  There was some discussion
-about naming (U@16 vs. W@; some approvement was expressed for
-Federicos naming despite its deviation from common practice), about
-alignment (network order accesses should not require alignment, native
-accesses should).
-
+<dt> 8-bit, 16-bit, 32-bit memory access
+<dd>He presented a comprehensive set of words for the purpose.
+There was some discussion about naming (U@16 vs. W@; some approvement
+was expressed for Federicos naming despite its deviation from common
+practice), about alignment (network order accesses should not require
+alignment, native accesses should).
+</dd>
 </dl>
 
 Federico de Ceballos promised to submit RfDs on these topics soon.
