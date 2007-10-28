@@ -1,0 +1,98 @@
+<title>Forth 200x standards meeting at EuroForth 2006</title>
+<h1>Forth 200<em>x</em> standards meeting at EuroForth 2006</h1>
+Once again the Forth-200<em>x</em> standards committee took place
+the day before the EuroForth 2006 conference.
+
+The participants were:
+Willem Botha,
+Federico de Ceballos,
+M. Anton Ertl (Chair),
+Peter Knaggs (Editor),
+Stephen Pelc and
+Bill Stoddart.
+
+There where also two observers:
+Nick Nelson and
+Jannus P&ouml;ial.
+
+<h2>RfD/CvF-Process</h2>
+The RfD/CfV-Process and its relationship with the meeting was discussed,
+and specified the following schedule:
+
+<ol>
+<li> A RfD should be published, for the first time, at least 12
+	weeks before the meeting in order to be able to keep the other
+	deadlines.
+<li> The CFV must be submitted at the latest 6 weeks before the
+	meeting at which it is to be discussed.
+<li> The returning officer must publish the <em>Current
+	Standings</em> at the latest 4 weeks before the meeting.
+<li> The CfV will then be discussed at the meeting, it is advisable
+	for the proponent to attend the meeting to defend their
+	proposal. If they are unable to attend, a &quot;Champion&quot;
+	should be found.
+<li> The majority decides.
+</ol>
+<p>
+The contact details of the Committee members will be published, so
+that the Forth community can lobby them in place of attending the
+meeting.
+</p>
+<h2>Review of Basis document (06.2)</h2>
+<p>
+Peter Knaggs, the editor of the standard document, presented the
+document which was present as L<sup>A</sup>T<sub>E</sub>X-source
+code and in PDF-form (both of which will be published).
+It can be produced among other things in a Inline version, where
+the rationale for a word is given with the defintion of the word
+rather than in a seperate appendix.
+Naturally there were still improvement suggestions.
+</p>
+<h2>Discussion of CvFs</h2>
+<dl>
+<dt> <a href="/ekeys.html"><code>EKEY</code> return values</a></dt>
+<dd>
+	Proposes a set of contants which can be used to interpret the
+	values returned by <code>EKEY</code>, e.g. recognizing whether
+	a cursor key was pressed and which. The committee requested
+	further clarification of the relationship between
+	<code>EKEY</code> and <code>KEY</code>, otherwise the
+	suggestion was accepted.
+</dd>
+<p></p>
+<dt><a href="/fp-stack.html">Separate FP Stack</a></dt>
+<dd>
+	Forth systems are to guarantee that there is a separate floating
+	point stack. The committee required that this proposal should
+	be rewritten to make the effects on existing systems and
+	programs clearer.
+</dd>
+<p></p>
+<dt> <a href="/required.html">One-time file loading</a></dt>
+<dd>
+	This proposes a new word word <code>required</code>, which
+	functions in such a way as <code>included</code>, if the file
+	were not loaded yet, but does nothing if it were already loaded;
+	additionally <code>include</code> and <code>require</code> are
+	still standardized. This suggestion was accepted.
+</dd>
+</dl>
+
+<h2>Discussion of RfDs</h2>
+<p>
+In addition, the current proposals, which had not yet reached the
+CFV-Stage where discussed.  The reforulating of <code>TO</code>
+to allows for future changes (<code>2VALUE</code> and
+<code>FVALUE</code>) to be simplified arrose out of these
+discussions.
+</p><p>
+Further it was decided that minutes of the meeting should be
+published.  This is considered importantly for an official
+standardisation organization.
+</p>
+
+<h2>Next Meeting</h2>
+The next meeting takes place again on the day before the EuroForth,
+and you are cordially invited to attend it.
+
+<hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
