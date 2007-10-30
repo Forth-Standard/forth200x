@@ -1,13 +1,23 @@
-<title>Thow IORs proposal</title>
-<h3><a name="thowiors">Throw IORs</a></h3>
+<title>Throw IORs proposal</title>
+<h1><a name="throw-iors">Throw IORs</a></h1>
 
 [ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
 
-<h4>Poll standings</h4>
+<ol>
+<li> <a href="#poll">Current Poll Standing</a>
+<li> <a href="#problem">Problem</a>
+<li> <a href="#current">Current practice</a>
+<li> <a href="#solution">Solution</a>
+<li> <a href="#proposal">Proposal</a>
+<li> <a href="#comments">Comments</a>
+<li> <a href="#voting">Voting instructions</a>
+</ol>
+
+<h2><a name="poll">Poll standings</a></h2>
 
 See <a href="#voting">below</a> for voting instructions.
 
-<h5>Systems</h5>
+<h3>Systems</h3>
 <dl>
 <dt> [ ] conforms to ANS Forth.
 <dt> [ ] already implements the proposal in full since release [ ]:
@@ -18,43 +28,19 @@ See <a href="#voting">below</a> for voting instructions.
 <dt> [ ] will never implement the proposal in full:
 </dl>
 
-<h5>Programmers</h5>
+<h3>Programmers</h3>
 <dl>
 <dt> [ ] I have used (parts of) this proposal in my programs:
 <dt> [ ] I would use (parts of) this proposal in my programs if the systems
     I am interested in implemented it:
+<dd> Graham Smith
 <dt> [ ] I would use (parts of) this proposal in my programs if this
     proposal was in the Forth standard:
 <dt> [ ] I would not use (parts of) this proposal in my programs.
 </dl>
 
-<h5>Informal results</h5>
 
-<b>Bernd Paysan</b>
-
-The ballot system doesn't work well to describe how Gforth and bigFORTH do
-it, so I explain it in words:
-<p>
-Gforth and bigFORTH have made IORs throwable since the dawn of their ANS
-Forth compatibility (both during the draft process). However, we use the
-system-specific part of the throw code table, and have a way how to convert
-signal and errno numbers into the THROW space.
-<p>
-If you relax your proposal in such a way that IORs must be throwable, and
-the system also must provide a way to print out diagnostic strings (e.g.
-the <code>.ERROR</code> we have in Gforth), a consent is easier to reach.
-I like to keep as much information as possible about the original error,
-so mapping errors to words that misbehave isn't such a good idea - a word
-like <code>WRITE-FILE</code> can fail for quite a number of reasons (no
-space left on device, pipe closed, low-level IO error, buffer outside address
-space, etc.). A backtracing utility is a better way to locate the error, and
-you'll then see which word misbehaved, as well.
-<p>
-So in general, I fully support the part of your proposal where IORs are made
-throwable, but I don't support your throw code scheme.
-
-
-<h4>Problem</h4>
+<h2><a name="problem">Problem</a></h2>
 
 Error codes returned by some words, e.g. <code>ALLOCATE</code> are not
 specified, and an application has no entitlement to use them as
@@ -77,35 +63,37 @@ which leads to silent aborts when a system issues <code>-1 THROW</code>
 (as it is currently entitled to) or incorrect error messages.
 
 
-<h5>Current practice</h5>
+<h2><a name="current">Current Practice</a></h2>
 
 As far as possible within historical and commercial constraints,
-MPE has attempted to make iors THROWable. The only downside has
-been some necessary conversion of operating system error codes
-to ANS or application error codes.
+MPE has attempted to make <em>ior</em>s <code>THROW</code>able. The
+only downside has been some necessary conversion of operating system
+error codes to ANS or application error codes.
 <p>
-Some years ago, some people objected to making iors the same as
-THROW codes because of the documentation overhead. This RfD is
-made to sample opinion again, particularly among Forth system
+Some years ago, some people objected to making <em>ior</em>s the same
+as <code>THROW</code> codes because of the documentation overhead. This
+RfD is made to sample opinion again, particularly among Forth system
 implementers.
 
 
-<h5>Solution</h5>
+<h2><a name="solution">Solution</a></h2>
 
 All words which return an ior should have one value assigned in the
 THROW code table (Table 9.2 in 9.3.5). This table reserves values
 -1..-255 for system-defined exceptions. Systems that ignore this
 proposal are unaffected if they already avoid these values, and
 systems that implement this proposal gain use of these new fixed
-iors.
+<em>ior</em>s.
 
-The only downside is that we have to define some new THROW codes.
+The only downside is that we have to define some new
+<code>THROW</code> codes.
 
-<h4>Proposal</h4>
-Extend the THROW code table (Table 9.2 in 9.3.5) so that there is
-a separate THROW code for each word that returns an ior.
+<h2><a name="proposal">Proposal</a></h2>
+Extend the <code>THROW</code> code table (Table 9.2 in 9.3.5) so that
+there is a separate <code>THROW</code> code for each word that returns
+an <em>ior</em>.
 
-<h5>Labelling</h5>
+<h3>Labelling</h3>
 
 ENVIRONMENT? impact - table 3.5 in Basis1
 <blockquote>
@@ -149,18 +137,60 @@ THROW/ior impact - table 9.2 in Basis1
   </table>
 </blockquote>
 
-<h4><a name="voting">Voting instructions</a></h4>
+<h2><a name="comments">Comments</a></h2>
+
+<dl>
+<dt> <b>Bernd Paysan</b>
+<dd>
+
+The ballot system doesn't work well to describe how Gforth and bigFORTH do
+it, so I explain it in words:
+<p>
+Gforth and bigFORTH have made IORs throwable since the dawn of their ANS
+Forth compatibility (both during the draft process). However, we use the
+system-specific part of the throw code table, and have a way how to convert
+signal and errno numbers into the THROW space.
+<p>
+If you relax your proposal in such a way that IORs must be throwable, and
+the system also must provide a way to print out diagnostic strings (e.g.
+the <code>.ERROR</code> we have in Gforth), a consent is easier to reach.
+I like to keep as much information as possible about the original error,
+so mapping errors to words that misbehave isn't such a good idea - a word
+like <code>WRITE-FILE</code> can fail for quite a number of reasons (no
+space left on device, pipe closed, low-level IO error, buffer outside address
+space, etc.). A backtracing utility is a better way to locate the error, and
+you'll then see which word misbehaved, as well.
+<p>
+So in general, I fully support the part of your proposal where IORs are made
+throwable, but I don't support your throw code scheme.
+<p>
+<b>Stephen Pelc</b> points out that the proposal does not say that you <b>must</b>
+use these throw numbers, it says that if you use these numbers, this is what
+the standard means by those specific numbers. Consequently gForth will not
+conflict with the proposal.
+<p>
+Given the range of hardware and O/S, it is impossible in a standard to go
+beyond saying that <code>WRITE-FILE</code> failed and a <code>THROW</code>
+occurred. Most hosted systems require further work to get an extended error
+code and/or string.
+
+<dt> <b>Graham Smith</b>
+<dd>
+Yes! And I grow tired of reinventing this sort of thing for each application.
+</dl>
+
+<h2><a name="voting">Voting instructions</a></h2>
 
 Fill out the appropriate ballot(s) below and mail it/them to me
 &lt;pknaggs&#064;bournemouth.ac.uk&gt;.  Your vote will be published
 (including your name (without email address) and/or the name of your
 system) here.  You can vote (or change your vote) at any time by
 mailing to me, and the results will be published here.
-
-<p>Note that you can be both a system implementor and a programmer, so
+<p>
+Note that you can be both a system implementor and a programmer, so
 you can submit both kinds of ballots.
 
-<h4>Ballot for systems</h4>
+<h3>Ballot for systems</h3>
 
 If you maintain several systems, please mention the systems separately
 in the ballot.  Insert the system name or version between the
@@ -181,7 +211,7 @@ If you want to provide information on partial implementation, please
 do so informally, and I will aggregate this information in some way.
 
 
-<h4>Ballot for programmers</h4>
+<h3>Ballot for programmers</h3>
 
 Just mark the statements that are correct for you (e.g., by putting an
 "x" between the brackets).  If some statements are true for some of
