@@ -23,6 +23,7 @@ The results will be shown here in late August 2006.
  MPE Forth cross compilers
  MacForth/Power MacForth/Carbon MacForth (Ward McFarland)
  TCBForth (Tessa Celine Bonting)
+ PFE (Guido Draheim)
 [ ] already implements the proposal in full since release [ ]:
  PowerMops 3
  iForth 1
@@ -30,6 +31,7 @@ The results will be shown here in late August 2006.
  Gforth 0.1
  VFX Forth for Windows/DOS/Linux 3.0
  MacForth/Power MacForth/Carbon MacForth since at least 10 years
+ PFE 0.7 (first release)
 [ ] implements the proposal in full in a development version:
  TCBForth
 [ ] will implement the proposal in full in release [ ].
@@ -77,6 +79,12 @@ an optional mode where the stack is unified. The x86 version uses the
 native stack of the x87 FPU, and didn't offer this unified stack
 option.
 
+<p>PFE provides two floating-ext implementations, one with a seperate
+floating-stack and one with an integrated floating-stack. Both conform
+to ANS Forth - loading "fpnostack-ext" will also provide a
+"floating-ext" environme nt entry while the default "floating-ext"
+environment query will yield a configurat ion with a separate
+fp-stack.
 
 <h4>Change History</h4>
 

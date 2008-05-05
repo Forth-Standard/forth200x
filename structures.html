@@ -16,6 +16,7 @@ See <a href="#voting">below</a> for voting instructions.
  Gforth
  bigForth
  Gerry Jackson's system
+ PFE (Guido Draheim)
 [ ] already implements the proposal in full since release [ ]:
 [ ] implements the proposal in full in a development version:
  Gforth
@@ -25,6 +26,7 @@ See <a href="#voting">below</a> for voting instructions.
 [ ] will implement the proposal in full in some future release.
  bigForth
  Gerry Jackson's system
+ PFE
 There are no plans to implement the proposal in full in [ ].
 [ ] will never implement the proposal in full:
  4th (Hans Bezemer)
@@ -114,7 +116,7 @@ Usage:
 <value> IID-RVA-NAME ! \ i.e. BASE-IID+12
 </pre>
 
-Hans Bezemer writes:
+<p>Hans Bezemer writes:
 
 <pre>
 I'm one of the guys that prefer the 
@@ -130,6 +132,18 @@ FIELD implementation since 4tH 3.4x which will be renamed to +FIELD in "4tH
 4tH's structure there is little sense in supporting the other stuff, except 
 for maybe CFIELD. 
 </pre>
+
+<p>Guido Draheim writes:
+
+"+FIELD" is already used in PFE with a different behaviour.  The
+Forth200x behaviour does already exist as "/FIELD". The word "+FIELD"
+has been deprecated now in PFE to allow for future version to
+implement Forth200x structures, the old behavior of PFE +FIELD
+continues to exist as "+FIELD:" even when Forth200x structures will
+get available. The reason is that there are lots of PFE applications
+that do already take advantage of "+FIELD" but they can be adapted
+with a simple [IF]-DEF header section. PFE will not implement
+Forth200x structures in the near future (approx. 2 years).
 
 
 <h4>Proposal</h4>
