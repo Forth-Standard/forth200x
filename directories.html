@@ -3,37 +3,15 @@
 <h3>Directories</h3>
 
 <pre>
-Questions:
-
-- Do you find any of these prefixes acceptable?
-
-Marcel Hendrix: :/ %here%
-David Smith doesn't like %here%
-
-- What is your preference among them?
-
-Marcel Hendrix: :/
-Stephen Pelc: I do not like any of these!
-
-- Do you have better suggestions for a prefix?
-
-Stephen Pelc: %RelDir%/ (maybe also %id%)
-Bernd Paysan: @/
-Anton Ertl: ~~/ ^/ %inc%
-
-
-- Would you use such a facility if it was standarized?  How would the
-  prefixes influence this decision?
-
-Marcel Hendrix: yes.
-
-- Would you implement such a facility if it was standardized?  How
-  would the prefixes influence this decision?
-
-Marcel Hendrix: yes.
-
-
 Changes:
+
+3rd RfD:
+
+The main way to specify source-directory-relative filenames is now F",
+not prefixes.  Removed prefixes from proposal, but discuss them in the
+Remarks section.
+
+2nd RfD:
 
 Added INCLUDE-NAME-ABS.
 Added Sections "Which prefix?", "What if there is no currently
@@ -73,30 +51,29 @@ specify it for Forth.
 
 Next, we need a way to specify a file name relative to the directory
 that contains the Forth source file that contains the file name (as a
-string): A special, otherwise unused prefix (e.g., "./", ":/", or
-"\/") refers to this directory.  For the moment, assume the prefix is
-"./".  E.g., in the example above, the prog.fs file would contain
-references to "./library.fs", "./data" and "./lib1/lib.fs".  The
-lib.fs file would contain a reference to "./foo.fs".
+string): F" file" produces a filename in a source-file-independent
+way.  E.g., in the example above, the prog.fs file would contain code
+like
 
-Finally, how do we expand these filenames to a sourcefile-independent
-form?  The source file of the string is important for the expansion,
-not the source file of the consumer of the string (in the rare cases
-where the consumer is not in the same file as the string); so the best
-option is probably to have a special filename-string word like F" and
-not perform the expansion in the consumer (INCLUDED, OPEN-FILE etc.).
-In order to keep the conveniences of the parsing INCLUDE and REQUIRE,
-these should expand the string after parsing.  In addition, a word
-INCLUDE-NAME-ABS for converting a string from an include-relative
-filename to an absolute filename is a natural factor of these words
-and can be useful in some cases.
+F" library.fs"
+F" data.txt"
+F" lib1/lib.fs"
+
+and lib.fs would contain code like
+
+F" foo.fs"
+
+In addition, a word INCLUDE-NAME-ABS for converting a string from an
+include-relative filename to an absolute filename is a natural factor
+of F" and can be useful in some cases.
 
 
 Typical usage:
 
-REQUIRE ./lib1/lib.fs
-F" ./data.txt" r/o open-file
+F" lib1/lib.fs" required
+F" data.txt" r/o open-file
 S\" ./funny\"filename" include-name-abs r/o open-file
+
 
 Proposal, reference implementation and tests:
 
@@ -105,10 +82,14 @@ Will be done after the solution has solidified after some discussion.
 
 Existing practice and experience:
 
-Gforth uses the ./ prefix in INCLUDED and friends (i.e., in the
-consumer, not in the producer, as suggested here).  We have had very
-good experiences with that (consumer and producer are usually in the
-same file).
+Gforth implements this functionality by interpreting the ./ prefix of
+filenames in INCLUDED and friends (i.e., in the consumer, not in the
+producer, as suggested here).  We have had very good experiences with
+that (consumer and producer are usually in the same file).
+
+Some other Forth systems have similar facilities, e.g., Win32Forth,
+typically as part of the regular file search path (so no special
+prefix is necessary).
 
 Modern C compilers like gcc do
 
@@ -127,80 +108,48 @@ shortcoming).
 
 Remarks:
 
-Which prefix?
+What about specifying the source directory as a file name prefix?
 
 There was considerable resistance to using the "./" prefix in the
-first RfD.  Unfortunately, the replacements I and others suggested
-(":/", "\/", "%here%") were not met with approval, either.
+first RfD, and to other short prefixes.  We probably could find
+consensus on a prefix, but it will be so long that it does not provide
+any savings in typing over using F", so the only people who would use
+such a prefix are probably those people who would also use F" if there
+is no prefix, so having a prefix just causes additional work for the
+proponent and the implementors with little gain to the community.
 
-The prefix should be something which cannot occur in a
-portable file name (e.g., ":/" or "\/" cannot occur in Windows file
-names), or which normally is redundant (e.g., "./" can be left away).
-
-The prefix "./" has been used in Gforth for many years without
-problems or complaints.  In other contexts it is a noop, referring to
-the current directory relative to some base directory.  This is both
-its attraction and the reason for resistance against it:
-
-- It is attractive, because the meaning of "require ./lib1/lib.fs" is
-intuitively understandable.
-
-- There is resistance against it, because in this context it means
-something different than the same file name without "./" (different
-Forth systems do different things with prefix-less relative file names
-in INCLUDED-style contexts: some search a path, others refer to the
-current working directory), and something different than the same
-"./"-prefixed name in a different context.  However, the Unix shells
-are another example where "./" means something different from a
-prefix-less relative file name, and while this causes occasional
-confusion, it works.
-
-However, I am open to suggestions for other prefixes, especially from
-implementors who are prepared to implement that.
+For those interested in prefixes, my conclusion of the prefix
+discussion before I decided to go without prefixes is available in an
+<a href="directories-with-prefixes.html">older version of this
+RfD</a>.
 
 
-What about string macros?
 
-String macro expansion has been proposed as a way to solve the problem
-above, and it is implemented by MPEs Forth systems.  While I am not
-familiar enough with this system to produce a typical-code example for
-the example above, it appears to be more cumbersome to use than the
-present proposal (at the very least one has to write "%<macro-name>%/"
-instead of "./").  Moreover, depending on the exact usage, there might
-be problems with name collisions and nesting.  Also MPE's systems
-currently contain no macro with the needed functionality (%load_path%
-was suggested, but does something different in MPE's systems).
+What about specifying file names relative to a library root etc.?
 
-That being said, string macros are a general-purpose concept that has
-applications in other areas as well as in file names, and is probably
-a good candidate for another RfD.
+Several people have suggested having a word (or a prefix) for
+specifying a library directory.  While this is a worthwhile goal, I
+feel that finding a consensus on that topic is hard enough that it
+should be attacked in a separate RfD.
 
 
-Is the prefix necessary?
+What if the user puts an absolute file name inside F" or with
+INCLUDE-NAME-ABS?
 
-It is necessary for use with INCLUDE (and REQUIRE); if we interpreted
-prefix-less relative filenames in the way proposed for the prefixed
-filenames, some systems would have to be changed in ways that would
-break their existing programs; by contrast, it is unlikely that these
-legacy programs use prefix in a way that conflicts with the usage
-discussed here.
-
-Since F" is new, "./" would not be strictly necessary there (no legacy
-programs broken).  However, requiring it makes the usage consistent,
-and allows putting a standard meaning to an unprefixed relative name,
-if there is ever consensus on that.
+We could specify that F" then just returns the absulute file name, or
+that this is an ambiguous condition.  Unless there is a good reason to
+make it ambiguous, I lean towards the first option.  One potential
+reason for making it ambiguous is that the Forth system does not
+necessarily recognize absolute file names (e.g., Windows has all kinds
+of syntax for absolute file names).
 
 
-What about other file names?
+What if the user uses F" or INCLUDE-NAME-ABS outside a Forth source file?
 
-How other file names than those starting with "./" are interpreted is
-not specified, at least in the first draft: absolute file names are
-OS-specific and often user-specific and thus inherently non-portable;
-the interpetation of other relative filenames depends on the system
-(some do path searching, some perform macro expansion etc.); it is
-probably hard to find a consensus here, and these issues are not as
-important for writing portable programs (to make using these programs
-nicer, it would still be nice if a consensus was found).
+That is an ambiguous condition.  I.e., a standard program would have
+to specify the directory in another way in this situation.  However, a
+standrd program will typically come in a Forth source file (or it will
+come as blocks and not access files at all).
 
 
 Why not use a CD word for this purpose?
@@ -214,15 +163,6 @@ or library directory is usually not where he is working.  If the user
 passes a data file name to the included file, he expects it to be
 interpreted in the context of his working directory, not the program's
 directory.
-
-
-What if there is no currently including file?
-
-E.g., if one does "INCLUDE ./foo.fs" from the command line, which file
-should be included?  I propose to make this an ambiguous condition.
-What Gforth currently implements for this situation is to look for
-foo.fs in the current working directory.
-
 
 
 Isn't specifying "/" as directory separator too OS-specific?
