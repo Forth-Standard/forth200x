@@ -1,0 +1,169 @@
+<title>Forth standards meeting at EuroForth 2008</title>
+
+<h1>Forth standards meeting at EuroForth 2008</h1>
+
+On 2008-09-25 and 2008-09-26 there was a Forth standards meeting,
+right before EuroForth 2008.  The participants were:
+
+<ul>
+<li>Willem Botha, CCS, South Africa
+<li>Federico de Ceballos, University of Cantabria, Spain
+<li>M. Anton Ertl, TU Wien, Austria
+<li>Ulrich Hoffmann, Heidelberger Druckmaschinen, Germany (observer, late)
+<li>Peter Knaggs, University of Bournemouth, England
+<li>Bernd Paysan, Germany
+<li>Stephen Pelc, MPE, England
+<li>Bill Stoddart, University of Teesside, England
+<li>Andrew Haley, Red Hat, England
+<li>Leon Wagner, Forth Inc., USA
+<li>Willi Stricker
+</ul>
+
+At this meeting the observers were allowed to vote.  Anton Ertl
+chaired most of the meeting.
+
+<p>The following topics were discussed (not always in this order):
+
+
+<h2>Minutes of last meeting and standards document</h2>
+
+The minutes of the last meeting contain a mistake: They claim that the
+throw-iors proposal was referred for further clarification, but
+actually it was accepted (this is also reflected in the standard
+document).  It was decided (10:0:1) to accept the minutes as is, and
+write a correction in the next minutes.
+
+<p>The standards document was reviewed and accepted as reflecting the
+results of the last meeting (8Y:0N:3A).
+
+<p>Minutes, draft documents, and reports were published on the
+www.forth200x.org web site.  Anton Ertl promised to write a 2007 and a
+2008 report for the <em>Vierte Dimension</em> (German FIG newsletter).
+Peter Knaggs has not contacted Paul Frenger about publishing the
+minutes in SIGPLAN Notices yet.
+
+<h2>Accepting proposals into the standard document</h2>
+
+<p>The following proposals which had gone to a CfV were discussed and voted on:
+
+<dl>
+
+<dt> <a href="../fp-stack.html">Separate FP stack</a> <dd>The proposed
+changes to the standard document were discussed, and additional
+changes were asked for (additional documentation requirements, and
+specifying the combined stack as obsolescent).  These were added
+during the meeting, and the result was accepted 10Y:0N:0A.
+
+</dl>
+
+<h2>Removing obsolete words</h2>
+
+Should words that were called obsolescent in Forth-94 now be removed
+as obsolete?  There was consensus that they should, the question was
+how:
+
+<ul>
+
+<li>Remove them completely
+
+<li>Keep a list of names in an appendix
+
+<li>Keep names and specification in an appendix
+
+<li>Keep names and specification in an obsolete wordset
+
+</ul>
+
+After some discussion, it was decided (11Y:0N:0A) to keep the names
+and the specification in an appendix.
+
+
+<h2>RfDs</h2>
+
+The following proposals (currently in RfD phase) were
+discussed:
+
+<dl>
+<dt> <a href="../2value.html">2VALUE</a> and <a
+href="../fvalue.html">FVALUE</a> <dd>No progress has been made there
+because the original RfD submitters have not submitted new RfDs
+adapted to the changed TO wording.  The original RfD submitters should
+be contacted (by Anton Ertl) and be asked to submit a revised RfD (and
+eventually a CfV).
+
+<dt> <a href="../escaped-strings.html">Escaped strings</a> <dd>This
+RfD was also seen as being mostly ready for a CfV (although some
+participants did not remember if there were some details that should
+be fixed first).
+
+<dt> <a href="../synonym.html">Synonyms</a> <dd>The discussions
+centered mostly around some of the ambiguous conditions in the
+proposal (in particular, that synonyms would not be tickable and
+POSTPONEable).  Several participants had a strong feeling that these
+ambiguous conditions should be removed before the RfD becomes a CfV.
+Otherwise, the proposal was found acceptable.
+
+<dt> <a href="../xchars.html">Extended characters</a> <dd>This
+proposal was now deemed to be mature enough to go to a CfV (probably
+after a final RfD).  A question came up whether it should be in a new
+wordset or in an existing one.
+
+<dt> <a href="../.html">Enhanced locals</a> <dd>Leon Wagner reported
+that in the code of Forth, Inc. customers '{' is actually used in
+compile state several hundred times, so Forth, Inc. would not
+implement a syntax based on '{'.  Also, BigForth uses <code>{
+... |</code> in a different way than proposed.  There was some
+discussion on how to resolve these conflicts, resulting in the
+following syntax: <code>{: ... | ... -- ... :}</code>.  Another RfD
+will come out with this change.
+
+<p>Another point in the discussion was whether to allow several locals
+definitions.  Bernd Paysan intends to write an RfD for that.
+
+<dt>Local buffers <dd>There was quite a bit of discussion on that
+issue.  After the Forth200x meeting Leon Wagner and Stephen Pelc
+worked out a completely new syntax which would allow writing code like
+this:
+
+<pre>
+[: value a 5 value b 10 cells buffer: c :]
+</pre>
+
+<dt> <a href="../directories.html">Directories</a> <dd>It was pointed
+out that someone uses <code>F"</code> for some other purpose, so a
+different name would have to be used.  Several other points that were
+already made in the email discussion were repeated.  In an off-line
+discussion Stephen Pelc outlined his preferred solution of first
+standardizing macros and then building directory-path words on top of
+that.
+
+</dl>
+
+
+<h2>Big proposals</h2>
+
+The internationalization/localization and cross-compilation proposals
+(which are not yet RfDs) were discussed (but not very deeply, as most
+or all participants were not very familiar with them, and they are
+big), and it was suggested that they should be developed into RfDs.
+
+<p>For the cross-compilation proposal some revision of the existing
+proposal was promised (apparently there were some advances since that
+proposal was originally written); also Stephen Pelc, Leon Wagner, and
+Bernd Paysan should sit down together and work out the RfD.
+
+
+<h2>Future RfDs</h2>
+
+Federico de Ceballos promised that he would submit RfDs on the issues
+that he has worked on.
+
+<h2>Next meeting</h2>
+
+There will be another meeting before the next EuroForth.  There was
+some discussion whether it should be two days, and whether there
+should be another meeting before the Forth-Tagung.
+
+
+<hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
+
