@@ -1,0 +1,252 @@
+\documentclass{article}
+\usepackage{a4wide}
+\usepackage{enumerate}
+\usepackage{parskip}
+
+\newcommand{\action}[1]{%
+	\mbox{}\hfill \textbf{Action:~#1}%
+}
+
+\newcommand{\word}[1]{\texttt{#1}}
+
+\makeatletter
+\renewcommand{\section}{\@startsection
+	{section}{1}{0pt}{1pt}{1pt}
+	{\normalfont\bfseries}
+}
+\makeatother
+
+\begin{document}
+\pagestyle{empty}
+
+\begin{center}\bf\large
+Forth 200\emph{x} Standards Committee \#4 \\[6pt]
+Technische Universit\"{a}t Wien, Vienna, Austria. \\[6pt]
+25--26 September 2008 \\[12pt]
+Draft Minutes
+\end{center}
+
+\section{Participants}
+\label{members}
+
+	\begin{tabular}{lll}
+		Willem		Botha		& CCS, South Africa \\
+		Federico de	Ceballos	& University of Cantabria, Spain \\
+		M. Anton	Ertl		& Technische Universit\"{a}t Wien, Austria & (Chair) \\
+		Andrew		Haley		& Red Hat, Cambridge, England \\
+		Ulrich		Hoffmann	& FH Wedel, Germany	\\
+		Dr. Peter	Knaggs		& University of Exeter, England \\
+		Bernd		Paysan		& Germany \\
+		Stephen		Pelc		& MPE, England \\
+		Dr. Bill	Stoddart	& University of Teesside, England \\
+		Willi		Stricker	& FH Hannover, Germany \\
+		Leon		Wagner		& Forth, Inc., USA \\
+	\end{tabular}
+
+Ulrich Hoffmann and Bernd Paysan become full members of the
+committee according to the membership rules.
+
+Andrew Haley, Willi Stricker and Leon Wagner where elected
+full members of the committee on there first attendance.
+(8/0/0)
+
+\section{Minutes of last meeting}
+\label{minutes}
+	The draft minutes of the last meeting contain a mistake:
+	They claim that the \textsf{throw-iors} proposal was referred
+	for further clarification, when they where accepted.  With
+	this correction the minutes where accepted (10/0/1) as a true
+	and accurate representation of the meeting.
+
+\section{Review of Forth2007.2 basis document}
+\label{review}
+	\begin{enumerate}[i)]
+	\item \LaTeX{} source file now given in page footer.
+
+	\item Inline rational text now in sans-serif font.
+
+	\item Renamed ``forward'' to ``foreword''.
+
+	\item Two new sentences added to ``Process''.
+
+	\item Membership Rules added to ``200x Membership''.
+
+	\item Added \textsf{X:number-prefix} proposal:
+		extending section 2.2.1 Numeric notation and table 3.6 Forth 200x
+		Extensions. Replacing section 3.4.1.3 Text interpreter input number
+		conversion, with the addition of text to 8.3.2 Text interpreter input
+		number conversion.  Moving section 12.2.2 Notation to section 2.2.1
+		Numeric notation.  Adding test cases to section A.3.4.1.3 Numeric
+		notation.
+
+	\item Added \textsf{X:structures} proposal:
+		extended table 3.6 Forth 200x Extensions, sections 4.1.2 Ambiguous
+		conditions and 10.4.1.2 Ambiguous conditions.
+		Adding section 10.3.1 Data types,
+		\word{BEGIN-STRUCTURE}, \word{END-STRUCTURE}, \word{+FIELD},
+		\word{CFIELD:} and \word{FFIELD:} to 10.6.2 Facility extension words
+		and \word{DFFIELD:}, \word{FFIELD:} and \word{SFFIELD:} to 12.6.2
+		Floating extension words.
+
+		The rational for \word{BEGIN-STRUCTURE} contains the phrase
+		``school of though'' which should be corrected to ``school of
+		thought''.
+		\action{PK}
+
+	\item Added \textsf{X:throw-iors} proposal:
+		extended tables 3.6 Forth 200x Extensions and 9.2 \word{THROW}
+		code assignments.
+
+	\item Tidied up source code in \textsf{X:ekeys} definitions, adding
+		rationale for to \word{EKEY}.
+
+		The text relating to the relationship between \word{KEY}, \word{KEY?},
+		\word{EKEY} and \word{EKEY?} still needs work, in particular the
+		persistence of the value returned.
+		\action{AE/SP/PK}
+
+	\item Corrected a number of section numbering errors in appendix A
+		Rationale.
+
+	\item Added books by Elizabeth Rather and Stephen Pelc; a URL for
+		the Thinking Forth entry in the appendix B Bibliography.
+
+	\item Reformatted appendix G Change Log to allow the separate versions
+		of the basis document to appear in the table of contents.
+	\end{enumerate}
+
+\section{Consideration of proposals}
+\label{CfV}
+
+\newcommand{\entry}[4]{
+	\hbox{%
+		\parbox[t]{8em}{\textsf{#1}}
+		\parbox[t]{24em}{#2}
+		\parbox[t]{4em}{#3\centering}
+		\parbox[t]{6em}{\textbf{#4}\centering}
+	}%
+}
+
+~\\[-\baselineskip]
+\entry{\textrm{Proposal}}{Comments}{Vote}{Action}
+\entry{fp-stack}{Accepted with minor modifications}{10/0/0}{AE}
+
+\section{Discussion of \emph{draft} proposals}
+\label{RfD}
+~\\[-\baselineskip]
+\entry{\textrm{Proposal}}{Comments}{Status}{Action}
+
+\entry{2value}
+	{Redraft with new \word{TO}}
+	{Ongoing}{AE}
+
+\entry{directories}
+	{Referred for workshop discussion}
+	{Ongoing}{AE}
+
+\entry{escaped-strings}
+	{Progress on to CfV}
+	{Ongoing}{AE/PK}
+
+\entry{f-value}
+	{Redraft with new \word{TO}}
+	{Ongoing}{AE}
+
+\entry{synonym}
+	{Minor revision to ambiguous conditions}
+	{Ongoing}{SP/PK}
+
+\entry{extended-locals}
+	{Revise \{ syntax}
+	{Referred}{SP}
+
+\entry{local-buffers}
+	{Withdrawn to be replaced by a new RFD}
+	{Withdrawn}{}
+
+\entry{xchars}
+	{Referred for a workshop discussion to integration into a
+	 proposed localisation wordset.}
+	{Ongoing}{BP/AE}
+
+
+%\section{Discussion of \emph{fast track} proposals}
+%\label{fasttrack}
+%
+%\begin{tabular}{p{6.5em}p{24em}lc}
+%	Proposal	& Comments				& Status & Action \\
+%
+%\textsf{foreword}
+%	& Extend book references
+%	& Accepted
+%	& PK \\
+%\end{tabular}
+
+\section{Progress Reports}
+\label{reports}
+
+\begin{enumerate}[a)]
+\item Development Reports
+	\begin{enumerate}[i)]
+	\item \word{0} for \word{NIL}
+		No progress to report.
+		\action{FC/AE}
+
+	\item 16-/32-bit signed/unsigned \word{!} and \word{@} for integers,
+		bytes, octets. \\
+		Some progress, but would like assistance before publication.
+		\action{FC}
+
+	\item \textsf{directory}: directory accessing in general \\
+		Referred to a workshop regarding use of text substitution.
+		\action{AE}
+	\end{enumerate}
+
+\item Integration of RFI0007 (\word{IMMEDIATE} vs ``compilation semantics'') \\
+	No progress to report.
+	\action{AE/PK}
+
+\item Obsolescent Word set \\
+	It was agreed that the words should be moved to a non-normative appendix
+	rather than a new wordset (11/0/0).  A RFD should be developed for the
+	next meeting.
+	\action{PK}
+
+\item Review/integration of RFI documents: \\
+	No progress to report.
+	\action{AE/PK}
+\end{enumerate}
+
+\section{Matters Arising}
+\label{matters}
+\begin{enumerate}[i)]
+	\item \textsf{Cross Compiler:}
+		Develop Elisabeth Rather's Cross Compiler proposal into an
+		RfD. \\
+		\action{BP/LW/SP}
+
+	\item \textsf{Localisation:}
+		Develop L10N proposals into RFD, with the possible integration of
+		the existing \textsf{xchar} proposal.
+		\action{PK/SP}
+
+	\item The length of the meeting was considered.  It was agreed that the
+		next voting meeting should be extended by a day to allow time for
+		workshop discussions.
+\end{enumerate}
+
+\section{Date of Next Meeting}
+\label{next}
+
+	A review meeting to be held in conjunction with the Forth-Tagung
+	in April/May.
+	\action{UH}
+
+	The next voting meeting will be held directly before the next
+	euroForth conference to be held in England.  The location and dates
+	are yet to be decided.  Bill Stoddart, Peter Knaggs and Andrew Haley
+	are all to look into conference facilities and report back to the
+	email list.
+	\action{PK/BS/AH}
+
+\end{document}
