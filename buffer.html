@@ -1,0 +1,121 @@
+<!--
+Article: 140669 of comp.lang.forth
+Path: tunews.univie.ac.at!aconews-feed.univie.ac.at!newsfeed.wu-wien.ac.at!newsfeed.utanet.at!news.germany.com!border1.nntp.ams.giganews.com!nntp.giganews.com!pe2.news.blueyonder.co.uk!blueyonder!pe1.news.blueyonder.co.uk!blueyonder!cyclone02.ams2.highwinds-media.com!news.highwinds-media.com!npeersf01.ams.highwinds-media.com!newsfe11.ams2.POSTED!7564ea0f!not-for-mail
+From: stephenXXX@mpeforth.com (Stephen Pelc)
+Newsgroups: comp.lang.forth
+Subject: RfD: BUFFER:
+Organization: MPE
+Reply-To: stephenXXX@INVALID.mpeforth.com
+Message-ID: <4989dcb8.200488397@192.168.0.50>
+X-Newsreader: Forte Free Agent 1.21/32.243
+Lines: 100
+NNTP-Posting-Host: 80.176.152.87
+X-Complaints-To: abuse@demon.net
+X-Trace: newsfe11.ams2 1233771902 80.176.152.87 (Wed, 04 Feb 2009 18:25:02 UTC)
+NNTP-Posting-Date: Wed, 04 Feb 2009 18:25:02 UTC
+Date: Wed, 04 Feb 2009 18:22:06 GMT
+Xref: tunews.univie.ac.at comp.lang.forth:140669
+-->
+<pre>
+RfD: BUFFER:
+4 February 2009, Stephen Pelc
+
+
+Rationale
+=========
+
+Problem
+-------
+Despite the wording in the ANS Forth specification, the majority
+of Forth systems, either hosted or embedded, use a single memory
+space in which words such as CREATE, comma and ALLOT refer to the
+same area of memory. Open Firmware and the draft cross compiler
+word set provide the word BUFFER: ( n "<spaces>name" -- ) to create
+a buffer. In the cross compiler word set, BUFFER: creates the buffer
+in an area of uninitialised memory.
+
+This word is provided by several hosted Forths. It is particularly
+useful on CPUs (including all current x86 PC processors) which
+require separation of code and data for best performance. On some
+existing hosted systems, I have noted a variation in performance
+(on the same Forth system) of 7:1 for a benchmark dependent on the
+location of a single variable.
+
+Current practice
+----------------
+At least SwiftForth, VFX Forth, and some versions of Win32Forth
+provide BUFFER: already.
+
+An optimal version of BUFFER: cannot be written without carnal
+knowledge of the underlying Forth system.
+
+By introducing BUFFER: a system can preserve the behaviour of CREATE,
+comma, ALLOT and friends as referring to a common data space
+preserving
+common entitlements such as
+  CREATE FOOP  55 ,  66 ,  100 ALLOT
+while providing BUFFER: for highest performance and increasing
+compatibility with embedded systems code.
+
+
+Approach
+--------
+At very least the use of
+  256 BUFFER: Xbuff
+is more readable than
+  CREATE Xbuff  256 ALLOT
+
+The proposal below provides a more consistent approach than code
+such as
+  CREATE Xbuff  0 C,  255 ALLOT
+which is replced by
+  256 BUFFER: Xbuff  0 Xbuff C!
+
+Note that in systems with separated code and data space, the
+occasionally seen phrase
+  VARIABLE Xbuff  256 CELL - ALLOT
+may not give correct results.
+
+Similarly, it is well worth defining the contiguity rules for the
+children of VARIABLE, VALUE and friends, but this is outside the
+scope of the BUFFER: proposal.
+
+
+Proposal
+========
+x.y.z.nnnn BUFFER: CORE EXT
+( n “<spaces>name” -- )
+Skip leading space delimiters. Parse name delimited by a space.
+Create a definition for name, with the execution semantics defined
+below. Reserve n characters at an aligned address. Contiguity of
+this region with any other region is undefined.
+
+name Execution: ( -- a-addr )
+A-addr is the address of the space reserved by BUFFER: when it
+defined name. A program is responsible for initializing the
+contents.
+
+Reference Implementation
+========================
+This implementation depends on children of CREATE returning an
+aligned address as already secified by Forth200x.
+
+: BUFFER:     \ n "<name>" -- ; -- addr
+\ Create a buffer of n address units whose address is returned
+\ at run time.
+  CREATE ALLOT
+;
+
+Tests
+=====
+TBD
+</pre>
+<!--
+-- 
+Stephen Pelc, stephenXXX@mpeforth.com
+MicroProcessor Engineering Ltd - More Real, Less Time
+133 Hill Lane, Southampton SO15 5AF, England
+tel: +44 (0)23 8063 1441, fax: +44 (0)23 8033 9691
+web: http://www.mpeforth.com - free VFX Forth downloads
+-->
+
