@@ -1,0 +1,138 @@
+<!--Article: 140663 of comp.lang.forth
+Path: tunews.univie.ac.at!aconews-feed.univie.ac.at!newsfeed.wu-wien.ac.at!newsfeed.utanet.at!feeder.erje.net!feeder.visyn.net!feed.xsnews.nl!border-2.ams.xsnews.nl!69.16.177.242.MISMATCH!cyclone02.ams2.highwinds-media.com!news.highwinds-media.com!npeersf01.ams.highwinds-media.com!newsfe11.ams2.POSTED!7564ea0f!not-for-mail
+From: stephenXXX@mpeforth.com (Stephen Pelc)
+Newsgroups: comp.lang.forth
+Subject: RfD - N>R and NR>
+Organization: MPE
+Reply-To: stephenXXX@INVALID.mpeforth.com
+Message-ID: <4989cab1.195873388@192.168.0.50>
+X-Newsreader: Forte Free Agent 1.21/32.243
+Lines: 118
+NNTP-Posting-Host: 80.176.152.87
+X-Complaints-To: abuse@demon.net
+X-Trace: newsfe11.ams2 1233767402 80.176.152.87 (Wed, 04 Feb 2009 17:10:02 UTC)
+NNTP-Posting-Date: Wed, 04 Feb 2009 17:10:02 UTC
+Date: Wed, 04 Feb 2009 17:05:26 GMT
+Xref: tunews.univie.ac.at comp.lang.forth:140663
+-->
+<pre>
+RfD: N>R and NR>
+4 February 2009, Stephen Pelc
+
+
+Rationale
+=========
+
+Problem
+-------
+Several ANS words, e.g. GET-ORDER and SAVE-INPUT, return a variable
+number of stack items. To prevent interference with other items,
+these items are then saved on the return stack. Saving several
+items to the return stack is tedious, especially where the number
+of items is unknown at compile time.
+
+Current practice
+----------------
+At least SwiftForth, VFX Forth, spForth, and some versions of
+Win32Forth provide the words N>R and NR> with the following
+or similar specification.
+
+N>R     \ xn..x1 +n -- ; R: -- x1 .. xn +n
+Transfer N items and count to the return stack.
+
+NR>     \ -- xn..x1 +n ; R: x1 .. xn +n --
+\ *G Pull n items and count off the return stack.
+
+These words cannot be written without carnal knowledge of the
+underlying Forth.
+
+Approach
+--------
+At least one system stores items on the return stack in the format
+  R: -- xn .. x1 n
+Because coding of this word is dependent on a number of CPU and Forth
+design issues, we do not propose to mandate the order of x1..xn on the
+return stack, only to specify that n itself is on the top of the
+return
+stack.
+
+A consequence of this is that N>R and NR> are used in pairs. I have
+not yet seen any code that relies on the order of items on the return
+stack, but it could be useful. It should also be noted that by
+defining
+the order, the ambiguous condition in the proposal can be removed.
+
+
+Proposal
+========
+6.2.aaaa N>R
+n-to-r CORE EXT
+
+Interpretation: Interpretation semantics for this word are undefined.
+
+Execution: ( x1..xn +n -- ) ( R: -- xn..x1 +n )
+
+Move n+1 items to the return to the return stack such that n is the
+top item on the return stack. The order of the items x1..xn on the
+return stack is implementation defined.
+
+6.2.bbbb NR>
+n-r-from CORE EXT
+
+Interpretation: Interpretation semantics for this word are undefined.
+
+Execution: ( -- xn..x1 n ) ( R: x1..xn n -- )
+
+Move n+1 items from the return stack to the data stack, leaving n on
+the
+top of the data stack. The order of the items x1..xn on the
+return stack is implementation defined.
+
+Ambiguous condition
+NR> is used with data not placed on the return stack by N>R.
+
+
+Reference Implementation
+========================
+This implementation depends on the return address being on the
+return stack.
+
+: N>R           \ xn .. x1 N -- ; R: -- x1 .. xn n
+\ *G Transfer N items and count to the return stack.
+  dup                   \ xn .. x1 N N --
+  begin
+    dup
+  while
+    rot r> swap >r >r   \ xn .. N N -- ; R: .. x1 --
+    1-                  \ xn .. N 'N -- ; R: .. x1 --
+  repeat
+  drop                  \ N -- ; R: x1 .. xn --
+  r> swap >r >r
+;
+
+: NR>           \ -- xn .. x1 N ; R: x1 .. xn N --
+\ *G Pull N items and count off the return stack.
+  r> r> swap >r dup
+  begin
+    dup
+  while
+    r> r> swap >r -rot
+    1-
+  repeat
+  drop
+;
+
+
+Tests
+=====
+TBD
+</pre>
+<!--
+-- 
+Stephen Pelc, stephenXXX@mpeforth.com
+MicroProcessor Engineering Ltd - More Real, Less Time
+133 Hill Lane, Southampton SO15 5AF, England
+tel: +44 (0)23 8063 1441, fax: +44 (0)23 8033 9691
+web: http://www.mpeforth.com - free VFX Forth downloads
+-->
+
