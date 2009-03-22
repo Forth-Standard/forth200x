@@ -1,0 +1,122 @@
+<!--Article: 140932 of comp.lang.forth
+Path: tunews.univie.ac.at!aconews-feed.univie.ac.at!newsfeed.wu-wien.ac.at!newsfeed.utanet.at!news.germany.com!multikabel.net!newsfeed20.multikabel.net!amsnews11.chello.com!news.chello.nl.POSTED!not-for-mail
+From: mhx@iae.nl (Marcel Hendrix)
+Subject: RfD -- FVALUE vsn 2.0
+Newsgroups: comp.lang.forth
+Message-ID: <87903334213558@frunobulax.edu>
+Date: Sat, 21 Feb 2009 22:33:36 +0200
+X-Newsreader: iForth 2.0 console (October 21, 2006)
+X-Complaints-To: abuse@chello.nl
+Organization: chello.nl
+Lines: 103
+NNTP-Posting-Host: 62.194.126.7 (62.194.126.7)
+NNTP-Posting-Date: Sat, 21 Feb 2009 22:34:12 +0100
+X-Trace: 85cb149a073549b67dba212428
+Xref: tunews.univie.ac.at comp.lang.forth:140932
+-->
+<pre>
+RfD: FVALUE
+Marcel Hendrix, 21 Feb 2009
+
+* First draft *
+* First spell-checked draft         ** Marcel Hendrix, August 25, 2006
+* Revised to align with RfD for TO  ** Marcel Hendrix, Saturday, February 21, 2009, 21:39
+
+Rationale
+=========
+Problem
+-------
+The word VALUE was considered useful enough to be included in ANS94.
+A search through 4827 source files shows 532 occurrences of VARIABLE
+versus 4241 uses of VALUE. It would be obviously useful to have a 
+variant of VALUE that works for floating-point values. 
+
+The main idea behind FVALUE is that fetching a variable is more
+frequent than changing it. Therefore both readability of source code 
+and efficiency of execution can be achieved by making 'F@' the default
+action of FVALUE.
+
+Current practice
+----------------
+The proposed form of FVALUE has been in use in tForth, iForth, and their 
+predecessors since 1985. FVALUE (with TO) is also in use for Mops and 
+MacForth. The systems mentioned define more TO-like words that work on 
+values, e.g. +TO -TO CLEAR, with obvious meanings.
+
+This proposal does not propose to standardize on these extensions.
+
+Solution
+--------
+Although many people have objected to parsing words, parsing
+permits the host system the most flexibility in implementation
+and is thus the preferred solution (see also TO).
+
+The syntax is:
+  123e0 FVALUE fdata
+to define <fdata> as a floating-point value initialized to <123e0>.
+
+To access the value of fdata:
+   fdata 2e0 F+ F. <cr> 125.000000  ok
+
+To change fdata:
+   fdata 2e0 F+ TO fdata  fdata F. <cr> 125.000000  ok
+
+EXCHANGE leaves r1 in fdata and returns the prior value r2.
+   : EXCHANGE ( F: r1 -- r2 ) fdata FSWAP TO fdata ;
+   
+Proposal
+========
+12.6.1.xxxx FVALUE                     "f-value"                                  FLOATING
+                  ( F: x -- ) ( "<spaces>name" -- )
+                  Skip leading space delimiters.  Parse name delimited by a space.  Create
+                  a definition for name with the execution semantics defined below, with
+                  an initial value equal to x.
+                  name is referred to as an "f-value".
+  name Execution: ( F: -- x )
+                  Place x on the FP stack.  The value of x is that given when name was
+                  created, until the phrase x TO name is executed, causing a new value of
+                  x to be associated with name.
+TO name Run-time: ( F: r -- )
+		  Associate the value x with name.
+
+See: 3.4.1 Parsing and 6.2.2295 TO.
+
+
+See also
+========
+6.2.2295 TO in CORE EXT, currently found in http://www.forth200x.org/documents/forth07-2.pdf.
+Note that the stack diagram of TO should be defined as
+		Interpretation: ( i*x "<spaces>name" -- j*r ) ( F: k*r -- l*r )
+
+Labeling
+=========
+TBD
+
+Reference Implementation
+========================
+The implementation of FVALUE requires carnal knowledge of the host
+implementation, which is the main reason why it should be standardized.
+
+The implementation below disregards the issue that TO should also
+work for integer VALUEs and locals. In fact the below definitions
+will render the standard TO (for integers) inoperable.
+
+: FVALUE  CREATE F, ( F: r -- )  DOES> F@ ; ( F: -- r )
+
+: TO    ( F: r -- ) ( "<spaces>name" -- ) 
+	' >BODY 
+	STATE @ IF  POSTPONE LITERAL  POSTPONE F!
+	      ELSE  F!  
+	      THEN ; IMMEDIATE
+
+Test Cases
+==========
+( Using "Floating point word tester", ftester.fs, by David N. Williams )
+
+	f{ 0e0 FVALUE Tval -> }f
+	f{ Tval f-> 0e0 }f
+	f{ 1e0 TO Tval f-> }f
+	f{ Tval f-> 1e0 }f
+	: SETTval Tval FSWAP TO Tval ;
+	f{ 2e0 SETTval Tval f-> 1e0 2e0 }f
+</pre>

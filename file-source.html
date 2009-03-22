@@ -1,0 +1,273 @@
+<pre>
+RfD: FILE-SOURCE STRING-SOURCE and CLOSE-SOURCE
+Gerry Jackson, 09 Nov 2008
+
+
+I posted this RfD in comp.lang.forth about a month ago and was
+recently asked to post it in this group as well. See
+http://groups.google.co.uk/group/comp.lang.forth/browse_frm/thread/c958482e7cf09044?hl=en#
+for some responses to it.
+
+Problem
+~~~~~~~
+To handle text from different types of input sources ANS Forth
+provides various words such as SOURCE SOURCE-ID REFILL >IN PARSE
+WORD SAVE-INPUT RESTORE-INPUT and the Forth 200X PARSE-NAME. In
+addition other parsing words such as CREATE ' etc work on the
+current input source.
+
+Many applications use the File-Access word set to handle text
+files and, having opened a file, can't immediately use words
+such as REFILL on that file. This is because the words ANS Forth
+provides for opening new input sources (INCLUDE-FILE and
+INCLUDED for files, EVALUATE for strings and LOAD for blocks)
+also invoke the Forth text interpreter. An unfortunate effect
+of this is that the application loses control to the system.
+
+Of course, having defined a word using REFILL etc, an
+application can immediately regain control by placing that word
+at the start of the file, e.g. a word called <?xml could be used
+to process an XML file. However this solution is not always
+appropriate, e.g. when processing files conforming to an
+internationally recognised standard or where files are generated
+by an external system. It also leads to unnecessary development
+work where an application is designed to handle a source file in
+more than one format e.g. one in Forth source code and the other
+in a standard format.
+
+A solution to this problem with files ought to be generalised to
+other types of input sources and this, in the form of
+STRING-SOURCE, also solves (somewhat fortuitously I must admit)
+a problem with defining words. This is that words such as CREATE
+always parse the input stream for the name of the word to be
+created - this is inconvenient with ANS Forth when the name is
+already available as a string.
+
+A search through the comp.lang.forth archives in Google groups
+reveals several discussions on both these problems, they are not
+new. Indeed GForth's EXECUTE-PARSING resulted from one such
+discussion.
+
+Proposal
+~~~~~~~~
+The definition of three new words is proposed:
+   FILE-SOURCE STRING-SOURCE and CLOSE-SOURCE
+
+(An equivalent for Blocks, BLOCK-SOURCE, is not included at this
+stage of the RfD but awaits reaction to the following
+definitions before possibly incorporating such a word).
+
+                -------------------------
+
+FILE-SOURCE  ( fileid -- )
+
+Interpretation: Interpretation semantics for this word are
+undefined (see remark 3).
+
+Execution: Remove fileid from the stack. Save the current input
+source specification, including the current value of SOURCE-ID
+and the value of >IN. Store fileid in SOURCE-ID. Make the file
+specified by fileid the current input source. Store zero in BLK.
+Empty any input buffer associated with the new input source and
+set >IN to 0.
+
+Do not access the file specified by fileid in any way.
+
+The new input source remains the current input source until
+closed by CLOSE-SOURCE or an exception.
+
+The new input source may be nested indefinitely with other input
+sources.
+
+Ambiguous conditions exist if:
+   - fileid is invalid
+   - control returns to interpreter mode without CLOSE-SOURCE
+     having been executed (unless the return was via an
+     exception)
+
+                -------------------------
+
+STRING-SOURCE ( c-addr u -- )
+
+Interpretation: Interpretation semantics for this word are
+undefined.
+
+Execution: Save the current input source specification icluding
+the values of SOURCE-ID and >IN. Store minus-one (-1) in
+SOURCE-ID if it is present. Make the string described by c-addr
+and u both the current input source and input buffer, set >IN to
+zero.
+
+The new input source remains the current input source until
+closed by CLOSE-SOURCE or an exception.
+
+An ambiguous condition exists if control returns to interpreter
+mode without CLOSE-SOURCE having been executed (unless the
+return was via an exception)
+
+                -------------------------
+
+CLOSE-SOURCE  ( -- )
+
+Interpretation: Interpretation semantics for this word are
+undefined.
+
+Execution: Restore the input source specification to the value
+saved by the last execution of FILE-SOURCE or STRING-SOURCE.
+This includes restoring the value of >IN. Do not close any file
+associated with the input source being closed.
+
+An ambiguous condition exists if the current input source was
+not created by FILE-SOURCE or STRING-SOURCE.
+
+Typical use
+~~~~~~~~~~~
+Simple examples that demonstrate usage (but not necessarily
+justification) of proposed words).
+
+1. To display the contents of a file
+
+: display-file  ( caddr u -- )
+   r/o open-file throw FILE-SOURCE
+   begin refill while source type cr repeat
+   source-id CLOSE-SOURCE close-file throw
+;
+
+2. New definitions
+
+Given a string, STRING-SOURCE may be used to define a new
+creating word without any string copying e.g.
+
+: $create  ( c-addr u -- )  STRING-SOURCE create CLOSE-SOURCE ;
+
+Similarly string versions of other defining words.
+
+3. FILE-SOURCE could be be used with $create, for example to
+create a set of names from a text file containing the space
+separated names:
+
+: parse&create ( -- )
+   begin
+      parse-name dup
+   while
+      $create
+   repeat 2drop
+;
+
+: $create-many  ( c-addr u -- )
+   r/o open-file throw FILE-SOURCE
+   begin refill while parse&create repeat
+   source-id CLOSE-SOURCE close-file throw
+;
+
+Remarks
+~~~~~~~
+1. The aim is that the words FILE-SOURCE and STRING-SOURCE
+replicate the functionality of INCLUDE-FILE and EVALUATE
+respectively but without invoking the Forth text interpreter.
+In this way any Forth words that operate on the current input
+source will automatically be applied to the newly opened input
+source. For example having used FILE-SOURCE, the user may
+immediately read the first or next line with REFILL, parse it
+with PARSE and manipulate >IN as if it had been opened with
+INCLUDE-FILE.
+
+2. Use of FILE-SOURCE (or STRING-SOURCE) and CLOSE-SOURCE must be
+balanced i.e. for every FILE-SOURCE executed a CLOSE-SOURCE must
+be executed to return to the previous input source, similarly
+for STRING-SOURCE. This rule may only be broken when an
+exception occurs when the existing behaviour of THROW should
+restore the appropriate input source.
+
+3. The proposed words have been made undefined in interpreter
+mode to avoid complications with the text interpreter and
+possible problems with implementation in some systems. The
+inability to use FILE-SOURCE in interpreter mode is no great
+loss, for example if interpreting text from the console what
+should executing FILE-SOURCE do? The natural thing might be to
+interpret whatever text was in the file - it might be difficult
+for some systems to do this, anyway this can already be
+achieved with less trouble by using INCLUDE-FILE. So it seems
+better to take the prudent approach and avoid these issues.
+
+4. FILE-SOURCE (or STRING-SOURCE) and CLOSE-SOURCE do not have
+to occur in the same colon definition. The only restriction is
+the prohibition on returning to the text interpreter that
+resulted in FILE-SOURCE (or STRING-SOURCE) being called.
+Executing CLOSE-SOURCE or an exception are the only ways to
+return to an outer input source.
+
+5. Alternatives to these proposed words are:
+   a. EXECUTE-PARSING and EXECUTE-PARSING-FILE in GForth
+   b. Redefinition of words such as REFILL to call either the
+      ANS Forth REFILL or a version defined using the File-access
+      wordset.
+Dealing with these in turn.
+
+6. EXECUTE-PARSING and EXECUTE-PARSING-FILE are alternatives to
+the more primitive words that are proposed. For example we can
+define EXECUTE-PARSING using STRING-SOURCE
+
+   : EXECUTE-PARSING  ( c-addr u xt )
+      -rot STRING-SOURCE execute CLOSE-SOURCE
+   ;
+
+Or a CATCH-PARSING could be defined as easily. My preference is
+to have the flexibility provided by FILE-SOURCE etc with the
+ability to define the safer, higher level words if required.
+EXECUTE-PARSING is more restrictive but safer. However if this
+RfD should be rejected these two alternatives are candidates for
+an RfD themselves.
+
+7. Redefinition of REFILL etc is certainly possible for example
+see the implementation in:
+http://www.qlikz.org/forth/library/inputsources.fth
+However this is only a partial solution as well as being rather
+inefficient.
+
+8. It has been reported that the definitions of SAVE-INPUT,
+RESTORE-INPUT and QUERY are unsatisfactory. Inclusion of the
+proposed words will not make this situation any worse, indeed
+they provide more reason to get the issues resolved.
+
+9. It has been pointed out that existing systems that place a
+saved input source specification on the return stack may not be
+easily modified to incorporate this proposal. Please comment on
+this.
+
+Reference implementation
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+A definition of the proposed words is not provided as they
+require detailed knowledge of the implementation of input
+sources in a given system. However a hypothetical definition of
+INCLUDE-FILE could be:
+
+: INCLUDE-FILE
+   FILE-SOURCE FILE-INTERPRET
+   SOURCE-ID CLOSE-FILE THROW CLOSE-SOURCE
+;
+
+where FILE-INTERPRET is a word invoking the system's text
+interpreter for files.
+
+The proposed words are natural factors of INCLUDE-FILE and
+EVALUATE and of the actions taken at the end of interpreting
+a file or string.
+
+Test cases
+~~~~~~~~~~
+
+To be completed.
+
+Experience
+~~~~~~~~~~
+
+Only locally in a private system.
+
+Comments
+~~~~~~~~
+Awaited.
+
+Gerry Jackson
+</pre>

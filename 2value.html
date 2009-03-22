@@ -1,0 +1,161 @@
+<pre>
+RfD: 2VALUE
+Gerry Jackson, December 1 2008
+
+
+Following the Forth 200X meeting in September 2008 I was asked
+to update the RfD for 2VALUE, in particular to conform to the
+rewritten definition of TO. Draft 2 of this RfD was in
+comp.lang.forth in October 2006.
+
+Problem
+-------
+
+The word VALUE was considered useful enough to be included in
+ANS94 Forth. An RfD for FVALUE stated that a search through 4827
+source files shows 532 occurrences of VARIABLE versus 4241 uses
+of VALUE. It would be obviously useful to have a variant of
+VALUE that works for cell pairs and double values. Also, if the
+proposal for FVALUE is accepted, acceptance of 2VALUE will
+complete the family of such words and maintain consistency with
+the rest of of the data defining words and many others.
+
+The name 2VALUE is preferred to the alternative DVALUE as it
+follows existing practice for data defining words e.g. VARIABLE
+2VARIABLE and FVARIABLE. Furthermore the obvious pronunciation
+of DVALUE is an English word (devalue) with a totally different
+meaning.
+
+The main idea behind 2VALUE (VALUE, FVALUE) is that fetching a
+variable is more frequent than changing it. Therefore both
+readability of source code and better efficiency of execution
+can be achieved by using words defined by 2VALUE rather than
+2VARIABLE.
+
+Current practice
+----------------
+
+Win32Forth supports it, iForth supports it under the name
+"DVALUE", the extent of support for it or DVALUE in other
+systems is unknown.
+
+Solution
+--------
+
+This solution follows existing practice with VALUE by defining
+2VALUE as a parsing word, and is a straightforward extension of
+VALUE to a cell pair or double number.
+
+The syntax is:
+
+: s S" some string" ;
+
+s 2VALUE stringref
+
+to define <stringref> as a cell pair holding (caddr u) for the
+string.
+
+Alternatively, one can use
+
+  123. 2VALUE ddata
+
+to define <ddata> as a double value initialized to 123..
+
+To access the value of stringref and ddata:
+
+   stringref TYPE <cr> some string ok
+   ddata D. <cr> 123  ok
+
+The word TO is used to change stringref and ddata:
+
+   : s2 S" another string" ; s2 TO stringref
+   456. TO ddata  ddata D. <cr> 456 ok
+
+As there is no standard way to obtain the address of a 2VALUE,
+this definition does not require the cell pair or double value
+to be stored in any particular order in memory.
+
+Proposal
+--------
+
+Add the following definition to section 8.6.2 Double-Number
+extension words.
+
+8.6.2.xxxx 2VALUE         "two-value"                DOUBLE EXT
+           ( x1 x2 "<spaces>name" -- )
+           Skip leading space delimiters.  Parse name delimited
+           by a space.  Create a definition for name with the
+           execution semantics defined below, with an initial
+           value of x1 x2.
+
+           name is referred to as a "two-value".
+
+name Execution: ( -- x1 x2 )
+           Place cell pair x1, x2 on the stack. The value of
+           x1, x2 is that given when name was created, until the
+           phrase x3 x4 TO name is executed, causing a new cell
+           pair x3, x4 to be associated with name.
+
+TO name Run-time: ( x1 x2 -- )
+           Associate the cell pair x1, x2 with name.
+
+        See: 3.4.1 Parsing and 6.2.2295 TO.
+
+Rationale:
+            Typical use:
+                     : fn1 s" filename" ;
+                     fn1 2VALUE myfile
+                     fn1 included
+
+                     : fn2 s" filename2" ;
+                     fn2 TO myfile
+
+            Testing:
+                     t{ 1 2 2VALUE t2val -> }t
+                     t{ t2val -> 1 2 }t
+
+                     t{ 3 4 TO t2val -> }t
+                     t{ t2val -> 3 4 }t
+
+                     : sett2val t2val 2SWAP TO t2val ;
+                     t{ 5 6 sett2val t2val -> 3 4 5 6 }t
+
+Notes
+-----
+
+1) This proposal does not address the issue of local 2VALUEs as
+this depends on the outcome of another RfD on the Locals word
+set and could require an extension to that RfD.
+
+Reference Implementation
+------------------------
+
+The implementation of TO to include 2VALUEs requires detailed
+knowledge of the host implementation of VALUE and TO, which is
+the main reason why 2VALUE should be standardized. The order in
+which the two cells are stored in memory is not specified in the
+definition for 2VALUE but this reference implementation has to
+assume one ordering - this is not intended to be definitive.
+
+: 2VALUE    ( x1 x2 -- )
+      CREATE , ,
+      DOES>  2@    ( -- x1 x2 )
+;
+
+The corresponding implementation of TO disregards the issue that
+TO must also work for integer VALUEs and locals.
+
+: TO    ( x1 x2 "<spaces>name" -- )
+      ' >BODY
+      STATE @
+      IF
+          POSTPONE 2LITERAL  POSTPONE 2!
+      ELSE
+          2!
+      THEN
+; IMMEDIATE
+
+-------
+
+Gerry Jackson
+</pre>
