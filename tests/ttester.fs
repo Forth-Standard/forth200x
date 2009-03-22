@@ -12,7 +12,7 @@
 \ public domain
 
 \ for the rest:
-\ revised by Anton Ertl 2007-08-12, 2007-08-19, 2007-08-28
+\ revised by Anton Ertl
 \ public domain
 
 \ The original has the following shortcomings:
@@ -28,6 +28,9 @@
 
 \ http://www.forth200x.org/tests/tester.fs
 \ http://www.forth200x.org/tests/ttester.fs
+
+\ for history and possibly newer versions you can also look at
+\ http://www.complang.tuwien.ac.at/cvsweb/cgi-bin/cvsweb/gforth/test/ttester.fs
 
 \ tester.fs is intended to be a drop-in replacement of the original.
 
@@ -192,7 +195,7 @@ HAS-FLOATING-STACK [IF]
 
     : F...}T ( -- )
         FCURSOR @ START-FDEPTH @ + ACTUAL-FDEPTH @ <> IF
-            S" NUMBER OF FLOAT RESULTS BEFORE '->' DOES NOT MATCH ...}T SPRECIFICATION: " ERROR
+            S" NUMBER OF FLOAT RESULTS BEFORE '->' DOES NOT MATCH ...}T SPECIFICATION: " ERROR
         ELSE FDEPTH START-FDEPTH @ = 0= IF
             S" NUMBER OF FLOAT RESULTS BEFORE AND AFTER '->' DOES NOT MATCH: " ERROR
         THEN THEN ;
@@ -213,13 +216,14 @@ HAS-FLOATING-STACK [IF]
     : F} ;
     : F...}T ;
 
+    HAS-FLOATING [IF]
     DECIMAL
     : COMPUTE-CELLS-PER-FP ( -- U )
         DEPTH 0E DEPTH 1- >R FDROP R> SWAP - ;
     HEX
 
     COMPUTE-CELLS-PER-FP CONSTANT CELLS-PER-FP
-    
+
     : FTESTER ( R -- )
         DEPTH CELLS-PER-FP < ACTUAL-DEPTH @ XCURSOR @ START-DEPTH @ + CELLS-PER-FP + < OR IF
             S" NUMBER OF RESULTS AFTER '->' BELOW ...}T SPECIFICATION: " ERROR EXIT
@@ -227,7 +231,8 @@ HAS-FLOATING-STACK [IF]
             S" INCORRECT FP RESULT: " ERROR
         THEN THEN
         CELLS-PER-FP XCURSOR +! ;
- [THEN]    
+    [THEN]
+[THEN]    
 
 : EMPTY-STACK	\ ( ... -- ) EMPTY STACK: HANDLES UNDERFLOWED STACK TOO.
     DEPTH START-DEPTH @ < IF
@@ -287,12 +292,15 @@ HAS-FLOATING-STACK [IF]
     1 XCURSOR +! ;
 
 : X}T XTESTER ...}T ;
-: R}T FTESTER ...}T ;
 : XX}T XTESTER XTESTER ...}T ;
+: XXX}T XTESTER XTESTER XTESTER ...}T ;
+: XXXX}T XTESTER XTESTER XTESTER XTESTER ...}T ;
+
+HAS-FLOATING [IF]
+: R}T FTESTER ...}T ;
 : XR}T FTESTER XTESTER ...}T ;
 : RX}T XTESTER FTESTER ...}T ;
 : RR}T FTESTER FTESTER ...}T ;
-: XXX}T XTESTER XTESTER XTESTER ...}T ;
 : XXR}T FTESTER XTESTER XTESTER ...}T ;
 : XRX}T XTESTER FTESTER XTESTER ...}T ;
 : XRR}T FTESTER FTESTER XTESTER ...}T ;
@@ -300,7 +308,6 @@ HAS-FLOATING-STACK [IF]
 : RXR}T FTESTER XTESTER FTESTER ...}T ;
 : RRX}T XTESTER FTESTER FTESTER ...}T ;
 : RRR}T FTESTER FTESTER FTESTER ...}T ;
-: XXXX}T XTESTER XTESTER XTESTER XTESTER ...}T ;
 : XXXR}T FTESTER XTESTER XTESTER XTESTER ...}T ;
 : XXRX}T XTESTER FTESTER XTESTER XTESTER ...}T ;
 : XXRR}T FTESTER FTESTER XTESTER XTESTER ...}T ;
@@ -316,6 +323,7 @@ HAS-FLOATING-STACK [IF]
 : RRXR}T FTESTER XTESTER FTESTER FTESTER ...}T ;
 : RRRX}T XTESTER FTESTER FTESTER FTESTER ...}T ;
 : RRRR}T FTESTER FTESTER FTESTER FTESTER ...}T ;
+[THEN]
 
 : TESTING	\ ( -- ) TALKING COMMENT.
    SOURCE VERBOSE @
