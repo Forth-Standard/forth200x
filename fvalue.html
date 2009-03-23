@@ -1,26 +1,28 @@
-<!--Article: 140932 of comp.lang.forth
-Path: tunews.univie.ac.at!aconews-feed.univie.ac.at!newsfeed.wu-wien.ac.at!newsfeed.utanet.at!news.germany.com!multikabel.net!newsfeed20.multikabel.net!amsnews11.chello.com!news.chello.nl.POSTED!not-for-mail
+<!--Article: 141603 of comp.lang.forth
+Path: tunews.univie.ac.at!aconews-feed.univie.ac.at!newsfeed.wu-wien.ac.at!newsfeed.utanet.at!feeder06.uucp-net.de!news.uucp.at!news.unit0.net!newsfeed.freenet.de!multikabel.net!newsfeed20.multikabel.net!amsnews11.chello.com!news.chello.nl.POSTED!not-for-mail
 From: mhx@iae.nl (Marcel Hendrix)
-Subject: RfD -- FVALUE vsn 2.0
+Subject: Re: RfD -- FVALUE vsn 2.0
 Newsgroups: comp.lang.forth
-Message-ID: <87903334213558@frunobulax.edu>
-Date: Sat, 21 Feb 2009 22:33:36 +0200
+Message-ID: <84280932203558@frunobulax.edu>
+Date: Mon, 23 Mar 2009 14:27:39 +0200
+References: <87903334213558@frunobulax.edu>
 X-Newsreader: iForth 2.0 console (October 21, 2006)
 X-Complaints-To: abuse@chello.nl
 Organization: chello.nl
-Lines: 103
+Lines: 107
 NNTP-Posting-Host: 62.194.126.7 (62.194.126.7)
-NNTP-Posting-Date: Sat, 21 Feb 2009 22:34:12 +0100
-X-Trace: 85cb149a073549b67dba212428
-Xref: tunews.univie.ac.at comp.lang.forth:140932
+NNTP-Posting-Date: Mon, 23 Mar 2009 14:27:36 +0100
+X-Trace: b4d5d49c78e489b67dba223602
+Xref: tunews.univie.ac.at comp.lang.forth:141603
 -->
 <pre>
 RfD: FVALUE
-Marcel Hendrix, 21 Feb 2009
+Marcel Hendrix, 23 Mar 2009
 
 * First draft *
 * First spell-checked draft         ** Marcel Hendrix, August 25, 2006
 * Revised to align with RfD for TO  ** Marcel Hendrix, Saturday, February 21, 2009, 21:39
+* Revised after comments            ** Marcel Hendrix, Monday, March 23, 2009, 06:52
 
 Rationale
 =========
@@ -41,7 +43,7 @@ Current practice
 The proposed form of FVALUE has been in use in tForth, iForth, and their 
 predecessors since 1985. FVALUE (with TO) is also in use for Mops and 
 MacForth. The systems mentioned define more TO-like words that work on 
-values, e.g. +TO -TO CLEAR, with obvious meanings.
+values, e.g. +TO, -TO, CLEAR, ... with obvious meanings.
 
 This proposal does not propose to standardize on these extensions.
 
@@ -66,18 +68,18 @@ EXCHANGE leaves r1 in fdata and returns the prior value r2.
    
 Proposal
 ========
-12.6.1.xxxx FVALUE                     "f-value"                                  FLOATING
-                  ( F: x -- ) ( "<spaces>name" -- )
+12.6.1.xxxx FVALUE                     "f-value"                              FLOATING EXT
+                  ( F: r -- ) ( "<spaces>name" -- )
                   Skip leading space delimiters.  Parse name delimited by a space.  Create
                   a definition for name with the execution semantics defined below, with
-                  an initial value equal to x.
+                  an initial value equal to r.
                   name is referred to as an "f-value".
-  name Execution: ( F: -- x )
-                  Place x on the FP stack.  The value of x is that given when name was
-                  created, until the phrase x TO name is executed, causing a new value of
-                  x to be associated with name.
+  name Execution: ( F: -- r )
+                  Place r on the FP stack.  The value of r is that given when name was
+                  created, until the phrase r TO name is executed, causing a new value of
+                  r to be associated with name.
 TO name Run-time: ( F: r -- )
-		  Associate the value x with name.
+		  Associate the value r with name.
 
 See: 3.4.1 Parsing and 6.2.2295 TO.
 
@@ -86,7 +88,8 @@ See also
 ========
 6.2.2295 TO in CORE EXT, currently found in http://www.forth200x.org/documents/forth07-2.pdf.
 Note that the stack diagram of TO should be defined as
-		Interpretation: ( i*x "<spaces>name" -- j*r ) ( F: k*r -- l*r )
+  ( integer VALUE or LOCAL ) Interpretation: ( x "<spaces>name" -- )
+  ( floating-point FVALUE  ) Interpretation: ( "<spaces>name" -- ) ( F: r -- )
 
 Labeling
 =========
@@ -96,27 +99,30 @@ Reference Implementation
 ========================
 The implementation of FVALUE requires carnal knowledge of the host
 implementation, which is the main reason why it should be standardized.
+The implementation below also works for, e.g., integer VALUEs and 
+locals. 
 
-The implementation below disregards the issue that TO should also
-work for integer VALUEs and locals. In fact the below definitions
-will render the standard TO (for integers) inoperable.
+VARIABLE %var  : TO  1 %var ! ;
 
-: FVALUE  CREATE F, ( F: r -- )  DOES> F@ ; ( F: -- r )
+: FVALUE  CREATE F,  
+	  DOES>  %var @ IF  F!  ELSE  F@  THEN  
+	  	 0 %var ! ;
 
-: TO    ( F: r -- ) ( "<spaces>name" -- ) 
-	' >BODY 
-	STATE @ IF  POSTPONE LITERAL  POSTPONE F!
-	      ELSE  F!  
-	      THEN ; IMMEDIATE
+: VALUE	  CREATE ,  
+	  DOES>  %var @ IF   !  ELSE   @  THEN  
+	  	 0 %var ! ;
 
 Test Cases
 ==========
-( Using "Floating point word tester", ftester.fs, by David N. Williams )
+( Using ttester.fs, by Hayes, Williams & Ertl )
 
-	f{ 0e0 FVALUE Tval -> }f
-	f{ Tval f-> 0e0 }f
-	f{ 1e0 TO Tval f-> }f
-	f{ Tval f-> 1e0 }f
-	: SETTval Tval FSWAP TO Tval ;
-	f{ 2e0 SETTval Tval f-> 1e0 2e0 }f
+	T{ 0e0 FVALUE Tval -> }T
+	T{ Tval -> 0e0 }T
+	T{ 1e0 TO Tval -> }T
+	T{ Tval -> 1e0 }T
+	: SETTval Tval FSWAP TO Tval ; 
+	T{ 2e0 SETTval Tval -> 1e0 2e0 }T
+	T{ 5e0 FVALUE x -> }T
+	: [execute] EXECUTE ; IMMEDIATE
+	T{ ' Tval ] [execute] [ -> 2e0 }T
 </pre>
