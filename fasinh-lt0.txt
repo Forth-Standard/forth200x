@@ -1,0 +1,43 @@
+From: "C. G. Montgomery" <cgm@physics.utoledo.edu>
+Newsgroups: comp.lang.forth
+Subject: RfD: Unneeded restriction in FASINH
+Date: Mon, 30 Mar 2009 19:27:26 -0400
+Organization: the wetware works
+Message-ID: <gqrkgt$1gm2$2@pyrite.mv.net>
+Reply-To: cgm@physics.utoledo.edu
+
+RfD: Unneeded restriction in FASINH
+
+Problem
+
+The ANS definition is:
+
+  12.6.2.1487 FASINH   
+ f-a-cinch FLOATING EXT 
+ 
+        ( F: r1 -- r2 ) 
+        or ( r1 -- r2 )
+
+ r2 is the floating-point value whose hyperbolic sine is r1.
+ An ambiguous condition exists if r1 is less than zero.
+
+Proposal
+
+The second sentence is unnecessary, and should be deleted.
+
+Remarks
+
+(This ought to be an easy one.  I'm pretty sure the restriction was just
+an unintentional mistake.)
+
+The arc hyperbolic sine is an odd function, perfectly well-behaved for
+negative real arguments.  asinh(-x) = - asinh(x) .
+
+I would be quite surprised if any Forth sysytem which correctly implements
+FASINH doesn't already correctly handle negative arguments.
+
+\  end of RfD
+
+regards to all   cgm
+
+

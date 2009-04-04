@@ -6,6 +6,7 @@ contact details.
 RfD: Escaped Strings S\"
 23 November 2008, Stephen Pelc/Peter Knaggs
 
+20090331 Code revised &lt;49D1FCC4.70002@bcs.org.uk&gt;
 20081123 Replaced description of \" (now the same as for \q).
           Replaced the test cases with tests that do not assume
           the word can be used in interpretation mode.
@@ -356,14 +357,19 @@ create CRLF$    \ -- addr ; CR/LF as counted string
    r> drop
 ;
 
+\ Create a buffer to hold the new string, this would
+\ normally be a system dependent buffer
+
+create pocket  255 allot
+
 : readEscaped   \ "string" -- caddr
 \ *G Parses an escaped string from the input stream according to
 \ ** the rules of *\fo{parse\"} above, returning the address
 \ ** of the translated counted string in *\fo{PAD}.
    source >in @ /string tuck             \ -- len caddr len
-   pad parse\" nip
+   pocket parse\" nip
    - >in +!
-   pad
+   pocket
 ;
 
 : S\"           \ "string" -- caddr u

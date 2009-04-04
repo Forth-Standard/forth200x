@@ -1,0 +1,167 @@
+Message-ID: <49D211D2.5000203@bcs.org.uk>
+Date: Tue, 31 Mar 2009 13:51:30 +0100
+From: Peter Knaggs <pjk@bcs.org.uk>
+Newsgroups: comp.lang.forth
+Subject: RfD: KEY/EKEY
+
+20090331 Original Text
+
+Problem
+=======
+
+The document currently refers to a character.  According
+to the definition (3.1.2), a character may vary in size.
+This leads to confusion a modern environment where a
+character may consist of several keyboard events.  This
+relates particular to the relationship between KEY and EKEY.
+
+The rationale for EKEY allows for the word to return an
+"event record" but defines the signature of ( -- u ).  This
+should be changed to ( -- x ) in order to allow EKEY to
+return the address of the "event record".  The rationale
+for EKEY currently allows this, but the document does not.
+
+
+Solution
+========
+
+Redefine a character (3.1.2) to insist that a character is
+of a fixed with, and unsigned.  This will resolve a number
+of issues within the document.  Especially with the FILE and
+FACILITY word sets.
+
+Correct the stack signature of EKEY, and thus EKEY>CHAR and
+EKEY>FKEY to refer to an x rather than a u.
+
+
+Proposal
+========
+
+1. Replace the current text of 3.1.2:
+
+       Characters shall be at least one address unit wide,
+       contain at least eight bits, and have a size less
+       than or equal to cell size.
+
+       The characters provided by a system shall include
+       the graphic characters {32 ... 126}, which represent
+       graphic forms as shown in table 3.2.
+
+    with the new text:
+
+       Characters shall have the following properties:
+       - at least one address unit wide;
+       - contain at least eight bits;
+       - be of fixed width;
+       - have a size less than or equal to cell size;
+       - be unsigned.
+
+       The characters provided by a system shall include
+       the graphic characters {32 ... 126}, which represent
+       graphic forms as shown in table 3.2.
+
+    This adds two additional restrictions on a character,
+    that it should be of a fixed with, and be unsigned.
+
+2. Add an additional section:
+
+       3.1.2.3  Primitive Character
+
+       A primitive character (pchar) is a character with no
+       restrictions on its contents.  Unless otherwise
+       stated, a "character" refers to a primitive character.
+
+    This allows us to rework the rationale for KEY/EKEY.
+
+3. Add a rationale for KEY (which does not currently have a
+    rational):
+
+       A.6.1.1750 KEY
+
+       Use of KEY indicates that the application is
+       processing primitive characters.  Some input devices,
+       e.g. keyboards, may provide more information than can
+       be represented as a primitive character and such an
+       event may be received as an implementation-specific
+       sequence of primitive characters.
+
+       See A.10.6.1.1306 EKEY
+
+4. Replace the existing (three page) rationale for EKEY
+    with the following:
+
+       A.10.6.1.1306 EKEY
+
+       For some input devices, e.g. keyboards, more
+       information is available than can be returned by a
+       single execution of KEY.  EKEY provides a standard
+       word to access a system-dependent set of events.
+
+       EKEY and EKEY? are implementation specific; no
+       assumption can be made regarding the interaction
+       between the pairs EKEY/EKEY? and KEY/KEY?.  This
+       standard does not define a timing relationship between
+       KEY? and EKEY?.  Undefined results may be avoided by
+       using only one pairing of KEY/KEY? or EKEY/EKEY? in a
+       program for each input stream.
+
+       EKEY assumes no particular numerical correspondence
+       between particular event code values and the values
+       representing standard characters.  On some systems,
+       this may allow two separate keys that correspond to
+       the same standard character to be distinguished from
+       one another.  A standard program may only interpret
+       the results of EKEY via the translation words provided
+       for that purpose (EKEY>CHAR and EKEY>FKEY).
+
+       In systems that combine both keyboard and mouse events
+       into a single "event stream", the value returned by EKEY
+       may be inadequate to represent the full range of input
+       possibilities.  In such systems, a single "event record"
+       may include a time stamp, the (x,y) coordinates of the
+       mouse position, the keyboard state, and the state of
+       the mouse buttons; EKEY could return the address of an
+       "event record" from which this information can be
+       extracted.
+
+       See: A.6.1.1750 KEY, 10.6.2.1306 EKEY>CHAR and
+         10.6.2.xxxx EKEY>FKEY.
+
+5. Replace the rationale for EKEY? with a simple reference
+    to the rationale for EKEY.
+
+In order to allow the "event record" discussed in this
+rational we need to replace the reference to a u with an x
+in the description definition of the following words:
+
+6. Replace u with x in the definition of 10.6.1.1306 EKEY.
+    ( -- u ) becomes ( -- x )
+
+7. Replace the u with x in the definition of 10.6.2.1306
+    EKEY>CHAR.
+
+8. Change the definition of 10.6.2.xxxx EKEY>FKEY as
+    follows:
+
+    a. The stack description changes from ( u1 -- u2 f ) to
+       ( x -- u flag ).
+
+    b. The u1 becomes x, allowing an address to be passed
+       into the word.
+
+    c. The u2 becomes u, indicating a value which can be
+       compared with an K-... value.
+
+    d. The stack symbol f is not defined in 2.2.2 (Stack
+       notation) and should be replaced with flag which is.
+
+
+Credits
+=======
+Peter Knaggs, pjk@bcs.org.uk
+School of Engineering, Computing and Mathematics,
+University of Exeter, Exeter, Devon EX4 7QF, England
+tel: +44 (0)13 9226 4014
+web: http://www.rigwit.co.uk
+
+

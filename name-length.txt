@@ -1,0 +1,85 @@
+Message-ID: <49D208A7.1070807@bcs.org.uk>
+Date: Tue, 31 Mar 2009 13:12:23 +0100
+From: Peter Knaggs <pjk@bcs.org.uk>
+Newsgroups: comp.lang.forth
+Subject: RfD: Definition Name Length
+
+20090331 Original Text
+
+Problem
+=======
+
+The definition of a Definition name appears to be ambiguous.
+It is clear from discussion elsewhere that some people have
+taking a more restrictive view of a definition name than
+was intended.
+
+The existing text is:
+
+    3.3.1.2 Definition names
+
+       Definition names shall contain {1 ... 31} characters.
+       A system may allow or prohibit the creation of
+       definition names containing non-standard characters.
+
+       Programs that use lower case for standard definition
+       names or depend on the case-sensitivity properties of
+       a system have an environmental dependency.
+
+       A program shall not create definition names containing
+       non-graphic characters.
+
+This text does not indicate that a system may allow names
+with more than 31 characters.   It is left to section 4
+(documentation requirements) to infer this:
+
+    4.1.1 Implementation-defined options
+       maximum size of a definition name, in characters
+       (3.3.1.2 Definition names);
+
+    4.1.2 Ambiguous conditions
+       a definition name exceeded the maximum length allowed
+       (3.3.1.2 Definition names);
+
+It is clear that the committee intended that a standard
+system must allow for names of 31 characters, but that it
+may allow for longer names.
+
+
+Solution
+========
+
+Extend the definition in section 3.3.1.2 to explicitly
+allow system to provide for names of more than 31 characters.
+Although, a standard program may only define names of up to
+31 characters.
+
+
+Proposal
+========
+
+1. Append the following to the first paragraph of 3.3.1.2:
+
+       A system may allow the creation of definition names
+       longer than 31 characters.  Programs with definition
+       names longer than 31 characters have an environmental
+       dependancy.
+
+2. Add the following Environmental Dependancies (4.2.1)
+
+     - using definition names of more than 31 characters in
+       length (3.3.1.2 Definition names);
+
+     - using non standard characters in a definition name
+       (3.3.1.2 Definition names);
+
+
+Credits
+=======
+Peter Knaggs, pjk@bcs.org.uk
+School of Engineering, Computing and Mathematics,
+University of Exeter, Exeter, Devon EX4 7QF, England
+tel: +44 (0)13 9226 4014
+web: http://www.rigwit.co.uk
+
+

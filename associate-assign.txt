@@ -1,0 +1,142 @@
+Date: Tue, 31 Mar 2009 12:12:34 +0100
+From: Peter Knaggs <pjk@bcs.org.uk>
+Newsgroups: comp.lang.forth
+Subject: RfD: Assign
+Message-ID: <svKdnYsWbKI6Z0zUnZ2dnUVZ8hednZ2d@posted.plusnet>
+
+Problem
+=======
+
+When reviewing the 2VALUE and FVALUE proposals it was felt
+that the text was a little weak.  This was no fault of the
+proposals, but rather the text they where based on, the
+revised definitions of VALUE and (LOCAL).
+
+Solution
+========
+
+It was felt that we should straighten these definition by
+replacing the word "associate" with "assign".  Scanning
+the document, we found five words which in which we would
+like to change this wording, all in new text which has
+been added by the 200x process.
+
+Proposal
+========
+
+1. ACTION-OF
+
+    Replace the first paragraph:
+
+       Skip leading spaces and parse name delimited by a
+       space.  xt is the xt associated with name.  An
+       ambiguous condition exists if name was not defined by
+       DEFER, or if the name has not been associated with an
+       xt yet.
+
+    with the following:
+
+       Skip leading spaces and parse name delimited by a
+       space.  xt is the xt assigned to name.  An ambiguous
+       condition exists if name was not defined by DEFER, or
+       if the name has not been assigned an xt.
+
+    Replace the first paragraph of the run time clause:
+
+       xt is the execution token associated with name when
+       the run-time semantics is performed.  An ambiguous
+       condition exists if name has not been associated with
+       an xt yet.
+
+    with the following:
+
+       xt is the execution token assigned to name when the
+       run-time semantics is performed.  An ambiguous
+       condition exists if name has not been assigned an xt.
+
+
+2. DEFER
+
+    Replace the "name Execute" clause:
+
+       Execute xt associated with name.  An ambiguous condition
+       exists if name has not been associated with an xt yet.
+
+    with:
+
+       Execute the xt assigned to name.  An ambiguous condition
+       exists if name has not been assigned an xt.
+
+
+3. DEFER@
+
+    Replace the first paragraph:
+
+       xt2 is the xt associated with the deferred word
+       corresponding to xt1.  An ambiguous condition exists
+       if xt1 is not for a word defined via DEFER, or if	the
+       deferred word has not been associated with an xt yet.
+
+    with:
+
+       xt2 is the xt assigned to the deferred word
+       corresponding to xt1.  An ambiguous condition exists
+       if xt1 is not for a word defined via DEFER, or if the
+       deferred word has not been assigned an xt.
+
+
+4. VALUE
+
+    Replace the "name Execute" clause:
+
+       Place x on the stack.  The value of x is that given
+       when name was created, until the phrase x TO name is
+       executed, causing a new value of x to be associated
+       with name.
+
+    with:
+
+       Place x on the stack.  The value of x is that given
+       when name was created, until the phrase x TO name is
+       executed, causing a new value of x to be assigned to
+       name.
+
+    Replace the "TO name Run-Time" clause:
+
+       Associate the value x with name.
+
+    with:
+
+       Assign the value x to name.
+
+5. (LOCAL)
+
+    Replace the "TO local Run-Time" clause:
+
+       Associate the value x with the local value local.
+
+    with:
+
+       Assign the value x to the local value local.
+
+6. Replace the ambiguous condition:
+
+       access to a deferred word, a word defined by DEFER,
+       which has yet to be associated with an xt.
+
+    with:
+
+       access to a deferred word, a word defined by DEFER,
+       which has not been assigned an xt.
+
+Remarks
+=======
+
+"a xt" would be more correct english, but "an xt" reads
+better.
+
+--
+Peter Knaggs
+pjk@bcs.org.uk
+
+
