@@ -1,0 +1,68 @@
+From: Krishna Myneni <krishnamyneni@bellsouth.net>
+Newsgroups: comp.lang.forth
+Subject: Rfd: floating point truncation
+Message-ID: <MDTDl.27325$v8.753@bignews5.bellsouth.net>
+Date: Fri, 10 Apr 2009 22:02:21 -0500
+
+RfD:  Floating point truncation
+
+Problem
+=====
+In practice, floating point calculations sometimes require truncation of a 
+floating point number. The intermediate truncated value often needs to be a 
+floating point value for further calculations. ANS Forth (DPANS94) only 
+specifies a standard word for truncation of a floating point number as a 
+conversion from type floating point to type signed double integer, through F>D. 
+This requires the awkward, and, on non-optimizing systems, inefficient sequence 
+of words, F>D, followed by D>F.
+
+
+12.6.1.1460 F>D
+f-to-d FLOATING
+
+	( -- d ) ( F: r -- )
+	or ( r -- d )
+
+d is the double-cell signed-integer equivalent of the integer portion of r. The 
+fractional portion of r is discarded. An ambiguous condition exists if the 
+integer portion of r cannot be precisely represented as a double-cell signed 
+integer.
+
+Although not specified in the standard, the type of truncation performed is 
+typically truncation towards zero. An extensive discussion of the type of 
+truncation which should be performed by F>D was held on comp.lang.forth several 
+years ago, and the consensus at that time appeared to be that F>D, to be 
+consistent with other mainstream languages and common expectation, should 
+perform truncation towards zero.
+
+
+Proposal
+======
+Include a standard word in the Floating-Point word set, named either FTRUNC or 
+FTRUNCATE, to perform a floating point truncation towards zero, and returning a 
+floating point value.
+
+Remarks
+======
+-- FTRUNC[ATE] complements the ANS Forth word, FROUND (12.6.1.1612), which does 
+return a floating point value.
+
+-- The Intel FPU instruction set contains FRNDINT, which, with the NDP control 
+word appropriately set, will perform the specified truncation, and leave the 
+floating point result on top of the FPU stack in a single instruction.
+
+Experience
+=======
+-- Many languages which provide floating point support, e.g. C, Lisp, FORTRAN, 
+implement a standard word for the floating point truncate function.
+
+-- For early Forth systems, LMI's UR/Forth provided FTRUNCATE. In contemporary 
+systems, both PFE and kForth provide the word FTRUNC.
+
+
+\ end of RfD
+
+Krishna Myneni
+10 April 2009
+
+
