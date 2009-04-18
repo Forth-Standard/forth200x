@@ -38,6 +38,7 @@ The results will be shown here in late August 2006.
  MPE Forth cross compilers 7.0
 [ ] will implement the proposal in full in some future release.
  ForthCAD
+ kForth (Krishna Myneni)
 There are no plans to implement the proposal in full in [ ].
  4th V3.5a (no FLOAT wordset at all)
 [ ] will never implement the proposal in full:
@@ -85,6 +86,12 @@ to ANS Forth - loading "fpnostack-ext" will also provide a
 "floating-ext" environme nt entry while the default "floating-ext"
 environment query will yield a configurat ion with a separate
 fp-stack.
+
+<p>Krishna Myneni (kForth) writes: In the interest of code portability
+among Forth 200x-like systems, our plan is to make use of the
+separated fp stack as the default mode in a future release of
+kForth. We will maintain an option for operating kForth in a unified
+stack mode, to support legacy code.
 
 <h4>Change History</h4>
 
