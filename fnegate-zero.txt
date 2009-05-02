@@ -1,0 +1,116 @@
+From: Krishna Myneni <krishnamyneni@bellsouth.net>
+Newsgroups: comp.lang.forth
+Subject: Rfd: FNEGATE specification for signed zero
+Message-ID: <FNtKl.35748$qa.27195@bignews4.bellsouth.net>
+Date: Thu, 30 Apr 2009 22:16:08 -0500
+
+RfD:  FNEGATE specification for signed zero
+
+Author: Krishna Myneni
+
+Version 0   -- 30 April 2009
+
+
+Problem
+=======
+
+The ANS Forth standard does not currently specify the behavior of 
+FNEGATE for floating point zero on systems which support floating 
+point signed zero. Many modern hardware and software systems which 
+support floating point arithmetic provide at least partial support of 
+the IEEE Standard for Floating Point Arithmetic (IEEE 754), which 
+specifies, among other things, behavior of floating point functions 
+with respect to signed zero. In order for the Forth standard to
+include specifications which are compatible[1] with the IEEE Floating 
+Point standard, it is necessary for programs to be able to detect 
+certain features of the floating point implementation. Floating point 
+signed zero is an important example of such a feature. A simple 
+modification of the current specification for FNEGATE will allow a 
+standard program to determine whether or not the Forth system supports 
+the extension of floating point signed zero.
+
+The current specification of the ANS Forth word, FNEGATE, is
+
+12.6.1.1567 FNEGATE
+f-negate FLOATING
+
+	( F: r1 -- r2 )
+	or ( r1 -- r2 )
+
+r2 is the negation of r1.
+
+
+Proposal
+========
+
+Modify the specification of FNEGATE as follows:
+
+FNEGATE
+f-negate FLOATING
+( F: r1 -- r2 )
+
+r2 is the negation of r1. Systems which support floating point signed
+zero must return r2 as negative zero when r1 is zero, and vice-versa.
+
+
+Reference Implementation
+========================
+
+No reference implementation is given, since FNEGATE depends on the
+internal details of the floating point representation.
+
+Testing
+=======
+
+SET-EXACT
+
+t{ 0E  FNEGATE  0E 0E F~          ->  FALSE  }t
+t{ 0E  FNEGATE FNEGATE  0E 0E F~  ->  TRUE   }t
+
+
+Remarks
+=======
+
+-- This proposal will allow a standard Forth program to determine 
+whether or not the Forth system provides support for floating point 
+negative zero, via
+
+0E FNEGATE 0E 0E F~  0= [IF]
+\ system supports fp signed zero
+
+[ELSE]
+\ system does not have fp signed zero
+
+[THEN]
+
+-- Some Forth systems may have a bug in their implementation of F~ for
+exact comparisons. For example, and exact comparison of 0E and -0E 
+using F~ may return TRUE, even when the system supports fp signed zero.
+
+-- This proposal will allow specifications to be extended for other
+floating point words, such as the proposed word FTRUNC, to guarantee
+features which are compatible[1] with the IEEE FP standard.
+
+-- The author of this Rfd has no personal experience with the use of
+floating point signed zero, other than to venture an educated guess
+that it is a potentially useful feature for performing and debugging
+floating point calculations. This proposal aims to provide another 
+tool to Forth programmers developing numerical codes, by guaranteeing 
+the ability to detect the Forth system support of fp signed zero, 
+thereby, allowing standard Forth programs to make use of the feature.
+
+
+Experience
+==========
+
+-- Many current hardware and software libraries for floating point
+arithmetic partially support the IEEE 754 standard, including floating 
+point signed zero. The situation with respect to embedded systems is 
+not know to the author of this Rfd.
+
+
+[1] "compatible" is not the same as "compliant".
+
+\ end of RfD
+
+
