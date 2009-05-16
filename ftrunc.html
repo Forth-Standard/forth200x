@@ -1,0 +1,242 @@
+<title>Floating point truncation</title>
+
+<!--
+From: Krishna Myneni <krishnamyneni@bellsouth.net>
+Newsgroups: comp.lang.forth
+Subject: Cfv: Floating point truncation
+Message-ID: <QQdPl.41724$b9.1531@bignews6.bellsouth.net>
+Date: Fri, 15 May 2009 08:13:18 -0500
+-->
+
+
+<h3>Floating point truncation</a>
+
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h5>Systems</h5>
+
+<pre>
+</pre>
+
+<h5>Programmers</h5>
+
+<pre>
+</pre>
+
+<h5>Informal results</h5>
+
+<h4>Proposal</h4>
+
+<pre>
+Author: Krishna Myneni
+
+Version 2.2 -- 28 April 2009
+Version 2.1 -- 25 April 2009
+Version 2   -- 24 April 2009
+Version 1   -- 15 April 2009
+Version 0   -- 10 April 2009
+
+
+Problem
+=======
+
+In practice, floating point calculations sometimes require rounding of a
+floating point number to a nearby integer, with the result being the 
+floating point representation of the integer. ANS Forth provides two words 
+in the optional floating point wordset, FROUND and FLOOR, for performing 
+such rounding. FROUND (DPANS94, 12.6.1.1612) and FLOOR (DPANS94, 12.6.1.1558), 
+which, respectively, provide rounding to the nearest integer, and rounding 
+to the nearest integer on the side of the number line towards negative 
+infinity. Another common form of rounding, often employed, is rounding to 
+the nearest integer on the side of the number line towards zero. The latter 
+form of rounding is often referred to colloquially as "truncation". ANS Forth 
+does not provide a word for rounding towards zero, and returning a floating 
+point representation of the resulting integer. This type of operation is 
+usually carried out through an awkward, and, on non-optimizing systems, 
+inefficient sequence of words, F&gt;D, followed by D&gt;F.  On Forth systems which 
+support the use of signed floating point zero, the sequence, F&gt;D D&gt;F, will 
+fail to produce a result (-0E) compatible with the IEEE floating point 
+arithmetic standard (IEEE FP), for an argument, r, such that -1E &lt; r &lt; 0E, 
+and for r = -0E. 
+
+
+Proposal
+========
+
+Include a standard word, named "FTRUNC", to perform "truncation", i.e. 
+rounding of a floating point number towards zero, returning a floating 
+point representation of the resulting integer. 
+
+FTRUNC 
+f-trunc FLOATING
+( F: r1 -- r2 )
+
+Round r1  to an integral value using the "round towards zero" rule, giving r2. 
+
+
+Reference Implementation
+========================
+
+<a href="reference-implementation/ftrunc.fs>Reference Implementation</a>
+
+Testing
+=======
+
+<a href="tests/ftrunc.fs">Tests</a>
+
+
+Remarks
+=======
+
+-- FTRUNC complements the ANS Forth words, FROUND and FLOOR, which also return
+floating point values.
+
+-- The Intel FPU instruction set contains FRNDINT, which, with the NDP control 
+word appropriately set, will perform the specified truncation, and leave the 
+floating point result on top of the FPU stack in a single instruction. 
+
+-- For consistency with the IEEE floating point arithmetic standard (usually 
+abbreviated as IEEE FP), Forth systems which provide a representation for 
+floating point negative zero must return r2 as floating point negative zero 
+(-0E) in the following cases:  -1E &lt; r1 &lt; 0E, and r1 = -0E. However, no provision 
+in the current ANS Forth standard, or currently proposed revisions to the standard, 
+guarantees a program can distinguish systems which support -0E. Hence, the sign 
+of floating point zero is unspecified for the above cases of r1.
+
+-- The tests can be made more rigorous with respect to floating point negative 
+zero, if the Forth standard provides a feature enabling a program to check the 
+Forth system for support of fp negative zero. A method which should work in 
+practice on most, if not all, current systems that provide floating point 
+negative zero is
+
+0E FNEGATE 0E 0E F~  0= 
+
+However, in order to guarantee the proper result, the specification for FNEGATE 
+must state that the result of applying FNEGATE to 0E is -0E (and vice-versa). 
+Another approach is to provide an environmental query for the presence of fp 
+signed zero. Either provision will require its own separate proposal to modify 
+the Forth standard.
+
+-- The current ANS Forth specification of F&gt;D is ambiguous. Even though the 
+adoption of a common meaning  seems to have occurred, it is nevertheless advisable 
+to revise the language specifying the F&gt;D operation to remove the ambiguity. A 
+separate proposal is warranted for standardization of F&gt;D. Below is the current 
+language of the ANS Forth specification for F&gt;D.
+
+F&gt;D
+f-to-d FLOATING
+
+	( -- d ) ( F: r -- ) 
+	or ( r -- d )
+
+d is the double-cell signed-integer equivalent of the integer portion of r. 
+The fractional portion of r is discarded. An ambiguous condition exists if 
+the integer portion of r cannot be precisely represented as a double-cell 
+signed integer. 
+
+Although not specified in the standard, the type of truncation performed is 
+typically truncation towards zero. An extensive discussion of the type of 
+truncation which should be performed by F&gt;D was held on comp.lang.forth 
+several years ago, and the consensus at that time appeared to be that F&gt;D 
+should perform truncation towards zero.
+
+ 
+Experience
+==========
+
+-- Many languages which provide floating point support, e.g. C, Lisp, 
+FORTRAN, implement a standard word for the floating point rounding towards 
+zero, or "truncation".
+
+-- In early Forth systems, LMI's UR/Forth provided FTRUNCATE, which, reportedly
+was equivalent to the sequence, F&gt;D D&gt;F. 
+
+-- The following contemporary Forth systems provide a word for rounding a 
+floating point number towards zero, and returning a floating point representation 
+of the result:
+
+       System     |  Word Name  |  Conforms to specification in this Rfd
+       ------------------------------------------------------------------
+       PFE        |  FTRUNC     |  yes
+       Gforth     |  FTRUNC     |  yes  (1)
+       kForth     |  FTRUNC     |  yes
+       VFX Forth  |  FINT       |  yes
+       iForth     |  FTRUNC     |  yes 
+       Win32Forth |  FTRUNC     |  yes
+
+
+(1) Defined as F&gt;D D&gt;F
+</pre>
+
+
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+&lt;anton@mips.complang.tuwien.ac.at&gt;.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+
+<h5>Ballot for systems</h5>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the brackets
+or in the line below the statement.  Multiple hits for the same system
+are possible (if they do not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+[ ] There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please do
+so informally, and I will aggregate this information in some way.
+
+
+<h5>Ballot for programmers</h5>
+
+Just mark the statements that are correct for you (e.g., by putting
+your name on the line below the statement you agree with).  If some
+statements are true for some of your programs, but not others, please
+mark the statements for the dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+     I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+     proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from the
+proposal (especially if you have used that in your programs), make an
+informal comment, and I will collect these, too. Note that the best time
+to voice such issues is the RfD stage.
+
+<h5>Credits</h5>
+
+<pre>
+Proponent: Krishna Myneni
+People who contributed to/influenced this Rfd (from discussions on 
+comp.lang.forth and email correspondence): 
+	George Hubert, "Ed", Bruce McFarling, Marcel Hendrix, Hans Bezemer, 
+	Anton Ertl, Andrew Haley, C.G. Montgomery, David N. Williams,
+	Stephen Pelc
+Votetaker: M. Anton Ertl
+</pre>
+
+<hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
+
+
