@@ -1,6 +1,6 @@
-<title>Ambiguity in FATAN2</title>
+<title>Unneeded restriction in FASINH</title>
 
-<h3>Ambiguity in FATAN2</h3>
+<h3>Unneeded restriction in FASINH</h3>
 
 <h4>Poll standings</h4>
 
@@ -40,70 +40,33 @@ Problem
 
 The ANS definition is:
 
-12.6.2.1489 FATAN2 
- f-a-tan-two FLOATING EXT     ( F: r1 r2 -- r3 ) or ( r1 r2 -- r3 ) 
- r3 is the radian angle whose tangent is r1/r2. An ambiguous condition 
-exists if r1 and r2 are zero. 
+  12.6.2.1487 FASINH   
+ f-a-cinch FLOATING EXT 
+ 
+        ( F: r1 -- r2 ) 
+        or ( r1 -- r2 )
 
-This is incomplete, since it does not specify which of the countably 
-infinite set of angles satisfying this specification will be returned as r3.
-
-Other computer languages which provide this function commonly specify the
-"principal angle", the one between -pi and pi.
+ r2 is the floating-point value whose hyperbolic sine is r1.
+ An ambiguous condition exists if r1 is less than zero.
 
 Proposal
 
-The first sentence of the definition should be expanded to:
- r3 is the principal radian angle (between -pi and pi) 
- whose tangent is r1/r2.
-Another sentence should be added:
- A system which returns FALSE for -0E 0E 0E F~ shall return a value
- (approximating) -pi when r1=-0E and r2 is negative.
+The second sentence is unnecessary, and should be deleted.
 
 Remarks
 
-This rewording follows the suggestion by Peter Knaggs that the language
-follow the pattern used in the definition of FACOS, FASIN, and FATAN (but
-with an added clarification of the term "principal").
+(This ought to be an easy one.)
 
-Discussions in comp.lang.forth have included general agreement that the
-present definition is ambiguous, probably unintentionally, and that specifying
-the principal angle would be the favored correction.
+The arc hyperbolic sine is an odd function, perfectly well-behaved for
+negative real arguments.  asinh(-x) = - asinh(x) .
 
-The second sentence calls for behavior similar to other languages, such as C 
-and Fortran, is consistent with much modern hardware, and its omission would
-impose an unnecessary burden on system providers, since most systems supporting
-negative zero follow IEEE floating point behavior which behaves this way.
-
-The wording of the second sentence has been chosen to be unambiguous without
-the need for any new environmental query (even if F~ does not behave properly).
-It has been suggested that additional Forth200x extensions be added to cover
-support for negative zeros or perhaps general IEEE floating point behavior.
-If such extensions become accepted and provide an environmental query that 
-would be useful for specifying the bahavior of FATAN2, it would be very easy
-to make (yet another) modification to the specification of FATAN2, to make use
-of them.
+I would be quite surprised if any Forth sysytem which correctly implements
+FASINH doesn't already correctly handle negative arguments.
 
 Experience
 
-A summary quoted from a posting by David N. Williams in comp.lang.forth:
-
-                      FATAN2 CONVENTIONS
-   implementation    -pi to pi   0 to 2pi
-   --------------------------------------
-   pfe 0.33.70          yes         no
-   gforth 0.7.0         yes         no
-   kforth 1.4.0         yes         no
-   iForth 3.0.3         yes         no
-   4tH 3.5c             yes         no
-   SwiftForth 3         no          yes
-   VFX Forth  4         yes         no
-   Win32Forth 6.13.00   yes         no
-
-Testing
-
-<a href="tests/fatan2.html">Tests</a>
-
+The proposed behavior is provided in Gforth and Win32Forth.
+There have been no reports of systems with conflicting behavior.
 </pre>
 
 <h4><a name="voting">Voting instructions</a></h4>
