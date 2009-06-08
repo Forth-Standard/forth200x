@@ -1,13 +1,39 @@
+<title>2VALUE</title>
+
+<h3>2VALUE</h3>
+
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h5>Systems</h5>
+
 <pre>
-RfD: 2VALUE
-Gerry Jackson, December 1 2008
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+[ ] There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
 
+<h5>Programmers</h5>
 
-Following the Forth 200X meeting in September 2008 I was asked
-to update the RfD for 2VALUE, in particular to conform to the
-rewritten definition of TO. Draft 2 of this RfD was in
-comp.lang.forth in October 2006.
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+     I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+     proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
 
+<h5>Informal results</h5>
+
+<h4>Proposal</h4>
+
+<pre>
 Problem
 -------
 
@@ -52,24 +78,24 @@ The syntax is:
 
 s 2VALUE stringref
 
-to define <stringref> as a cell pair holding (caddr u) for the
+to define &lt;stringref&gt; as a cell pair holding (caddr u) for the
 string.
 
 Alternatively, one can use
 
   123. 2VALUE ddata
 
-to define <ddata> as a double value initialized to 123..
+to define &lt;ddata&gt; as a double value initialized to 123..
 
 To access the value of stringref and ddata:
 
-   stringref TYPE <cr> some string ok
-   ddata D. <cr> 123  ok
+   stringref TYPE &lt;cr&gt; some string ok
+   ddata D. &lt;cr&gt; 123  ok
 
 The word TO is used to change stringref and ddata:
 
    : s2 S" another string" ; s2 TO stringref
-   456. TO ddata  ddata D. <cr> 456 ok
+   456. TO ddata  ddata D. &lt;cr&gt; 456 ok
 
 As there is no standard way to obtain the address of a 2VALUE,
 this definition does not require the cell pair or double value
@@ -82,7 +108,7 @@ Add the following definition to section 8.6.2 Double-Number
 extension words.
 
 8.6.2.xxxx 2VALUE         "two-value"                DOUBLE EXT
-           ( x1 x2 "<spaces>name" -- )
+           ( x1 x2 "&lt;spaces&gt;name" -- )
            Skip leading space delimiters.  Parse name delimited
            by a space.  Create a definition for name with the
            execution semantics defined below, with an initial
@@ -110,15 +136,16 @@ Rationale:
                      : fn2 s" filename2" ;
                      fn2 TO myfile
 
-            Testing:
-                     t{ 1 2 2VALUE t2val -> }t
-                     t{ t2val -> 1 2 }t
+<a href="tests/2value.fs">Testing</a>
+-------
+                     t{ 1 2 2VALUE t2val -&gt; }t
+                     t{ t2val -&gt; 1 2 }t
 
-                     t{ 3 4 TO t2val -> }t
-                     t{ t2val -> 3 4 }t
+                     t{ 3 4 TO t2val -&gt; }t
+                     t{ t2val -&gt; 3 4 }t
 
                      : sett2val t2val 2SWAP TO t2val ;
-                     t{ 5 6 sett2val t2val -> 3 4 5 6 }t
+                     t{ 5 6 sett2val t2val -&gt; 3 4 5 6 }t
 
 Notes
 -----
@@ -139,23 +166,79 @@ assume one ordering - this is not intended to be definitive.
 
 : 2VALUE    ( x1 x2 -- )
       CREATE , ,
-      DOES>  2@    ( -- x1 x2 )
+      DOES&gt;  2@    ( -- x1 x2 )
 ;
 
 The corresponding implementation of TO disregards the issue that
 TO must also work for integer VALUEs and locals.
 
-: TO    ( x1 x2 "<spaces>name" -- )
-      ' >BODY
+: TO    ( x1 x2 "&lt;spaces&gt;name" -- )
+      ' &gt;BODY
       STATE @
       IF
           POSTPONE 2LITERAL  POSTPONE 2!
       ELSE
           2!
       THEN
-; IMMEDIATE
-
--------
-
-Gerry Jackson
+; IMMEDIATE 
 </pre>
+
+
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+&lt;anton@mips.complang.tuwien.ac.at&gt;.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+
+<h5>Ballot for systems</h5>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the brackets
+or in the line below the statement.  Multiple hits for the same system
+are possible (if they do not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+[ ] There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please do
+so informally, and I will aggregate this information in some way.
+
+
+<h5>Ballot for programmers</h5>
+
+Just mark the statements that are correct for you (e.g., by putting
+your name on the line below the statement you agree with).  If some
+statements are true for some of your programs, but not others, please
+mark the statements for the dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+     I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+     proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from the
+proposal (especially if you have used that in your programs), make an
+informal comment, and I will collect these, too. Note that the best time
+to voice such issues is the RfD stage.
+
+<hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
+
+
+
