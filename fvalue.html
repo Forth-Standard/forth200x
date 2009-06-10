@@ -1,28 +1,51 @@
-<!--Article: 141603 of comp.lang.forth
-Path: tunews.univie.ac.at!aconews-feed.univie.ac.at!newsfeed.wu-wien.ac.at!newsfeed.utanet.at!feeder06.uucp-net.de!news.uucp.at!news.unit0.net!newsfeed.freenet.de!multikabel.net!newsfeed20.multikabel.net!amsnews11.chello.com!news.chello.nl.POSTED!not-for-mail
-From: mhx@iae.nl (Marcel Hendrix)
-Subject: Re: RfD -- FVALUE vsn 2.0
-Newsgroups: comp.lang.forth
-Message-ID: <84280932203558@frunobulax.edu>
-Date: Mon, 23 Mar 2009 14:27:39 +0200
-References: <87903334213558@frunobulax.edu>
-X-Newsreader: iForth 2.0 console (October 21, 2006)
-X-Complaints-To: abuse@chello.nl
-Organization: chello.nl
-Lines: 107
-NNTP-Posting-Host: 62.194.126.7 (62.194.126.7)
-NNTP-Posting-Date: Mon, 23 Mar 2009 14:27:36 +0100
-X-Trace: b4d5d49c78e489b67dba223602
-Xref: tunews.univie.ac.at comp.lang.forth:141603
--->
-<pre>
-RfD: FVALUE
-Marcel Hendrix, 23 Mar 2009
+<title>FVALUE</title>
 
+<h3>FVALUE</h3>
+
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h5>Systems</h5>
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+[ ] There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+<h5>Programmers</h5>
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+  Doug Hoffman
+[ ] I would use (parts of) this proposal in my programs if the systems
+     I am interested in implemented it.
+  Doug Hoffman
+  David N. Williams
+[ ] I would use (parts of) this proposal in my programs if this
+     proposal was in the Forth standard.
+  Doug Hoffman
+  David N. Williams
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+<h5>Informal results</h5>
+
+<h4>Proposal</h4>
+
+<pre>
+History
+=======
 * First draft *
 * First spell-checked draft         ** Marcel Hendrix, August 25, 2006
 * Revised to align with RfD for TO  ** Marcel Hendrix, Saturday, February 21, 2009, 21:39
 * Revised after comments            ** Marcel Hendrix, Monday, March 23, 2009, 06:52
+* Revised for line length           ** Marcel Hendrix, Monday, June 08, 2009, 21:17
 
 Rationale
 =========
@@ -55,41 +78,43 @@ and is thus the preferred solution (see also TO).
 
 The syntax is:
   123e0 FVALUE fdata
-to define <fdata> as a floating-point value initialized to <123e0>.
+to define &lt;fdata&gt; as a floating-point value initialized to &lt;123e0&gt;.
 
 To access the value of fdata:
-   fdata 2e0 F+ F. <cr> 125.000000  ok
+   fdata 2e0 F+ F. &lt;cr&gt; 125.000000  ok
 
 To change fdata:
-   fdata 2e0 F+ TO fdata  fdata F. <cr> 125.000000  ok
+   fdata 2e0 F+ TO fdata  fdata F. &lt;cr&gt; 125.000000  ok
 
 EXCHANGE leaves r1 in fdata and returns the prior value r2.
    : EXCHANGE ( F: r1 -- r2 ) fdata FSWAP TO fdata ;
    
 Proposal
 ========
-12.6.1.xxxx FVALUE                     "f-value"                              FLOATING EXT
-                  ( F: r -- ) ( "<spaces>name" -- )
-                  Skip leading space delimiters.  Parse name delimited by a space.  Create
-                  a definition for name with the execution semantics defined below, with
-                  an initial value equal to r.
-                  name is referred to as an "f-value".
+12.6.1.xxxx FVALUE         "f-value"                           FLOATING EXT
+     ( F: r -- ) ( "&lt;spaces&gt;name" -- )
+     Skip leading space delimiters.  Parse name delimited by a space. Create
+     a definition for name with the execution semantics defined below, with
+     an initial value equal to r.
+     name is referred to as an "f-value".
   name Execution: ( F: -- r )
-                  Place r on the FP stack.  The value of r is that given when name was
-                  created, until the phrase r TO name is executed, causing a new value of
-                  r to be associated with name.
+     Place r on the FP stack.  The value of r is that given when name was
+     created, until the phrase r TO name is executed, causing a new value of
+     r to be associated with name.
 TO name Run-time: ( F: r -- )
-		  Associate the value r with name.
+     Associate the value r with name.
 
 See: 3.4.1 Parsing and 6.2.2295 TO.
 
 
 See also
 ========
-6.2.2295 TO in CORE EXT, currently found in http://www.forth200x.org/documents/forth07-2.pdf.
+6.2.2295 TO in CORE EXT, currently found in 
+http://www.forth200x.org/documents/forth07-2.pdf.
+
 Note that the stack diagram of TO should be defined as
-  ( integer VALUE or LOCAL ) Interpretation: ( x "<spaces>name" -- )
-  ( floating-point FVALUE  ) Interpretation: ( "<spaces>name" -- ) ( F: r -- )
+  ( integer VALUE or LOCAL ) Interpretation: ( x "&lt;spaces&gt;name" -- )
+  ( floating-point FVALUE  ) Interpretation: ( "&lt;spaces&gt;name" -- ) ( F: r -- )
 
 Labeling
 =========
@@ -105,24 +130,79 @@ locals.
 VARIABLE %var  : TO  1 %var ! ;
 
 : FVALUE  CREATE F,  
-	  DOES>  %var @ IF  F!  ELSE  F@  THEN  
+	  DOES&gt;  %var @ IF  F!  ELSE  F@  THEN  
 	  	 0 %var ! ;
 
 : VALUE	  CREATE ,  
-	  DOES>  %var @ IF   !  ELSE   @  THEN  
+	  DOES&gt;  %var @ IF   !  ELSE   @  THEN  
 	  	 0 %var ! ;
 
-Test Cases
+<a href="tests/fvalue.fs">Test Cases</a>
 ==========
-( Using ttester.fs, by Hayes, Williams & Ertl )
-
-	T{ 0e0 FVALUE Tval -> }T
-	T{ Tval -> 0e0 }T
-	T{ 1e0 TO Tval -> }T
-	T{ Tval -> 1e0 }T
+	T{ 0e0 FVALUE Tval -&gt; }T
+	T{ Tval -&gt; 0e0 }T
+	T{ 1e0 TO Tval -&gt; }T
+	T{ Tval -&gt; 1e0 }T
 	: SETTval Tval FSWAP TO Tval ; 
-	T{ 2e0 SETTval Tval -> 1e0 2e0 }T
-	T{ 5e0 FVALUE x -> }T
+	T{ 2e0 SETTval Tval -&gt; 1e0 2e0 }T
+	T{ 5e0 FVALUE x -&gt; }T
 	: [execute] EXECUTE ; IMMEDIATE
-	T{ ' Tval ] [execute] [ -> 2e0 }T
+	T{ ' Tval ] [execute] [ -&gt; 2e0 }T
 </pre>
+
+
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+&lt;anton@mips.complang.tuwien.ac.at&gt;.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+
+<h5>Ballot for systems</h5>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the brackets
+or in the line below the statement.  Multiple hits for the same system
+are possible (if they do not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+[ ] There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please do
+so informally, and I will aggregate this information in some way.
+
+
+<h5>Ballot for programmers</h5>
+
+Just mark the statements that are correct for you (e.g., by putting
+your name on the line below the statement you agree with).  If some
+statements are true for some of your programs, but not others, please
+mark the statements for the dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+     I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+     proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from the
+proposal (especially if you have used that in your programs), make an
+informal comment, and I will collect these, too. Note that the best time
+to voice such issues is the RfD stage.
+
+<hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
