@@ -1,4 +1,4 @@
-require test/tester.fs
+require tester.fs
 
 { PARSE-NAME abcd S" abcd" COMPARE -> 0 }
 { PARSE-NAME   abcde   S" abcde" COMPARE -> 0 }

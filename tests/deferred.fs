@@ -1,5 +1,5 @@
 \ test cases
-require test/tester.fs
+require tester.fs
 
 { defer defer1 -> }
 { : is-defer1 is defer1 ; -> }

@@ -1,4 +1,4 @@
-require test/tester.fs
+require tester.fs
 
 { PARSE-WORD abcd S" abcd" COMPARE -> 0 }
 { PARSE-WORD   abcde   S" abcde" COMPARE -> 0 }

@@ -1,4 +1,4 @@
-require test/tester.fs
+require tester.fs
 
 { 0
   s" required-helper1.fs" required
