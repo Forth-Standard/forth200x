@@ -1,151 +1,282 @@
-Problem:
+RfD: Xchar wordset
+23 August 2009, Bernd Paysan
 
-ASCII is only appropriate for the English language. Most western
-languages however fit somewhat into the Forth frame, since a byte is
-sufficient to encode the few special pchars in each (though not
-always the same encoding can be used; latin-1 is most widely used,
-though). For other languages, different char-sets have to be used,
-several of them variable-width. Most prominent representant is
-UTF-8. Let's call these extended pchars XCHARs. Since ANS Forth
-specifies ASCII encoding, only ASCII-compatible encodings may be
-used. Furtunately, being ASCII compatible has so many benefits that
-most encodings actually are ASCII compatible.
+Change history:
 
-Proposal
+20090823	A few more edits to get fourth version
+20090717	Edits made to bring proposal in shape
+20090325	Edits made at Forth200x review meeting
+20081203	Editing after feedback of third version
+20081123        Clean up and check for consistency with Gforth 
+implementation
+20070714        Second version
+20050926        First version
 
-Datatypes:
+Add the following data type to section 3.1.2:
 
-xc is an extended char (xchar) on the stack. It occupies one cell, and is a
-        subset of unsigned cell. Note: UTF-8 can not store more that 31 bits;
-        on 16 bit systems, only the UCS16 subset of the UTF-8 character set
-        can be used. Small embedded systems can keep xchars always in memory,
-        because all words directly dealing with the xc datatype are in the
-        XCHAR EXT wordset.
+3.1.2.3  Primitive Character
 
-xc_addr is the address of an XCHAR in memory. Alignment requirements are the
-        same as c_addr. The memory representation of an XCHAR differs from the
-        stack representation, and depends on the encoding used. An XCHAR may
-        use a variable number of pchars in memory.
+A primitive character (pchar) includes all character values, at least
+{0..255}, that can be stored into memory with C! and retreived with
+C@ from memory.
 
-xc_addr u is a buffer of xchars in memory, starting at xc_addr, u pchars long.
+Add the following chapter:
 
-Common encodings:
+18. The optional Extended Characters wordset
 
-Input and files commonly are often encoded iso-latin-1 or utf-8. The
-encoding depends on settings of the computer system such as the LANG
-environment variable on Unix. You can use the system consistently only
-when you don't change the encoding, or only use the ASCII
-subset. Typical use is that the base system is ASCII only, and then
-extended encoding-specific.
+//to be merged with the i18n wordset//
 
-Words:
+18.1. Introduction
 
-XC-SIZE ( xc -- u ) XCHAR EXT
-Computes the memory size of the XCHAR xc in pchars.
+Forth defines graphic and control characters from the ASCII character
+set.  ASCII is only appropriate for the English language.  Most
+western languages however fit somewhat into the Forth frame, since a
+single byte is sufficient to encode the few special characters in each
+(though not always the same encoding can be used; latin-1 is widely
+used, though).  For other languages, different char sets have to be
+used, several of them variable-width.  Most prominent representative
+of the variable-width character sets is UTF-8, which has gained quite
+some popularity recently.  Since ANS Forth specifies ASCII encoding
+for characters, only ASCII-compatible encodings may be used.
+Fortunately, being ASCII compatible has so many benefits that most
+encodings actually are ASCII compatible.  The characters beyond the
+ASCII encoding are called "extended characters".
 
-X-SIZE ( xc_addr u1 -- u2 ) XCHAR
-Computes the memory size of the first XCHAR stored at xc_addr in
-pchars.
+Fixed width representations like UTF-16 have also been proposed, but
+those did not catch on, especially since they are not sufficiently
+ASCII compatible.  Furthermore, UTF-16 also became a variable-width
+representation when UCS32 was introduced.
 
-XC@+ ( xc_addr1 -- xc_addr2 xc ) XCHAR EXT
-Fetchs the XCHAR xc at xc_addr1. xc_addr2 points to the first memory
-location after xc.
+The xchar wordset does not solve problems that come from using
+multiple different encodings and switching or converting between them.
+A system implementing the xchar proposal should support at least UTF-8
+as widespread and common encoding.
 
-XC!+ ( xc xc_addr1 -- xc_addr2 ) XCHAR EXT
-Stores the XCHAR xc at xc_addr1. xc_addr2 points to the first memory
-location after xc.
+All words dealing with strings should handle xchars when the xchar
+wordset is present.  This includes dictionary definitions, so the
+dictionary entries should not use bit 8 for other purposes.  White
+space parsing does not have to treat code points greater hex 20 as
+white space.
 
-XC!+? ( xc xc_addr1 u1 -- xc_addr2 u2 flag ) XCHAR EXT
-Stores the XCHAR xc into the buffer starting at address xc_addr1, u1
-pchars large. xc_addr2 points to the first memory location
-after xc, u2 is the remaining size of the buffer. If the XCHAR xc did
-fit into the buffer, flag is true, otherwise flag is false, and
-xc_addr2 u2 equal xc_addr1 u1. XC!+? is safe for buffer overflows, and
-therefore preferred over XC!+.
+18.2. Additional terms and notation
 
-XCHAR+ ( xc_addr1 -- xc_addr2 ) XCHAR EXT
-Adds the size of the XCHAR stored at xc_addr1 to this address, giving
-xc_addr2.
+Code point:  A member of an extended character set.
 
-XCHAR- ( xc_addr1 -- xc_addr2 ) XCHAR EXT
-Goes backward from xc_addr1 until it finds an XCHAR so that the size of this
-XCHAR added to xc_addr2 gives xc_addr1. There is an ambiguous condition when
-the encoding doesn't permit reliable backward stepping through the text.
+18.3. Additional usage requirements
 
-+X/STRING ( xcaddr1 u1 -- xcaddr2 u2 ) XCHAR
-Step forward by one xchar in the buffer defined by address xcaddr1,
-size u1 pchars. xcaddr2 is the address and u2 the size in
-pchars of the remaining buffer after stepping over the first
-XCHAR in the buffer.
+18.3.1. Data types
 
-X\STRING- ( xcaddr1 u1 -- xcaddr1 u2 ) XCHAR
-Step backward by one xchar in the buffer defined by address xcaddr1
-and size u1 in pchars, starting at the end of the
-buffer. xcaddr1 is the address and u2 the size in pchars of the
-remaining buffer after stepping backward over the last XCHAR in the
-buffer. Unlike XCHAR-, X\STRING- can be implemented in encodings that
-have only a forward-working string size.
+Append table 18.1. to table 3.1.
 
--TRAILING-GARBAGE ( xcaddr u1 -- xcaddr u2 ) XCHAR
-Examine the last XCHAR in the buffer xcaddr u1 - if the encoding is
-correct and it repesents a full pchar, u2 equals u1, otherwise, u2
-represents the string without the last (garbled) XCHAR.
+Table 18.1: Data types
 
-X-WIDTH ( xc_addr u -- n ) XCHAR
-n is the number of monospace ASCII pchars that take the same space
-to display as the the XCHAR string starting at xc_addr, using u
-pchars; assuming a monospaced display font, i.e. pchar
-width is always an integer multiple of the width of an ASCII
-pchar.
+Symbol	    Data type			Size on stack
+-----------------------------------------------------
+pchar	    primitive character		       1 cell
+xchar	    extended character	     	       1 cell
+xc-addr	    character-aligned address	       1 cell
+xc-addr u   character-aligned string	      2 cells
 
-XKEY ( -- xc ) XCHAR EXT
-Reads an XCHAR from the terminal. This will discard all input events up to the
+xchar is the code point of an extended character; on the stack it is a
+	subset of u.  Extended characters are stored encoded as one or
+	more pchars in memory.
+
+xc-addr  is the address of an xchar in memory.  Alignment requirements 
+are the
+        same as c-addr.
+
+xc-addr u  is a string of xchars in memory, starting at xc-addr, u
+	pchars long.
+
+18.3.2. Environmental queries
+
+Append table 18.2 to table 3.5.
+
+Table 18.2: Environmental Query Strings
+
+String	    Value data type	Constant?	Meaning
+XCHAR-ENCODING	  c-addr u	no		Returns a printable
+		  	 			ASCII string that
+		  	 			represents the
+		  	 			encoding, and use the
+		  	 			preferred MIME name
+		  	 			(if any) or the name
+		  	 			in
+		  	 			
+http://www.iana.org/assignments/character-sets
+		  	 			like "ISO-LATIN-1" or
+		  	 			"UTF-8", with the
+		  	 			exception of "ASCII",
+		  	 			where we prefer the
+		  	 			alias "ASCII".
+MAX-XCHAR	u		no		Maximal value for xchar
+XCHAR-MAXMEM	u		no		Maximal memmory consumed
+						by an xchar in address 
+units
+
+Append table 18.3 to table 3.6
+
+Table 18.3: Forth 200x Extensions
+
+String	    Value data type	Constant?	Meaning
+X:xchar		--		--		The Xchar extension is 
+present
+
+18.3.4. Common encodings
+
+Input and files are often encoded iso-latin-1 or utf-8.  The encoding
+depends on settings of the computer system such as the LANG
+environment variable on Unix.  You can use the system consistently
+only when you don't change the encoding, or only use the ASCII subset.
+Typical use in environments with more than one encoding
+(e.g. different localized environemnts have different encodings) is
+that the base system is ASCII only, and then extended
+encoding-specific.
+
+18.3.5. Ambiguous conditions
+
+An ambigous condition exists if the data in memory does not encode a
+valid xchar, or if the xchar value is outside the range of allowed
+code points of the current character set used.
+
+Append table 18.4 to table 9.2:
+
+Code    Reserved for
+-------------------
+-77	Malformed xchar
+
+18.6 Glossary
+
+18.6.1 Xchar words
+
+X-SIZE ( xc-addr u1 -- u2 ) XCHAR
+u2 is the number of pchars used to encode the first xchar stored in
+the string xc-addr u1.  To calculate the size of the xchar, only the
+bytes inside the buffer may be accessed.  An ambiguous condition
+exists if the xchar is incomplete or malformed.
+
+XC-SIZE ( xchar -- u ) XCHAR
+u is the number of pchars used to encode xchar in memory.
+
+XC@+ ( xc-addr1 -- xc-addr2 xchar ) XCHAR
+Fetches the xchar at xc-addr1.  xc-addr2 points to the first memory
+location after the retrieved xchar.
+
+XC!+ ( xchar xc-addr1 -- xc-addr2 ) XCHAR
+Stores the xchar at xc-addr1.  xc-addr2 points to the first memory
+location after the stored xchar.
+
+XC!+? ( xchar xc-addr1 u1 -- xc-addr2 u2 flag ) XCHAR
+Stores the xchar into the string buffer specified by xc-addr1 u1.
+xc-addr2 u2 is the remaining string buffer.  If the xchar did fit into
+the buffer, flag is true, otherwise flag is false, and xc-addr2 u2
+equal xc-addr1 u1.  XC!+? is safe for buffer overflows.
+
+XC, ( xchar -- ) XCHAR
+Append the encoding of xchar to the dictionary.
+
+XCHAR+ ( xc-addr1 -- xc-addr2 ) XCHAR
+Adds the size of the xchar stored at xc-addr1 to this address, giving
+xc-addr2.
+
+XKEY ( -- xchar ) XCHAR
+Reads an xchar from the terminal.  This will discard all input events up 
+to the
 completion of the xchar.
 
-XKEY? ( -- flag ) XCHAR EXT
-Queries whether it's possible to do XKEY without blocking. Subsequent KEY?,
+XKEY? ( -- flag ) XCHAR
+Queries whether it's possible to do XKEY without blocking.  Subsequent 
+KEY?,
 KEY, EKEY?, and EKEY may be affected by XKEY?.
 
-EKEY>XCHAR ( u -- xc t / u f ) XCHAR EXT
+XEMIT ( xchar -- ) XCHAR
+Prints an xchar on the terminal.
+
+18.6.1 Xchar extension words
+
+-TRAILING-GARBAGE ( xc-addr u1 -- xc-addr u2 ) XCHAR EXT
+Examine the last xchar in the string xc-addr u1 - if the encoding is
+correct and it represents a full xchar, u2 equals u1, otherwise, u2
+represents the string without the last (garbled)
+xchar.  -TRAILING-GARBAGE does not change this garbled xchar.
+
+X-WIDTH ( xc-addr u -- n ) XCHAR EXT
+n is the number of monospace ASCII characters that take the same space
+to display as the the xchar string xc-addr u; assuming a monospaced
+display font, i.e. xchar width is always an integer multiple of the
+width of an ASCII character.
+
+HOLDS ( c-addr u -- ) XCHAR EXT (or go to CORE EXT)
+Adds a string to the picture numeric output buffer.
+
+XHOLD ( xchar -- ) XCHAR EXT
+Adds an xchar to the picture numeric output buffer.
+
+XC-WIDTH ( xchar -- n ) XCHAR EXT
+n is the number of monospace ASCII characters that take the same space
+to display as the xchar; i.e. xchar width is always an integer
+multiple of the width of an ASCII char.
+
++X/STRING ( xc-addr1 u1 -- xc-addr2 u2 ) XCHAR EXT
+Step forward by one xchar in the buffer defined by xc-addr1 u1.
+xc-addr2 u2 is the remaining buffer after stepping over the first
+xchar in the buffer.
+
+X\STRING- ( xc-addr1 u1 -- xc-addr1 u2 ) XCHAR EXT
+Search for the penultimate xchar in the string xc-addr1 u1.  The
+string xc-addr1 u2 contains all xchars of xc-addr u1, but the last.
+Unlike XCHAR-, X\STRING- can be implemented in encodings where xchar
+boundaries can only reliably detected when scanning in forward
+direction.
+
+XCHAR- ( xc-addr1 -- xc-addr2 ) XCHAR EXT
+Goes backward from xc-addr1 until it finds an xchar so that the size of 
+this
+xchar added to xc-addr2 gives xc-addr1.  There is an ambiguous condition 
+when
+the encoding doesn't permit reliable backward stepping through the text.
+
+EKEY>XCHAR ( u -- xchar t / u f ) XCHAR EXT
 If the keyboard event u corresponds to an xchar, return the xchar and
-true. Otherwise, return u and false.
+true.  Otherwise, return u and false.
 
-XEMIT ( xc -- ) XCHAR EXT
-Prints an XCHAR on the terminal.
+CHAR ( "<spaces>name" -- xchar ) XCHAR EXT
+Skip leading space delimiters.  Parse name delimited by a space.  Put 
+the
+value of its first xchar onto the stack.
 
-The following words have extended behavior when the XCHAR extension is
-present:
-
-CHAR ( "<spaces>name" -- xc )
-Skip leading space delimiters.  Parse name delimited by a space.  Put the
-value of its first XCHAR onto the stack.
-
-[CHAR]
+[CHAR]	 XCHAR EXT
 Interpretation: Interpretation semantics for this word are undefined.
         Compilation:    ( ?<spaces>name? -- )
-Skip leading space delimiters.  Parse name delimited by a space.  Append the
+Skip leading space delimiters.  Parse name delimited by a space.  Append 
+the
 run-time semantics given below to the current definition.
-        Run-time:       ( -- xc )
-Place xc, the value of the first XCHAR of name, on the stack.
+        Run-time:       ( -- xchar )
+Place xchar, the value of the first xchar of name, on the stack.
 
-PARSE ( xc "text<xc>" -- addr u )
-Parse a text in the input stream with the xchar xc as delimiter.
+Number prefixes:
+'<xchar>' will be interpreted as literal that puts xchar on the stack.
 
-Environment query:
+Rationale:
 
-XCHAR-ENCODING ( -- c_addr u ) ENVIRONMENT
+There's an alternative proposal to name these extended versions XCHAR
+and [XCHAR] instead.  Since however XCHAR and [XCHAR] would completely
+take over the role of CHAR and [CHAR], and being fully backward
+compatible, there is no point to provide new words for this purpose.
+The character number prefix is also supposed to work with xchars.
 
-Returns a printable ASCII string that reperesents the encoding, and
-use the preferred MIME name (if any) or the name in
-http://www.iana.org/assignments/character-sets like "ISO-LATIN-1" or
-"UTF-8", with the exception of "ASCII", where we prefer the alias
-"ASCII".
+PARSE ( xchar "text<xc>" -- addr u ) XCHAR EXT
+Parse a text in the input stream with the xchar as delimiter.
 
-Throw code:
+Terminal string IO like TYPE and ACCEPT also are extended to work with
+xchars in the string.  Since Unicode input and display poses a number
+of challanges like input method editors for different languages,
+left-to-right and right-to-left writing, and most fonts contain only a
+subset of Unicode glyphs, systems should document their
+capabilities.  File IO and in-memory string handling should work
+transparently with xchars.
 
--77 "Malformed XCHAR"
-
-Reference implementation:
+18.7. Reference implementation
 
 -------------------------xchar.fs----------------------------
 \ xchar reference implementation: UTF-8 (and ISO-LATIN-1)
@@ -161,50 +292,53 @@ base @ hex
 
 80 Value maxascii
 
-: xc-size ( xc -- n )
+: xc-size ( xchar -- n )
     dup      maxascii u< IF  drop 1  EXIT  THEN \ special case ASCII
     800  2 >r
     BEGIN  2dup u>=  WHILE  5 lshift r> 1+ >r  dup 0= UNTIL  THEN
     2drop r> ;
 
-: xc@+ ( xcaddr -- xcaddr' u )
+: xc@+ ( xc-addr -- xc-addr' u )
     count  dup maxascii u< IF  EXIT  THEN  \ special case ASCII
     7F and  40 >r
     BEGIN   dup r@ and  WHILE  r@ xor
-	    6 lshift r> 5 lshift >r >r count
-	    3F and r> or
+            6 lshift r> 5 lshift >r >r count
+            3F and r> or
     REPEAT  r> drop ;
 
-: xc!+ ( xc xcaddr -- xcaddr' )
+: xc!+ ( xchar xc-addr -- xc-addr' )
     over maxascii u< IF  tuck c! char+  EXIT  THEN \ special case ASCII
     >r 0 swap  3F
     BEGIN  2dup u>  WHILE
-	    2/ >r  dup 3F and 80 or swap 6 rshift r>
+            2/ >r  dup 3F and 80 or swap 6 rshift r>
     REPEAT  7F xor 2* or  r>
     BEGIN   over 80 u< 0= WHILE  tuck c! char+  REPEAT  nip ;
 
-: xc!+? ( xc xcaddr u -- xcaddr' u' flag )
-    >r over xc-size r@ over u< IF ( xc xc-addr1 len r: u1 )
-	\ not enough space
-	drop nip r> false
+: xc, ( xchar -- ) here xc!+ dp ! ;
+
+: xc!+? ( xchar xc-addr u -- xc-addr' u' flag )
+    >r over xc-size r@ over u< IF ( xchar xc-addr1 len r: u1 )
+        \ not enough space
+        drop nip r> false
     ELSE
-	>r xc!+ r> r> swap - true
+        >r xc!+ r> r> swap - true
     THEN ;
 
 \ scan to next/previous xchar
 
-: xchar+ ( xcaddr -- xcaddr' )  xc@+ drop ;
-: xchar- ( xcaddr -- xcaddr' )
+: xchar+ ( xc-addr -- xc-addr' )  xc@+ drop ;
+: xchar- ( xc-addr -- xc-addr' )
     BEGIN  1 chars - dup c@ C0 and maxascii <>  UNTIL ;
 
 : +x/string ( xc-addr1 u1 -- xc-addr2 u2 )
     over dup xchar+ swap - /string ;
-: x\string- ( xcaddr u -- xcaddr u' )
+: x\string- ( xc-addr u -- xc-addr u' )
     over + xchar- over - ;
 
 \ skip trailing garbage
 
-: x-size ( xcaddr u1 -- u2 ) drop
+: x-size ( xc-addr u1 -- u2 )
+    0=        IF drop 0 exit  THEN
     \ length of UTF-8 char starting at u8-addr (accesses only u8-addr)
     c@
     dup 80 u< IF drop 1 exit THEN
@@ -216,35 +350,42 @@ base @ hex
     dup fe u< IF drop 6 exit THEN
     mal-xchar throw ;
 
-: -trailing-garbage ( xcaddr u1 -- xcaddr u2 )
+: -trailing-garbage ( xc-addr u1 -- xc-addr u2 )
     2dup + dup xchar- ( addr u1 end1 end2 )
     2dup dup over over - x-size + = IF \ last xchar ok
-	2drop
+        2drop
     ELSE
-	nip nip over -
+        nip nip over -
     THEN ;
 
 \ utf key and emit
 
-: xkey ( -- xc )
+: xkey ( -- xchar )
     key dup maxascii u< IF  EXIT  THEN  \ special case ASCII
     7F and  40 >r
     BEGIN  dup r@ and  WHILE  r@ xor
-	    6 lshift r> 5 lshift >r >r key
-	    3F and r> or
+            6 lshift r> 5 lshift >r >r key
+            3F and r> or
     REPEAT  r> drop ;
 
-: xemit ( xc -- )
+: xemit ( xchar -- )
     dup maxascii u< IF  emit  EXIT  THEN \ special case ASCII
     0 swap  3F
     BEGIN  2dup u>  WHILE
-	    2/ >r  dup 3F and 80 or swap 6 rshift r>
+            2/ >r  dup 3F and 80 or swap 6 rshift r>
     REPEAT  7F xor 2* or
     BEGIN   dup 80 u< 0= WHILE emit  REPEAT  drop ;
 
+: holds ( addr u -- )
+    BEGIN  dup  WHILE  1- 2dup + c@ hold  REPEAT  2drop ;
+
+Create xholdbuf 8 allot
+
+: xhold ( xchar -- )  xholdbuf tuck xc!+ over - holds ;
+
 \ utf size
 
-\ uses wcwidth ( xc -- n )
+\ uses wcwidth ( xchar -- n )
 
 : wc, ( n low high -- )  1+ , , , ;
 
@@ -388,18 +529,18 @@ here wc-table - Constant #wc-table
 
 \ inefficient table walk:
 
-: wcwidth ( xc -- n )
+: xc-width ( xchar -- n )
     wc-table #wc-table over + swap ?DO
-	dup I 2@ within IF  I 2 cells + @  UNLOOP EXIT  THEN
-    3 cells +LOOP  1 ;
+        dup I 2@ within IF  drop I 2 cells + @  UNLOOP EXIT  THEN
+    3 cells +LOOP  drop 1 ;
 
-: x-width ( xcaddr u -- n )
+: x-width ( xc-addr u -- n )
     0 rot rot over + swap ?DO
-	I xc@+ swap >r wcwidth +
+        I xc@+ swap >r xc-width +
     r> I - +LOOP ;
 
-: char  ( "name" -- xc )  bl word count drop xc@+ nip ;
-: [char] ( "name" -- rt:xc )  char postpone Literal ; immediate
+: char  ( "name" -- xchar )  bl word count drop xc@+ nip ;
+: [char] ( "name" -- rt:xchar )  char postpone Literal ; immediate
 
 \ switching encoding is only recommended at startup
 \ only two encodings are supported: UTF-8 and ISO-LATIN-1
@@ -413,15 +554,16 @@ here wc-table - Constant #wc-table
 base !
 -------------------------xchar.fs----------------------------
 
-Experience:
+18.8. Experience
 
 Build into Gforth (development version) and recent versions of
-bigFORTH. There's also lxf-ntf by Peter Falth.
+bigFORTH.  The MINOS port to VFX Forth comes with an xchar
+implementation, as well.  There's also lxf-ntf by Peter Falth.
 
 Open issues are file reading and writing (conversion on the fly or
-leave as it is?). Text files in alien encoding (different from
+leave as it is?).  Text files in alien encoding (different from
 internal encoding) might have an encoding, which then is translated to
-internal encoding on the fly. E.g.
+internal encoding on the fly.  E.g.
 
 utf-8 xset-encoding
 s" foobar.txt" r/w open-file throw value fd
@@ -429,23 +571,22 @@ iso-latin-1 fd set-file-encoding throw
 
 Subsequent READ-FILE, READ-LINE, WRITE-FILE, and WRITE-LINE would
 convert utf-8 to iso-latin-1 on the fly, probably replacing
-unencodable xchars with '?' on write.
+unencodeable xchars with '?' on write.
 
 Informal Appendix:
 
 Many Forth systems today are case insensitive, to accept lower case
-standard words. It is sufficient to be case insensitive for the ASCII
+standard words.  It is sufficient to be case insensitive for the ASCII
 subset to make this work - this saves a large code mapping table for
-comparison of other symbols. Case is mostly an issue of European
+comparison of other symbols.  Case is mostly an issue of European
 languages (latin, greek, and cyrillic), but similar issues exist
-between traditional and simplified Chinese, and between different
-Latin code pages in UCS, e.g. full width vs. normal half width latin
-letters.
+between traditional and simplified Chinese (finally being dealt with
+by Unihan), and between different Latin code pages in UCS, e.g. full
+width vs. normal half width latin letters.
 
 Furthermore, UCS allows composition of glyphs, and also has direct
-encoding for composed glyphs, which look mostly the same, but have
-different encodings. This is not a problem for a Forth system to
-solve.
+encoding for composed glyphs, which look the same, but have different
+encodings.  This is not a problem for a Forth system to solve.
 
 Some encodings (not UTF-8) might give surprises when you use
 a case insensitive ASCII-compare that's 8-bit safe, but not aware of
