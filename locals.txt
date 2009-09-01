@@ -1,0 +1,256 @@
+RfD - Enhanced local variable syntax, v5a
+====================================
+Stephen Pelc - 30 August 2009
+
+20090830 Tidied.
+20090325 Updated with some renaming.
+20080811 Removed references to local buffers as appropriate.
+20070914 Moved local buffers to separate proposal.
+20070607 Wordsmithing. Corrected reference implementation.
+20060822 Added explanatory text.
+         Corrected reference implementation.
+         Updated ambiguous conditions.
+
+Problem
+=======
+1) The current LOCALS| ... | notation explicitly forces all locals
+to be initialised from the data stack.
+2) 1) The current LOCALS| ... | notation defines locals in reverse
+order to the normal stack notation.
+
+This proposal is derived from implementations that have existed for
+more than 15 years.
+
+
+Solution
+========
+Base version
+------------
+The following syntax for local arguments and local values is
+proposed. The sequence:
+  {: arg1 arg2 ... | lv1 lv2 ... -- o1 o2 ... :}
+declares local arguments, local values, and dummy outputs.
+
+The local arguments are automatically initialised from the data
+stack on entry, the rightmost being taken from the top of the data
+stack. Local arguments and local values can be referenced by name
+within the word during compilation. The output names are dummies
+to allow a local declaration to be read as a stack comment.
+  The items between {: and | are local arguments.
+  The items between | and -- are local values.
+  The items between -- and :} are outputs for formal comments only.
+
+The -- to :} section is optional, i.e. | or {: direct to :} is
+permitted.
+
+The outputs are provided in the notation so that complete stack
+comments can be produced. However, all text between -- and } is
+ignored. This facility is there to permit the notation to form a
+complete stack comment, which eases documentation.
+
+Local arguments and values return their values when referenced,
+and must be preceded by TO to perform a store.
+
+In the example below, a and b are local arguments, and c and
+d are local values.
+
+: foo  {: a b | c d -- :}
+  a b + to c
+  a b * to d
+  cr c .  d .
+;
+
+Local types and extensions
+--------------------------
+Although out of the scope of this proposal, it should be noted
+that some current Forth systems use indicators to define local
+values of sizes other than a cell. To avoid issues when porting
+code to such systems, names ending in a ':' (colon) should be
+avoided.
+
+: foo  {: a b | F: f1 F: f2 -- c :}
+  ...
+;
+
+At least one Forth implementation uses local value names ending in
+the '[' character to indicate local buffers. This character should
+be avoided to prevent disenfranchising implementations that implement
+the behaviour. For similar reasons the use of '[' and '\' as local
+argument or value names should also be avoided.
+
+
+Discussion
+==========
+The '|' (ASCII 0x7C) character is widely used as the separator
+between local arguments and local values. Other characters
+accepted in current Forth implementations are '\' (ASCII 0x5C) and
+'¦' (0xA6). Since the ANS standard is defined in terms of 7-bit
+ASCII, and with regard to internationalistion, we propose only to
+consider the '|' and '\' characters further. Only recognition of
+the '|' separator is mandatory.
+
+Some current systems permit TO to be used with floats (children of
+FVALUE) and other data types. Such systems often provide additional
+operators such as +TO (add from stack to item) for children of VALUE
+and FVALUE.
+
+
+Forth 200x text
+===============
+13.6.2.xxxx {:
+brace-colon LOCAL EXT
+
+Interpretation: Interpretation semantics for this word are undefined.
+
+Compilation:
+( ... "<spaces>:}" -- )
+
+Create local arguments by repeatedly skipping leading spaces,
+parsing name (arg1 to argn), and executing implementation defined
+actions. The list of local arguments to be defined is terminated
+by "|", "--" or ":}". Append the run-time semantics for local
+arguments given below to the current definition.
+
+If a space delimited '|' (ASCII code 0x7C) is encountered, create
+local values by repeatedly skipping leading spaces, parsing name
+(lv1 to lvm), and creating the local element. The list of local
+values to be defined is terminated by "--" or ":}". Append the
+run-time semantics for local values given below to the current
+definition. If "--" has been encountered, further text between "--"
+and ":}" is ignored.
+
+Systems should permit at least eight local arguments and eight
+local values to be declared. A program that requires more has an
+environmental dependency.
+
+Local argument declaration run-time: ( x1 ... xn -- )
+Local value declaration run-time: ( -- )
+
+Initialise local arguments from the data stack. Local argument
+arg1 is initialized with x1, arg2 with x2 up to argn from xn,
+which is on the top of the data stack. When invoked, each local
+argument returns its contents. The contents of a local argument may be
+changed using 13.6.1.2295 TO.
+
+Set up local values. The initial contents of local values are
+undefined. When invoked, each local value returns its contents. The
+contents of a local value may be changed using 13.6.1.2295 TO. The
+size of a local value is a cell.
+
+Local argument run-time: ( -- x )
+Local value run-time: ( -- x )
+TO local argument run-time: ( x -- )
+TO local value run-time: ( x -- )
+
+Ambiguous conditions:
+a) The {: ... :} text extends over more than one line.
+b) {: ... :} is used more than once in a word.
+
+
+Reference implementation
+=========================
+
+0 [if]
+BUILDLV    c-addr u +n mode
+When executed during compilation, BUILDLV passes a message to the
+system identifying a new local argument whose definition name is
+given by the string of characters identified by c-addr u. The size
+of the data item is given by +n address units, and the mode
+identifies the construction required as follows:
+  0 - finish construction of initialisation and data storage
+      allocation code. C-addr and u are ignored. +n is 0
+      (other values are reserved for future use).
+  1 - identify a local argument, +n = cell
+  2 - identify a local value, +n = cell
+  3+ - reserved for future use
+  -ve - implementation specific values
+
+The result of executing BUILDLV during compilation of a definition
+is to create a set of named local arguments and values, each of
+which is a definition name, that only have execution semantics
+within the scope of that definition's source.
+
+Note that it is often useful to accumulate and store the size of
+locals storage (0=none), so that compilers for EXIT can easily
+detemine if locals clean up code is required.
+[then]
+
+VARIABLE #LVS   \ -- addr
+\ Holds size of locals storage required.
+
+: BUILDLV	\ c-addr u +n mode --
+\ Dummy for testing
+  OVER #LVS +!
+  CR 2SWAP TYPE  SPACE  SWAP . .
+;
+
+: TOKEN         \ -- caddr u
+\ Get the next space delimited token from the input stream.
+\ Can be extended to permit multiple line declarations.
+  PARSE-NAME
+;
+
+: LTERM?        \ caddr u -- flag
+\ Return true if the string caddr/u is "--" or ":}"
+  2DUP S" --" COMPARE 0= >R
+  S" :}" COMPARE 0=  R> OR
+;
+
+: LSEP?         \ caddr u -- flag
+\ Return true if the string caddr/u is the separator between
+\ local arguments and local values or buffers.
+  2DUP S" |" COMPARE 0= >R
+  S" \" COMPARE 0=  R> OR
+;
+
+: {:            \ --
+\ Parse the locals declaration up to the closing ":}".
+  0 #LVS !                              \ indicate no locals yet
+  0 >R                                  \ indicate arguments
+  BEGIN
+    TOKEN 2DUP LTERM? 0=
+  WHILE                                 \ -- caddr len
+    2DUP LSEP? IF                       \ if '|'
+      R> DROP  1 >R                     \ change to vars and buffers
+    ELSE
+      R@ 0= IF                          \ argument?
+        CELL 1
+      ELSE                              \ value
+        CELL 2
+      THEN
+      BUILDLV
+    THEN
+  REPEAT
+  BEGIN
+    S" :}" COMPARE
+   WHILE
+    TOKEN
+  REPEAT
+  0 0 0 0 BUILDLV
+  R> DROP
+; IMMEDIATE
+
+Tests
+=====
+
+: TEST1  {: a b | c -- f :}
+  CR ." Hello1 " CR  a  ;
+\ 3 4 TEST1 -> 3
+
+: TEST2  {: a | b c e :}
+  CR ." Hello2 " CR  ;
+\ 3 TEST2 ->
+
+: TEST3  {: a b c -- :}
+  CR ." Hello3 " CR  ;
+\ 3 4 5 TEST3 ->
+
+: TEST4  {: a b c :}
+  CR ." Hello4 " CR  ;
+\ 3 4 5 TEST4 ->
+
+: TEST5  {: a | b c d -- e f g :}
+  CR ." Hello5 " CR
+  a 2* to b  b 2* to c  c 2* to d
+  b c d  ;
+\ 3 TEST2 -> 6 12 24
