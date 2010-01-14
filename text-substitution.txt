@@ -1,19 +1,18 @@
 From: stephenXXX@mpeforth.com (Stephen Pelc)
 Newsgroups: comp.lang.forth
-Subject: RfD: text substitution
+Subject: RfD Substitute v3
 Organization: MPE
-Reply-To: stephenXXX@INVALID.mpeforth.com
-Message-ID: <49d4f357.76514605@192.168.0.50>
-Date: Thu, 02 Apr 2009 17:18:53 GMT
+Message-ID: <4ab11e22.84952232@192.168.0.50>
+Date: Wed, 16 Sep 2009 17:20:21 GMT
 
 Text substitution proposal
 
-Revised: 2 April 2009
+Revised: 16 September 2009
 
 Author:
 Stephen Pelc, MicroProcessor Engineering, stephen@mpeforth.com
 Input from:
-Peter Knaggs, Leon Wagner, Bernd Paysan
+Peter Knaggs, Leon Wagner, Bernd Paysan, Anton Ertl
 
 Contact:
 Stephen Pelc
@@ -29,6 +28,8 @@ Web: http://www.mpeforth.com
 
 Rationale
 =========
+Why do this?
+------------
 Text substitution is useful for a number of applications,
 including:
 1)Directory handling
@@ -38,13 +39,13 @@ including:
 Many applications need to be able to perform text substitution,
 for example:
 
-Your balance at <time> on <date> is <currencyvalue>.
+  Your balance at <time> on <date> is <currencyvalue>.
 
 We can provide for these requirements by defining a text
 substitution facility. For example, we can provide an initial
 string in the form:
 
-Your balance at %time% on %date% is %currencyvalue%.
+  Your balance at %time% on %date% is %currencyvalue%.
 
 In this example, % is used as delimiters for the substitution
 name. The text “time”, "date” and “currencyvalue” are text
@@ -52,6 +53,8 @@ substitutions, where “time” and “date” insert the current time and
 date, and “currencyvalue” inserts the top item on the stack as a
 string in the active currency.
 
+Implementation
+--------------
 Implementation of SUBSTITUTE may be considered as being equivalent
 to a wordlist which is searched. If the substitution name is
 found, the word is executed to return a string that replaces the
@@ -61,28 +64,10 @@ required are similar to those many implementers have used with
 ENVIRONMENT?. The range of functions required can be handled by
 standardising substitution names. Practical use indicates that
 implemention with a wordlist eases adding substitutions that
-perform run-time calculations.
-
-Translation of a sentence or message from one language to another
-may result in changes to the displayed parameter order. For
-example, the substitution in:
-Your balance at %time% on %date% is %currencyvalue%.
-requires a different order in Russian.
-
-When an application provides substitution of parameters on the
-data stack by SUBSTITUTE and uses substitutions to access these
-items, it is recommended that items not be destroyed but instead
-be removed after execution of SUBSTITUTE. For example, the
-previous string could be redone as:
-Your balance at %$4% on %$2% is %i0%.
-where the substitution $x takes the caddr/len string at stack
-depth x, and the substitution ix takes a signed integer. The
-depths are defined after the parameters to SUBSTITUTE itself have
-been removed. The word SUBSTITUTE would then be called as:
-$time $tlen $date $dlen val src srclen dest dlen SUBSTITUTE
+perform run-time manipulations, e.g. time and date.
 
 This proposal is derived from an implementation used in a
-commercial Forth for more than ten years. The % character was
+Forth system for more than ten years. The % character was
 chosen as the default delimiter because it is an illegal character
 in DOS and Windows file and path names. By choosing an illegal
 character, substitutions in file name handling can very easily be
@@ -90,18 +75,51 @@ implemented, even at the level of OPEN-FILE and CREATE-FILE.
 
 There is no provision for changing the delimiter character because
 it causes difficulties when porting code and can have dangerous
-side effects at run-time. Similarly, use of separate leading and
-trailing delimiter characters increases the complexity of some
-substitutions.
+side effects at run-time, especially when delimiter usage varies
+in different source libraries. Similarly, use of separate leading
+and trailing delimiter characters increases the complexity of some
+substitutions. The simplest choice is to use one fixed character.
+Whatever character is chosen, it will cause problems somewhere. As
+with the whole standard document, nothing in this proposal
+prohibits a system from providing system-specific extensions.
+
+Usage
+-----
+
+Translation of a sentence or message from one language to another
+may result in changes to the displayed parameter order. For
+example, the substitution in
+
+  Your balance at %time% on %date% is %currencyvalue%.
+
+requires a different order in Russian.
+
+When an application provides substitution of parameters on the
+data stack by SUBSTITUTE and uses substitutions to access these
+items, it is recommended that items not be destroyed but instead
+be removed after execution of SUBSTITUTE. For example, the
+previous string could be redone as:
+
+  Your balance at %$4% on %$2% is %i0%.
+
+where the substitution $x takes the caddr/len string at stack
+depth x, and the substitution ix takes a signed integer. The
+depths are defined after the parameters to SUBSTITUTE itself have
+been removed. The word SUBSTITUTE would then be called as:
+
+$time $tlen $date $dlen val src srclen dest dlen SUBSTITUTE
 
 
-Solution
+Proposal
 ========
 The following two words are defined to handle substitution of
 text, and output of application data such as date, time, currency,
 path and so on.
 
-REPLACES        \ c-addr1 len1 c-addr2 len2 --
+17.6.2.aaaa REPLACES "replaces" STRING EXT
+
+Execution: c-addr1 len1 c-addr2 len2 --
+
 Set the string defined by c-addr1 and len1 as the text to
 substitute for the substitution named by c-addr2 and len2. If the
 substitution does not exist it is created. The program may then
@@ -110,32 +128,63 @@ the substitution. Ambiguous conditions occur as follows
 1)The substitution cannot be created.
 2)The name of a substitution contains a delimiter character.
 
-SUBSTITUTE       \ c-addr1 len1 c-addr2 len2 -- c-addr2 len3 n
+
+17.6.2.bbbb SUBSTITUTE "substitute" STRING EXT
+
+Execution: c-addr1 len1 c-addr2 len2 -- c-addr2 len3 n
+
 Perform substitution on the string at c-addr1 and len1 placing the
 result at string c-addr2 and len2, returning c-addr2 and len3, the
-length of the resulting string. Ambiguous conditions occur if the
-resulting string will not fit into c-addr2 and len2 or
-substitution text cannot be found. An ambiguous condition occurs
-if c-addr2 is the same as c-addr1. The return value n is positive
-(0..+n) on success and indicates the number of substitutions made.
-A negative value for n indicates that an error occurred, leaving
-caddr2 and len3 undefined. Substitution occurs from the start of
-c-addr1 and len1 in one pass and is non-recursive.
+length of the resulting string. An ambiguous condition occurs if
+the resulting string will not fit into c-addr2/len2 or if c-addr2
+is the same as c-addr1. The return value n is positive (0..+n) on
+success and indicates the number of substitutions made. A negative
+value for n indicates that an error occurred, leaving c-addr2 and
+len3 undefined. Substitution occurs from the start of c-addr1 and
+len1 in one pass and is non-recursive.
 
-When a substitution name surrounded by delimiters is encountered
-by SUBSTITUTE, the following occurs:
-
-1)If the name is a valid substitution name, the leading and
+When a substitution name surrounded by '%' (ASCII 0x25) delimiters is
+encountered by SUBSTITUTE, the following occurs:
+1)If the name is null, a single delimiter character is
+substituted, i.e. %% is replaced by %.
+2)If the name is a valid substitution name, the leading and
 trailing delimiter characters and the enclosed substitution name
 are replaced by the substitution text.
-2)If the name is null, a single delimiter character is
-substituted, i.e. %% is replaced by %.
-3)In all other cases, an ambiguous condition exists.
+3)If the name is not a valid substitution name, the name with
+leading and trailing delimiters is passed unchanged to the output.
+
+
+17.6.2.cccc UNESCAPE "unescape" STRING EXT
+
+Execution: c-addr1 len1 c-addr2 -- c-addr2 len2
+
+Replace each '%' character in the input string c-addr1/len1 by two
+'%' characters. The output is represented by c-addr2/len2. The
+buffer at c-addr2 must be big enough to hold the unescaped string.
 
 
 Reference implementation
 ========================
 decimal
+
+[undefined] bounds [if]
+: bounds        \ addr len -- addr+len addr
+  over + swap  ;
+[then]
+
+[undefined] -rot [if]
+: -rot          \ a b c -- c a b
+  rot rot  ;
+[then]
+
+[undefined] place [if]
+: place         \ c-addr1 u c-addr2 --
+\ Copy the string described by c-addr1 u as a counted string at
+\ the memory address described by c-addr2.
+  2dup 2>r
+  1 chars + swap move
+  2r> c!  ;
+[then]
 
 char % constant delim
 \ Character used as the substitution name delimiter.
@@ -153,14 +202,7 @@ variable DestLen	\ -- addr
 variable SubstErr	\ -- addr
 \ Holds zero or an error code.
 
-: place         \ c-addr1 u c-addr2 --
-\ Copy the string described by c-addr1 u as a counted string at
-\ the memory address described by c-addr2.
-  2dup 2>r
-  1 chars + swap move
-  2r> c!
-;
-
+[defined] VFXforth [if]		\ VFX Forth
 : makeSubst	\ caddr len -- caddr
 \ Given a name string create a substution and storage space.
 \ Return the address of the buffer for the substitution text.
@@ -171,6 +213,15 @@ variable SubstErr	\ -- addr
   r> set-current
   here  256 allot  0 over c!	\ create buffer space
 ;
+[then]
+
+[defined] (WID-CREATE) [if]	\ SwiftForth
+: makeSubst	\ caddr len -- caddr
+  wid-subst (WID-CREATE)	\ like CREATE but takes caddr/len/wid
+  LAST @ >CREATE !
+  here  256 allot  0 over c!	\ create buffer space
+;
+[then]
 
 : findSubst	\ caddr len -- xt flag | 0
 \ Given a name string, find the substitution. Return xt and flag
@@ -208,12 +259,21 @@ variable SubstErr	\ -- addr
   r> 1 chars + /string			\ step over name and trailing %
 ;
 
-: processName	\ -- xt flag
-\ Find the last substitution name. Return true if found.
-  Name count findSubst if
-    execute count bounds		\ copy text to destination
-    ?do  i c@ addDest  1 chars +loop
+: >dest		\ caddr len --
+\ Add a string to the output string.
+  bounds
+  ?do  i c@ addDest  1 chars +loop
+;
+
+: processName	\ -- flag
+\ Process the last substitution name. Return true if found,
+\ 0 if not found.
+  Name count findSubst dup >r if
+    execute count >dest
+  else
+    delim addDest  Name count >dest  delim addDest
   then
+  r>
 ;
 
 : substitute	\ src slen dest dlen -- dest dlen' n
@@ -231,14 +291,28 @@ variable SubstErr	\ -- addr
       over 1 chars + c@ delim = if	\ %% for one output %
         delim addDest  2 /string	\ add one % to output
       else
-        rot 1+ -rot			\ count substitutions
         formName processName
+        if  rot 1+ -rot  then		\ count substitutions
       then
     then
   repeat
   2drop  Dest 2@  rot SubstErr @
   if  drop  SubstErr @  then
 ;
+
+: unescape	\ c-addr1 len1 c-addr2 -- c-addr2 len2
+\ Replace each '%' character in the input string c-addr1/len1 by
+\ two '%' characters. The output is represented by caddr2/len2.
+\ If you pass a string through UNESCAPE and then SUBSTITUTE,
+\ you get the original string.
+  dup 2swap  over + swap ?do
+    i c@ [char] % =
+    if  [char] % over c! 1+  then
+    i c@ over c! 1+
+  loop
+  over -
+;
+
 
 Tests
 =====
@@ -248,7 +322,7 @@ create db  256 allot	\ -- addr
 \ destination buffer for text.
 
 : >tb		\ caddr len -- caddr' len
-\ Place string in TEXTBUFF, and return the string. Done
+\ Place string in TB, and return the string. Done
 \ this way to avoid problems with transient regions.
   tb place  tb count
 ;
@@ -268,10 +342,27 @@ s" world" >tb s" wld" replaces
 
 s" Start: %hl%,%wld%! :End" tsub
 s" Hello, world!" tsub
+s" aaa%foobar%bbb" tsub
+s" aaa%%bbb" tsub
 
 
 Change history
 ==============
+16 September 2009
+Revised definition of SUBSTITUTE to reduce the number of
+ambiguous definitions.
+Added more test cases.
+
+9 September 2009
+Incorporated changes from Leon Wagner to UNESCAPE.
+
+4 September 2009
+Added UNESCAPE.
+
+6 April 2009
+Reworked rationale.
+Specified delimiter in SUBSTITUTE.
+
 2 April 2009
 Added reference implementation and test code
 

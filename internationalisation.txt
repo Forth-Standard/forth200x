@@ -1,0 +1,302 @@
+Message-ID: <4AB01DF1.80304@bcs.org.uk>
+Date: Wed, 16 Sep 2009 00:06:25 +0100
+From: Peter Knaggs <pjk@bcs.org.uk>
+Newsgroups: comp.lang.forth
+To: forth200x@yahoogroups.com
+Subject: RfD: Internationalisation
+
+ANS Forth Internationalisation
+==============================
+
+2009-09-16  Remove SUBSTITUTE, now subject to a separate proposal.
+2009-09-02  Converted into text file.
+2007-06-26  Updated rationale section, LOCALE@, and minor wordsmithing
+2005-10-23  Added GET-ENCODING and SET-ENCODING,
+             Changed stack action of SUBSTITUTE.
+2001-04-25  Added GET-ESCAPE to provide restoration capabilities.
+2001-03-25  Minor text changes
+1999-06-21  Wordsmithed at ANS meeting
+1999-06-20  Tightened up some wording
+             Added references to more standards.
+1999-06-14  Added an ambiguous condition to SUBSTITUTE.
+             Changed COUNTRY and LANGUAGE to SET-COUNTRY and
+             SET-LANGUAGE returning an ior.
+1999-05-30  Derived from parallel discussion document
+
+
+Problem
+=======
+
+Forth Applications designed to run in many countries and languages
+cannot yet make enough assumptions about strings and character sets
+to be portable.  The LOCALE word set is designed to provide words for
+portable internationalisation of application programs.  The proposal
+does not attempt to cover text processing in general, but only to
+permit conversion of a limited set of application-defined text for
+internationalisation.  The proposal is based on techniques used in
+large Forth applications for many years.
+
+In practice, many applications are not localised by the software
+developer, but by their agents in other countries.  The LOCALE word
+set permits the software developer to provide tools that will produce
+text files that can be edited and converted to another language
+locally without dependency on computer language or operating system
+specific tools such as resource compilers and managers.  At the same
+time, the proposed word set does not inhibit the use of sets of
+statically compiled strings for each language, it just does not
+define the mechanism.
+
+The basis of the LOCALE word set is that all strings for
+internationalisation are compiled as LOCALE structures, and all
+access to the strings is through these structures.  It appears that
+the following word set is adequate in the first place.  The word set
+is designed to cope with character sets that are of different size
+to the native set.
+
+The word set is split into a base and extension sets to indicate what
+factors need to be language sensitive.  It is also likely that all
+LOCALE structures will need to be linked in case reindexing of hash
+tables or other internal structures is necessary.
+
+The word L" is proposed for language sensitive strings, and behaves
+in a similar way to the ANS word C", but returns a string identifier
+known as a locale string identifier (lsid) from which the required
+language string can be extracted.  The reason for this is so that text
+information in the native development language is still available in
+the source, making source maintenance easier because the intention of
+the string is still available to the developer.  In addition, the
+Forth compiler can be extended to produce a text file containing the
+native strings.
+
+The number of items to be displayed which are, or may be, language
+sensitive is large.  Not all applications may need to deal with all
+of them.  In addition, many applications need to be able to perform
+text substitution, for example:
+
+Your balance at <time> on <date> is <currency-value>.
+
+This is the subject of a separate RfD (Substitute).
+
+Terminology and assumptions
+===========================
+   LOCALE
+   ------
+   We use the word locale to mean the mixture of country, language,
+   font, date/time formatting and so on in use when an application
+   program runs.
+
+   Character sets
+   --------------
+   The language and character set encoding used by the Forth system at
+   development time is referred to as the Development Character Set
+   (DCS).  The development character set is assumed never to change.
+   It is furthermore assumed that character manipulation in the Forth
+   system is defined in terms of the DCS, and that the action of
+   character operations such as CMOVE is locked to the DCS.
+
+   The language and character set encoding used by any underlying
+   operating system is referred to as the Operating Character Set
+   (OCS).  The OCS may or may not be the same as the DCS.
+
+   The language and character set encoding used at application run time
+   is referred to as the Application Character Set (ACS). It is assumed
+   that the largest character in an ACS fits in the native cell of the
+   development Forth system.  The ACS may or may not be the same as the
+   OCS.
+
+   The DCS is usually seven or eight bit ASCII in the majority of
+   today's Forth systems, but we will see Unicode systems in the near
+   future.  The OCS is defined by the host machine, and is defined by
+   the user of the application. Thus, an application written in a Forth
+   designed for ISO-Latin1 may be running on an O/S with a Chinese OCS,
+   and a visitor may switch the application into yet another ACS, such
+   as Russian. Such scenarios are rare within the US and Europe, but
+   are common elsewhere in the world. Countries such as South Africa
+   exist with 17 official languages, and some languages such as
+   Portuguese and English are spoken in many different countries.
+
+   LOCALE structures
+   -----------------
+   We do not wish to constrain or influence implementation techniques
+   in any way.  A specific string for internationalisation needs to be
+   referred to by a single parameter, which we call the "locale string
+   identifier", or lsid.  This is an opaque type, in other words the
+   programmer should make no assumptions about what it means, except
+   that different strings have different lsids.  In many cases, a lsid
+   may well be an address, or a hash code.
+
+   LOCALE strings
+   --------------
+   At application run time, locale strings need to be manipulated.
+   Locale strings are described in terms of address units.
+
+   Country and language constants
+   ------------------------------
+   There are a number of standardisation efforts for country and
+   language codes.  Since the objective of this proposal is to provide
+   for source portability of applications, we do not need to mandate
+   numeric or string values, but only to define language and country
+   source names that can be used as Forth words.
+
+   Assuming that text processing is mostly affected by language
+   selection, and that formatting is heavily influenced by both country
+   and corporate standards, we suggest that country be defined by the
+   ISO3166:1998 two letter country codes (Alpha-2). For this standard
+   an algorithm has been defined to produce unique numeric codes for
+   each country.  A set of language codes (ISO639:1998) also exists.
+
+   Octets and Bytes
+   ----------------
+   Since the vast majority of character sets are defined in terms of 8
+   bit units commonly referred to as bytes or octets, it is likely that
+   the implementation of any internationalisation code will require the
+   presence of byte/octet access words, regardless of the underlying
+   DCS character size.
+
+   The presence and definition of an octet/byte access mechanism is
+   outside the scope of this proposal.
+
+
+The optional LOCALE word set
+============================
+
+Environmental queries
+---------------------
+Append the table below to table xxx
+
+   String value  Data type Constant?   Meaning
+   LOCALE        Flag      No        LOCALE word set present
+   LOCALE-EXT    flag      No        LOCALE extension word set present
+
+Additional documentation requirements
+-------------------------------------
+
+Implementation-defined options
+   - Default encoding setting (SET-ENCODING)
+   - Default language setting (SET-LANGUAGE)
+   - Default country setting  (SET-COUNTRY)
+
+Ambiguous conditions
+   - use of an invalid locale string identifier (lsid)
+   - a locale string is too big for a destination buffer
+   - an invalid locale string identifier (lsid) is used
+
+LOCALE words
+------------
+
+SET-ENCODING  ( encoding -- ior )
+   Sets the character encoding for the LOCALE system.  The value of
+   encoding is implementation defined, where zero is the default.  The
+   ior is returned false (zero) if the operation succeeds, otherwise it
+   returns a non-zero implementation-dependent ior.  If the operation
+   does not succeed, the current encoding remains unchanged.
+
+
+GET-ENCODING  ( -- encoding )
+   Returns the encoding last set by SET-ENCODING.  The default encoding
+   is implementation defined.
+
+
+SET-LANGUAGE  ( lang -- ior )
+   Sets the current language for the LOCALE system to lang.  The ior
+   is returned false if the operation succeeds, otherwise it returns a
+   non-zero implementation-dependent ior.  If the operation does not
+   succeed, the current language remains unchanged.
+
+
+GET-LANGUAGE  ( -- lang )
+   Returns the language code last set by SET-LANGUAGE.  The default
+   language is implementation defined.
+
+
+SET-COUNTRY	( country –- ior )
+   Sets the current country for the LOCALE system to country.  The ior
+   is returned false if the operation succeeds, otherwise it returns a
+   non-zero implementation-dependent ior.  If the operation does not
+   succeed, the current country remains unchanged.
+
+
+GET-COUNTRY	( -- country )
+   Returns the country code last set by SET-COUNTRY.  The default
+   language is implementation defined.
+
+
+L"			"L-Quote"
+   Interpretation:
+     The interpretation semantics for this word are undefined.
+
+   Compilation: ( "ccc<quote>" -- )
+     Parse ccc delimited by a " (double-quote) and append the run-time
+     semantics given below to the current definition.
+
+   Runtime:  ( -- lsid )
+     Return lsid, an identifier for a locale string.  Other words use
+     lsid to extract language specific information.
+
+
+LOCALE@  ( lsid -- c-addr len(au) )
+   Return the address and length in address units of the string (in
+   the current language) that corresponds to the native string
+   identified by lsid.  The format of the string at c-addr is
+   implementation dependent.  The length of the string is returned in
+   address units so that it may be copied by MOVE without knowledge
+   of the character set width.
+
+   The returned string is valid until the next use of LOCALE@,
+   SET-COUNTRY, SET-LANGUAGE or SET-ENCODING.
+
+   Ambiguous conditions occur if
+   1) the lsid is invalid,
+   2) a lifetime condition has been exceeded,
+   3) an underlying mass storage system fails.
+
+
+LOCALE extension words
+----------------------
+
+These words are provided here to give portability of implementation
+techniques. They are building blocks for a practical implementation.
+
+LOCALE-INDEX  ( lsid -- )
+   Updates the internal data structure.  Useful if structures are
+   added and changes to internal structures are required.
+
+
+LOCALE-NEXT	 ( lsid1 -- lsid2 )
+   Given the lsid of one LOCALE structure, returns the lsid of the
+   next.  A return value of zero indicates that there is no next lsid.
+
+
+LOCALE-START  ( -- lsid )
+   Returns an lsid from which all others can be found using
+   LOCALE-NEXT.  A return value of zero indicates that no locale
+   strings have been defined.
+
+
+LOCALE-TYPE  ( c-addr len -- )
+   Displays the LOCALE string whose address and length in address
+   units are given.
+
+
+NATIVE@  ( lsid -- c-addr len )
+   Given a LOCALE structure, returns the address and length of the
+   corresponding DCS native string that was compiled by L".
+
+
+Remarks
+=======
+It is expected that this proposal be combined with the XChars proposal
+to form a new Globalisation word set.
+
+
+Authors
+=======
+Stephen Pelc, MicroProcessor Engineering, stephen@mpeforth.com
+Peter Knaggs, University of Exeter, pjk@bcs.org.uk
+
+Contributions from:
+Willem Botha, Construction Computer Software
+Nick Nelson, Micross Electronics, njn@micross.co.uk
+Greg Bailey, Athena Programming, greg@minerva.com
+
+
