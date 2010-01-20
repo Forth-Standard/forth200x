@@ -5,6 +5,15 @@
 <pre>
 Changes:
 
+4th RfD:
+
+Changes based on more thought and recent (2010-01) discussion:
+added proposal part and revised discussion
+REQUIRE and INCLUDE now treat relative file names as source-directory
+  relative, whereas all other words treat relative file names as
+  working-directory relative.
+Cleaned up and rewrote remarks section
+
 3rd RfD:
 
 The main way to specify source-directory-relative filenames is now F",
@@ -20,7 +29,9 @@ Added Sections "Which prefix?", "What if there is no currently
 Replaced many mentions of "./" with "prefix".
 Minor rewrites to make some prose clearer.
 
-Problem:
+
+Problem
+-------
 
 Summary: How do I refer to another file that is distributed with the
 Forth file at hand, in the presence of directories?
@@ -42,140 +53,280 @@ prog.fs, and without knowledge that it would later wind up in
 resides at /prog1/lib1/foo.fs in this installation.  How should Forth
 code in the library refer to other files of the library?
 
+An example of a similar structure can be found in
 
-Solution outline:
+<a href="http://www.complang.tuwien.ac.at/forth/dirtest.zip">dirtest.zip</a>
+
+
+Solution outline
+----------------
 
 First we need to specify a directory separator.  The "/" is supported
-in all important OSs (including Windows, except in cmd.exe), so we
-specify it for Forth.
+in all important OSs (including DOS and Windows, except in cmd.exe),
+so we specify it for Forth.
 
-Next, we need a way to specify a file name relative to the directory
-that contains the Forth source file that contains the file name (as a
-string): F" file" produces a filename in a source-file-independent
-way.  E.g., in the example above, the prog.fs file would contain code
-like
+Next, we need a way to specify a file name relative to the
+source-directory, i.e., the directory that contains the Forth source
+file that contains the file name (as a string): F" file" produces a
+filename in a source-file-independent way.  E.g., in the example
+above, the prog.fs file could refer to the other files as follows:
 
 F" library.fs"
 F" data.txt"
 F" lib1/lib.fs"
 
-and lib.fs would contain code like
+and lib.fs could refer to /prog1/lib1/foo.fs as follows:
 
 F" foo.fs"
 
 In addition, a word INCLUDE-NAME-ABS for converting a string from an
 include-relative filename to an absolute filename is a natural factor
-of F" and can be useful in some cases.
+of F" and can be useful in some cases (e.g., if the file name contains
+a double-quote).
+
+Programmers like to use parsing words like INCLUDE and REQUIRE, so we
+refine these words to treat relative file names as source-directory
+relative.  So instead of using
+
+F" foo.fs" required
+
+the programmer can also write
+
+require foo.fs
 
 
-Typical usage:
+Typical usage
+-------------
 
 F" lib1/lib.fs" required
+require lib1/lib.fs \ equivalent to the above
 F" data.txt" r/o open-file
-S\" ./funny\"filename" include-name-abs r/o open-file
+S\" funny\"filename" include-name-abs r/o open-file
+F" data.txt" save-mem 2constant data-filename
+( in another file in another dir: ) data-filename r/o open-file
 
 
-Proposal, reference implementation and tests:
+Proposal
+--------
 
-Will be done after the solution has solidified after some discussion.
+Directory separator: The directory separator is "/".
+
+Absolute file names: start with "/" or "&lt;letter&gt;:/".
+
+Relative file names: everything else; relative file names are not
+   necessarily relative to the working directory.
+
+Parent directory: ".." refers to the parent directory, "../.." to the
+   grandparent, "../sibling" to a different directory at the same level.
+
+Source-directory-relative file name: Given a relative file name F that
+   occurs in the text of a Forth source file /SD/S, then using F as
+   source-directory-relative file name results in /SD/F.  Using F as
+   source-directory-relative file name while not including a file is
+   an ambiguous condition [A typical fallback then might be to use F
+   as working-directory relative].
+
+Working-directory-relative file name: If the absolute file name of the
+   working directory is /WD, then using F as
+   working-directory-relative file name results in the absolute file
+   name /WD/F.  If the operating system does not support a working
+   directory, only absolute file names can be used in words that would
+   use relative file names as working-directory relative.
+
+Words:
+
+Passing a relative filename to any word consuming a filename except
+   INCLUDED, INCLUDE, REQUIRED or REQUIRE uses the file name as
+   working-directory-relative file name.
+
+Passing a relative filename to INCLUDED or REQUIRED uses the file name
+   as working-directory-relative file name.  An ambiguous condition
+   exists if the file does not exist or is not accessible. [A typical
+   fallback then might be to search a path].
+
+Passing a relative file name to REQUIRE or INCLUDE uses that file name
+   as source-directory-relative file name.  An ambiguous condition
+   exists if that file does not exist or is not accessible.  [A
+   typical fallback then might be to search a path].
+<!--
++INCLUDE   FILE-EXT ( i*x "name" -- j*x )
+
+Skip leading white space and parse name delimited by a white space
+character. If "name" is a relative file name, treat it as
+source-directory-relative, convert it to an absolute file name, push
+the address and length of the absolute file name on the stack and
+perform the function of INCLUDED.  An ambiguous condition exists if
+that file does not exist or is not accessible.  [A typical fallback
+then might be to search a path].
+-->
+
+INCLUDE-NAME-ABS  FILE-EXT  ( c-addr1 u1 -- c-addr2 u2 )
+
+   If the file name specified by c-addr1 u1 is an absolute file name,
+   c-addr2 u2 is the same file name.  Otherwise c-addr2 u2 is the
+   absolute or (if the operating system supports a working directory)
+   working-directory-relative file name resulting from using c-addr1
+   u1 as source-directory-relative file name.  The contents of the
+   buffer containing c-addr2 u2 are valid until the next invocation of
+   INCLUDE-NAME-ABS or F".
+
+F"  FILE-EXT
+
+  Interpretation: ( "ccc<quote>" -- c-addr u )
+  
+   Parse ccc delimited by " (double quote).  Pass the resulting string
+   to INCLUDE-NAME-ABS, and return the result as c-addr u.
+  
+  Compilation: ( "ccc<quote>" -- )
+  
+   Parse ccc delimited by " (double quote).  Pass the resulting string
+   to INCLUDE-NAME-ABS, with the result being c-addr u.  Append the
+   run-time semantics given below to the current definition.
+  
+  run-time: ( -- c-addr u )
+  
+   Return c-addr u described above.
 
 
-Existing practice and experience:
+Reference implementation and tests
+----------------------------------
 
-Gforth implements this functionality by interpreting the ./ prefix of
-filenames in INCLUDED and friends (i.e., in the consumer, not in the
-producer, as suggested here).  We have had very good experiences with
-that (consumer and producer are usually in the same file).
+Will be done after the solution has solidified after more discussion.
 
-Some other Forth systems have similar facilities, e.g., Win32Forth,
-typically as part of the regular file search path (so no special
-prefix is necessary).
+
+Existing practice and experience
+--------------------------------
+
+Gforth implements source-directory-relative file names by interpreting
+all relative file names in INCLUDED, INCLUDE, REQUIRED and REQUIRE as
+source-directory relative (as part of the file search path).  This has
+been in Gforth since Gforth 0.4.0 in 1998.  We have had very good
+experiences with that functionality, and very bad experiences with
+working-directory-relative INCLUDE and REQUIRE before that.
+
+Some other Forth systems have similar facilities, e.g., Win32Forth.
+
+Treating relative file names as working-directory-relative for all
+words except INCLUDED, INCLUDE, REQUIRED, and REQUIRE is existing
+practice in most (all?) Forth systems that support files on a
+hierarchical file system.
 
 Modern C compilers like gcc do
 
 #include "bla.h"
 
 relative to the directory of the currently-included file.  The
-proposed equivalent would be "INCLUDE ./bla.h".
-
-When executing a program or script, the Unix shell searches relative
-names like bla.sh in the path (which often does not include "."), but
-if you write ./bla.sh, this refers to and only to the bla.sh in the
-current working directory (unfortunately not the directory containing
-the current file, but the shell offers ways to work around this
-shortcoming).
+proposed equivalent would be 'INCLUDE bla.h' or 'F" bla.h" INCLUDED'.
 
 
-Remarks:
+Remarks
+-------
 
-What about specifying the source directory as a file name prefix?
+INCLUDE, REQUIRE and backwards compatibility
 
-There was considerable resistance to using the "./" prefix in the
-first RfD, and to other short prefixes.  We probably could find
-consensus on a prefix, but it will be so long that it does not provide
-any savings in typing over using F", so the only people who would use
-such a prefix are probably those people who would also use F" if there
-is no prefix, so having a prefix just causes additional work for the
-proponent and the implementors with little gain to the community.
+   INCLUDE and REQUIRE are convenience words.  Even though INCLUDED
+   was standardized in Forth-94 and INCLUDE was not, INCLUDE seems to
+   be much more popular.  Tightening the specification of INCLUDE to
+   treat relative file names as source-directory-relative helps those
+   programmers who don't read standards (apparently most of them) to
+   write portable programs.
 
-For those interested in prefixes, my conclusion of the prefix
-discussion before I decided to go without prefixes is available in an
-<a href="directories-with-prefixes.html">older version of this RfD</a>.
+   Introducing a new word (e.g., +INCLUDE) or a special syntax for the
+   file name (e.g., ./file or <file>) won't achieve this objective,
+   because it will not be used by most programmers.  And those
+   programmers who would use it would probably also use
+   F" ..." INCLUDED.
 
+   The disadvantage of this kind of tightening is that on some systems
+   the current behaviour of INCLUDE is different, and existing
+   programs that work around this deficiency might no longer work
+   after the change.  There are a number of ways for these systems to
+   resolve this:
+
+   - Use the legacy behaviour as fallback.  That probably allows
+     nearly all legacy applications to work unchanged.  The only
+     possible problem is if a file that is expected to be accessed
+     through the legacy behaviour happens to have a namesake in the
+     source directory, and these files are different.
+
+   - Have a (system-specific) switch that allows switching between the
+     legacy and source-directory-relative behaviour.  This would
+     cover all cases.
+
+   Finally, another option would be to forgo tightening INCLUDE, and
+   leave it as unstandardized wrt. directories as it is now.
+   Programmers desiring portability will use F" ..." INCLUDED, and the
+   unwashed masses will just produce unportable programs.
+
+   The case is a little bit different for REQUIRE, because most
+   systems have not implemented it yet, so they have no legacy to stay
+   compatible with, and no compatibility problem.  Gforth has
+   implemented it, but it has also implemented source-directory
+   relative file names with REQUIRE.
+
+INCLUDED, REQUIRED, and backwards compatibility
+
+   Similarly, the tightening of the specification of INCLUDED and
+   REQUIRED to use working-directory relative files can cause
+   backwards compatibility problems for legacy programs on systems
+   that implement source-directory-relative file names for these words
+   (e.g., Gforth).  The same options are possible as for INCLUDE.
+
+Why let INCLUDE and REQUIRE behave differently from the other words?
+
+   In short: Because they are parsing words and the others are not,
+   and because the file names for INCLUDE and REQUIRE come from the
+   programmer.
+
+   In long: Whether a relative file name should be treated as
+   source-directory relative or working-directory relative depends on
+   where it is coming from.  Names coming from the programmer should
+   almost always be treated as source-directory-relative, because the
+   programmer knows where the source directory is, but not where the
+   working directory is.  Conversely, names coming from the user
+   usually refer to the working directory.
+
+   In the present proposal we have F" to refer to files in a
+   source-directory relative way, and we then pass absolute or
+   working-directory-relative file names to words such as OPEN-FILE
+   and INCLUDED.  However, INCLUDE and REQUIRE take the file name from
+   the input stream, without F".  In the usual case they come from the
+   programmer (at least when used within programs, the main focus of
+   the standardization effort), and then they should be used as
+   source-directory relative file names.
 
 
 What about specifying file names relative to a library root etc.?
 
-Several people have suggested having a word (or a prefix) for
-specifying a library directory.  While this is a worthwhile goal, I
-feel that finding a consensus on that topic is hard enough that it
-should be attacked in a separate RfD.
-
-
-What if the user puts an absolute file name inside F" or with
-INCLUDE-NAME-ABS?
-
-We could specify that F" then just returns the absulute file name, or
-that this is an ambiguous condition.  Unless there is a good reason to
-make it ambiguous, I lean towards the first option.  One potential
-reason for making it ambiguous is that the Forth system does not
-necessarily recognize absolute file names (e.g., Windows has all kinds
-of syntax for absolute file names).
-
-
-What if the user uses F" or INCLUDE-NAME-ABS outside a Forth source file?
-
-That is an ambiguous condition.  I.e., a standard program would have
-to specify the directory in another way in this situation.  However, a
-standrd program will typically come in a Forth source file (or it will
-come as blocks and not access files at all).
-
+   Several people have suggested having a word (or a prefix) for
+   specifying a library directory.  While this is a worthwhile goal, I
+   feel that finding a consensus on that topic is hard enough that it
+   should be attacked in a separate RfD.
 
 Why not use a CD word for this purpose?
 
-While a word for changing the current working directory may have its
-uses in Forth, it is usually not a good idea to change the working
-directory for loading code.  Apart from the usual nesting/unnesting
-complications, the user usually sets the working directory to some
-directory on purpose, because that's where he is working; the program
-or library directory is usually not where he is working.  If the user
-passes a data file name to the included file, he expects it to be
-interpreted in the context of his working directory, not the program's
-directory.
+   * You lose the user's working directory when you do a CD, so any
+     access to a file name provided by the user breaks after the CD.
+
+   * CD is not a standard word.
 
 
 Isn't specifying "/" as directory separator too OS-specific?
 
-It works in practice, and other approaches don't.  E.g., Peter Knaggs
-writes <4505c44b$0$2665$ed2619ec@ptn-nntp-reader02.plus.net>:
+   It works in practice, and other approaches don't.  E.g., Peter Knaggs
+   writes <4505c44b$0$2665$ed2619ec@ptn-nntp-reader02.plus.net>:
+   
+   |Java has a special DirectorySeparator constant you are supposed to use, 
+   |but nobody ever does.
+   
+   If there is ever a Forth 200x system for an OS that has a different
+   directory syntax (e.g., VMS), the Forth system can translate the
+   filename with the slashes into the native directory syntax (I guess
+   that the POSIX layer for such OSs does the same).
 
-|Java has a special DirectorySeparator constant you are supposed to use, 
-|but nobody ever does.
-
-If there is ever a Forth 200x system for an OS that has a different
-directory syntax (e.g., VMS), the Forth system can translate the
-filename with the slashes into the native directory syntax (I guess
-that the POSIX layer for such OSs does the same).
+   Note that DOS and Windows understand "/" just fine (except in their
+   command-line interpreter, but Forth systems work through system
+   calls, not through the command-line interpreter).
 
 </pre>
 <hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
