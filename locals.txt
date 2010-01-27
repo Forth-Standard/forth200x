@@ -1,7 +1,8 @@
-RfD - Enhanced local variable syntax, v5a
+RfD - Enhanced local variable syntax, v5b
 ====================================
-Stephen Pelc - 30 August 2009
+Stephen Pelc - 22 October 2009
 
+20091022 Discussion about { and {:.
 20090830 Tidied.
 20090325 Updated with some renaming.
 20080811 Removed references to local buffers as appropriate.
@@ -81,6 +82,11 @@ argument or value names should also be avoided.
 
 Discussion
 ==========
+The phrase { ... } rather than {: ... :} has been used by systems
+for over 15 years. However, it conflicts with existing practise in
+other Forth systems. Choosing the new name allows both practises
+to coexist.
+
 The '|' (ASCII 0x7C) character is widely used as the separator
 between local arguments and local values. Other characters
 accepted in current Forth implementations are '\' (ASCII 0x5C) and
