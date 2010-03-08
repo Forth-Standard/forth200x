@@ -1,0 +1,442 @@
+<!DOCTYPE HTML PUBLIC  "-//IETF//DTD HTML 2.0//EN">
+<HEAD>
+<META http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Xchar wordset</title>
+<BODY>
+<h3>Xchar wordset</h3>
+
+<!--Article: 149590 of comp.lang.forth
+Path: tunews.univie.ac.at!aconews-feed.univie.ac.at!newsfeed.wu-wien.ac.at!newsfeed.utanet.at!newsfeed.straub-nv.de!noris.net!newsfeed.velia.net!news.tu-darmstadt.de!news.muc.de!news.space.net!news.m-online.net!vimes.paysan.nom!news
+From: Bernd Paysan <bernd.paysan@gmx.de>
+Newsgroups: comp.lang.forth
+Subject: CfV: Xchar wordset (formatting repost)
+Followup-To: comp.lang.forth
+Date: Sun, 14 Feb 2010 21:24:04 +0100
+Organization: (posted via) M-net Telekommunikations GmbH
+Lines: 697
+Message-ID: <4o2m47-u3h.ln1@vimes.paysan.nom>
+NNTP-Posting-Host: ppp-82-135-77-154.dynamic.mnet-online.de
+Mime-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8Bit
+X-Trace: news.m-online.net 1266179103 27079 82.135.77.154 (14 Feb 2010 20:25:03 GMT)
+X-Complaints-To: abuse@m-online.net
+NNTP-Posting-Date: Sun, 14 Feb 2010 20:25:03 +0000 (UTC)
+User-Agent: KNode/4.4
+Xref: tunews.univie.ac.at comp.lang.forth:149590
+
+[This is a formatting repost to prevent line breaks,
+all tabs are replaced by spaces.
+Also, test cases have been added]
+-->
+
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h5>Systems</h5>
+
+<pre>
+
+[ ] conforms to ANS Forth.
+ iForth (Marcel Hendrix)
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+[ ] There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+ iForth
+</pre>
+
+<h5>Programmers</h5>
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+     I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+     proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+ Marcel Hendrix
+</pre>
+
+<h5>Informal results</h5>
+
+<h4>Proposal</h4>
+
+
+<pre>
+Change history:
+
+20100214  Added test cases
+20090825  Minor edits
+20090823  A few more edits to get fourth version
+20090717  Edits made to bring proposal in shape
+20090325  Edits made at Forth200x review meeting
+20081203  Editing after feedback of third version
+20081123  Clean up and check for consistency with Gforth implementation
+20070714  Second version
+20050926  First version
+
+Add the following data type to section 3.1.2:
+
+3.1.2.3  Primitive Character
+
+A primitive character (pchar) includes all character values, at least
+{0..255}, that can be stored into memory with C! and retrieved with
+C@ from memory.
+
+Add the following chapter:
+
+18. The optional Extended Characters wordset
+
+//to be merged with the i18n wordset//
+
+18.1. Introduction
+
+Forth defines graphic and control characters from the ASCII character
+set.  ASCII is only appropriate for the English language.  Most
+western languages however fit somewhat into the Forth frame, since a
+single byte is sufficient to encode the few special characters in each
+(though not always the same encoding can be used; latin-1 is widely
+used, though).  For other languages, different char sets have to be
+used, several of them variable-width.  Most prominent representative
+of the variable-width character sets is UTF-8, which has gained quite
+some popularity recently.  Since ANS Forth specifies ASCII encoding
+for characters, only ASCII-compatible encodings may be used.
+Fortunately, being ASCII compatible has so many benefits that most
+encodings actually are ASCII compatible.  The characters beyond the
+ASCII encoding are called "extended characters".
+
+Fixed width representations like UCS-2 have also been proposed, but
+those did not catch on, especially since they are not sufficiently
+ASCII compatible.  Furthermore, UTF-16 also is now a variable-width
+representation when UCS-4 was introduced.
+
+The xchar wordset does not solve problems that come from using
+multiple different encodings and switching or converting between them.
+A system implementing the xchar proposal should support at least UTF-8
+as widespread and common encoding.
+
+All words dealing with strings should handle xchars when the xchar
+wordset is present.  This includes dictionary definitions, so the
+dictionary entries should not use bit 8 for other purposes.  White
+space parsing does not have to treat code points greater hex 20 as
+white space.
+
+18.2. Additional terms and notation
+
+Code point: A member of an extended character set.
+
+18.3. Additional usage requirements
+
+18.3.1. Data types
+
+Append table 18.1. to table 3.1.
+
+Table 18.1: Data types
+
+Symbol     Data type                   Size on stack
+----------------------------------------------------
+pchar      primitive character                1 cell
+xchar      extended character                 1 cell
+xc-addr    character-aligned address          1 cell
+xc-addr u  character-aligned string          2 cells
+
+xchar is the code point of an extended character; on the stack it is a
+        subset of u.  Extended characters are stored encoded as one or
+        more pchars in memory.
+
+xc-addr  is the address of an xchar in memory.  Alignment requirements are the
+        same as c-addr.
+
+xc-addr u  is a string of xchars in memory, starting at xc-addr, u
+        pchars long.
+
+18.3.2. Environmental queries
+
+Append table 18.2 to table 3.5.
+
+Table 18.2: Environmental Query Strings
+
+String          Value data type  Constant?  Meaning
+XCHAR-ENCODING  c-addr u         no         Returns a printable
+                                            ASCII string that
+                                            represents the
+                                            encoding, and use the
+                                            preferred MIME name
+                                            (if any) or the name
+                                            in
+                        http://www.iana.org/assignments/character-sets
+                                            like "ISO-LATIN-1" or
+                                            "UTF-8", with the
+                                            exception of "ASCII",
+                                            where we prefer the
+                                            alias "ASCII".
+MAX-XCHAR       u                no         Maximal value for xchar
+XCHAR-MAXMEM    u                no         Maximal memmory consumed
+                                            by an xchar in address
+                                            units
+
+Append table 18.3 to table 3.6
+
+Table 18.3: Forth 200x Extensions
+
+String          Value data type  Constant?  Meaning
+X:xchar         --               --         The Xchar extension is
+                                            present
+
+18.3.4. Common encodings
+
+Input and files are often encoded iso-latin-1 or utf-8.  The encoding
+depends on settings of the computer system such as the LANG
+environment variable on Unix.  You can use the system consistently
+only when you don't change the encoding, or only use the ASCII subset.
+Typical use in environments with more than one encoding
+(e.g. different localized environments have different encodings) is
+that the base system is ASCII only, and then extended
+encoding-specific.
+
+18.3.5. Ambiguous conditions
+
+An ambiguous condition exists if the data in memory does not encode a
+valid xchar, or if the xchar value is outside the range of allowed
+code points of the current character set used.
+
+Append table 18.4 to table 9.2:
+
+Code    Reserved for
+-------------------
+-77     Malformed xchar
+
+18.6 Glossary
+
+18.6.1 Xchar words
+
+X-SIZE ( xc-addr u1 -- u2 ) XCHAR
+u2 is the number of pchars used to encode the first xchar stored in
+the string xc-addr u1.  To calculate the size of the xchar, only the
+bytes inside the buffer may be accessed.  An ambiguous condition
+exists if the xchar is incomplete or malformed.
+
+XC-SIZE ( xchar -- u ) XCHAR
+u is the number of pchars used to encode xchar in memory.
+
+XC@+ ( xc-addr1 -- xc-addr2 xchar ) XCHAR
+Fetches the xchar at xc-addr1.  xc-addr2 points to the first memory
+location after the retrieved xchar.
+
+XC!+ ( xchar xc-addr1 -- xc-addr2 ) XCHAR
+Stores the xchar at xc-addr1.  xc-addr2 points to the first memory
+location after the stored xchar.
+
+XC!+? ( xchar xc-addr1 u1 -- xc-addr2 u2 flag ) XCHAR
+Stores the xchar into the string buffer specified by xc-addr1 u1.
+xc-addr2 u2 is the remaining string buffer.  If the xchar did fit into
+the buffer, flag is true, otherwise flag is false, and xc-addr2 u2
+equal xc-addr1 u1.  XC!+? is safe for buffer overflows.
+
+XC, ( xchar -- ) XCHAR
+Append the encoding of xchar to the dictionary.
+
+XCHAR+ ( xc-addr1 -- xc-addr2 ) XCHAR
+Adds the size of the xchar stored at xc-addr1 to this address, giving
+xc-addr2.
+
+XKEY ( -- xchar ) XCHAR
+Reads an xchar from the terminal.  This will discard all input events up to the
+completion of the xchar.
+
+XKEY? ( -- flag ) XCHAR
+Queries whether it's possible to do XKEY without blocking.  Subsequent KEY?,
+KEY, EKEY?, and EKEY may be affected by XKEY?.
+
+XEMIT ( xchar -- ) XCHAR
+Prints an xchar on the terminal.
+
+18.6.1 Xchar extension words
+
+-TRAILING-GARBAGE ( xc-addr u1 -- xc-addr u2 ) XCHAR EXT
+Examine the last xchar in the string xc-addr u1 - if the encoding is
+correct and it represents a full xchar, u2 equals u1, otherwise, u2
+represents the string without the last (garbled)
+xchar.  -TRAILING-GARBAGE does not change this garbled xchar.
+
+X-WIDTH ( xc-addr u -- n ) XCHAR EXT
+n is the number of monospace ASCII characters that take the same space
+to display as the the xchar string xc-addr u; assuming a monospaced
+display font, i.e. xchar width is always an integer multiple of the
+width of an ASCII character.
+
+HOLDS ( c-addr u -- ) XCHAR EXT (or go to CORE EXT)
+Adds a string to the picture numeric output buffer.
+
+XHOLD ( xchar -- ) XCHAR EXT
+Adds an xchar to the picture numeric output buffer.
+
+XC-WIDTH ( xchar -- n ) XCHAR EXT
+n is the number of monospace ASCII characters that take the same space
+to display as the xchar; i.e. xchar width is always an integer
+multiple of the width of an ASCII char.
+
++X/STRING ( xc-addr1 u1 -- xc-addr2 u2 ) XCHAR EXT
+Step forward by one xchar in the buffer defined by xc-addr1 u1.
+xc-addr2 u2 is the remaining buffer after stepping over the first
+xchar in the buffer.
+
+X\STRING- ( xc-addr1 u1 -- xc-addr1 u2 ) XCHAR EXT
+Search for the penultimate xchar in the string xc-addr1 u1.  The
+string xc-addr1 u2 contains all xchars of xc-addr u1, but the last.
+Unlike XCHAR-, X\STRING- can be implemented in encodings where xchar
+boundaries can only reliably detected when scanning in forward
+direction.
+
+XCHAR- ( xc-addr1 -- xc-addr2 ) XCHAR EXT
+Goes backward from xc-addr1 until it finds an xchar so that the size of this
+xchar added to xc-addr2 gives xc-addr1.  There is an ambiguous condition when
+the encoding doesn't permit reliable backward stepping through the text.
+
+EKEY&gt;XCHAR ( u -- xchar t / u f ) XCHAR EXT
+If the keyboard event u corresponds to an xchar, return the xchar and
+true.  Otherwise, return u and false.
+
+CHAR ( "&lt;spaces&gt;name" -- xchar ) XCHAR EXT
+Skip leading space delimiters.  Parse name delimited by a space.  Put the
+value of its first xchar onto the stack.
+
+[CHAR]   XCHAR EXT
+Interpretation: Interpretation semantics for this word are undefined.
+        Compilation:    ( ?&lt;spaces&gt;name? -- )
+Skip leading space delimiters.  Parse name delimited by a space.  Append the
+run-time semantics given below to the current definition.
+        Run-time:       ( -- xchar )
+Place xchar, the value of the first xchar of name, on the stack.
+
+Number prefixes:
+'&lt;xchar&gt;' will be interpreted as literal that puts xchar on the stack.
+
+Rationale:
+
+There's an alternative proposal to name these extended versions XCHAR
+and [XCHAR] instead.  Since however XCHAR and [XCHAR] would completely
+take over the role of CHAR and [CHAR], and being fully backward
+compatible, there is no point to provide new words for this purpose.
+The character number prefix is also supposed to work with xchars.
+
+PARSE ( xchar "text&lt;xc&gt;" -- addr u ) XCHAR EXT
+Parse a text in the input stream with the xchar as delimiter.
+
+Terminal string IO like TYPE and ACCEPT also are extended to work with
+xchars in the string.  Since Unicode input and display poses a number
+of challenges like input method editors for different languages,
+left-to-right and right-to-left writing, and most fonts contain only a
+subset of Unicode glyphs, systems should document their
+capabilities.  File IO and in-memory string handling should work
+transparently with xchars.
+
+18.7. <a href="reference-implementations/xchar.fs">Reference implementation</a>
+
+<a href="tests/xchar.fs">Tests</a> (UTF-8 only)
+
+18.8. Experience
+
+Build into Gforth 0.7.0 and recent versions of bigFORTH.  The MINOS
+port to VFX Forth comes with an xchar implementation, as well.
+There's also lxf-ntf by Peter Falth.
+
+Open issues are file reading and writing (conversion on the fly or
+leave as it is?).  Text files in alien encoding (different from
+internal encoding) might have an encoding, which then is translated to
+internal encoding on the fly.  E.g.
+
+utf-8 set-encoding
+s" foobar.txt" r/w open-file throw value fd
+iso-latin-1 fd set-file-encoding throw
+
+Subsequent READ-FILE, READ-LINE, WRITE-FILE, and WRITE-LINE would
+convert utf-8 to iso-latin-1 on the fly, probably replacing
+unencodeable xchars with '?' on write.
+
+Informal Appendix:
+
+Many Forth systems today are case insensitive, to accept lower case
+standard words.  It is sufficient to be case insensitive for the ASCII
+subset to make this work - this saves a large code mapping table for
+comparison of other symbols.  Case is mostly an issue of European
+languages (latin, Greek, and Cyrillic), but similar issues exist
+between traditional and simplified Chinese (finally being dealt with
+by Unihan), and between different Latin code pages in UCS, e.g. full
+width vs. normal half width latin letters.
+
+Furthermore, UCS allows composition of glyphs, and also has direct
+encoding for composed glyphs, which look the same, but have different
+encodings.  This is not a problem for a Forth system to solve.
+
+Some encodings (not UTF-8) might give surprises when you use
+a case insensitive ASCII-compare that's 8-bit safe, but not aware of
+the current encoding.
+</pre>
+
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+&lt;anton@mips.complang.tuwien.ac.at&gt;.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+
+<h5>Ballot for systems</h5>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the brackets
+or in the line below the statement.  Multiple hits for the same system
+are possible (if they do not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please
+do so informally, and I will aggregate this information in some way.
+
+
+<h5>Ballot for programmers</h5>
+
+Just mark the statements that are correct for you (e.g., by putting an
+"x" between the brackets).  If some statements are true for some of
+your programs, but not others, please mark the statements for the
+dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from
+the proposal (especially if you have used that in your programs), make
+an informal comment, and I will collect these, too.  Note that the
+best time to voice such issues is the RfD stage.
+
+<h4>Credits</h4>
+
+<pre>
+Proponent: Bernd Paysan
+Votetaker: Anton Ertl
+</pre>
+
+<hr><a href="http://www.complang.tuwien.ac.at/anton/">Anton Ertl</a>
