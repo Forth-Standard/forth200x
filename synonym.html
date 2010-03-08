@@ -1,5 +1,5 @@
 <title>Synonyms proposal</title>
-<h3><a name="thowiors">Synonyms</a></h3>
+<h3>Synonym</h3>
 
 [ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
 
@@ -9,23 +9,37 @@ See <a href="#voting">below</a> for voting instructions.
 
 <h5>Systems</h5>
 <dl>
-<dt> [ ] conforms to ANS Forth.
-<dt> [ ] already implements the proposal in full since release [ ]:
-<dt> [ ] implements the proposal in full in a development version:
-<dt> [ ] will implement the proposal in full in release [ ].
-<dt> [ ] will implement the proposal in full in some future release.
-<dt> [ ] There are no plans to implement the proposal in full in [ ].
-<dt> [ ] will never implement the proposal in full:
+<dt> [ ] conforms to ANS Forth.</dt>
+<dd> bigForth<br/>
+	 VFX Forth<br/>
+	 MPE Forth Cross Compilers
+</dd>
+<dt> [ ] already implements the proposal in full since release [ ]:</dt>
+<dd> VFX Forth (since 1998)<br/>
+	 MPE Forth Cross Compiers (since 1999)
+</dd>
+<dt> [ ] implements the proposal in full in a development version:</dt>
+<dd> bigForth</dd>
+<dt> [ ] will implement the proposal in full in release [ ].</dt>
+<dd> bigForth 2.4.0<br/>
+	 4tH 3.60.1</dd>
+<dt> [ ] will implement the proposal in full in some future release.</dt>
+<dt> [ ] There are no plans to implement the proposal in full in [ ].</dt>
+<dt> [ ] will never implement the proposal in full:</dt>
 </dl>
 
 <h5>Programmers</h5>
 <dl>
-<dt> [ ] I have used (parts of) this proposal in my programs:
+<dt> [ ] I have used (parts of) this proposal in my programs:</dt>
+<dd> Graham Smith<br/>
+	 Bernd Paysan<br/>
+	 Stephen Pelc</dd>
 <dt> [ ] I would use (parts of) this proposal in my programs if the systems
-    I am interested in implemented it:
+    I am interested in implemented it:</dt>
 <dt> [ ] I would use (parts of) this proposal in my programs if this
-    proposal was in the Forth standard:
-<dt> [ ] I would not use (parts of) this proposal in my programs.
+    proposal was in the Forth standard:</dt>
+<dt> [ ] I would not use (parts of) this proposal in my programs.</dt>
+<dd> Hans Bezemer</dd>
 </dl>
 
 <!--
@@ -50,7 +64,7 @@ be standardised.
 The proposed form <code>SYNONYM</code> has been in use at MPE
 with cross compilers and VFX Forth since 1998. It is also
 implemented in Win32Forth and PFE.
-
+<p>
 Many people have suggested that we stay with words such as
 <code>AKA</code>, <code>ALIAS</code> or <code>ALIAS:</code>,
 usually of the form
@@ -59,8 +73,9 @@ usually of the form
 </pre>
 This has merit in terms of common practice, but will break
 code for several systems. Some systems, e.g. cross compilers,
-cannot generate enough information using the xt of a word alone.
-All surveyed systems can implement <code>SYNONYM</code>.
+cannot generate enough information using the <em>xt</em> of a
+word alone.  All surveyed systems can implement
+<code>SYNONYM</code>.
 
 <h4>Solution</h4>
 Although many people have objected to parsing words, parsing
@@ -77,8 +92,8 @@ Note that &lt;newname&gt; may be the same as &lt;oldname&gt;.
 
 <h4>Proposal</h4>
 <pre>
-10.6.2.xxxx SYNONYM            FACILITY EXT
-                                  X:synonym
+10.6.2.xxxx SYNONYM                                    FACILITY EXT
+                                                          X:synonym
 </pre>
 <dl>
 <dd> ( "&lt;spaces&gt;newname" "&lt;spaces&gt;oldname" -- )<br>
@@ -93,8 +108,6 @@ defined below. Newname may be the same as oldname.
 <dd> Perform the compilation semantics of <em>oldname</em>
 <p>
 <dt>Ambiguous conditions:
-<dd> The word <em>newname</em> is parsed by <code>'</code> or
-	<code>[']</code> or <code>POSTPONE</code>.
 <dd> <em>oldname</em> is not found.
 <dd> <code>IMMEDIATE</code> is used for a word defined by
 	<code>SYNONYM</code>.
@@ -121,27 +134,28 @@ The implementation below is imperfect and specific to VFX Forth.
 <h4>Change history</h4>
 
 <dl>
-<dt>2006-09-22
-	<dd>Enhanced current practice section.
-	<dd>Fixed some typos.
-<dt>2006-08-21
-	<dd>First draft.
+<dt>2008-09-26</dt>
+<dd>Updated ambiguous conditions.</dd>
+<dt>2006-09-22</dt>
+	<dd>Enhanced current practice section.<br/>
+	Fixed some typos.</dd>
+<dt>2006-08-21</dt>
+	<dd>First draft.</dd>
 </dl>
-
 
 
 <h4><a name="voting">Voting instructions</a></h4>
 
-Fill out the appropriate ballot(s) below and mail it/them to me
-&lt;pknaggs&#064;bournemouth.ac.uk&gt;.  Your vote will be published
+Fill out the appropriate ballot(s) below and mail it/them to
+&lt;vote&#064;forth200x.org&gt;.  Your vote will be published
 (including your name (without email address) and/or the name of your
-system) here.  You can vote (or change your vote) at any time by
-mailing to me, and the results will be published here.
+system) here.  You can vote (or change your vote) at any time, and
+the results will be published here.
 
 <p>Note that you can be both a system implementor and a programmer, so
 you can submit both kinds of ballots.
 
-<h4>Ballot for systems</h4>
+<h5>Ballot for systems</h5>
 
 If you maintain several systems, please mention the systems separately
 in the ballot.  Insert the system name or version between the
@@ -162,7 +176,7 @@ If you want to provide information on partial implementation, please
 do so informally, and I will aggregate this information in some way.
 
 
-<h4>Ballot for programmers</h4>
+<h5>Ballot for programmers</h5>
 
 Just mark the statements that are correct for you (e.g., by putting an
 "x" between the brackets).  If some statements are true for some of
@@ -183,6 +197,7 @@ the proposal (especially if you have used that in your programs), make
 an informal comment, and I will collect these, too.  Note that the
 best time to voice such issues is the RfD stage.
 
-<hr>
+<h4>Credits</h4>
+
 Proponent: <a href="http://www.mpeforth.com/">Stephen Pelc</a><br>
-Votetaker: <a href="http://dec.bournemouth.ac.uk/staff/pknaggs">Peter J Knaggs</a>
+Votetaker: <a href="http://www.rigwit.co.uk/">Peter J Knaggs</a>
