@@ -1,0 +1,175 @@
+From: Hugh Aguilar <hugoaguilar@rosycrew.com>
+Newsgroups: comp.lang.forth
+Subject: RfD:  :NAME
+Date: Tue, 15 Sep 2009 15:40:44 -0700 (PDT)
+Message-ID: <5d5de0af-8f83-4ecc-9e24-e2b1c1e1ff35@n2g2000vba.googlegroups.com>
+
+I posted this RfD to the Forth-200x group (originally called HEADER)
+and got some discussion there. I was asked to post it here and to
+expose it to those programmers who aren't on the Forth-200x mailing
+list --- then we'll vote on it.
+
+Some history here is that I see the primary purpose of Forth-200x to
+be facilitating the writing of cross-compilers. I want ordinary
+programmers (me!) to write cross-compilers for new microprocessors
+using any off-the-shelf Forth system (specified by their employer),
+and without knowing anything about the internal workings of that Forth
+system. Nobody else in the group seems to share this view (likely
+because they are all in the business of selling cross-compilers),
+which has dampened my enthusiasm in Forth-200x quite a lot. My
+thoughts are closely tied to the thoughts expressed in the post
+"Writing ANS-Forth in ANS-Forth" by Mark. He seems to want ANS-Forth
+to be written in ANS-Forth, which is what I want. Elizabeth Rather
+responded to his post by saying that a lot of internal aspects of the
+compiler are going to be non-standard, but that is okay so long as the
+surface of the compiler (what lowly programmers access), is standard.
+I totally disagree with this idea, but everybody else in the group
+seems to be pretty much on Ms. Rather's side.
+
+The following is my RfD (modified slightly from the original RfD that
+was called HEADER). Please offer any opinions you may have
+regarding :NAME. Also please express any opinions you may have
+regarding what exactly the purpose of the standard is. Do you agree
+with me that the purpose is facilitating writing Forth cross-compilers
+in standard Forth? Would you prefer instead that people like me should
+leave the writing of cross-compilers to the professionals?
+
+
+Author
+---------
+
+Hugh Aguilar
+
+
+Problem
+------------
+
+There is no good way to construct colon words from within other colon
+words. We can compile the code okay, but we can't create the header
+for the word because colon requires the header name to be in the input
+stream.
+
+
+Current practice
+-----------------------
+
+My own cross-compiler was written in UR/Forth which provided a word
+called HEADER that acted like colon, but took the word name as a
+string on the stack, rather than pulling it out of the input stream.
+Unfortunately, UR/Forth had a bug in it that made HEADER not work
+properly. I ended up writing my own word in assembly language, making
+use of undocumented features of UR/Forth that I was familiar with. I
+had previously disassembled a lot of the UR/Forth compiler, which is
+somewhat like performing an alien autopsy, except that the internal
+workings are more difficult to understand.
+
+It is possible to construct a source-code string and use EVALUATE on
+it. I consider this to be a kludge, and I'm not the only person who
+feels this way. In the Ruby language people used to use EVAL quite a
+lot, but as the language definition has progressed, this has become
+less and less necessary. As a rule of thumb, any recourse to this
+technique implies a failure in the language definition.
+
+In gforth we have the word NEXTNAME that takes a string and stores it
+somewhere such that the next defining word (colon, constant, etc.)
+will use that string rather than pull the name out of the input stream
+as would normally be done. This is horrible! This is in complete
+contradiction to the Forth maxim that Forth compilation should be as
+state-less as possible. It is wrong to have a word that sets a state
+that modifies the behavior of another word (or words) that may or may
+not be executed at some time in the near future. This kind of context-
+sensitivity is why people hate C, where the meaning of all the symbols
+within a statement are sensitive to what symbols they are adjacent to,
+which side of the = sign they are on, and so forth.
+
+
+Solution
+------------
+
+The solution is to introduce a new word called :NAME ( adr cnt wl
+-- ).
+
+The adr and cnt are the string representing the name of the new word.
+The wl is the wordlist that the new word will be compiled into.
+
+:NAME will behave exactly like colon except for the fact that it will
+obtain the information it needs from the stack, rather than pull the
+name out of the input stream, and rather than use the current
+wordlist.
+
+Note that :NAME doesn't change the current wordlist --- it just
+ignores it and uses the specified wordlist.
+
+Note also that it is easy to write colon in terms of :NAME, but it is
+complicated (requiring recourse in EVALUATE), to write :NAME in terms
+of colon. If :NAME is part of the standard, you don't really need
+colon to be part of the standard --- you could leave writing colon as
+a trivial exercise for the user to do (similar to how ENUM is not in
+the standard, but is left for the user to write in terms of CONSTANT).
+I'm not proposing that colon be dropped by the standard as most Forth
+programmers consider colon to be a fundamental aspect of Forth. I'm
+just pointing out that colon could be dropped without causing any
+trouble --- making the Forth language even thinner than it already is.
+I like thin languages as I am not very good at learning things --- I
+believe that a simple word is better than a complicated word, and that
+a few words are better than a multitude of words.
+
+
+Usage
+---------
+
+It will be possible to use :NAME in place of the colon in source-code
+being interpreted. This is not the purpose of :NAME however.
+Normally, :NAME would be used within a colon word that will be
+executed later on in compile-time.
+
+As an example, the programmer might write a defining word VAL that is
+similar to VALUE. When he uses VAL to define a word, XXX, then VAL
+automatically defines the following words:
+XXX		\ push the value of XXX to the stack
+XXX++	\ postincrement XXX after pushing the value to the stack
+XXX--		\ postdecrement XXX after pushing the value to the stack
+&XXX		\ push the address of XXX to the stack, rather than the value
+etc.,
+
+The VAL word described above is just one possible use of :NAME. In my
+own cross-compiler, I used :NAME (actually HEADER) to construct words
+like this associated with each local variable. The local variables
+were held in registers, rather than in memory, so they were good
+candidates for optimization. There are other methods for doing this,
+in which the ++, -- and & are distinct words, but these methods are a
+lot more complicated, and the source code is more cluttered because
+there is a space between them and the associated XXX. :NAME tends to
+simplify things quite a lot.
+
+Note that :NAME takes the wordlist as a parameter, rather than use the
+current wordlist. This is because the words being defined by :NAME
+typically will get put into a wordlist of related words, so that they
+don't clutter up the namespace. As an example, local variables need to
+disappear from the namespace after the colon word is finished
+compiling. An easy way to do this is to put them all into a wordlist
+that is removed from the search order by the semicolon.
+
+Note also that naming our word :NAME (rather than HEADER as was done
+in UR/Forth) is in keeping with the naming style started by :NONAME.
+
+
+Proposal
+-------------
+
+Add :NAME to our list of compiling words, alongside colon and :NONAME.
+
+Also, add these words to the standard:
+
+:NAME-CODE
+:NONAME-CODE
+
+These words would be similar to CODE in that they instigate assembly-
+language, but the standard doesn't describe how the assembly-language
+is implemented but rather leaves that up to the compiler-writer to
+deal with in a non-standard manner.
+
+See: 6.1.0450 colon and 6.2.0455 :NONAME in the Forth08 document.
+
+
+

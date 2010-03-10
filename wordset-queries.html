@@ -1,0 +1,98 @@
+<title>Wordset queries</title>
+
+<h3>Wordset queries</h3>
+
+<pre>
+Problem
+
+Wordset queries are the query strings that are defined with verbiage
+like "true if ... word set present", e.g., CORE-EXT.  With the arrival
+of a new standard (snapshot), what is the meaning of wordset queries?
+
+Compatibility with Forth-94 demands that, by default, they produce the
+same answers as for Forth-94; i.e, querying for CORE-EXT could return
+true only if all of the Forth-94 CORE EXT words are present.
+
+Should we be able to check for Forth-2009 wordset presence, and if so,
+how?
+
+
+Possible solutions
+
+1) The simples solution would be to just let the wordset queries work
+as before, not provide any way to query for the Forth-2009 version of
+the wordset, and declare these query strings as obsolescent.  The lack
+of usage of wordset queries (see below) suggests this approach.
+
+2) Another solution would be to introduce new names for the Forth-2009
+versions of the wordsets.  Usage example:
+
+S" core-ext" environment? ...      \ ask about Forth-94 CORE EXT wordset
+...
+S" core-ext-2009" environment? ... \ ask about Forth 2009 CORE EXT wordset
+...
+
+3) Another solution would be to have a query for Forth-2009, and once
+the program has queried for that, all wordset queries will refer to
+the Forth-2009 versions of the wordsets.  Because a program might want
+to include a Forth-94 library that contains Forth-94 wordset queries,
+there would also have to be a way to switch back for that particular
+library: query for Forth-94 before including that library, and again
+for Forth-2009 afterwards.  The implementation of that solution will
+be easy on most systems (because most or all wordsets don't change
+their answer between Forth-94 and Forth-2009 on most systems), but the
+conceptual complexity of this solution is significant (at least when
+mixing code from multiple standards).  Usage example:
+
+s" core-ext" environment? ... \ Forth-94 CORE EXT wordset
+...
+s" forth-2009" environment? ...
+...
+s" core-ext" environment? ... \ Forth 2009 CORE EXT wordset
+...
+s" forth-1994" environment? ...
+include old-library.fs        \ wordset queries should give Forth-94 answers
+s" forth-2009" environment? ...
+
+
+Experience
+
+Wordset queries seem to be very little used.  Checking all the
+occurences of ENVIRONMENT? in appbench (containing 6 portable programs
+of significant size), there is only one occurence: It is in a
+PFE-specific part of brew (where it is apparently used to load
+floating-point words).  So wordset queries are not used in portable
+parts of these programs.  This suggests that putting more
+(standardization and implementation) effort into wordset queries may
+be wasted and that it may be possible to find consensus on solution 1.
+
+OTOH, maybe the lack of usage of wordset queries just reflects on the
+sorry state of portable programming in Forth, or maybe just on the
+cumbersome interface of wordset queries, and the fact that most
+programs cannot do anything useful when a query returns "absent" or
+(especially) "don't know".
+
+
+Where do we go from here?
+
+I would like to hear from you which solution you prefer (and if you
+have a good reasoning for your preference, please let me know).  Also,
+for each solution, whether you could live with it, and if you feel
+like expanding on that, whether (as programmer) you would make use of
+that solution or whether (as system implementor) you would implement
+that solution in a useful way (i.e., not just reply "don't know").
+
+Once the question of which solution we want is resolved, I will work
+out the more formal proposal, and post another Rfd on that.  There may
+be additional RfDs in between if necessary.
+
+
+Feedback
+
+Gerry Jackson &lt;h986k1$blh$1@news.eternal-september.org&gt;, Michael
+Gassanenko
+&lt;615700f8-a8d6-406d-a052-434e242f24f0@n2g2000vba.googlegroups.com&gt;,
+Stephen Pelc and Leon Wagner like solution 1.  Dennis Ruffer prefers
+solution 2.
+
+</pre>

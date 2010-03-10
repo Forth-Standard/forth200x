@@ -1,0 +1,220 @@
+From: m_l_g3 <m_l_g3@yahoo.com>
+Newsgroups: comp.lang.forth
+Subject: Re: RfD: un-obsolete FORGET
+Date: Sun, 27 Sep 2009 12:39:31 -0700 (PDT)
+Message-ID: <46c39d0c-4d2c-495d-b5e2-6885900079bb@d4g2000vbm.googlegroups.com>
+
+========================= proposal ===============================
+Proposal: un-obsolete FORGET
+Version: 1.0.1, 27 Sep 2009, reformatted to fit in 70 cols to avoid
+         interference with google groups posting software.
+Version: 1.0, 24 Sep 2009
+Author: Michael L Gassanenko
+
+
+Taking into consideration that
+
+1. The word FORGET has been standard since at least Forth-79 and is
+   still in use, after 15 years of being declared obsolete;
+2. FORGET may be used in conditions in which MARKER may not be used
+   (which is why FORGET is still in use);
+3. on modern architectures FORGET is no more difficult to implement
+   than MARKER
+
+I propose to remove the obsolescence note from 15.6.2.1580 FORGET
+(TOOLS EXT) and change the rationale correspondingly.
+
+PROPOSAL (NORMATIVE)
+====================
+
+15.6.2.1580   FORGET
+TOOLS EXT
+     ( "<spaces>name" -- )
+     Skip leading space delimiters.  Parse name delimited by a space.
+     Find name, then delete name from the dictionary along with all
+     words added to the dictionary after name.  An ambiguous condition
+     exists if name cannot be found.
+     If the Search-Order word set is present, FORGET searches the
+     compilation word list.  An ambiguous condition exists if the
+     compilation word list is deleted.
+     An ambiguous condition exists if FORGET removes a word required
+     for correct execution.
+See: 3.4.1 Parsing.
+
+
+A.15.6.2.1580   FORGET
+Typical use:
+
+... FORGET name ...
+
+FORGET tries to infer information about the previous dictionary state
+from the forgotten word, which is not always possible.  In
+consequence, FORGET is guaranteed to restore the state of name space,
+but not necessarily the state of dictionary.
+
+For example,
+
+ALIGN HERE 100 CELLS ALLOT CONSTANT mybuffer
+FORGET mybuffer
+
+In this case the 100 reserved cells are a part of the buffer, but
+FORGET has no way to figure that out.  A solution to restoration of
+the dictionary state is provided by MARKER.
+
+Nevertheless, FORGET is a useful tool for interactive sessions,
+because it does not require creation of a marker in advance. An
+example session may look like following:
+
+: foo ... foo ... ( buggy redefinition) ;
+\ finding out the bug
+FORGET foo
+: foo ... foo ... ( bug fixed) ;
+\ checking that it works
+\ copying the definition of foo into a file
+
+It should be noted that such sessions are practical only in
+environments that support input history (often persistent) and
+copy/paste to/from the console.
+
+(end of proposed changes in Rationale)
+
+INFORMATIVE PARTS
+=================
+
+Problem
+=======
+
+The word FORGET was declared obsolescent in Forth-94, but it is
+still in use, supported by system implementors, and inspires long
+discussions "MARKER vs FORGET" in the comp.lang.forth newsgroup.
+
+Now, 15 years later, it is time to do something with obsolete words.
+If we do not remove FORGET from the standard (because it is still in
+use), it seems logical to remove the obsolescence note.
+
+
+Typical use
+===========
+
+FORGET is useful when a human redefines an existing
+word in the command line, finds a bug, and wants to
+correct it:
+
+VARIABLE MYVAR
+: CATCH MYVAR @ >R CATCH MYVAR R> ! ;
+( ... bug discovered)
+FORGET CATCH
+: CATCH MYVAR @ >R CATCH R> MYVAR ! ;
+
+In this example one has to remove the mis-redefined
+version because it crashes. FORGET is preferable
+to MARKER because when the bug is discovered, it
+is too late to define a MARKER.
+
+So FORGET is a useful tool.
+
+
+Remarks
+=======
+
+
+First of all, I underline that FORGET is not a new word,
+it already is in the standard. I propose not an innovation,
+but preservation of status quo.
+
+In general, there are 3 options for FORGET:
+1) leave it as it is now, obsolescent but still standard (no action is
+   required);
+2) remove it from the standard;
+3) keep it in the standard and remove the obsolescence note (this
+   proposal).
+
+If we accept this proposal, we will have both FORGET and MARKER in the
+standard. There's nothing wrong with it, because these two words solve
+similar but different problems: FORGET restores the name space, MARKER
+restores the dictionary; FORGET is good for interactive debugging,
+MARKER is good for deletion of temporary structures.  To be honest,
+none of them can be guaranteed to restore the system to its initial
+state e.g. after a crash, and a restart is typically used for this
+purpose.
+
+
+Note also that in the case of Flash memory, a version of FORGET that
+does not restore the Flash section dictionary pointer but restores the
+name space may be preferable to the use of MARKER (because FORGET does
+not necessarily have to save, erase and re-write Flash).
+
+
+Experience
+==========
+
+FORGET is in the standard since at least Forth-79, and still in use.
+
+But it's not that simple. There are 3 typical tasks where restoration
+of some previous dictionary state is required:
+1) recompilation of the application after adding new code or changing
+existing code;
+2) removal of temporary data structures and definitions;
+3) removal of recent definitions without full recompilation, used
+interactively.
+
+FORGET is very good for the 3rd usage case, and is reasonably
+suitable for the 2nd usage case (provided that you care to de-ALLOT
+ALLOTed data, if any).
+
+MARKER is very good for the 2nd usage case and is reasonably suitable
+for the 3rd usage case (provided that you care to create markers in
+advance).
+
+Neither FORGET nor MARKER provide a solution for the 1st usage case.
+A project typically starts with something like:
+
+ANEW __kkjhhj__ ( easy to implement in terms of both FORGET and
+MARKER)
+
+on the very first line, but one day the programmer finds out that the
+code does not compile when one tries to re-INCLUDE it, and compiles if
+it is INCLUDEd on a fresh system. Soon after that the restart logic
+gets dropped because it requires time but creates no added value for
+the customer. And as to restarting, a batch (or shell) script written
+in 5 or 10 minutes solves the problem perfectly.
+
+Another argument against recompilation after MARKER or FORGET is that
+they do not guarantee that the system is fully operational and is in
+the initial state.  If you get a crash, fix a bug, restore the system
+state via MARKER or FORGET, load the sources again and still get a
+crash, this does not mean anything except that you have to restart the
+system and check again.
+
+(And it is easy to get such a crash when a mistake in stack
+manipulation combines with a memory write.)
+
+Summary: both MARKER and FORGET are useful, and both are of limited
+usefulness.  It is arguable whether MARKER or FORGET may be used
+for their original purpose, restoring the initial system state.
+The use cases for which FORGET and MARKER definitely may be used
+are not the same.  Therefore I propose to keep them both and remove
+the obsolescence note from 15.6.2.1580 FORGET.
+
+
+Additional Note
+===============
+
+I did not propose to replace "dictionary" by "name space" in the
+normative part.
+
+It could read like:
+
+Find name, then delete name from the system's name spaces along with
+all words added to the dictionary after name.  It is
+implementation-defined which structures are removed from the
+dictionary when the words removed from the system's name spaces; it is
+recommended that implementations free (de-ALLOT) the memory occupied
+by removed words.  An ambiguous condition exists if name cannot be
+found.
+
+
+(eof)
+
+
+
