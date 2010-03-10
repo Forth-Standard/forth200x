@@ -218,6 +218,14 @@ Modern C compilers like gcc do
 relative to the directory of the currently-included file.  The
 proposed equivalent would be 'INCLUDE bla.h' or 'F" bla.h" INCLUDED'.
 
+If a symbolic link in Unix contains a relative file name, that file
+name is relative to the directory that contains the symbolic link.
+E.g., If we have
+
+ln -s foo/bar /tmp/flip
+
+then /tmp/flip refers to /tmp/foo/bar.
+
 
 Remarks
 -------
