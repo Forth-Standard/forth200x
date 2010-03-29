@@ -1,0 +1,111 @@
+Voting meeting
+
+Attendance:
+
+Bill Stoddart
+Peter Knaggs
+Willem Botha
+Stephen Pelc
+Leon Wagner
+Ulrich Hoffmann
+Andrew Haley
+Gerald Wodni
+Bernd Paysan
+Anton Ertl
+
+Minutes reviewed: One minor correction
+
+Review of Basis document
+
+ Major changes for the legacy proposal
+ Reference implementations, Tests: Should they be in the document?
+   We keep them for now, but not in the snapshot document.
+
+Discussion and votes on CfVs:
+
+2value, fvalue:
+  "associate" -> assigned
+
+   2value: 10/0/0
+   fvalue: 10/0/0
+
+fatan2: 10/0/0
+
+fasinh: 10/0/0
+  additional change to list of ambiguous conditions
+
+ftrunc: 10/0/0
+  put it in FLOAT EXT
+
+
+RfDs without CfV:
+
+Escaped strings
+  Go to CfV
+
+Synonym
+  Send out new Rfd and go to CfV (SP)
+
+Xchars
+  go to CfV and include it in snapshot.  BP
+  
+Internationalization.
+  Go to RfD.  PK, SP
+
+Memory access wordset
+  Go to RfD.  SP/FdC
+
+IEEE FP
+  We applaud the effort and AH, David N. Williams
+
+Fnegate-zero
+  Is this in the right place?  Maybe a negative-zero proposal, or
+  maybe it's subsumed by IEEE FP.  Go to CfV or retract.  AE, Krishna Myneni
+
+Text Substitution.
+  add escape-escaping word. AE
+  then go to RfD and CfV. SP
+
+N>R
+  go to CfV. SP
+
+BUFFER:
+  go to CfV. SP
+
+Directories
+  further discussion.  AE, SP
+
+Enhanced local variables
+  discussed earlier
+
+KEY/EKEY
+  split events records from it
+  vote on the rest: 9Y/0N/1A
+
+Fast-Track RfDs:
+
+Legacy proposal
+  When the obsolete words are put in Appendix D, have that change in
+the snapshot 10/0/0.  PK
+
+Definition Name Length.  10/0/0 PK
+
+Structures wording clarification.
+  revised wording of CFIELD: etc. 10Y/0N/0A
+
+
+Not even RfD:
+
+Name token proto-RfD
+
+standard version and wordset environmental queries
+
+
+Matters arising:
+
+Discussion about the finalization of the snapshot.
+ Have a pretty-final draft of the document.
+ Electronic voting
+
+Date of next meeting:
+ 2-day meeting before next EuroForth (Hamburg?): UH

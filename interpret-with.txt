@@ -1,0 +1,15 @@
+s" myfile" ' read-loop ' included interpret-with
+           ' interpret ' require  interpret-with my-file
+
+Need to change 
+
+included include-file include require required
+evaluate
+load ?
+quit ?
+
+add interpret?
+add read-loop?
+
+: execute-parsing ( ... c-addr u xt -- ... )
+   ['] evaluate interpret-with ;

@@ -1,0 +1,194 @@
+\documentclass{article}
+\usepackage{a4wide}
+\usepackage{enumerate}
+
+\newcommand{\action}[1]{%
+	\mbox{}\hfill \textbf{Action:~#1}%
+}
+
+\newcommand{\word}[1]{\texttt{#1}}
+
+\parskip 0.4\baselineskip
+\parindent 0pt
+
+\newcommand{\bs}[1][]{\texttt{$\backslash$#1}}
+
+\newlength{\tablength}
+\setlength{\tablength}{1em}
+\newcommand{\tab}[1][1]{\hspace*{#1\tablength}}
+
+\renewcommand{\arg}[1]{$\langle$\emph{#1}$\rangle$}
+
+
+\begin{document}
+\pagestyle{empty}
+
+\begin{center}\bf\large
+Forth 200\emph{x} Standards Committee \#4 \\[6pt]
+Technische Universit\"{a}t Wien, Vienna, Austria. \\[6pt]
+25--26 September 2008 \\[12pt]
+Draft Minutes
+\end{center}
+
+\begin{enumerate}[1. ]
+
+\item \textbf{Participants}
+
+	\begin{tabular}{lll}
+		Willem		Botha		& CCS, South Africa \\
+		Federico de	Ceballos	& University of Cantabria, Spain \\
+		M. Anton	Ertl		& Technische Universit\"{a}t Wien, Austria & (Chair) \\
+		Andrew		Haley		& Red Hat, USA \\
+		Ulrich		Hoffmann	& FH Wedel University of Applied Sciences & Germany	\\
+		Dr. Peter	Knaggs		& University of Exeter, England \\
+		Bernd		Paysan		& Germany \\
+		Stephen		Pelc		& MPE, England \\
+		Dr. Bill	Stoddart	& University of Teesside, England \\
+		Leon		Wagner?		& Forth, Inc., USA \\
+	\end{tabular}
+
+
+\item \textbf{Consideration of proposals}
+\label{CfV}
+
+\begin{tabular}{p{6.5em}p{24em}lc}
+	Proposal	& Comments				& Vote & Action \\
+
+\textsf{fp-stack}
+	& With minor modifications
+	& 10/0/0
+	& AE \\
+\end{tabular}
+
+
+\item \textbf{Discussion of \emph{draft} proposals}
+\label{RfD}
+
+\begin{tabular}{p{6.5em}p{22.5em}lc}
+	Proposal & Comments & Status & Action \\
+
+\textsf{2value}
+	& Redraft with new \word{TO}.
+	& Referred
+	& AE \\
+
+\textsf{directories}
+	& Redraft with simple text replacement
+	&
+	& AE \\
+
+\textsf{escaped-strings}
+	& Progress on to CfV
+	& Ongoing
+	& AE/PK \\
+
+\textsf{f-value}
+	& Redraft with new \word{TO}.
+	& Referred
+	& AE \\
+
+\textsf{synonym}
+	& Progress on to CfV
+	& Ongoing
+	& SP/PK \\
+
+\textsf{extended-locals}
+	& Revise \{ syntax
+	& Referred
+	& SP \\
+
+\textsf{xchars}
+	& Progress on to CfV
+	& Ongoing
+	& BP/AE \\
+\end{tabular}
+
+%\item \textbf{Discussion of \emph{fast track} proposals}
+%
+%\begin{tabular}{p{6.5em}p{24em}lc}
+%	Proposal	& Comments				& Status & Action \\
+%
+%\textsf{foreword}
+%	& Extend book references
+%	& Accepted
+%	& PK \\
+%\end{tabular}
+
+\item \textbf{Progress Reports}
+
+\begin{enumerate}[a)]
+\item Development Reports
+	\begin{enumerate}[i)]
+	\item \word{0} for \word{NIL}
+		Rewording of sections 3.3.3.1 and 3.3.3.2.\action{FC/AE}
+
+	\item 16-/32-bit signed/unsigned \word{!} and \word{@} for integers,
+		bytes, octets.\\
+		Send to RfD. \action{FC}
+
+	\item \textsf{directory}: directory accessing in general \\
+		Redraft with simple text replacement mechanism. \action{AE}
+
+	\item \textsf{Cross Compiler:}
+		Develop Elisabeth Rather's Cross Compiler proposal into an
+		RfD. \\
+		\action{BP/LW/SP}
+
+	\item \textsf{Localisation:}
+		Develop L10N proposals into RFD.
+		\action{PK/SP}
+	\end{enumerate}
+\end{enumerate}
+
+\item \textbf{Review of Forth2007.2 basis document}
+	\begin{enumerate}[i)]
+		\item Correct \textsf{X:structure} (replace ``school of though''
+			with ``School of thought'')\\
+	\end{enumerate}
+
+\item \textbf{Matters Arising}
+\begin{enumerate}[i)]
+\item Obsolescent features \action{PK}
+
+	Introduce a new ``Obsolete Words'' appendix.
+	Removing the words currently listed in section 1.4.2.
+
+\item RFI0007 \action{AE/PK}
+
+	Integrate RFI0007 (\word{IMMEDIATE} vs ``compilation semantics'')
+	into the document.
+
+\item Review all RFI documents for integration into the document:
+	\begin{description}
+	\item[RFI 0001:]
+		meaning of ``\emph{flag}'' returned by \word{READ-LINE}
+		at end of file.
+	\item[RFI 0002:]
+		duplicate wordlist in the search order.
+	\item[RFI 0003:]
+		What's allowed between \word{CREATE} and \word{DOES>}.
+	\item[RFI 0004:]
+		Standard punctuation for double-cell numbers.
+	\item[RFI 0005:]
+		Initiation semantics.
+	\item[RFI 0006:]
+		Writing to Input Buffers.
+	\item[RFI 0007:]
+		Distinction between \word{IMMEDIATE} and ``special compilation
+		semantics''
+	\end{description}
+\end{enumerate}
+
+\item \textbf{Date of Next Meeting}
+
+	A review meeting to be held in conjunction with the Forth-Tagung
+	in April/May.
+	\action{UH}
+
+	The next voting meeting will be held directly before the next
+	euroForth conference to be held in England (Sep 25/6).  Extending
+	this meeting to include ``workshop'' periods was discussed.
+	\action{PK/BS}
+\end{enumerate}
+
+\end{document}

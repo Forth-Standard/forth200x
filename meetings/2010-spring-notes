@@ -1,0 +1,145 @@
+Attendance:
+Thomas Prinz (Observer)
+Egmont Woitzel
+Gerald Wodni
+Stephen Pelc
+Peter Knaggs
+Anton Ertl
+Ulrich Hoffmann 17h02
+Carsten Roederer 17h02
+Bernd Paysan 17h47
+
+
+
+Agenda:
+Photo
+
+Triage:
+
+Try to get it ready for Snapshot (revise until June at the latest) if
+it isn't already, no need for discussion now:
+
+SYNONYM
+Xchars
+N>R
+Buffer:
+Extended locals (a bit of discussion)
+Escaped Strings
+
+Try to get it ready for Snapshot, need to discuss it now:
+
+Text Substitution
+Legacy Words
+Unobsolete Forget
+Wordset queries
+caddr/len
+Fnegate
+EKEY Event Record
+Structures
+
+Not for the Snapshot:
+:NAME
+I18n
+IEEE FP
+Directories
+Memory Access
+!ME and @ME
+SIZE
+HEADER
+<BUILDS
+
+Discussion:
+
+Extended Locals:
+
+Reword to refer to locals (not local arguments and local values).  The
+difference between the the two is initialization.
+
+Reworded the definition.
+(Re)Worded the rationale.
+
+
+Text substitution:
+
+Rename UNESCAPE to SUBSTITUTE-SAFE
+
+Interface to SUBSTITUTE: No automatic buffer resizing because of
+embedded systems.  Report insufficient buffer through error condition.
+Resizing can be handled by doubling (and possibly using len3 after
+overshoot).  Make overlapping buffers an ambiguous condition.
+
+Interface to SUBSTITUTE-SAFE: Like for SUBSTITUTE
+
+
+Unobsolete FORGET
+
+Unobsolete it within the legacy RfD
+
+
+Legacy Wordset
+
+Just make a list in Appendix D
+
+
+Wordset queries
+
+Go for Option 1 of the RfD.  Needs rewording of some stuff.
+
+
+caddr/len
+
+Do not pursue this any more
+
+
+FNEGATE
+
+Leave it to IEEE FP
+
+
+EKEY
+
+Pursue it to CfV
+
+
+Structures
+
+Discussion over wording: keep Forth code specification or use English
+specification?  Worded English specification, moved Forth
+specification to Rationale.
+
+
+Xchar:
+
+Work through some wording suggestions that have been raised during the
+CfV phase.
+
+
+
+
+Other:
+
+Process for non-substantial changes (e.g., wording changes):
+  Problem: RfDs might be ignored by many (they wait for CfV)
+  Solution: Call RfDs for wording changes RfCs.  Worded that proposal.
+
+
+EuroForth 2010:
+  Will be around Hamburg
+  Date around late September
+
+
+
+Later Stuff:
+
+Ideas collected for Obsolescence (little discussion)
+Ideas collected for new words (little discussion)
+
+
+Formalising Libraries
+
+
+Directories
+
+Much more discussion
+
+

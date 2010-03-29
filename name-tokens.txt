@@ -1,0 +1,69 @@
+Name tokens
+
+Why name tokens?  Aren't xts unique identifiers for words?
+
+        6.1.1550 FIND
+        [...] For a given string,
+	the values returned by FIND while compiling may differ
+	from those returned while not compiling.
+
+There is no 1:1 relationship between names and xts:
+:NONAME -> 0:1
+ALIAS/SYNONYM -> n:1
+Indepedent interpretation/compilation semantics -> n:2 (in FIND)
+
+No way for getting back to the name.
+
+Some implementations separate names from stuff needed for execution
+(including xts).
+
+Some implementations allow arbitrary combinations of interpretation
+(represented by xt) and compilation.
+
+
+How implementation-specific is it?
+
+All implementations where xt can be used as universal identifier can
+implement the proposal: nt=xt.
+
+Most other implementations can also implement the proposal.  And
+implementations where the xt cannot be used as universal identifiers
+exist, e.g., Gforth
+
+Implementation techniques that don't fit:
+ - Separate compilation worklist (no standard systems)
+ - Separate headers for interpretation and compilation semantics
+
+Proposal
+
+New type: name token (1 cell) represents a named word (traditionally NFA)
+
+find-name       c-addr u -- nt | 0
+   Find the name c-addr u in the current search order. Return its nt,
+if found, otherwise 0.
+
+name>int       nt -- xt|0
+   xt represents the interpretation semantics of the word nt. Returns
+0 if nt has no interpretation semantics (i.e. is compile-only).
+throw'.
+
+name>comp       nt -- xt1 xt2
+   xt1 xt2 performs the compilation semantics of nt when executed.
+
+name>string       nt -- c-addr len
+   c-addr len is a string containing the name of the word represented
+   by nt.  The string is valid until the next invocation of NAME>STRING.
+
+id.       nt --
+   Print the name of the word represented by NT.
+
+latest       -- nt
+   NT is the name token of the last word defined; it is 0 if the last
+word has no name.
+
+>name       xt -- nt|0
+   tries to find the name token NT of a word whose interpretation
+semantics is represented by XT; returns 0 if it fails.  This word is
+not absolutely reliable, it may give false positives and produce wrong
+nts.
+
