@@ -1,13 +1,13 @@
 Attendance:
-Thomas Prinz (Observer)
+Thomas Prinz
 Egmont Woitzel
 Gerald Wodni
 Stephen Pelc
 Peter Knaggs
 Anton Ertl
-Ulrich Hoffmann 17h02
-Carsten Roederer 17h02
-Bernd Paysan 17h47
+Ulrich Hoffmann
+Carsten Roederer
+Bernd Paysan
 
 
 
@@ -47,6 +47,7 @@ Memory Access
 SIZE
 HEADER
 <BUILDS
+
 
 Discussion:
 
@@ -88,17 +89,17 @@ Go for Option 1 of the RfD.  Needs rewording of some stuff.
 
 caddr/len
 
-Do not pursue this any more
+Do not pursue this any more.  (i.e., not for the Snapshot)
 
 
 FNEGATE
 
-Leave it to IEEE FP
+Leave it to IEEE FP.  (not for the snapshot)
 
 
 EKEY
 
-Pursue it to CfV
+Pursue it to CfV.
 
 
 Structures
@@ -123,7 +124,7 @@ Process for non-substantial changes (e.g., wording changes):
   Solution: Call RfDs for wording changes RfCs.  Worded that proposal.
 
 
-EuroForth 2010:
+EuroForth 2010 (and the Forth200x meeting preceding it):
   Will be around Hamburg
   Date around late September
 
@@ -138,8 +139,5 @@ Ideas collected for new words (little discussion)
 Formalising Libraries
 
 
-Directories
-
-Much more discussion
-
+Directories: Much more discussion
 
