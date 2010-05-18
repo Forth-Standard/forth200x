@@ -1,0 +1,145 @@
+<html>
+<head>
+  <title>RfC (Wording changes)</title>
+  <style type="text/css">
+  ol li { margin-bottom: 2ex; }
+  </style>
+</head>
+<body>
+<h3>RfC (Wording changes)</h3>
+
+[ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
+
+<h4>Poll Standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<dl>
+<dt>[ ] I agree with the proposed alteration to the document text.</dt>
+<dd>Peter Knaggs
+<br/>Leon Wagner
+<br/>Bernd Paysan
+</dd>
+<dt>[ ] I do not agree with the proposed alteration to the document text.</dt>
+</dl>
+
+<table width="500"><tr><td>
+
+<h3>Problem</h3>
+
+A number of non-substantial changes have been made using a "fast
+track" RfD process.  Some people have found it difficult to
+differentiate the "normal" RfDs, with substantive changes, from these
+"fast track" RfDs.
+
+<h3>Solution</h3>
+
+Change the "fast track" Request for Discussion to a Request for
+Comment (RfC).  Thus the non-substantial changes are clearly
+identified.
+
+<h3>Discussion</h3>
+
+The standards process brings up a number of changes to the text of
+the document that are intended to clarify the text rather than
+changing the intention of the text.  Such proposals are considered to
+be non-substantive as they do not ask a systems implementer if they
+support a feature, nor do they change any entitlements of the
+application programmer.  As such these proposals, although released
+as RfDs, do not progress to the CfV stage.
+
+Although these RfD do not progress to a public CfV, they are subject
+to vote at the committee meeting before being integrated into the
+document.  Such changes are also listed in the change log (annex H).
+
+A substantive change is one that effects either the programmer or the
+systems implementer.  Thus adding or removing a constraint would be
+considered a substantive change, while a change in the wording to
+clarify the text would be considered a non-substantive change.
+
+<h3>Proposal</h3>
+<ol>
+<li> Remove the last paragraph of section d) in the "Proposals Process"
+	preface:
+	<blockquote>
+		If a proposal does not propose extensions or changes to the Forth
+		language, but just a rewording of the current document, there is
+		nothing for the system implementors to implement, and for
+		programmers to use, so a CfV poll does not make sense and is not
+		performed.  The proposal will bypass the CfV stage and will simply
+		be frozen and go directly to the committee for consideration.
+	</blockquote>
+
+	Add the following paragraph to the end of section b):
+	<blockquote>
+		If a proposal does not propose extensions or changes to the Forth
+		language, but a rewording of the current document, there is nothing
+		for a system implementor to implement, or a programmer to use.
+		In such a case, the proposal should be published as a Request for
+		Comment (RfC).  The proposal will be considered, along with any
+		comments, at the next committee meeting.
+	</blockquote>
+</li>
+
+<li> In section c) replace "RfD" with "RfD/RfC".</li>
+
+<li> In the introduction to the preferred structure to an RfD the text:
+	<blockquote>
+		A proposal should give a rationale for the proposal, so that system
+		implementors and programmers will see what it is good for and why
+		they should adopt it (and vote for it).
+		<p>
+		A proposal RfD should include the following sections.
+		</p>
+	</blockquote>
+	should be replaced with:
+	<blockquote>
+		A proposal should give a rationale for the proposal, so that system
+		implementors and programmers may see the relevance of the proposal
+		and why they should adopt (and vote for) it.  The proposal should
+		include the following sections, where appropriate.
+	</blockquote>
+</li>
+</ol>
+
+<h3>Change History</h3>
+<dl>
+<dt>2010-03-26</dt>
+	<dd>Original text</dd>
+</dl>
+
+<h3>Author</h3>
+
+Peter Knaggs <pjk@bcs.org.uk><br/>
+Engineering, Mathematics and Physical Sciences,<br/>
+University of Exeter, Exeter, Devon EX4 7QF, England
+</td></tr></table>
+
+<a name="voting"><h4>Voting Instructions</h4></a>
+
+Fill out the ballot below and email it to &lt;vote@forth200x.org&gt;.
+Your vote will be published (including your name, without email
+address) here. You can vote (or change your vote) at any time and
+the results will be published here.
+
+<h4>Ballot</h4>
+
+Please mark the statements that are correct for you
+(e.g., by putting an "x" between the brackets).
+
+<dl>
+<dt>[ ] I agree with the proposed alteration to the document text.</dt>
+<dt>[ ] I do not agree with the proposed alteration to the document text.</dt>
+</dl>
+
+If you feel that the text does not cover all the aspects you would
+expect, then please make an informal comment.  These will be reported
+in addition to the formal votes.  Note that the best time to voice
+such issues is the RfD stage.  Alternatively, you could propose a
+counter RfD.
+
+<h3>Credits</h3>
+
+Proponent: <a href="http://www.rigwit.co.uk/">Peter Knaggs</a><br />
+Votetaker: <a href="http://www.rigwit.co.uk/">Peter Knaggs</a>
+</body></html>
