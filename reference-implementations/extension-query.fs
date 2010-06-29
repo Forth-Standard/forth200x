@@ -26,8 +26,9 @@
     \ this directory must only contain files for official extensions,
     \ otherwise this will not be a correct implementation of the proposal
     \ you can find a directory with reference implementations at
-    \ http://www.complang.tuwien.ac.at/forth/ansforth/extensions/
-    s" extensions/" ;
+    \ http://www.forth200x.org/extensions/
+    \ or http://www.forth200x.org/forth200x-code.zip
+    s" forth200x-code/extensions/" ;
 
 : extension-prefix ( -- c-addr u )
     \ string at the start of every extension query
