@@ -1,110 +1,38 @@
-<title>Directories</title>
+<title>File names and Directories</title>
 
-<h3>Directories</h3>
+<h3>File names and Directories</h3>
 
 <pre>
 Changes:
 
-4th RfD:
-
-Changes based on more thought and recent (2010-01) discussion:
-added proposal part and revised discussion
-REQUIRE and INCLUDE now treat relative file names as source-directory
-  relative, whereas all other words treat relative file names as
-  working-directory relative.
-Cleaned up and rewrote remarks section
-
-3rd RfD:
-
-The main way to specify source-directory-relative filenames is now F",
-not prefixes.  Removed prefixes from proposal, but discuss them in the
-Remarks section.
-
-2nd RfD:
-
-Added INCLUDE-NAME-ABS.
-Added Sections "Which prefix?", "What if there is no currently
-  including file?", "Isn't specifying "/" as directory separator too
-  OS-specific?"
-Replaced many mentions of "./" with "prefix".
-Minor rewrites to make some prose clearer.
+1st RfD: Split out this (hopefully less contentious) proposal from the
+Directories proposal.
 
 
 Problem
 -------
 
-Summary: How do I refer to another file that is distributed with the
-Forth file at hand, in the presence of directories?
-
-Example: Let us assume that the current working directory is /wd/, and
-that we have a program installed in directory /prog1/, but on the next
-installation it might be installed in /prog2/.  The file to be
-INCLUDEd by the user is /prog1/prog.fs, and it is supposed to INCLUDE
-library.fs and read a data file data.txt residing in the same
-directory.  How should prog.fs refer to library.fs and data.txt?
-Remember that on the next installation they might be in a different
-directory than in this installation (but in the same directory as
-prog.fs).
-
-As an additional complication, consider the case where prog.fs loads a
-library /prog1/lib1/lib.fs, that has been developed independently of
-prog.fs, and without knowledge that it would later wind up in
-/prog1/lib1; /prog1/lib1/lib.fs refers to another file foo.fs which
-resides at /prog1/lib1/foo.fs in this installation.  How should Forth
-code in the library refer to other files of the library?
-
-An example of a similar structure can be found in
-
-<a href="http://www.complang.tuwien.ac.at/forth/dirtest.zip">dirtest.zip</a>
+What are portable file names?  How do I refer to directories?  What
+about relative file names?  Forth-94 does not specify these things; as
+a result, systems implement diverging approaches (in particular wrt
+relative file names in loading words).  This proposal tries to outline
+the common ground at the moment.
 
 
 Solution outline
 ----------------
 
-First we need to specify a directory separator.  The "/" is supported
-in all important OSs (including DOS and Windows, except in cmd.exe),
-so we specify it for Forth.
-
-Next, we need a way to specify a file name relative to the
-source-directory, i.e., the directory that contains the Forth source
-file that contains the file name (as a string): F" file" produces a
-filename in a source-file-independent way.  E.g., in the example
-above, the prog.fs file could refer to the other files as follows:
-
-F" library.fs"
-F" data.txt"
-F" lib1/lib.fs"
-
-and lib.fs could refer to /prog1/lib1/foo.fs as follows:
-
-F" foo.fs"
-
-In addition, a word INCLUDE-NAME-ABS for converting a string from an
-include-relative filename to an absolute filename is a natural factor
-of F" and can be useful in some cases (e.g., if the file name contains
-a double-quote).
-
-Programmers like to use parsing words like INCLUDE and REQUIRE, so we
-refine these words to treat relative file names as source-directory
-relative.  So instead of using
-
-F" foo.fs" required
-
-the programmer can also write
-
-require foo.fs
+We specify portable file names and a directory separator (and follow
+POSIX here).  We also specify working-directory-relative file names
+and source-directory-relative file names, and which words are
+guaranteed to use one of these approaches, and which words use either.
 
 
 Typical usage
 -------------
 
-F" lib1/lib.fs" required
-require lib1/lib.fs \ equivalent to the above
-F" data.txt" r/o open-file
-S\" funny\"filename" include-name-abs r/o open-file
-F" data.txt" save-mem 2constant data-filename
-( in another file in another dir: ) data-filename r/o open-file
-
+Keep all source files in one directory.  Forget about separately
+packaged libraries.
 
 Proposal
 --------
@@ -153,17 +81,16 @@ Passing a relative filename to any word consuming a filename except
    INCLUDED, INCLUDE, REQUIRED or REQUIRE uses the file name as
    working-directory-relative file name.
 
-Passing a relative filename to INCLUDED, REQUIRED or INCLUDE uses the
-   file name as either working-directory-relative file name or as
-   source-directory-relative file name [you can still use that by making
-   sure they are the same].  An ambiguous condition exists if the file
-   does not exist or is not accessible. [A fallback then might
-   be to search a path, or to throw an exception].
+Passing a relative filename to INCLUDED, REQUIRED, INCLUDE or REQUIRE
+   uses the file name as either working-directory-relative file name
+   or as source-directory-relative file name [you can still use that
+   by making sure they are the same].  An ambiguous condition exists
+   if the file does not exist or is not accessible. [A fallback then
+   might be to search a path, or to throw an exception].  [Note that
+   all the known implementations of REQUIRE treat the file name as
+   source-directory-relative, so maybe you should refrain from
+   implementing it in a working-directory-relative way.]
 
-Passing a relative file name to REQUIRE uses that file name
-   as source-directory-relative file name.  An ambiguous condition
-   exists if that file does not exist or is not accessible.  [A
-   typical fallback then might be to search a path, or to throw an exception].
 
 
 Reference implementation and tests
@@ -175,127 +102,20 @@ Will be done after the solution has solidified after more discussion.
 Existing practice and experience
 --------------------------------
 
-Gforth implements source-directory-relative file names by interpreting
-all relative file names in INCLUDED, INCLUDE, REQUIRED and REQUIRE as
-source-directory relative (as part of the file search path).  This has
-been in Gforth since Gforth 0.4.0 in 1998.  We have had very good
-experiences with that functionality, and very bad experiences with
-working-directory-relative INCLUDE and REQUIRE before that.
+To the best of my knowledge, all standard Forth systems that implement
+the FILE wordset implement this proposal (as far as they implement the
+words mentioned in the proposal).
 
-Some other Forth systems have similar facilities, e.g., Win32Forth.
-
-Treating relative file names as working-directory-relative for all
-words except INCLUDED, INCLUDE, REQUIRED, and REQUIRE is existing
-practice in most (all?) Forth systems that support files on a
-hierarchical file system.
-
-Modern C compilers like gcc do
-
-#include "bla.h"
-
-relative to the directory of the currently-included file.  The
-proposed equivalent would be 'INCLUDE bla.h' or 'F" bla.h" INCLUDED'.
-
-If a symbolic link in Unix contains a relative file name, that file
-name is relative to the directory that contains the symbolic link.
-E.g., If we have
-
-ln -s foo/bar /tmp/flip
-
-then /tmp/flip refers to /tmp/foo/bar.
+Some systems implement source-directory-relative file names for
+INCLUDED, REQUIRED and INCLUDE, some implement
+working-directory-relative file names for these words.  For REQUIRE,
+all systems that implement it, implement source-directory relative
+file names; but in order to avoid touching a contentious topic, even
+REQUIRE is specified weakly in this proposal.
 
 
 Remarks
 -------
-
-INCLUDE, REQUIRE and backwards compatibility
-
-   INCLUDE and REQUIRE are convenience words.  Even though INCLUDED
-   was standardized in Forth-94 and INCLUDE was not, INCLUDE seems to
-   be much more popular.  Tightening the specification of INCLUDE to
-   treat relative file names as source-directory-relative helps those
-   programmers who don't read standards (apparently most of them) to
-   write portable programs.
-
-   Introducing a new word (e.g., +INCLUDE) or a special syntax for the
-   file name (e.g., ./file or <file>) won't achieve this objective,
-   because it will not be used by most programmers.  And those
-   programmers who would use it would probably also use
-   F" ..." INCLUDED.
-
-   The disadvantage of this kind of tightening is that on some systems
-   the current behaviour of INCLUDE is different, and existing
-   programs that work around this deficiency might no longer work
-   after the change.  There are a number of ways for these systems to
-   resolve this:
-
-   - Use the legacy behaviour as fallback.  That probably allows
-     nearly all legacy applications to work unchanged.  The only
-     possible problem is if a file that is expected to be accessed
-     through the legacy behaviour happens to have a namesake in the
-     source directory, and these files are different.
-
-   - Have a (system-specific) switch that allows switching between the
-     legacy and source-directory-relative behaviour.  This would
-     cover all cases.
-
-   Finally, another option would be to forgo tightening INCLUDE, and
-   leave it as unstandardized wrt. directories as it is now.
-   Programmers desiring portability will use F" ..." INCLUDED, and the
-   unwashed masses will just produce unportable programs.
-
-   The case is a little bit different for REQUIRE, because most
-   systems have not implemented it yet, so they have no legacy to stay
-   compatible with, and no compatibility problem.  Gforth has
-   implemented it, but it has also implemented source-directory
-   relative file names with REQUIRE.
-
-INCLUDED, REQUIRED, and backwards compatibility
-
-   Similarly, the tightening of the specification of INCLUDED and
-   REQUIRED to use working-directory relative files can cause
-   backwards compatibility problems for legacy programs on systems
-   that implement source-directory-relative file names for these words
-   (e.g., Gforth).  The same options are possible as for INCLUDE.
-
-Why let INCLUDE and REQUIRE behave differently from the other words?
-
-   In short: Because they are parsing words and the others are not,
-   and because the file names for INCLUDE and REQUIRE come from the
-   programmer.
-
-   In long: Whether a relative file name should be treated as
-   source-directory relative or working-directory relative depends on
-   where it is coming from.  Names coming from the programmer should
-   almost always be treated as source-directory-relative, because the
-   programmer knows where the source directory is, but not where the
-   working directory is.  Conversely, names coming from the user
-   usually refer to the working directory.
-
-   In the present proposal we have F" to refer to files in a
-   source-directory relative way, and we then pass absolute or
-   working-directory-relative file names to words such as OPEN-FILE
-   and INCLUDED.  However, INCLUDE and REQUIRE take the file name from
-   the input stream, without F".  In the usual case they come from the
-   programmer (at least when used within programs, the main focus of
-   the standardization effort), and then they should be used as
-   source-directory relative file names.
-
-
-What about specifying file names relative to a library root etc.?
-
-   Several people have suggested having a word (or a prefix) for
-   specifying a library directory.  While this is a worthwhile goal, I
-   feel that finding a consensus on that topic is hard enough that it
-   should be attacked in a separate RfD.
-
-Why not use a CD word for this purpose?
-
-   * You lose the user's working directory when you do a CD, so any
-     access to a file name provided by the user breaks after the CD.
-
-   * CD is not a standard word.
-
 
 Isn't specifying "/" as directory separator too OS-specific?
 
