@@ -1,0 +1,784 @@
+RfD - Memory access
+===================
+
+Change History
+==============
+20100621 fix typos: 'H' -> 'W'.
+20100620 minor wordsmithing.
+20100619 New subsection in Rationale for the Solution for case
+         of fixed width elements greater than cell width;
+         reorganization of subsections, Additonal Remarks, and
+         A.18; replace LSBs with "least significant bits";
+         replaced specs for BFIELD: WFIELD: and LFIELD:
+20100616 Wordsmithing.
+20100615 Removed the optional sign field in naming convention;
+         revised problem statement, solution statement, and added
+         section on the rationale for the solution.
+20100301 Updated after discussion on groups and lists,
+         Changed word names to those used by Mitch Bradley as they
+         have more precedence than those originally proposed.
+20100225 Corrections to section numbering,
+         Corrections to reference implementation,
+         Added Josh Grams unit tests,
+         Moved L words to EXT.
+20100224 Revised reference implementation
+20090923 Restored B@ and B!.
+20090921 Forth200x review release.
+20090902 Forth200x review update.
+20090829 First writing according to the Proposals Process as
+         described in the Draft 200x Standard.
+
+Problem
+=======
+
+ANS Standard Forth lacks a way of accessing memory elements of
+a fixed width, and with specified byte ordering, in a portable
+way. Such words are needed by Forth progams to share data
+between applications in the same or different systems. Examples
+include, 1) transferring data between systems or applications
+which use data values of a size smaller than the Forth system
+cell width, 2) transferring data over protocols that define
+byte order, e.g. TCP/IP is big-endian and USB is little-endian,
+and 3) compiling code for systems using a byte order
+different from the host system. Therefore, a standard set of
+words providing memory access to fixed width, byte order-
+specified elements are needed to support Forth application
+development in areas such as data acquisition and control,
+network communications, and development of cross-compilers.
+
+Many existing Forth implementations provide a way of accessing
+some fixed width elements in native byte ordering, but no
+standard naming convention is used. Implementations providing
+for access to elements with specific byte-ordering are less
+common, and no standard naming convention is used.
+
+
+Solution
+========
+
+A new set of words is proposed, the MEMORY-ACCESS word set,
+to provide portable memory access words for three commonly
+encountered element widths: BYTE (8 bits), WORD (16 bits), and
+LONG (32 bits). The naming convention also reserves word names
+for LONG LONG (64 bit wide) elements, for words which explicitly
+take into account the byte ordering in memory, and for words
+on systems which require the specification of a target address 
+space.
+
+We assume that the data is byte-oriented.
+
+
+Rationale for the Solution
+==========================
+
+I. Elements of width less than the cell width
+
+Any portable memory access solution must take into account
+the following: when the width of the memory element is less
+than the width of a stack cell, the result of a fetch must
+specify both
+
+  1) the bit positions in the cell to be occupied by the element
+
+  2) the values of the remaining bits in the cell
+
+Following conventional practice, it is assumed from here on that
+the fixed width element will always occupy the lowest stack cell
+bits upon a fetch from memory.
+
+The fixed width element in memory may be intended to represent
+one of three cases:
+
+  a) the element bits represent a sequence of bit fields
+
+  b) the element bits represent an unsigned integer
+
+  c) the element bits represent a signed integer
+
+For case a), the values of the remaining (upper) bits of the cell
+following a fetch are unimportant, since a combination of bit shift,
+bit masking, and possibly sign extending operations will be used to
+access the individual fields.
+
+For case b), the values of the upper cell bits following a fetch
+must be set to 0, in order for the cell value to represent the
+same integer value as the original element.
+
+For case c), the values of the upper cell bits following a fetch
+must be determined from knowledge of the number representation used 
+to encode the signed integer.
+
+The solution provided in this proposal handles cases a)--b) by
+requiring that fetch operations zero extend the result to the
+full width of the cell. It is assumed that a series of sign bit
+handling words, not specified in this proposal, will provide
+for case c). Furthermore, it is worth noting that, for storing
+a fixed width signed or unsigned value, if the number 
+representation is either one's complement or two's complement, 
+then the store words will work without need for an additional 
+sign packing operation. 
+
+
+II. Elements of width greater than the cell width
+
+Any portable memory access solution must take into consideration
+that Forth systems exist with different cell width, e.g. Forth 
+systems with 64-bit, 32-bit, and 16-bit wide stack cells. The 
+stack cell width in bits may be determined by
+
+        DECIMAL
+        1 CELLS 8 * .
+
+Portability of code between Forth systems of different cell width 
+is broken when a fixed width memory access word, specified to 
+fetch or store a single cell value, cannot be implemented on the 
+host system. For example, L@ is specified to fetch a 32-bit value
+from memory into a single cell. It is impossible to implement L@ 
+on a 16-bit Forth system without loss of information.
+
+In this proposal, the approach to solving the portability problem 
+above is not to eliminate words which cannot be implemented on 
+Forth systems of all valid cell width. Instead, such words are 
+given in the extended words section. ANS Forth dictates that a 
+Forth system must have a minimum cell width of 16-bits. Therefore, 
+all words for access to 32-bit elements, using a single stack cell,
+are provided in the extended words section.
+
+
+III. Byte ordering of elements
+
+Any portable memory access solution intended to allow data to be
+shared between systems must also take into account:
+
+  1) when fetching elements, the values may be found in memory
+     with a byte ordering different from the ordering used by
+     primitive memory access instructions on the system (native 
+     order).
+
+  2) when storing elements to memory, the byte ordering used
+     to store the data may need to be different from the native
+     order.
+
+The solution provided by this proposal specifies a naming 
+convention for memory access words which explicity take into account 
+the byte ordering of the element to be fetched or stored. We make a 
+clear distinction between between big-endian, little-endian, and 
+native order. Native order of the system can be determined by 
+
+	$1234 PAD ! PAD B@ $34 =
+
+The result is true when the program is running on a little-endian 
+system and false otherwise.
+
+
+Additional Remarks
+===================
+
+1. The following naming convention, derived from the names used
+   in Open Firmware, was chosen to provide uniform, mnemonic 
+   names for the memory access words:
+
+        [<order> -] <size> <action> [<address-space>]
+
+   Brackets indicate optional name fields.
+
+
+2. Please see A.18, also.
+
+
+
+Typical use
+===========
+
+CREATE DATA  1 L,
+             2 W,
+             3 B,
+
+DATA DUP L@ .  4 BYTES + DUP W@ .  2 BYTES + B@ .
+
+
+
+Proposal
+========
+
+18. The optional Memory-Access word set
+
+18.1 Introduction
+-----------------
+
+All memory access operations in this word set are defined on one 
+or more successive address-aligned bytes.  In MEMORY-ACCESS, 
+wherever it says "store" and "fetch", the following applies:
+
+(1) It is assumed that bytes do not require address alignment.
+
+(2) For address units larger than 8 bits, each address unit
+    contains one byte stored in the eight least significant bits.
+    Additional bits shall be ignored by the fetch operations, and
+    should be set to zero by the store operations.
+
+(3) For address units smaller than 8 bits, end orientation of a
+    byte stored in successive address units is implementation
+    dependent.
+
+The words in this word list generally take the form:
+
+        [<order> -] <size> <action> [<address-space>]
+
+    where:
+
+        order:   BE for big-endian
+                 LE for little-endian
+                 null for native order
+        size:    B for 8 bit byte
+                 W for 16 bit word
+                 L for 32 bit long-word
+                 X for 64 bit extended-word
+        action:  !, @ or , with the usual meaning
+
+   Systems with multiple address spaces, e.g. Harvard architectures
+   and cross-compilers often require an address space indicator:
+
+        address-space:
+                 C code space
+                 D data space (default)
+                 R register space
+                 T target address space in cross-compiler
+                 J JTAG or debug link
+
+18.2 Additional terms
+---------------------
+
+big-endian:
+  The most significant byte of a multi-byte value is stored at the
+  lowest memory address. This is also known as network order.
+
+little-endian:
+  The least significant byte of a multi-byte value is stored at the
+  lowest memory address.
+
+native order:
+  The byte ordering for multi-byte values which suits the system
+  architecture.  (See big-endian and little-endian.)
+
+number representation:
+  The binary representation for signed numbers used by the system
+  architecture.
+
+
+18.3 Additional usage requirements
+----------------------------------
+
+18.3.1 Environmental queries
+----------------------------
+
+Append table 18.1 to table 3.5.
+
+See: 3.2.6 Environmental queries.
+
+              Table 18.1: Environmental Query Strings
+
+String     Value data type  Constant?  Meaning
+MEMORY-ACCESS         flag    no       Memory-access word set present
+MEMORY-ACCESS-EXT     flag    no       Memory-access extensions word
+                                       set present
+
+18.4 Additional documentation requirements
+------------------------------------------
+
+None
+
+18.5 Compliance and labeling
+----------------------------
+
+18.5.1 ANS Forth systems
+------------------------
+The phrase "Providing the Memory Access word set" shall be appended
+to the label of any Standard System that provides all of the
+Memory Access word set.
+
+The phrase "Providing name(s) from the Memory Access Extensions word
+set" shall be appended to the label of any Standard System that
+provides portions of the Memory Access Extensions word set.
+
+The phrase "Providing the Memory Access Extensions word set" shall
+be appended to the label of any Standard System that provides all
+of the Memory-Access and Memory Access Extensions word sets.
+
+18.5.2 ANS Forth programs
+-------------------------
+The phrase "Requiring the Memory Access word set" shall be appended
+to the label of Standard Programs that require the system to provide
+the Memory Access word set.
+
+The phrase "Requiring name(s) from the Memory Access Extensions word
+set" shall be appended to the label of Standard Programs that require
+the system to provide portions of the Memory Access Extensions word
+set.
+
+The phrase "Requiring the Facility Extensions word set" shall be
+appended to the label of Standard Programs that require the system
+to provide all of the Memory Access and Memory Access Extensions
+word sets.
+
+18.6 Glossary
+-------------
+
+18.6.1 Memory-Access words
+--------------------------
+
+18.6.1.aaaa B!                                 "b-store" MEMORY-ACCESS
+  ( x addr -- )
+
+  Store the 8 least significant bits of x at addr.  In system where the 
+  address unit is larger than 8 bits, the upper bits are set to zero.
+
+18.6.1.aaab B@                                 "b-fetch" MEMORY-ACCESS
+  ( addr -- x )
+
+  Fetch the 8 least significant bits of x from addr. If the cell size is 
+  greater than 8 bits, the result is zero-extended.
+
+18.6.1.aaac BE-W!                          "b-e-w-store" MEMORY-ACCESS
+  ( x addr -- )
+
+  Store the 16 least significant bits of x at addr in big-endian format 
+  irrespective of alignment.  In systems where the address unit is larger 
+  than 16 bits, the upper bits are set to zero.
+
+18.6.1.aaad BE-W,                          "b-e-w-comma" MEMORY-ACCESS
+  ( x -- )
+
+  Reserve 16 bits of data space and store the 16 least significant bits 
+  of x in them in big-endian format irrespective of alignment.
+
+18.6.1.aaae BE-W@                          "b-e-w-fetch" MEMORY-ACCESS
+  ( addr -- x )
+
+  Fetch the 16 least significant bits of x from addr in big-endian 
+  format irrespective of alignment. If the cell size is greater than 
+  16 bits, the result is zero-extended.
+
+18.6.1.aaaf BFIELD:                      "b-field-colon" MEMORY-ACCESS
+  ( n1 "<spaces>name" -- n2 )
+
+  Skip leading space delimiters.  Parse /name/ delimited by a space.
+  /Offset/ is the first value greater than or equal to n1.
+  n2 = offset + 1 byte.
+
+  Create a definition for /name/ with the execution semantics given
+  below.
+
+  /name/ Execution: ( a-addr1 -- a-addr2 )
+  Add the /offset/ calculated during the compile time action to
+  a-addr1 giving the address a-addr2.
+
+  See: 10.6.2.---- BEGIN-STRUCTURE, A.10.6.---- BEGIN-STRUCTURE,
+       A.10.6.2.---- FIELD: 
+
+
+18.6.1.aaaf BYTES                                "bytes" MEMORY-ACCESS
+  ( n1 -- n2 )
+
+  N2 is the size in address units of n1 8-bit units.
+
+18.6.1.aaag LE-W!                          "l-e-w-store" MEMORY-ACCESS
+  ( x addr -- )
+
+  Store the 16 least significant bits of x at addr in litle-endian 
+  format irrespective of alignment. In systems where the address unit 
+  is larger than 16 bits, the upper bits are set to zero.
+
+18.6.1.aaah LE-W,                          "l-e-w-comma" MEMORY-ACCESS
+  ( x -- )
+
+  Reserve 16 bits of data space and store the 16 least significant bits
+  of x in them in little-endian format irrespective of alignment.
+
+18.6.1.aaai LE-W@                          "l-e-w-fetch" MEMORY-ACCESS
+  ( x addr -- )
+
+  Fetch the 16 least significant bits of x from addr in little-endian 
+  format irrespective of alignment. If the cell size is greater than 
+  16 bits, the result is zero-extended.
+
+18.6.1.aaaj W!                                 "w-store" MEMORY-ACCESS
+  ( x addr -- )
+
+  Store the 16 least significant bits of x at addr in native order 
+  irrespective of alignment.  In systems where the address unit is 
+  larger than 16 bits, the upper bits are set to zero.
+
+18.6.1.aaak W,                                 "w-comma" MEMORY-ACCESS
+  ( x -- )
+
+  Reserve 16 bits of data space and store the 16 least significant 
+  bits of x in them in native order irrespective of alignment.
+
+18.6.1.aaal W@                                 "w-fetch" MEMORY-ACCESS
+  ( addr -- x )
+
+  Fetch the 16 least significant bits of x from addr in native order 
+  irrespective of alignment. If the cell size is greater than 16 bits, 
+  the result is zero-extended.
+
+18.6.1.aaam WALIGN                             "w-align" MEMORY-ACCESS
+  ( -- )
+
+  If the data-space pointer is not 16-bit aligned, reserve enough
+  space to align it.
+
+See: 3.3.3 Data space, 3.3.3.1 Address alignment.
+
+18.6.1.aaan WALIGNED                         "w-aligned" MEMORY-ACCESS
+  ( addr1 -- addr2 )
+
+  Addr2 is the first 16-bit aligned address greater than or equal to
+  addr1.
+
+See: 3.3.3.1 Address alignment, 18.6.1.aaam WALIGN.
+
+18,6,1,aaao WFIELD:                      "w-field-colon" MEMROY-ACCESS
+  ( n1 "<spaces>name" -- n2 )
+
+  Skip leading space delimiters.  Parse /name/ delimited by a space.
+  /Offset/ is the first 16-bit word aligned value greater than or
+  equal to n1.  n2 = offset + 2 bytes.
+
+  Create a definition for /name/ with the execution semantics given
+  below.
+
+  /name/ Execution: ( a-addr1 -- a-addr2 )
+  Add the /offset/ calculated during the compile time action to
+  a-addr1 giving the 16-bit aligned address a-addr2.
+
+  See: 10.6.2.---- BEGIN-STRUCTURE, A.10.6.---- BEGIN-STRUCTURE,
+  A.10.6.2.---- FIELD:
+
+
+
+18.6.2 Memory-Access extension words
+------------------------------------
+
+18.6.2.aaaa BE-L!                      "b-e-l-store" MEMORY-ACCESS EXT
+  ( x addr -- )
+
+  Store the 32 least significant bits of x at addr in big-endian format 
+  irrespective of alignment.  In systems where the address unit is 
+  larger than 32 bits, the upper bits are set to zero.
+
+18.6.2.aaab BE-L,                      "b-e-l-comma" MEMORY-ACCESS EXT
+  ( x -- )
+
+  Reserve 32 bits of data space and store the 32 least significant bits
+  of x in them in big-endian format irrespective of alignment.
+
+18.6.2.aaac BE-L@                      "b-e-l-fetch" MEMORY-ACCESS EXT
+  ( addr -- x )
+
+  Fetch the 32 least significant bits of x from addr in big-endian 
+  format irrespective of alignment. If the cell size is greater than 
+  32 bits, the result is zero-extended.
+
+18.6.2.aaad L!                             "l-store" MEMORY-ACCESS EXT
+  ( x addr -- )
+
+  Store the 32 least significant bits of x at addr in native order 
+  irrespective of alignment. In systems where the address unit is 
+  larger than 32 bits, the upper bits are set to zero.
+
+18.6.2.aaae L,                             "l-comma" MEMORY-ACCESS EXT
+  ( x -- )
+
+  Reserve 32 bits of data space and store the 32 least significant bits
+  of x in them, in native order, irrespective of alignment.
+
+18.6.2.aaaf L@                             "l-fetch" MEMORY-ACCESS EXT
+  ( addr -- x )
+
+  Fetch the 32 least significant bits of x from addr in native order 
+  irrespective of alignment. If the cell size is greater than 32 bits, 
+  the result is zero-extended.
+
+18.6.2.aaag LALIGN                         "l-align" MEMORY-ACCESS EXT
+  ( -- )
+
+  If the data-space pointer is not 32-bit aligned, reserve enough
+  space to align it.
+
+See: 3.3.3 Data space, 3.3.3.1 Address alignment.
+
+18.6.2.aaah LALIGNED                     "l-aligned" MEMORY-ACCESS EXT
+  ( addr1 -- addr2 )
+
+  Addr2 is the first 32-bit aligned address greater than or equal to
+  addr1.
+
+See: 3.3.3.1 Address alignment, 18.6.2.aaag LALIGN.
+
+18.6.2.aaai LE-L!                      "l-e-l-store" MEMORY-ACCESS EXT
+  ( x addr -- )
+
+  Store the 32 least significant bits of x at addr in little-endian 
+  format irrespective of alignment. In systems where the address 
+  unit is larger than 32 bits, the upper bits are set to zero.
+
+18.6.2.aaaj LE-L,                      "l-e-l-comma" MEMORY-ACCESS EXT
+  ( x -- )
+
+  Reserve 32 bits of data space and store the 32 least significant
+  bits of x in them in little-endian format irrespective of alignment.
+
+18.6.2.aaak LE-L@                      "l-e-l-fetch" MEMORY-ACCESS EXT
+  ( addr -- x )
+
+  Fetch the 32 least significant bits of x at addr in little-endian 
+  format irrespective of alignment. If the cell size is greater than 
+  32 bits, the result is zero-extended.
+
+18,6,2,aaal LFIELD:                  "l-field-colon" MEMORY-ACCESS EXT
+  ( n1 "<spaces>name" -- n2 )
+
+  Skip leading space delimiters.  Parse /name/ delimited by a space.
+  /Offset/ is the first 32-bit word aligned value greater than or
+  equal to n1.  n2 = offset + 4 bytes.
+
+  Create a definition for /name/ with the execution semantics given
+  below.
+
+  /name/ Execution: ( a-addr1 -- a-addr2 )
+  Add the /offset/ calculated during the compile time action to
+  a-addr1 giving the 32-bit aligned address a-addr2.
+
+
+See: 10.6.2.---- BEGIN-STRUCTURE, A.10.6.---- BEGIN-STRUCTURE,
+     A.10.6.2.---- FIELD: 
+
+
+A.18 The optional Memory-Access word set
+
+A.18.1 
+
+When operating on data larger than an address unit, memory operations 
+shall be capable of unaligned operation, e.g. when fetching a 32 bit 
+item from a non 32-bit aligned address, the operation will succeed.
+
+For cell addressed machines which use an address unit larger than 8 
+bits, it is assumed that the upper part of a cell is simply ignored.  
+This proposal makes no attempt to deal with packing of bytes for 
+memory efficiency.  Providing that other operations such as TYPE 
+produce the expected result, the implementation may deal with packing 
+of data as it sees fit. However, the model of one byte per cell will 
+always work with least implementation complexity.
+
+A.18.2
+
+Data transferred between systems may represent signed or unsigned 
+numbers or composite structures. No assumption of the number 
+representation for signed numbers is made in this proposal. 
+Transformation of fixed width signed data to cell width values 
+and vice-versa are operations which are assumed to be handled by 
+a set of words not specified in this proposal.
+
+A.18.3
+
+A Forth program frequently has to transfer data over protocols that
+define the byte order of the data being transferred.  Data transfer
+standards exist that are big-endian, e.g. TCP/IP, and little-endian,
+e.g. USB.  This forces us to make a clear distinction between big-
+endian, little-endian and native order. Should a program ever need to 
+detect the native order of the system, it can do so by using the 
+following code:
+
+	$1234 PAD ! PAD B@ $34 =
+
+This is true when the program is running on a little-endian system 
+and false otherwise.
+
+A.18.4
+
+Systems shall not implement words from the extended words section 
+if such words result in a loss of information due to the system cell 
+width. For example, L@ is specified to fetch a 32-bit value from 
+memory into a single cell. It is impossible to implement L@ on a 
+16-bit Forth system without loss of information. All words not in 
+the extended words section can be implemented without loss of 
+information on any ANS Forth system having a valid cell width.
+
+A.18.5
+
+BFIELD: WFIELD: and LFIELD: align the data pointer to the host
+systems preferred alignment.  +FIELD can be used to define 
+unaligned data fields.
+
+
+Reference Implementation
+========================
+
+This implementation makes three assumptions:
+(1) It is working on a byte addressed system.
+(2) A character is stored as a byte.
+(3) A stack cell is a minimum of 32-bits wide.
+
+\ Assuming a Char is 8-bits - Not valid on some systems
+: B!    ( x addr --    ) SWAP $FF AND SWAP C! ;
+: B@    (   addr -- x  ) C@ $FF AND ;
+SYNONYM BYTES CHARS ( n1 -- n2 )
+
+\ Internal helper words (not part of the proposal)
+: b@+ ( x1 addr1 -- x2 addr2 )  SWAP 8 LSHIFT OVER B@ + SWAP 1 BYTES + ;
+: b@- ( x1 addr1 -- x2 addr2 )  1 BYTES - DUP B@ ROT 8 LSHIFT + SWAP ;
+: b!+ ( x1 addr1 -- x2 addr2 )  2DUP B! 1 BYTES + SWAP 8 RSHIFT SWAP ;
+: b!- ( x1 addr1 -- x2 addr2 )  1 BYTES - 2DUP B! SWAP 8 RSHIFT SWAP ;
+
+\ Big-endian Memory Access Words
+: BE-W@ ( addr -- x )  0 SWAP  b@+ b@+            DROP ;
+: BE-L@ ( addr -- x )  0 SWAP  b@+ b@+ b@+ b@+    DROP ;
+
+: BE-W! ( x addr -- )  2 BYTES + b!- b!-         2DROP ;
+: BE-L! ( x addr -- )  4 BYTES + b!- b!- b!- b!- 2DROP ;
+
+: BE-W, ( x -- )       HERE 2 BYTES ALLOT  BE-W! ;
+: BE-L, ( x -- )       HERE 4 BYTES ALLOT  BE-L! ;
+
+\ Little-endian Memory Access Words
+: LE-W@ ( addr -- x )  0 SWAP 2 BYTES + b@- b@-         DROP ;
+: LE-L@ ( addr -- x )  0 SWAP 4 BYTES + b@- b@- b@- b@- DROP ;
+
+: LE-W! ( x addr -- )  b!+ b!+          2DROP ;
+: LE-L! ( x addr -- )  b!+ b!+ b!+ b!+  2DROP ;
+
+: LE-W, ( x -- )       HERE 2 BYTES ALLOT LE-W! ;
+: LE-L, ( x -- )       HERE 4 BYTES ALLOT LE-L! ;
+
+\ Native Memory Access Words
+$1234 PAD !
+PAD B@ $34 = [IF]
+    \ Little Endian System
+        SYNONYM W@ LE-W@
+        SYNONYM L@ LE-L@
+        SYNONYM W! LE-W!
+        SYNONYM L! LE-W!
+        SYNONYM W, LE-W,
+        SYNONYM L, LE-L,
+[ELSE]
+    \ Big Endian System
+        SYNONYM W@ BE-W@
+        SYNONYM L@ BE-L@
+        SYNONYM W! BE-W!
+        SYNONYM L! BE-W!
+        SYNONYM W, BE-W,
+        SYNONYM L, BE-L,
+[THEN]
+
+\ Alignment Words
+: WALIGN ( -- )    HERE 1 AND         ALLOT ;
+: LALIGN ( -- )  4 HERE 3 AND - 3 AND ALLOT ;
+
+: WALIGNED ( addr1 -- addr2 )  1 + [ 1 INVERT ] LITERAL AND ;
+: LALIGNED ( addr1 -- addr2 )  3 + [ 3 INVERT ] LITERAL AND ;
+
+
+Testing
+=======
+
+HEX
+
+T{ 12345678 PAD BE-L!   -> }T
+T{ 0 PAD 4 BYTES + L!   -> }T
+
+\ BE-L@
+T{ PAD BE-L@            -> 12345678 }T
+T{ PAD 1 BYTES + BE-L@  -> 34567800 }T
+
+\ BE-W@
+T{ PAD BE-W@            -> 1234 }T
+T{ PAD 1 BYTES + BE-W@  -> 3456 }T
+T{ PAD 2 BYTES + BE-W@  -> 5678 }T
+T{ PAD 3 BYTES + BE-W@  -> 7800 }T
+
+\ B@
+T{ PAD B@               -> 12 }T
+T{ PAD 1 BYTES + B@     -> 34 }T
+T{ PAD 2 BYTES + B@     -> 56 }T
+T{ PAD 3 BYTES + B@     -> 78 }T
+
+\ LE-L@
+T{ PAD LE-L@            -> 78563412 }T
+T{ PAD 1 BYTES + LE-L@  -> 00785634 }T
+
+\ LE-W@
+T{ PAD LE-W@            -> 3412 }T
+T{ PAD 1 BYTES + LE-W@  -> 5634 }T
+T{ PAD 2 BYTES + LE-W@  -> 7856 }T
+T{ PAD 3 BYTES + LE-W@  -> 0078 }T
+
+\ B!
+T{ 0 PAD BE-L!  FFFFFFFF PAD 1 BYTES + B! -> }T
+T{ PAD BE-L@                    -> 00FF0000 }T
+
+\ BE-W!
+T{ 0 PAD BE-L!  FFFFFFFF PAD 1 BYTES + BE-W! -> }T
+T{ PAD BE-L@                    -> 00FFFF00 }T
+T{ 12345678 PAD 1 BYTES + BE-W! ->          }T
+T{ PAD BE-L@                    -> 00567800 }T
+
+\ BE-L!
+T{ 0 PAD BE-L!BE  FFFFFFFF PAD 1 BYTES + BE-L! -> }T
+T{ PAD BE-L@ PAD 4 BYTES + BE-L@ -> 00FFFFFF FF000000 }T
+T{ 12345678  PAD 1 BYTES + BE-L! ->                   }T
+T{ PAD BE-L@ PAD 4 BYTES + BE-L@ -> 00123456 78000000 }T
+
+\ B!
+T{ 0 PAD LE-L!  FFFFFFFF PAD 1 BYTES + B! -> }T
+T{ PAD LE-L@                    -> 0000FF00  }T
+
+\ LE-W!
+T{ 0 PAD LE-L!  FFFFFFFF PAD 1 BYTES + LE-W! -> }T
+T{ PAD LE-L@                    -> 00FFFF00 }T
+T{ 12345678 PAD 1 BYTES + LE-W! ->          }T
+T{ PAD LE-L@                    -> 00567800 }T
+
+\ LE-L!
+T{ 0 PAD LE-L!  FFFFFFFF PAD 1 BYTES + LE-L! -> }T
+T{ PAD LE-L@ PAD 4 BYTES + LE-L@ -> FFFFFF00 000000FF }T
+T{ 12345678  PAD 1 BYTES + LE-L! ->                   }T
+T{ PAD LE-L@ PAD 4 BYTES + LE-L@ -> 34567800 00000012 }T
+
+\ WALIGNED
+T{ 0 BYTES WALIGNED -> 0 BYTES }T
+T{ 1 BYTES WALIGNED -> 2 BYTES }T
+T{ 2 BYTES WALIGNED -> 2 BYTES }T
+T{ 3 BYTES WALIGNED -> 4 BYTES }T
+
+\ LALIGNED
+T{ 0 BYTES LALIGNED -> 0 BYTES }T
+T{ 1 BYTES LALIGNED -> 4 BYTES }T
+T{ 2 BYTES LALIGNED -> 4 BYTES }T
+T{ 3 BYTES LALIGNED -> 4 BYTES }T
+T{ 4 BYTES LALIGNED -> 4 BYTES }T
+T{ 5 BYTES LALIGNED -> 8 BYTES }T
+
+\ ToDo: BYTES
+\ ToDo: BE-W, LE-W, W! W, W@ WALIGN
+\ ToDo: BE-L, LE-L, L! L, L@ LALIGN
+\ ToDo: BFIELD: WFIELD: LFIELD:
+
+Authors
+=======
+
+Federico de Ceballos
+Universidad de Cantabria
+federico.ceballos@unican.es
+
+Stephen Pelc
+MicroProcessor Engineering Ltd
+stephen@mpeforth.com
+
+Peter Knaggs
+University of Exeter
+pjk@bcs.org.uk
+
+Krishna Myneni
+krishna.myneni@ccreweb.org
+
