@@ -62,8 +62,13 @@ See <a href="#voting">below</a> for voting instructions.
 	The <a href="http://code.google.com/p/ffl/">Forth Foundation Library</a> uses this proposal.<br/>
 
 	Missing functionality in this proposal would be:<br/>
-	<code>parse\"</code> ( "ccc<quote>" -- c-addr u = Parse the input stream for a escaped string )
+	<code>parse\"</code> ( "ccc<quote>" -- c-addr u = Parse the input
+	stream for a escaped string )
 	(see also 6.2.2008 PARSE)</li>
+
+<li><b>Peter F&auml;lth</b><br/>
+	I am still missing <code>\u</code> and <code>\U</code> to handle
+	unicode codepoints (4 or 8 digits) in a portablle way.
 </ul>
 
 
