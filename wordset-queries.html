@@ -13,46 +13,50 @@ Compatibility with Forth-94 demands that, by default, they produce the
 same answers as for Forth-94; i.e, querying for CORE-EXT could return
 true only if all of the Forth-94 CORE EXT words are present.
 
-Should we be able to check for Forth-2009 wordset presence, and if so,
+Should we be able to check for Forth-2010 wordset presence, and if so,
 how?
 
 
 Possible solutions
 
 1) The simples solution would be to just let the wordset queries work
-as before, not provide any way to query for the Forth-2009 version of
+as before, not provide any way to query for the Forth-2010 version of
 the wordset, and declare these query strings as obsolescent.  The lack
 of usage of wordset queries (see below) suggests this approach.
 
-2) Another solution would be to introduce new names for the Forth-2009
+Most of the reactions to the first RfD support this approach, too, so
+this is the approach being taken in this proposal.  The following
+alternatives are kept here just for completeness.
+
+2) Another solution would be to introduce new names for the Forth-2010
 versions of the wordsets.  Usage example:
 
 S" core-ext" environment? ...      \ ask about Forth-94 CORE EXT wordset
 ...
-S" core-ext-2009" environment? ... \ ask about Forth 2009 CORE EXT wordset
+S" core-ext-2010" environment? ... \ ask about Forth 2010 CORE EXT wordset
 ...
 
-3) Another solution would be to have a query for Forth-2009, and once
+3) Another solution would be to have a query for Forth-2010, and once
 the program has queried for that, all wordset queries will refer to
-the Forth-2009 versions of the wordsets.  Because a program might want
+the Forth-2010 versions of the wordsets.  Because a program might want
 to include a Forth-94 library that contains Forth-94 wordset queries,
 there would also have to be a way to switch back for that particular
 library: query for Forth-94 before including that library, and again
-for Forth-2009 afterwards.  The implementation of that solution will
+for Forth-2010 afterwards.  The implementation of that solution will
 be easy on most systems (because most or all wordsets don't change
-their answer between Forth-94 and Forth-2009 on most systems), but the
+their answer between Forth-94 and Forth-2010 on most systems), but the
 conceptual complexity of this solution is significant (at least when
 mixing code from multiple standards).  Usage example:
 
 s" core-ext" environment? ... \ Forth-94 CORE EXT wordset
 ...
-s" forth-2009" environment? ...
+s" forth-2010" environment? ...
 ...
-s" core-ext" environment? ... \ Forth 2009 CORE EXT wordset
+s" core-ext" environment? ... \ Forth 2010 CORE EXT wordset
 ...
 s" forth-1994" environment? ...
 include old-library.fs        \ wordset queries should give Forth-94 answers
-s" forth-2009" environment? ...
+s" forth-2010" environment? ...
 
 
 Experience
@@ -66,33 +70,113 @@ parts of these programs.  This suggests that putting more
 (standardization and implementation) effort into wordset queries may
 be wasted and that it may be possible to find consensus on solution 1.
 
-OTOH, maybe the lack of usage of wordset queries just reflects on the
-sorry state of portable programming in Forth, or maybe just on the
-cumbersome interface of wordset queries, and the fact that most
-programs cannot do anything useful when a query returns "absent" or
-(especially) "don't know".
-
-
-Where do we go from here?
-
-I would like to hear from you which solution you prefer (and if you
-have a good reasoning for your preference, please let me know).  Also,
-for each solution, whether you could live with it, and if you feel
-like expanding on that, whether (as programmer) you would make use of
-that solution or whether (as system implementor) you would implement
-that solution in a useful way (i.e., not just reply "don't know").
-
-Once the question of which solution we want is resolved, I will work
-out the more formal proposal, and post another Rfd on that.  There may
-be additional RfDs in between if necessary.
-
-
-Feedback
-
-Gerry Jackson &lt;h986k1$blh$1@news.eternal-september.org&gt;, Michael
-Gassanenko
+The first RfD revealed one person (Dennis Ruffer) who uses wordset
+queries; he would prefer solution 2.  Four persons (Gerry Jackson
+&lt;h986k1$blh$1@news.eternal-september.org&gt;, Michael Gassanenko
 &lt;615700f8-a8d6-406d-a052-434e242f24f0@n2g2000vba.googlegroups.com&gt;,
-Stephen Pelc and Leon Wagner like solution 1.  Dennis Ruffer prefers
-solution 2.
+Stephen Pelc and Leon Wagner) like solution 1.
 
+
+Proposal
+
+Note: This is just a documentation change.  It does not add or remove
+any capabilities that programs can use, so programs are currently not
+affected by this change.  Even in the long term (when these queries
+are finally de-standardized), programs are not really affected: no
+query is guaranteed to be known by a system even in Forth-94, and some
+systems actually do not know many wordset queries.  This proposal also
+does not change how systems are required to behave, so system
+implementations should not need to change, either.
+
+Replace the entries for CORE and CORE-EXT in Table 3.5 (Environmental
+Query Strings) with
+
+CORE                    flag    no      
+					true if the complete core word
+                                        set of Forth-94 is present
+                                        (i.e., not a subset as defined
+                                        in 5.1.1).  This query string
+                                        is obsolescent and will be
+                                        removed in a future standard.
+CORE-EXT                flag    no      
+					true if the core extensions
+                                        word set of Forth-94 is
+                                        present.  This query string is
+                                        obsolescent and will be
+                                        removed in a future standard.
+
+Add the following entries to Table 3.5:
+
+BLOCK            flag  no   Forth-94 block word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+BLOCK-EXT	 flag  no   Forth-94 block extensions word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+DOUBLE		 flag  no   Forth-94 double number word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+DOUBLE-EXT	 flag  no   Forth-94 double number extensions word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+EXCEPTION	 flag  no   Forth-94 exception word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+EXCEPTION-EXT	 flag  no   Forth-94 exception extensions word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+FACILITY	 flag  no   Forth-94 facility word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+FACILITY-EXT	 flag  no   Forth-94 facility extensions word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+FILE		 flag  no   Forth-94 file word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+FILE-EXT	 flag  no   Forth-94 file extensions word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+FLOATING	 flag  no   Forth-94 floating-point word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+FLOATING-EXT	 flag  no   Forth-94 floating-point extensions word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+LOCALS		 flag  no   Forth-94 locals word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+LOCALS-EXT	 flag  no   Forth-94 locals extensions word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+MEMORY-ALLOC	 flag  no   Forth-94 memory-allocation word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+MEMORY-ALLOC-EXT flag  no   Forth-94 memory-allocation extensions word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+SEARCH-ORDER	 flag  no   Forth-94 search-order word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+SEARCH-ORDER-EXT flag  no   Forth-94 search-order extensions word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+STRING		 flag  no   Forth-94 string word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+STRING-EXT	 flag  no   Forth-94 string extensions word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+TOOLS		 flag  no   Forth-94 programming-tools word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+TOOLS-EXT        flag  no   Forth-94 programming-tools extensions word set present.
+		            This query string is obsolescent and
+			    will be removed in a future standard.
+
+Remove these query strings from each of the tables in sections
+7.3-17.3.  If the resulting table is empty, remove it and the verbiage
+around it.
 </pre>
