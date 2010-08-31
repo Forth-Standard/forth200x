@@ -4,6 +4,9 @@
   <style type="text/css">
   ol li { margin-left: -1em; }
   .item { width: 5em; }
+  ul.results { margin-left: 0em; padding-left: 20px; }
+  ul.results li { margin-bottom: 1ex; }
+  ul.results li:first-line { font-weight: bold; }
   </style>
 </head>
 <body>
@@ -24,7 +27,7 @@ See <a href="#voting">below</a> for voting instructions.
 <br> SwiftForth and SwiftX (Leon Wagner)
 <br> bigForth (Bernd Paysan)</dd>
 <dt> [ ] already implements the proposal in full since release [ ].</dt>
-<dd> VFX Forth (Windows/DOS/Linux) [since 3.80] (Stephen Pelc) Stephen Pelc
+<dd> VFX Forth (Windows/DOS/Linux) [since 3.80] (Stephen Pelc)
 <br> SwiftForth and SwiftX [since 3.0] (Leon Wagner)</dd>
 <dt> [ ] implements the proposal in full in a development version.</dt>
 <dt> [ ] will implement the proposal in full in release [ ].</dt>
@@ -34,31 +37,37 @@ See <a href="#voting">below</a> for voting instructions.
 <dt> [ ] will never implement the proposal in full.</dt>
 </dl>
 
+
 <h4>Programmers</h4>
 <dl>
 <dt> [ ] I have used (parts of) this proposal in my programs.</dt>
 <dd> Dick van Oudheusden
 <br> Stephen Pelc
-<br> Leon Wagner</dd>
+<br> Leon Wagner
+<br> Graham Smith
+</dd>
 <dt> [ ] I would use (parts of) this proposal in my programs if the systems I am interested in implemented it.</dt>
 <dd> Stephen Pelc
 <br> Mark Wills
 <br> Bernd Paysan
 <br> Gerry Jackson
-<br> David N. Williams</dd>
+<br> David N. Williams
+<br> Graham Smith
+</dd>
 <dt> [ ] I would use (parts of) this proposal in my programs if this proposal was in the Forth standard.</dt>
 <dd> Stephen Pelc
 <br> Mark Wills
 <br> Gerry Jackson
-<br> David N. Williams</dd>
+<br> David N. Williams
+<br> Graham Smith</dd>
 <dt> [ ] I would not use (parts of) this proposal in my programs.</dt>
 <dt> [ ] I couldn't care less or spoil ballot in computer readable form.</dt>
 <dd> Jacko</dd>
 </dl>
 
 <h4>Informal Results</h4>
-<ul>
-<li><b>Dick van Oudheusden</b><br/>
+<ul class="results">
+<li>Dick van Oudheusden<br/>
 	The <a href="http://code.google.com/p/ffl/">Forth Foundation Library</a> uses this proposal.<br/>
 
 	Missing functionality in this proposal would be:<br/>
@@ -66,9 +75,23 @@ See <a href="#voting">below</a> for voting instructions.
 	stream for a escaped string )
 	(see also 6.2.2008 PARSE)</li>
 
-<li><b>Peter F&auml;lth</b><br/>
+<li>Peter F&auml;lth<br/>
 	I am still missing <code>\u</code> and <code>\U</code> to handle
-	unicode codepoints (4 or 8 digits) in a portablle way.
+	unicode codepoints (4 or 8 digits) in a portablle way.</li>
+
+<li>Graham Smith<br/>
+	I have more use for 'escaping' text strings at run time. So, the
+	words:
+	<blockquote>
+        ESCAPE (c-addr len -- c-addr' len') and<br/>
+        UNESCAPE (c-addr len -- c-addr' len')
+    </blockquote>
+	should be defined.
+	<p/>
+	These words could then form the basis of S\" and parse\".
+	<p/>
+	I have had to 're-invent' the escape mechanism leading to potential
+	consistencies in the way S\" and my ESCAPE works!</li>
 </ul>
 
 
