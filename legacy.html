@@ -1,0 +1,378 @@
+<html>
+<head>
+  <title>Legacy Words</title>
+  <style type="text/css">
+  ol li { margin-left: -1em; }
+  .item { width: 5em; }
+  ul.results { margin-left: 0em; padding-left: 20px; }
+  ul.results li { margin-bottom: 1ex; }
+  ul.results li:first-line { font-weight: bold; }
+  .history dd { margin-bottom: 1ex; }
+  .def dd { margin-bottom: 2ex; }
+  </style>
+</head>
+<body>
+<h3>Legacy Words (v4)</h3>
+
+<p>
+[ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
+</p>
+
+<h3>Poll Standings</h3>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h4>Systems</h4>
+<dl>
+<dt> [ ] I agree with the proposed alteration to the document text.</dt>
+<dt> [ ] I do not agree with the proposed alteration to the document text.</dt>
+</dl>
+
+
+<!--
+<h4>Informal Results</h4>
+<ul class="results">
+<li>Name<br/>
+	Comment.
+</li>
+</ul>
+-->
+<table width="500"><tr><td>
+<h3>Problem</h3>
+Section 1.4.2 &quot;Obsolescent features&quot; declared seven words as
+obsolescent and warned &quot;<em>they may be withdrawn from future revisions
+of the Standard</em>&quot;.  It is now 15 years since that warning was issued,
+it is time to remove these words from the document.
+<p/>
+In order to do this a number of alterations to the main document
+are required.
+
+<h3>Proposal</h3>
+<ol>
+<li>
+   Replace the first three paragraphs of section 1.4.2 &quot;Obsolescent
+   features&quot;, listing the obsolescent words:
+   <blockquote>
+      This Standard adopts certain words and practices that cause some
+      previously used words and practices to become obsolescent.
+      Although retained here because of their widespread use, their
+      use in new implementations or new programs is discouraged,
+      because they may be withdrawn from future revisions of the
+      Standard.
+      <p/>
+      This Standard designates the following words as obsolescent:
+      <p/>
+      <table><tr>
+      	<td>6.2.0060</td>	<td><code>#TIB</code></td><td></td>
+      	<td>15.6.2.1580</td><td><code>FORGET</code></td><td></td>
+      	<td>6.2.2240</td>	<td><code>SPAN</code></td>
+      </tr><tr>
+      	<td>6.2.0970</td>	<td><code>CONVERT</code></td><td></td>
+      	<td>6.2.2040</td>	<td><code>QUERY</code></td><td></td>
+      	<td>6.2.2290</td>	<td><code>TIB</code></td>
+      </tr><tr>
+      	<td>6.2.1390</td>	<td><code>EXPECT</code></td>
+      </tr>
+      </table>
+   </blockquote>
+   with:
+   <blockquote>
+      This Standard adopts certain words and practices that cause some
+      previously used words and practices to become obsolescent.
+      Their use in new implementations or new programs is discouraged,
+      as they may be withdrawn from future revisions of the Standard.
+      <p/>
+      This Standard designates no words as obsolescent.
+   </blockquote>
+</li><li>
+   Remove reference to <code>EXPECT</code> and <code>CONVERT</code> from the Documentation
+   requirements:
+
+   <dl class="history">
+   <dt>4.1.1 Implementation-defined options:</dt>
+   <dd>character editing of <code>ACCEPT</code> and <code>EXPECT</code>;</dd>
+   <dd>display after input terminates in <code>ACCEPT</code> and <code>EXPECT</code>;</dd>
+
+   <dt>4.1.2 Ambiguous conditions</dt>
+   <dd>producing a result out of range, e.g., multiplication
+        (using <code>*</code>) results in a value too big to be represented by a
+        single-cell integer (<code>*</code>, <code>*/</code>, <code>*/MOD</code>, <code>>NUMBER</code>, <code>FM/MOD</code>, <code>SM/REM</code>,
+        <code>UM/MOD</code>, <code>CONVERT</code>, <code>M*/</code>);
+   </dd>
+
+   <dt>4.2.1 Environmental dependencies</dt>
+   <dd>depending on the presence or absence of non-graphic
+        characters in a received string (<code>ACCEPT</code>, <code>EXPECT</code>);</dd>
+   </dl>
+</li><li>
+  CORE EXT Wordset
+
+  <dl class="history">
+  <dt>6.1.2216 <code>SOURCE</code></dt>
+  <dd>
+   Remove &quot;, declaring <code>TIB</code> and <code>#TIB</code> obsolescent&quot; from the end of the
+   first paragraph, and the following text from the rationale:
+   <blockquote>
+      <code>SOURCE</code> in this form exists in F83, polyFORTH, LMI's Forths and
+      others. In conventional systems it is equivalent to the phrase
+      <blockquote>
+         <code>BLK @ IF BLK @ BLOCK 1024 ELSE TIB #TIB @ THEN</code>
+      </blockquote>
+   </blockquote>
+   </dd>
+
+   <dt>6.1.2450 <code>WORD</code></dt>
+   <dd>
+   Remove the sentence &quot;A space, not included in the length, follows
+   the string&quot; from the second paragraph and the note in the definition.
+   <p/>
+   Remove the second paragraph from the rationale:
+   <blockquote>
+      As a concession to the obsolesecent word <code>CONVERT</code>, Forth94
+      required an implementation to put a space after the string
+      placed by <code>WORD</code>.  This standard neither requires nor prohibits
+      such a space.
+   </blockquote>
+   </dd>
+
+   <dt>6.2.0060  #TIB</dt>
+   <dd>
+   Remove the definition and rationale.
+   </dd>
+
+   <dt>6.2.0695 ACCEPT</dt>
+   <dd>
+   Remove reference to <code>EXPECT</code> from the first paragraph, and the
+   following paragraphs from the rationale:
+   <blockquote>
+      <code>ACCEPT</code> and <code>EXPECT</code> perform similar functions.  <code>ACCEPT</code> is
+      recommended for new programs, and future use of <code>EXPECT</code>
+      is discouraged.
+      <p/>
+      As in previous standards, <code>EXPECT</code> returns the input string
+      immediately after the requested number of characters are
+      entered, as well as when a line terminator is received.
+      The &quot;automatic termination after specified count of
+      characters have been entered&quot; behavior is widely considered
+      undesirable because the user &quot;loses control&quot; of the input
+      editing process at a potentially unknown time (the user does
+      not necessarily know how many characters were requested from
+      <code>EXPECT</code>).  Thus <code>EXPECT</code> and <code>SPAN</code> have been made obsolescent and
+      exist in the Standard only as a concession to existing
+      implementations. If <code>EXPECT</code> exists in a Standard System it
+      must have the &quot;automatic termination&quot; behavior.
+      <p/>
+      <code>ACCEPT</code> does not have the &quot;automatic termination&quot; behavior of
+      <code>EXPECT</code>.  However, because external system hardware and
+      software may perform the <code>ACCEPT</code> function, when a line
+      terminator is received the action of the cursor, and therefore
+      the display, is implementation-defined. It is recommended
+      that the cursor remain immediately following the entered text
+      after a line terminator is received.
+   </blockquote>
+   </dd>
+
+   <dt>6.2.0970  <code>CONVERT</code></dt>
+   <dd>
+   Remove the definition and rationale.
+   </dd>
+
+   <dt>6.2.1390  <code>EXPECT</code></dt>
+   <dd>
+   Remove the definition and rationale.
+   </dd>
+
+   <dt>6.2.2040  <code>QUERY</code></dt>
+   <dd>
+   Remove the definition and rationale.
+   </dd>
+
+   <dt>6.2.2125 <code>REFILL</code></dt>
+   <dd>
+   Remove the reference to <code>QUERY</code> in the rationale leaving:
+   <blockquote>
+      <code>REFILL</code> is designed to behave reasonably for all possible
+      input sources. If the input source is coming from the user
+      <code>REFILL</code> could still return a false value if, for instance, a
+      communication channel closes so that the system knows that
+      no more input will be available.
+   </blockquote>
+   </dd>
+
+   <dt>6.2.2240  <code>SPAN</code></dt>
+   <dd>
+   Remove the definition, there is no rationale.
+   </dd>
+
+   <dt>6.2.2290  <code>TIB</code></dt>
+   <dd>
+   Remove the definition and rationale.
+   </dd>
+  </dl>
+</li><li>
+   TOOLS EXT Wordset
+   <dl class="history">
+   <dt>15.6.2.1580  <code>FORGET</code></dt>
+   <dd>
+   Remove the following note from the end of the third paragraph:
+   <blockquote>
+      Note: This word is obsolescent and is included as a
+      concession to existing implementations.
+   </blockquote>
+   </dd>
+
+   <dt>A.15.6.2.1580  <code>FORGET</code></dt>
+   <dd>
+   Replace the existing rationale:
+   <blockquote>
+      Typical use:
+      <blockquote>
+         ... <code>FORGET</code> <em>name</em> ...
+      </blockquote>
+
+      <code>FORGET</code> assumes that all the information needed to restore the
+      dictionary to its previous state is inferable somehow from the
+      forgotten word.  While this may be true in simple linear
+      dictionary models, it is difficult to implement in other Forth
+      systems; e.g., those with multiple address spaces.  For example,
+      if Forth is embedded in ROM, how does <code>FORGET</code> know how much RAM
+      to recover when an array is forgotten? A general and preferred
+      solution is provided by <code>MARKER</code>.
+   </blockquote>
+   with the text:
+   <blockquote>
+      Typical use:
+      <blockquote>
+         ... <code>FORGET</code> <em>name</em> ...
+      </blockquote>
+
+      <code>FORGET</code> tries to infer information about the previous dictionary
+      state from the forgotten word, which is not always possible.  In
+      consequence, <code>FORGET</code> is guaranteed to restore the state of name
+      space, but not necessarily the state of dictionary.
+      <p/>
+      For example,
+      <blockquote><code><pre>
+ALIGN HERE 100 CELLS ALLOT CONSTANT mybuffer
+FORGET mybuffer
+      </pre></code></blockquote>
+
+      in this case the 100 reserved cells are a part of the buffer,
+      but <code>FORGET</code> can not infer this.  A solution to the restoration
+      of the dictionary state is provided by <code>MARKER</code>.
+      <p/>
+      Nevertheless, <code>FORGET</code> is a useful tool for interactive sessions,
+      because it does not require creation of a marker in advance.
+      An example session may look like following:
+      <blockquote><code><pre>
+: foo ... foo ... ( buggy redefinition) ;
+\ finding out the bug
+FORGET foo
+: foo ... foo ... ( bug fixed) ;
+\ checking that it works
+\ copying the definition of foo into a file
+      </pre></code></blockquote>
+      It should be noted that such sessions are practical only in
+      environments that support input history (often persistent) and
+      copy/paste to/from the console.
+   </blockquote>
+   </dd>
+   </dl>
+</li><li>
+   Remove the reference to <code>#TIB</code> and <code>TIB</code> from the first sentence of
+   the &quot;Data space&quot; rationale (A.3.3.3).
+</li><li>
+   Remove the reference to <code>CONVERT</code> in the rationale for the
+   Core extension words (A.6.2):
+   <blockquote>
+     Words that are being deprecated in favour of new words
+     introduced to solve specific problems (e.g., <code>CONVERT</code>).
+   </blockquote>
+</li><li>
+   Add the following to Annex D:
+   <blockquote>
+   <h3>D.7 ANS Forth '94</h3>
+
+   <h3>D.7.1 Removed Definitions</h3>
+
+   This standard removes six words that were marked 'obsolescent'
+   in the ANS Forth '94 document.  These are:
+      <table><tr>
+      	<td>6.2.0060</td>	<td><code>#TIB</code></td><td></td>
+      	<td>6.2.1390</td>	<td><code>EXPECT</code></td><td></td>
+      	<td>6.2.2240</td>	<td><code>SPAN</code></td>
+      </tr><tr>
+      	<td>6.2.0970</td>	<td><code>CONVERT</code></td><td></td>
+      	<td>6.2.2040</td>	<td><code>QUERY</code></td><td></td>
+      	<td>6.2.2290</td>	<td><code>TIB</code></td>
+      </tr><tr>
+      	<td></td>	<td><code></code></td>
+      </tr>
+      </table>
+
+   Reuse of these names is strongly discouraged.
+   </blockquote>
+</li>
+</ol>
+
+<h3>Remarks</h3>
+Annex D needs work to bring it up to date, let along explain the
+difference between Forth200x and ANS Forth '94.  This should be
+the topic of another RfD.  The text given in point 9 is intended
+as a place holder until annex D is discussed in full.
+<p/>
+The new rationale for <code>FORGET</code> is taken from Michael
+Gassanenko's &quot;<a href="unobsolete-forget.txt">un-obsolete <code>FORGET</code></a>&quot;.
+</td></tr></table>
+
+<h3>Change History</h3>
+<dl class="history">
+<dt>2010-09-01 v4 (PJK)</dt>
+<dd>Removed <code>FORGET</code> from the list of obsolete words, reinstating it as a <code>TOOL EXT</code> word, with Gassanenko's rationale.
+</dd>
+
+<dt>2010-08-31 v3 (PJK)</dt>
+<dd>Removed <code>FORGET</code> from the list of words removed, leaving it marked as obsolete</dd>
+
+<dt>2009-09-09 v2 (PJK)</dt>
+<dd>Removed legacy word set in favour of section D.7</dd>
+
+<dt>1998-11-30 v1 (LZ)</dt>
+<dd>Original text by Len Zettel</dd>
+</dl>
+
+
+<h3>Credits</h3>
+Peter Knaggs &lt;pjk<em>@</em>bcs<em>.</em>org<em>.</em>uk&gt;<br/>
+Engineering, Mathematics and Physical Sciences,<br/>
+University of Exeter, Exeter, Devon EX4 7QF, England<br/>
+web: <a href="http://www.rigwit.co.uk">www.rigwit.co.uk</a>
+</p>
+
+
+<a name="voting"><h3>Voting Instructions</h3></a>
+
+Fill out the ballot below and email it &lt;vote@forth200x.org&gt;.
+Your vote will be published (including your name (without email
+address) and/or the name of your system) here.  You can vote (or
+change your vote) at any time, and the results will be published
+here.
+<p>
+
+<h4>Ballot</h4>
+
+Please mark the statements that are correct for you
+(e.g., by putting an &quot:<em>x</em>&quot; between the brackets).
+
+<dl>
+<dt>[ ] I agree with the proposed alteration to the document text.</dt>
+<dt>[ ] I do not agree with the proposed alteration to the document text.</dt>
+</dl>
+
+If you feel that the text does not cover all the aspects you would
+expect, then please make an informal comment.  These will be reported
+in addition to the formal votes.  Note that the best time to voice
+such issues is the RfD stage.  Alternatively, you could propose a
+counter RfD.
+</body>
+</html>

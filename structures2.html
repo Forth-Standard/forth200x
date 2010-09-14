@@ -1,0 +1,188 @@
+<html>
+<head>
+  <title>Structures Wording</title>
+  <style type="text/css">
+  ol li { margin-left: -1em; }
+  .item { width: 5em; }
+  ul.results { margin-left: 0em; padding-left: 20px; }
+  ul.results li { margin-bottom: 1ex; }
+  ul.results li:first-line { font-weight: bold; }
+  .history dd { margin-bottom: 1ex; }
+  .def dd { margin-bottom: 2ex; }
+  </style>
+</head>
+<body>
+<h3>Structures Wording</h3>
+
+<p>
+[ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
+</p>
+
+<h3>Poll Standings</h3>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h4>Systems</h4>
+<dl>
+<dt> [ ] I agree with the proposed alteration to the document text.</dt>
+<dt> [ ] I do not agree with the proposed alteration to the document text.</dt>
+</dl>
+
+<!--
+<h4>Informal Results</h4>
+<ul class="results">
+<li>Name<br/>
+	Comment.
+</li>
+</ul>
+-->
+
+<table width="500"><tr><td>
+<h3>Problem</h3>
+The X:structures extension defines <code>FIELD:</code> as:
+
+<pre>
+10.6.2.xxxx FIELD:          "field-colon"              FACILITY EXT
+            ( -- )                                     X:structures
+</pre>
+<dl class="def">
+<dd>
+    The semantics of <code>FIELD:</code> are identical to the execution semantics
+    of the phrase:
+    <blockquote>
+        <code>ALIGNED 1 CELLS +FIELD</code>
+    </blockquote>
+</dd>
+<dt>See:</dt>
+<dd>
+  10.6.2.---- <code>+FIELD</code>, 10.6.2.---- <code>BEGIN-STRUCTURE</code> and
+  10.6.2.---- <code>END-STRUCTURE</code>.
+</dd>
+</dl>
+While this is a very concise definition, there are a few difficulties
+with it:
+<ol>
+<li>The stack description is incorrect, it should be:
+	<code>( n1 &quot;&lt;spaces&gt;name&quot; -- n2 )</code></li>
+<li>It defines a child word which is not described.  Normally this is
+   described in a &quot;<em>name</em> Execution&quot; clause.</li>
+<li>There is no actual description of the word, simply what amounts
+   to a reference implementation.</li>
+</ol>
+This applies to <code>CFIELD:</code>, <code>DFFIELD:</code>, <code>FFIELD:</code> and <code>SFFIELD:</code> as well.
+
+<h3>Solution</h3>
+Replace the definition of <code>FIELD:</code> and friends with:
+<pre>
+10.6.2.xxxx FIELD:          "field-colon"              FACILITY EXT
+            ( n1 "&lt;spaces&gt;name" -- n2 )                X:structures
+</pre>
+<dl class="def">
+<dd>
+    Skip leading space delimiters.  Parse <em>name</em> delimited by a space.
+    <em>Offset</em> is the first cell aligned value greater than or equal to
+    <em>n1</em>.  <em>n2</em> = offset + 1 cells.
+    <p/>
+    Create a definition for <em>name</em> with the execution semantics given
+    below.
+</dd>
+<dt><em>name</em> Execution: ( a-addr1 -- a-addr2 )</dt>
+<dd>
+    Add the <em>offset</em> calculated during the compile time action to
+    <em>a-addr1</em> giving the cell aligned address <em>a-addr2</em>.
+</dd>
+<dt>See:</dt>
+<dd>
+  10.6.2.---- <code>BEGIN-STRUCTURE</code>, A.10.6.---- <code>BEGIN-STRUCTURE</code>,
+  A.10.6.2.---- <code>FIELD:</code>
+</dd>
+</dl>    
+
+<h3>Proposal</h3>
+
+Modify the definition of the following words in accordance with the
+text given in the Solution, above, with the modification of the
+alignment as follows:
+
+<blockquote><table>
+<tr><td><code>FIELD:</code></td>	<td>cell aligned</td>			</tr>
+<tr><td><code>CFIELD:</code></td>	<td>character aligned</td>		</tr>
+<tr><td><code>FFIELD:</code></td>	<td>float aligned</td>			</tr>
+<tr><td><code>SFFIELD:</code></td>	<td>single-float aligned</td>	</tr>
+<tr><td><code>DFFIELD:</code></td>	<td>double-float aligned</td>	</tr>
+</table></blockquote>
+
+Add the following as the Rationale for 10.6.2.---- <code>FIELD:</code>
+
+<blockquote>
+  A.10.6.2.xxxx <code>FIELD:</code>
+  <p/>
+  Create an aligned single cell field in a data structure.
+  <p/>
+  The various <em>x</em><code>FIELD:</code> words provide for different alignment and
+  size allocation.
+  <p/>
+  The <em>x</em><code>FIELD:</code> words could be defined as:
+  <blockquote><pre>
+: FIELD:      ALIGNED 1 CELLS    +FIELD ; \ cell aligned
+: CFIELD:             1 CHARS    +FIELD ; \ character aligned
+: FFIELD:    FALIGNED 1 FLOATS   +FIELD ; \ float aligned
+: SFFIELD:  SFALIGNED 1 SFLOATS  +FIELD ; \ single-float aligned
+: DFFIELD:  DFALIGNED 1 DFLOATS  +FIELD ; \ double-float aligned
+  </pre></blockquote>
+</blockquote>
+</td></tr></table>
+
+<h3>Change History</h3>
+<dl class="history">
+<dt>2010-08-31</dt>
+<dd>Revised into a documentation change (RfC)</dd>
+
+<dt>2010-03-17 (not published)</dt>
+<dd>Corrected spelling of <code>FILED:</code><br/>
+	Revised wording at Rostock meeting<br/>
+	Introduction of rationale text.
+</dd>
+
+<dt>2010-02-24</dt>
+<dd>Drafting of RfD</dd>
+
+<dt>2009-09-03</dt>
+<dd>Original wordsmithing of solution during Exeter meeting.</dd>
+</dl>
+
+
+<h3>Credits</h3>
+Peter Knaggs &lt;pjk<em>@</em>bcs<em>.</em>org<em>.</em>uk&gt;<br/>
+Engineering, Mathematics and Physical Sciences,<br/>
+University of Exeter, Exeter, Devon EX4 7QF, England<br/>
+web: <a href="http://www.rigwit.co.uk">www.rigwit.co.uk</a>
+</p>
+
+
+<a name="voting"><h3>Voting Instructions</h3></a>
+
+Fill out the ballot below and email it &lt;vote@forth200x.org&gt;.
+Your vote will be published (including your name (without email
+address) and/or the name of your system) here.  You can vote (or
+change your vote) at any time, and the results will be published
+here.
+<p>
+
+<h4>Ballot</h4>
+
+Please mark the statements that are correct for you
+(e.g., by putting an &quot:<em>x</em>&quot; between the brackets).
+
+<dl>
+<dt>[ ] I agree with the proposed alteration to the document text.</dt>
+<dt>[ ] I do not agree with the proposed alteration to the document text.</dt>
+</dl>
+
+If you feel that the text does not cover all the aspects you would
+expect, then please make an informal comment.  These will be reported
+in addition to the formal votes.  Note that the best time to voice
+such issues is the RfD stage.  Alternatively, you could propose a
+counter RfD.
+</body>
+</html>
