@@ -5,6 +5,10 @@
 <pre>
 Changes:
 
+2010-09-23: make environmental restriction and dependency of not
+supporting '/' and using some other directory separator explicit
+(suggested by Stephen Pelc).
+
 1st RfD: Split out this (hopefully less contentious) proposal from the
 Directories proposal.
 
@@ -91,7 +95,9 @@ Passing a relative filename to INCLUDED, REQUIRED, INCLUDE or REQUIRE
    source-directory-relative, so maybe you should refrain from
    implementing it in a working-directory-relative way.]
 
-
+A system that does not support '/' as directory separator has an
+environmental restriction.  A program that uses a directory separator
+other than '/' has an environmental dependency.
 
 Reference implementation and tests
 ----------------------------------
