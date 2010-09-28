@@ -1,0 +1,359 @@
+RfD - Enhanced local variable syntax, v6
+====================================
+Stephen Pelc - 25 March 2010
+
+20100325 Wordsmithing at Rostock meeting
+         Moved to BNF description
+         Added rationale
+         Converted Testing to new harness
+20091022 Discussion about { and {:.
+         "Should" to "shall".
+20090830 Tidied.
+20090325 Updated with some renaming.
+20080811 Removed references to local buffers as appropriate.
+20070914 Moved local buffers to separate proposal.
+20070607 Wordsmithing. Corrected reference implementation.
+20060822 Added explanatory text.
+         Corrected reference implementation.
+         Updated ambiguous conditions.
+
+Problem
+=======
+1) The current LOCALS| ... | notation explicitly forces all locals
+   to be initialised from the data stack.
+
+2) The current LOCALS| ... | notation defines locals in reverse
+   order to the normal stack notation.
+
+This proposal is derived from implementations that have existed for
+more than 15 years.
+
+
+Solution
+========
+
+Base version
+------------
+The following syntax for locals is proposed. The sequence:
+
+  {: arg1 arg2 ... | lv1 lv2 ... -- o1 o2 ... :}
+
+declares local arguments, local values, and dummy outputs.
+
+Local arguments and local values both behave as locals, they differ
+only in respect to their initialisation.
+
+The local arguments are automatically initialised from the data
+stack on entry, the rightmost being taken from the top of the data
+stack. Local arguments and local values can be referenced by name
+within the word during compilation. The output names are dummies
+to allow a local declaration to be read as a stack comment.
+
+  The items between {: and | are local arguments initialised from the data stack.
+  The items between | and -- are uninitialised local values.
+  The items between -- and :} are outputs for formal comments only.
+
+The -- to :} section is optional, i.e. | or {: direct to :} is
+permitted.
+
+The outputs are provided in the notation so that complete stack
+comments can be produced. However, all text between -- and } is
+ignored. This facility is there to permit the notation to form a
+complete stack comment, which eases documentation.
+
+Local arguments and values return their values when referenced,
+and must be preceded by TO to perform a store.
+
+In the example below, a and b are local arguments, and c and
+d are local values.
+
+: foo  {: a b | c d -- :}
+  a b + to c
+  a b * to d
+  cr c .  d .
+;
+
+Local types and extensions
+--------------------------
+Although out of the scope of this proposal, it should be noted
+that some current Forth systems use indicators to define local
+values of sizes other than a cell. To avoid issues when porting
+code to such systems, names ending in a ':' (colon) should be
+avoided.
+
+: foo  {: a b | F: f1 F: f2 -- c :}
+  ...
+;
+
+At least one Forth implementation uses local value names ending in
+the '[' character to indicate local buffers. This character should
+be avoided to prevent disenfranchising implementations that implement
+the behaviour. For similar reasons the use of '[' and '\' as local
+argument or value names should also be avoided.
+
+
+Discussion
+==========
+The phrase { ... } rather than {: ... :} has been used by systems
+for over 15 years. However, it conflicts with existing practise in
+other Forth systems. Choosing the new name allows both practises
+to coexist.
+
+The '|' (ASCII $7C) character is widely used as the separator
+between local arguments and local values. Other characters
+accepted in current Forth implementations are '\' (ASCII $5C) and
+'¦' ($A6). We propose only to consider the '|' character further.
+Only recognition of the '|' separator is mandatory.
+
+Some current systems permit TO to be used with floats (children of
+FVALUE) and other data types. Such systems often provide additional
+operators such as +TO (add from stack to item) for children of VALUE
+and FVALUE.
+
+
+Proposal
+========
+
+In order to facilitate the use of BNF in the {: definition it is
+necessary to move the BNF definition added to 2.2.1 Numeric notation
+by the X:number-prefix proposal to a more general description in
+section 2.2 Notation.
+
+  The following notation is used to define the syntax of the
+  various elements within the document:
+
+  - Each component of the element is defined with a rule consisting
+    of the name of the component (italicized in angle-brackets,
+    e.g., </decdigit/>), the characters := and a concatenation of
+    tokens and metacharacters;
+
+  - Tokens may be literal characters (in bold face, e.g., "E") or
+    rule names in angle brackets (e.g., </decdigit/>);
+
+  - The metacharacter * is used to specify zero or more occurrences
+    of the preceding token (e.g., </decdigit/>*);
+
+  - Tokens enclosed with [ and ] are optional (e.g., ["-"]);
+
+  - Vertical bars separate choices from a list of tokens enclosed
+    with braces (e.g., { "0" | "1" }).
+
+  See: 3.4.1.3 Text interpreter input number conversion,
+       12.3.7 Text interpreter input number conversion,
+       12.6.1.0558 >FLOAT, 12.6.2.1613 FS and 13.6.2.xxxx {: .
+
+
+13.3.3.2 Syntax restrictions
+
+Replace item f)
+
+  A program that declares more than eight locals in a single
+  definition has an environmental dependency;
+
+with
+
+  A program that declares more than sixteen locals in a single
+  definition has an environmental dependency;
+
+
+13.6.2.xxxx {:                                 brace-colon LOCAL EXT
+
+Interpretation: Interpretation semantics for this word are undefined.
+
+Compilation: ( i*x "<spaces>:}" -- )
+
+  Parse space delimited names according to the following syntax:
+
+        "{:" <arg>* ["|" <val>*] ["--" <out>*] ":}"
+
+  where <arg>, <val> and <out> are names, and i is the number of
+  <arg> names given.
+
+  The following ambiguous conditions exist when:
+  - a local name ends in ":", "[", or "^";
+  - a local name is "\" or "|";
+  - the text between {: and :} extends over more than one line;
+  - {: ... :} is used more than once in a word.
+
+  Append the run-time semantics below.
+
+  run-time: ( x1 ... xn -- )
+    Create locals for <arg>s and <val>s.  <out>s are ignored.
+
+    <arg> names are initialized from the data stack, with the top of
+    the stack being assigned to the right most <arg> name.
+
+    <val> names are uninitialized.
+
+    <val> names and <arg> names have the execution semantics given
+    below.
+
+  /name/ Execution: ( -- x )
+    Place the value currently assigned to /name/ on the stack.
+    An ambiguous condition exists when local is executed while in
+    interpretation state.
+
+  TO /name/ Run-time: ( x -- )
+    Assign the value x to /name/.
+
+  See: 2.2 Notation, 6.2.2405 VALUE, 6.2.2295 TO and A.13.6.2.xxxx {:
+
+A.13.6.2.xxxx {:
+  In A.13 The optional Locals word set ANS Forth '94 the TC identifies
+  the significant difficulties experienced when addressing the issue
+  of locals.  Since the Technical Committee was unable identify any
+  common practice they provided a way to define locals 13.6.1.0086
+  (LOCAL)) and a method of parsing them (13.6.2.1795 LOCALS|).  In the
+  hope that a common practice will emerge.
+
+  Common practice has since emerged.  Most implementations that
+  provide (LOCAL) and LOCALS| also provide some form of the { ... }
+  notation; however, the phrase { ... } conflicts with other systems.
+  The {: ... :} notation is a compromise to avoid name conflicts.
+
+  The notation provides for different classes: local arguments that are
+  initialized from the data stack at run-time; uninitialized local values
+  and outputs.  Local arguments are separated from local values by '|'.
+  The definition of locals is terminated  by '--' or ':}'.
+
+  All text between '--' and ':}' is ignored.  This eases documentation
+  by allowing a complete stack comment in the locals definition.
+
+  The '|' (ASCII $7C) character is widely used as the separator
+  between local arguments and local values.  Some implementations have
+  used '\' (ASCII $5C) or '¦' ($A6).  Systems are free to continue to
+  provide these alternative separators.  However, only the recognition
+  of the '|' separator is mandatory.  Therefor portable programs must
+  use the '|' separator.
+
+  A number of systems extend the locals notation in various ways.
+  Some of these extensions may emerge as common practice.  This
+  standard has reserved the notation used by these extensions to avoid
+  difficulties when porting code to these systems.  In particular
+  local names ending in ':' (colon), '[' (open bracket), or '^'
+  (carat) are reserved, as is using '\' (back  slash) or '|' (bar) as
+  a local name.
+
+
+Reference implementation
+=========================
+
+0 [if]
+BUILDLV    c-addr u +n mode
+When executed during compilation, BUILDLV passes a message to the
+system identifying a new local argument whose definition name is
+given by the string of characters identified by c-addr u. The size
+of the data item is given by +n address units, and the mode
+identifies the construction required as follows:
+  0 - finish construction of initialisation and data storage
+      allocation code. C-addr and u are ignored. +n is 0
+      (other values are reserved for future use).
+  1 - identify a local argument, +n = cell
+  2 - identify a local value, +n = cell
+  3+ - reserved for future use
+  -ve - implementation specific values
+
+The result of executing BUILDLV during compilation of a definition
+is to create a set of named local arguments and values, each of
+which is a definition name, that only have execution semantics
+within the scope of that definition's source.
+
+Note that it is often useful to accumulate and store the size of
+locals storage (0=none), so that compilers for EXIT can easily
+determine if locals clean up code is required.
+[then]
+
+VARIABLE #LVS   \ -- addr
+\ Holds size of locals storage required.
+
+: BUILDLV	\ c-addr u +n mode --
+\ Dummy for testing
+  OVER #LVS +!
+  CR 2SWAP TYPE  SPACE  SWAP . .
+;
+
+: TOKEN         \ -- caddr u
+\ Get the next space delimited token from the input stream.
+\ Can be extended to permit multiple line declarations.
+  PARSE-NAME
+;
+
+: LTERM?        \ caddr u -- flag
+\ Return true if the string caddr/u is "--" or ":}"
+  2DUP S" --" COMPARE 0= >R
+  S" :}" COMPARE 0=  R> OR
+;
+
+: LSEP?         \ caddr u -- flag
+\ Return true if the string caddr/u is the separator between
+\ local arguments and local values or buffers.
+  2DUP S" |" COMPARE 0= >R
+  S" \" COMPARE 0=  R> OR
+;
+
+: {:            \ --
+\ Parse the locals declaration up to the closing ":}".
+  0 #LVS !                              \ indicate no locals yet
+  0 >R                                  \ indicate arguments
+  BEGIN
+    TOKEN 2DUP LTERM? 0=
+  WHILE                                 \ -- caddr len
+    2DUP LSEP? IF                       \ if '|'
+      R> DROP  1 >R                     \ change to vars and buffers
+    ELSE
+      R@ 0= IF                          \ argument?
+        CELL 1
+      ELSE                              \ value
+        CELL 2
+      THEN
+      BUILDLV
+    THEN
+  REPEAT
+  BEGIN
+    S" :}" COMPARE
+   WHILE
+    TOKEN
+  REPEAT
+  0 0 0 0 BUILDLV
+  R> DROP
+; IMMEDIATE
+
+
+Tests
+=====
+
+: LT1  {: a b | c -- f :}
+  CR ." Hello1 " CR  a  ;
+T{ 3 4 LT1 -> 3 }T \ Outputs Hello1
+
+: LT2  {: a | b c e :}
+  CR ." Hello2 " CR  ;
+T{ 3 LT2 -> }T \ Outputs Hello2
+
+: LT3  {: a b c -- :}
+  CR ." Hello3 " CR  ;
+T{ 3 4 5 LT3 -> }T \ Outputs Hello3
+
+: LT4  {: a b c :}
+  CR ." Hello4 " CR  ;
+T{ 3 4 5 LT4 -> }T \ Outputs Hello4
+
+: LT5  {: a | b c d -- e f g :}
+  CR ." Hello5 " CR
+  a 2* to b  b 2* to c  c 2* to d
+  b c d  ;
+T{ 3 LT5 -> 6 12 24 }T \ Outputs Hello5
+
+
+Credits
+=======
+Stephen Pelc, stephen@mpeforth.com
+MicroProcessor Engineering Ltd - More Real, Less Time
+133 Hill Lane, Southampton SO15 5AF, England
+tel: +44 (0)23 8063 1441,
+fax: +44 (0)23 8033 9691
+web: http://www.mpeforth.com - free VFX Forth downloads
+
+Peter Knaggs <pjk@bcs.org.uk>
+Engineering, Mathematics and Physical Sciences,
+University of Exeter, Exeter, Devon EX4 7QF, England.
