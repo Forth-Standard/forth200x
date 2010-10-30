@@ -7,6 +7,7 @@
   ul.results { margin-left: 0em; padding-left: 20px; }
   ul.results li { margin-bottom: 1ex; }
   ul.results li:first-line { font-weight: bold; }
+  ul.normal  li:first-line { font-weight: normal; }
   .history dd { margin-bottom: 1ex; }
   .def dd { margin-bottom: 2ex; }
   </style>
@@ -25,7 +26,16 @@ See <a href="#voting">below</a> for voting instructions.
 <h4>Systems</h4>
 <dl>
 <dt> [ ] conforms to ANS Forth.</dt>
+<dd>SwiftForth<br/>
+	SwiftX
+</dd>
 <dt> [ ] already implements the proposal in full since release [ ].</dt>
+<dd>4tH [3.5d]<br/>
+	SwiftForth [3.0]<br/>
+	SwiftX [3.0]<br/>
+	OpenFirmware<br/>
+	CForth93
+</dd>
 <dt> [ ] implements the proposal in full in a development version.</dt>
 <dt> [ ] will implement the proposal in full in release [ ].</dt>
 <dt> [ ] will implement the proposal in full in some future release.</dt>
@@ -37,24 +47,47 @@ See <a href="#voting">below</a> for voting instructions.
 <h4>Programmers</h4>
 <dl>
 <dt> [ ] I have used (parts of) this proposal in my programs.</dt>
+<dd>Hans Bezemer<br/>
+	Leon Wagner<br/>
+	Brad Eckert
+</dd>
 <dt> [ ] I would use (parts of) this proposal in my programs if the systems I am interested in implemented it.</dt>
+<dd>Bruce R. McFarling<br/>
+	David Kuehling<br/>
+	Brad Eckert<br/>
+	Gerry Jackson
+</dd>
 <dt> [ ] I would use (parts of) this proposal in my programs if this proposal was in the Forth standard.</dt>
+<dd>Bruce R. McFarling<br/>
+	Brad Eckert<br/>
+	Gerry Jackson
+</dd>
 <dt> [ ] I would not use (parts of) this proposal in my programs.
 </dl>
 
-<!--
 <h4>Informal Results</h4>
 <ul class="results">
-<li>Name<br/>
-	Comment
-</li>
+<li>David Kuehling<br/>
+	I feel that the <code>BUFFER:</code> proposal has a number of flaws:
+	<ul class="normal">
+	<li>It does merely solve problems that are outside the scope of the
+		standard: memory segmentation during (cross)-compilation of
+		programs/turn-key systems; problems with direct threaded code
+		on harvard-cache CPUs.</li>
+	<li>it defines high-level functionality where corresponding lower-level
+		functionality would provide the same or more features.  If there is
+		a magical dictionary of data initialized &quot;later&quot; (meaning
+		of &quot;later&quot; cannot properly be defined within the standard!?),
+		give me access to that dictionary using <code>UHERE</code> and
+		<code>UALLOT</code> (or <code>UALLOCATE</code> or whatever), instead
+		of providing a higher-level defining word.</li>
+	</ul>
 </ul>
--->
 
 <table width="500"><tr><td>
 
 24 September 2010, Stephen Pelc
- 
+
 <h2>Rationale</h2>
 
 <h3>Problem</h3>
@@ -95,7 +128,7 @@ At very least the use of
 <blockquote><code>256 BUFFER: Xbuff</code></blockquote>
 is more readable than
 <blockquote><code>CREATE Xbuff  256 ALLOT</code></blockquote>
-<p/>  
+<p/>
 The proposal below provides a more consistent approach than code
 such as
 <blockquote><code>CREATE Xbuff  0 C,  255 ALLOT</code></blockquote>
@@ -133,7 +166,7 @@ work.
 <h3>Reference Implementation</h3>
 This implementation depends on children of <code>CREATE</code> returning an
 aligned address as already specified by Forth200<em>x</em>. Other memory
-location techniques require carnal knowledge of the underlying
+location techniques require implementation-specific knowledge of the underlying
 Forth system.
 </td></tr></table>
 

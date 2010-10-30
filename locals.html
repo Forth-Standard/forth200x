@@ -12,7 +12,7 @@
   </style>
 </head>
 <body>
-<h3><code>Enhanced local variable syntax</code></h3>
+<h3>Enhanced local variable syntax</h3>
 
 <p>
 [ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
@@ -25,11 +25,18 @@ See <a href="#voting">below</a> for voting instructions.
 <h4>Systems</h4>
 <dl>
 <dt> [ ] conforms to ANS Forth.</dt>
+<dd>SwiftForth<br/>
+	SwiftX
+</dd>
 <dt> [ ] already implements the proposal in full since release [ ].</dt>
 <dt> [ ] implements the proposal in full in a development version.</dt>
 <dt> [ ] will implement the proposal in full in release [ ].</dt>
 <dt> [ ] will implement the proposal in full in some future release.</dt>
+<dd>SwitfForth<br/>
+	SwitfX
+</dd>
 <dt> [ ] There are no plans to implement the proposal in full in [ ].</dt>
+<dd>4tH [3.61.1]</dd>
 <dt> [ ] will never implement the proposal in full.
 </dl>
 
@@ -37,19 +44,30 @@ See <a href="#voting">below</a> for voting instructions.
 <h4>Programmers</h4>
 <dl>
 <dt> [ ] I have used (parts of) this proposal in my programs.</dt>
+<dd>Doug Hoffman<br/>
+	Gerry Jackson</dd>
 <dt> [ ] I would use (parts of) this proposal in my programs if the systems I am interested in implemented it.</dt>
+<dd>Doug Hoffman<br/>
+	Gerry Jackson</dd>
 <dt> [ ] I would use (parts of) this proposal in my programs if this proposal was in the Forth standard.</dt>
-<dt> [ ] I would not use (parts of) this proposal in my programs.
+<dd>Doug Hoffman<br/>
+	Gerry Jackson</dd>
+<dt> [ ] I would not use (parts of) this proposal in my programs.</dt>
+<dd>Hans Bezemer<br/>
+	Doug Hoffman<br/>
+	Leon Wagner
+</dd>
 </dl>
 
-<!--
 <h4>Informal Results</h4>
 <ul class="results">
-<li>Name<br/>
-	Comment
+<li>Hans Bezemer<br/>
+	I don't like locals, enhanced or otherwise. If I wanted to program C, I'd program C.
 </li>
+<li>Doug Hoffman<br/></li>
+	I will use the historically normal and very common { ... } syntax.<br/>
+	I will normally not use the &quot;never been seen before&quot; {: ... :} syntax.
 </ul>
--->
 
 <h2>Rationale</h2>
 
@@ -93,7 +111,7 @@ declaration to be read as a stack comment.
 <li>The items between <code>--</code> and <code>:}</code> are outputs for
 	formal comments only.</li>
 </ul>
-   
+
 The <code>--</code> to <code>:}</code> section is optional, i.e., <code>|</code>
 or <code>{:</code> direct to <code>:}</code> is permitted.
 <p/>
@@ -175,7 +193,7 @@ section <strong>2.2 Notation</strong>.
 
    <li>Vertical bars separate choices from a list of tokens enclosed
      with braces (e.g., { <strong>0</strong> | <strong>1</strong> }).</li>
-   </ul>   
+   </ul>
 
    See: 3.4.1.3 Text interpreter input number conversion,
         12.3.7 Text interpreter input number conversion,
@@ -183,7 +201,7 @@ section <strong>2.2 Notation</strong>.
         12.6.2.1613 <code>FS</code> and
         13.6.2.xxxx <code>{:</code>.
 </blockquote>
-        
+
 <strong>13.3.3.1 Compilation semantics</strong>
 <p/>
 Replace &quot;at least eight locals&quot; in the last paragraph with &quot;at least
@@ -441,7 +459,7 @@ T{ 3 LT5 -> 6 12 24 }T \ Outputs Hello5
 <dt>2010-10-11</dt><dd>
 	Replaced ambiguous condition on locals named
 	&quot;<code>\</code>&quot;, &quot;<code>|</code>&quot;,
-	&quot;<code>:</code>&quot;, &quot;<code>}</code>&quot;
+	&quot;<code>:</code>&quot; and &quot;<code>}</code>&quot;
 	with the more general condition of using a single non-alphabetic
 	character as a local name.
 <br>Added additional document for sixteen locals rather than eight.</dd>
