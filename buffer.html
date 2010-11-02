@@ -82,6 +82,31 @@ See <a href="#voting">below</a> for voting instructions.
 		<code>UALLOT</code> (or <code>UALLOCATE</code> or whatever), instead
 		of providing a higher-level defining word.</li>
 	</ul>
+<li>Stephen Pelc<br/>
+	In the reference implementation, the phrase &quot;carnal knowledge&quot;
+	should be replaced with the phrase &quot;implementation-specific
+	knowledge &quot;.
+</li>
+<li>Peter Knaggs<br/>
+	The test cases should be removed as the make the assumption that the
+	uninitialised memory space is in the dictionary.  I suggest the
+	following test cases be used in their place.
+<pre><code>DECIMAL
+T{ 255 BUFFER: TBUF1 -> }T
+T{ 100 BUFFER: TBUF2 -> }T
+
+T{ TBUF2 TBUF1 - ABS 255 > -> &lt;TRUE&gt; }T  \ Buffers do not overlap
+T{ TBUF1 ALIGNED -> TBUFF1 }T            \ Buffer is aligned
+ 
+: TERASE? ( addr n1 -- n2 )
+  0 SWAP 0 ?DO
+    OVER C@ OR SWAP CHAR+ SWAP
+  LOOP NIP ;
+  
+T{ TBUF1 255 ERASE -> }T                 \ Can buffer be written
+T{ TBUF1 255 TERASE? -> 0 }T
+</code></pre>	
+</li>
 </ul>
 
 <table width="500"><tr><td>
