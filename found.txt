@@ -1,0 +1,352 @@
+Article: 163805 of comp.lang.forth
+Path: tunews.univie.ac.at!aconews-feed.univie.ac.at!newsfeed.wu-wien.ac.at!newsfeed.utanet.at!news.glorb.com!postnews.google.com!12g2000yqr.googlegroups.com!not-for-mail
+From: m_l_g3 <m_l_g3@yahoo.com>
+Newsgroups: comp.lang.forth
+Subject: RfD: FOUND
+Date: Sat, 16 Jul 2011 01:28:10 -0700 (PDT)
+Organization: http://groups.google.com
+Lines: 327
+Message-ID: <5afcf09b-61d7-4c9e-b307-8b07e329101b@12g2000yqr.googlegroups.com>
+NNTP-Posting-Host: 217.66.146.112
+Mime-Version: 1.0
+Content-Type: text/plain; charset=ISO-8859-1
+X-Trace: posting.google.com 1310804891 30023 127.0.0.1 (16 Jul 2011 08:28:11 GMT)
+X-Complaints-To: groups-abuse@google.com
+NNTP-Posting-Date: Sat, 16 Jul 2011 08:28:11 +0000 (UTC)
+Complaints-To: groups-abuse@google.com
+Injection-Info: 12g2000yqr.googlegroups.com; posting-host=217.66.146.112; posting-account=RUHbqgkAAABl4OyE6wbxcc3SwaDEov4g
+User-Agent: G2/1.0
+X-Google-Web-Client: true
+X-Google-Header-Order: HNKRUAELSC
+X-HTTP-UserAgent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/534.30 (KHTML,
+ like Gecko) Chrome/12.0.742.124 Safari/534.30,gzip(gfe)
+Xref: tunews.univie.ac.at comp.lang.forth:163805
+
+I start a new thread since Google Groups shows the FIND thread as an
+unreadable mess of 400+ messages.
+
+============== RfD: FOUND ============
+
+FOUND ( c-addr len x -- c-addr len false | xt flag true )   CORE
+
+Search the wordlists in the current search order for _name_ in the
+string (addr,len) and return an execution token suitable for the
+purpose identified by the hint value x.
+
+x is the intention hint: the value returned by STATE @ or one of the
+constants C/SEM, I/SEM, X/SEM or A/SEM.
+
+The output value flag is zero if _name_ has the default compilation
+semantics and true if the word is immediate [1].
+
+If the _name_ is not found, return ( c-addr len false ).
+
+If x is C/SEM or the value returned by STATE @ in compilation mode,
+return (xt flag true). Words not suitable for use in compilation state
+MAY be reported as not found.
+
+If x is I/SEM (that is, zero, the value returned by STATE @ in
+interpretation mode), return (xt flag true). Words not suitable for
+execution in interpret state MAY be or not be reported as not found.
+
+If x is X/SEM, return (xt flag true). Words not suitable for execution
+by EXECUTE MAY be reported as not found.
+
+If x is A/SEM, return (xt flag true), where xt is the execution token
+that would be returned by a search with X/SEM, or, if that search
+would not retrieve an xt, with I/SEM, or, if that search would not
+retrieve an xt, with C/SEM.
+
+
+For words with the default compilation semantics, it is NOT REQUIRED
+that S" _name_" C/SEM FOUND and S" _name_" I/SEM FOUND return the same
+xt-s, but it is required that a defined and visible word _name_ inside
+a colon definition will be functionally equivalent to [comp/ex] _name_
+with [comp/ex] defined as:
+
+: [comp/ex] PARSE-WORD C/SEM FOUND 0= ABORT" ?" IF EXECUTE ELSE
+COMPILE, THEN ; IMMEDIATE
+
+In the interpretation state, if _name_ is defined, PARSE-WORD _name_ I/
+SEM FOUND 2DROP EXECUTE is functionally equivalent to _name_.
+
+(These two above requirements do not apply to words processed not by
+the text interpreter itself but by the words that precede them, for
+example, in the phrase [CHAR] X the requirements apply to [CHAR] but
+not to X.)
+
+For immediate words, the execution tokens returned by C/SEM FOUND, I/
+SEM FOUND and X/SEM FOUND will be the same, and the flag will be true.
+
+For words with the default compilation semantics, the execution tokens
+returned by I/SEM FOUND and X/SEM FOUND will be the same.
+
+For words with the default compilation semantics, if flag is 0, the
+execution tokens returned by C/SEM FOUND, I/SEM FOUND and X/SEM FOUND
+will be the same.
+
+For words with the default compilation semantics, flag cannot be true;
+if flag is not 0, the execution tokens returned by C/SEM FOUND and X/
+SEM FOUND MAY be different.
+
+
+Ambiguous conditions
+
+It is allowed to:
+execute xt returned by X/SEM FOUND in either compilation or
+interpretation state
+execute xt returned by C/SEM FOUND in compilation state
+execute xt returned by I/SEM FOUND in interpretation state
+An ambiguous condition exists in all other cases.
+
+
+Documentation requirements
+
+
+A standard system MUST document the allowed hint values other than
+those mentioned in the standard.
+A standard system MUST document the possible flag values other than
+false and true.
+
+[1] To make it explicit, it will be non-zero but not all-bits-set for
+words having different xt's for compilation and interpretation mode,
+but a standard program should not be interested. If flag is non-zero,
+the definition must be executed in compilation state.
+
+
+C/SEM ( -- -1 ) TOOLS EXT search for the execution token to be used in
+compilation state
+
+I/SEM ( -- 0 )  TOOLS EXT search for the execution token to be used in
+interpretion state
+
+X/SEM ( -- -2 ) TOOLS EXT search for the execution token to be passed
+to COMPILE, or EXECUTE.
+
+A/SEM ( -- -3 ) TOOLS EXT search for any execution token, in the
+following order of preference: X/SEM I/SEM C/SEM
+
+
+Discussion.
+
+The proposed definition has a constant stack effect and therefore need
+not be immediately followed by IF.
+
+A "classical" single-xt system may just ignore the hint x.
+
+The constant names are optional and moved to TOOLS EXT word set: the
+most frequent use case is expected to be STATE @ FOUND.
+
+The words ( [ .( \ [ELSE] [IF] [THEN] are required by the standard to
+be immediate. Probably, so will be [DEFINED] and [UNDEFINED].
+
+It is possible to have C/SEM and friends store the hint in some
+variable and thus have the stack effect of ( -- ). This will make
+FOUND ( addr len -- xt flag true | addr len false ). Instead of STATE
+@ FOUND we may use S/SEM FOUND. I dislike the idea of introducing one
+more state variable.
+
+Another option is to define hint as having either 0 or 1 cells, thus
+letting the classical systems do exactly what they did before. (Anyway
+one will need a gforth to check if the hint stuff works.) Again, we
+will need S/SEM, probably defined as : S/SEM STATE @ ; or : S/SEM ;.
+What do you think is better: passing a value that will be dropped or
+having a zero-cells parameter?
+
+
+
+\ An implementation for ANS gforth:
+
+: state! if [compile] ] else [compile] [ then ;
+
+0 constant i/sem
+-1 constant c/sem
+-2 constant x/sem
+-3 constant a/sem
+
+create wbuf 256 allot
+: _found ( addr len -- addr len 0 | xt flag true)
+    2dup wbuf place
+    wbuf find 2dup 2>r ?dup
+    if   2nip 1 = true
+    else drop 0
+    then
+    dup
+    if
+        state @ 0= state! wbuf find state @ 0= state!
+        2r> d<> if nip -2 swap then
+    else
+        2r> 2drop
+    then
+;
+: found ( addr len hint -- addr len 0 | xt flag true)
+    state @ >r
+        case
+        i/sem of 0 state! _found endof
+	c/sem of 1 state! _found endof
+	x/sem of 0 state! _found endof
+	a/sem of 1 state! _found dup 0= if drop 0 state! _found then endof
+	endcase
+    r> state!
+;
+
+\ Examples of use:
+
+wordlist constant sandbox
+sandbox set-current
+sandbox >order
+
+: $number? snumber? dup 0= abort" ?" 0< if s>d false else true then ;
+( a l -- d -1 | n sign 0 )
+: f-macro ." WARNING: F-MACRO is unsupported" cr ;
+: dliteral, postpone 2literal ;
+: literal, postpone literal ;
+
+
+: ' PARSE-WORD X/SEM FOUND NIP 0= ABORT" ?" ;
+: ['] PARSE-WORD X/SEM FOUND NIP 0= ABORT" ?" LITERAL, ; IMMEDIATE
+\ an option for system implementors:
+: ' PARSE-WORD A/SEM FOUND NIP 0= ABORT" ?" ;
+: ['] PARSE-WORD A/SEM FOUND NIP 0= ABORT" ?" LITERAL, ; IMMEDIATE
+
+: _POSTPONE
+    PARSE-WORD C/SEM FOUND 0= ABORT" ?"
+    IF   COMPILE,
+    ELSE literal, ['] compile, compile,
+    THEN
+; IMMEDIATE
+
+: POSTPONE
+    PARSE-WORD C/SEM FOUND
+    IF
+        IF   COMPILE,
+        ELSE literal, ['] compile, compile,
+        THEN
+    ELSE \ postpone a number
+        $NUMBER? \ convert to number or report an error
+        ( d flag )
+        IF   DLITERAL, ['] DLITERAL, COMPILE,
+        ELSE DROP LITERAL, ['] LITERAL, COMPILE,
+        THEN \ TODO: floating-point stuff
+    THEN
+; IMMEDIATE
+
+: INTERPRET
+  BEGIN PARSE-WORD
+        DUP
+  WHILE
+        STATE @ FOUND
+        IF   0= STATE @ AND
+             IF COMPILE, ELSE EXECUTE THEN
+        ELSE $NUMBER?
+             STATE @
+             IF
+                 IF DLITERAL, ELSE DROP LITERAL, THEN
+             ELSE
+                 0= IF D>S THEN
+             THEN
+        THEN
+  REPEAT
+  2DROP
+;
+
+: [DEFINED] PARSE-WORD A/SEM FOUND NIP NIP ; IMMEDIATE
+
+: FIND
+    COUNT STATE @ FOUND
+    IF
+        IF 1 ELSE -1 THEN
+    ELSE
+        DROP 1- 0
+    THEN
+;
+
+\ Such functionality has been unANS before
+: 0TO ( "name" -- ) \ reset a VALUE to 0
+    0 STATE @ IF POSTPONE LITERAL THEN
+    \ this is what the user-written interpreter
+    \ would do when it encountered TO
+    S" TO" STATE @ FOUND 0= ABORT" ?"
+    STATE @ 0= OR
+    IF EXECUTE
+    ELSE COMPILE,
+    THEN
+; IMMEDIATE \ F-MACRO
+
+cr cr .( =============) cr
+\ print the expected output and the source next to the actual output
+: ===>
+   ." === " source >in @ /string type ."  <=== "
+   source drop >in @ 5 - type cr postpone \
+   depth if ." stack not empty:" .s cr then
+; immediate
+
+\ --- what FOUND returns for different classes of words ---
+
+\ F-MACRO is a hypothetical word that marks
+\ the last definition as non-tickable.
+\ I would never use such a word in my system.
+: 3DROP S" 2DROP DROP" EVALUATE ; IMMEDIATE F-MACRO ===>
+S" 3DROP" C/SEM FOUND . . . ===> -1 -2 139655255045096
+S" 3DROP" I/SEM FOUND . . . ===> -1 -2 139655255045096
+S" 3DROP" X/SEM FOUND . . . ===> 0 5 7635376
+
+: i_CELL+ 1 CELLS + ; ===>
+: c_CELL+ 1 CELLS [COMPILE] LITERAL POSTPONE + ; IMMEDIATE ===>
+' i_CELL+ ' c_CELL+ interpret/compile: myCELL+ ===>
+S" myCELL+" C/SEM FOUND . . . ===> -1 -2 140002006362408
+S" myCELL+" I/SEM FOUND . . . ===> -1 -2 140002006362328
+S" myCELL+" X/SEM FOUND . . . ===> -1 -2 140002006362328
+' c_CELL+ . ===> 140002006362408
+' i_CELL+ . ===> 140002006362328
+
+S" IF" C/SEM FOUND . . . ===> -1 -2 139655254773528
+S" IF" I/SEM FOUND . . . ===> 0 2 7637696
+S" IF" X/SEM FOUND . . . ===> 0 2 7637696
+
+S" (" C/SEM FOUND . . . ===> -1 -1 139655254759688
+S" (" I/SEM FOUND . . . ===> -1 -1 139655254759688
+S" (" X/SEM FOUND . . . ===> -1 -1 139655254759688
+
+: .hi ." hello " ; ===>
+S" .hi" C/SEM FOUND . . . ===> -1 0 139655255045800
+S" .hi" I/SEM FOUND . . . ===> -1 0 139655255045800
+S" .hi" X/SEM FOUND . . . ===> -1 0 139655255045800
+
+\ a tester for the other definitions
+\ -- just in case you decide to run this
+
+: t1 [ ' if execute ] 123 then ; see t1 ===>
+: t2 [ ' if execute ] ['] then  then ; see t2 ===>
+' then . ===>
+: _unless _postpone 0= _postpone if ; immediate see _unless ===>
+: unless postpone 0 postpone = postpone if ; immediate see unless ===>
+: t3 0 _unless 1 else 2 then 3 ; see t3 ===>
+: t4 0 unless 1 else 2 then 3 ; see t4 ===>
+: t5x postpone -2. ; immediate ===>
+: t5 t5x ; see t5 ===>
+interpret 2 3 + . ===> 5
+interpret : t6 2dup > if nip else drop then ; 2 3 t6 . 5 4 t6 . ===> 3
+5
+[defined] if . ===> -1
+] [defined] if [ . ===> -1
+
+S" dup" pad place pad find . . ===> -1 6400088
+S" if" pad place pad find . . ===> 1 139655254773528
+: [find] find ; immediate
+S" if" pad place pad ] [find] [ . . ===> 1 7637696
+
+0 value vv 5 to vv
+vv . 0to vv vv . ===> 5 0
+5 to vv : t7 vv . 0to vv vv . ; t7 ===> 5 0
+
+.s ===> <0>
+
+
+PS Since I have time for this only because I'm on vacation, anyone is
+allowed to make a formal proposal based on this RfD. (Yes, this allows
+changes.)
+
+
+
+
