@@ -1,0 +1,44 @@
+<pre>
+RfC: IS
+=======
+
+07 March 2011
+
+Problem
+=======
+
+The documentation for the words ACTION-OF, DEFER, DEFER!, and DEFER@
+all specify that an ambiguous condition exists if the deferred word
+has not been assigned an execution token.
+
+However, the documentation for IS doesn't use the term "assignment".
+It says that the run-time semantics of IS are "Set name to execute
+xt."  It's not at all obvious that "set name to execute xt" is the
+same thing as "assign xt to name".
+
+Solution
+========
+
+I think it would be clearer if the run-time semantics of IS were
+documented as "Assign xt to be the execution token of name".
+
+Proposal
+========
+
+In the definition of 6.2.---- IS:
+
+1. Replace the text "Set name to execute xt" with "Assign the
+    execution token xt to be the execution token of name" in
+    the Interpretation clause.
+
+2. Replace the text "Set name to execute xt" with "Assign the
+    execution token xt to be the execution token of name" in
+    the Run-time clause.
+
+
+Change History
+==============
+
+07 March 2011     Rendered into RfC, Peter Knaggs
+22 December 2010  Original text, Harold
+</pre>
