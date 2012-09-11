@@ -1,0 +1,256 @@
+<title>S&gt;F and F&gt;S</title>
+
+<h3>S&gt;F and F&gt;S</h3>
+
+[ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
+
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h5>Systems</h5>
+
+<pre>
+[ ] conforms to ANS Forth.
+    VFX Forth (Windows, OSX, Linux, DOS ...) (Stephen Pelc)
+    MPE Forth cross compilers (all targets) (Stephen Pelc)
+    iForth (Marcel Hendrix)
+    bigForth (Bernd Paysan)
+    SwiftForth (Leon Wagner)
+[ ] already implements the proposal in full since release [ ].
+    4th v3.5d.3 (Hans Bezemer)
+    VFX Forth since 1998 (but see comment from Bernd Paysan below)
+    MPE Forth cross compilers (all targets)
+    SwiftForth 2.0
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+[ ] There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+    iForth (Marcel Hendrix)
+    bigForth (Bernd Paysan)
+</pre>
+
+<h5>Programmers</h5>
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+    Hans Bezemer
+    Stephen Pelc
+    Graham Smith (used VFX Forth)
+[ ] I would use (parts of) this proposal in my programs if the systems
+     I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+     proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+<h5>Informal results</h5>
+
+Marcel Hendrix writes &lt;05071301958435@frunobulax.edu&gt;:
+
+<pre>
+iForth's F>S does not work that way. On a 32-bit system, F>S produces
+at most +/-(2^31 - 1), on a 64-bit system that is +/-(2^63 - 1).
+</pre>
+
+Bernd Paysan agrees with Marcel and writes
+&lt;2492413.8maJAivhPE@sunwukong.fritz.box&gt;:
+
+<pre>
+Same with bigForth.  Why on earth should I generate an intermediate 
+double result just to drop the top half in order to meet this 
+specification?
+
+The funny thing is that both iForth and bigForth have S>F and F>S.  They 
+just don't confirm to this broken specification.  Please, adjust the 
+specification, not the systems.
+</pre>
+
+Kryshna Myneni writes &lt;915bf38a-0edc-41be-bd21-ff85dbf49f48@18g2000yqm.googlegroups.com&gt;:
+
+<pre>
+I've argued that we need to remove "F to S" from the language for a
+time, in order to reset its spec. This was based on finding that
+different Forth systems performed different kinds of rounding. I can't
+accept the proposal to define this word in terms of "F to D", unless
+the spec. for "F to D" is clarified to be unambiguous with respect to
+rounding. The other valid reason for not specifying "F to S" in terms
+of "F to D" was given by both Marcel and Bernd. I also don't plan to
+implement this proposed "F to S" in kForth.
+</pre>
+
+Bernd Paysan writes &lt;2582576.MVdGcY4r0L@sunwukong.fritz.box&gt;:
+
+<pre>
+VFX does the same thing Marcel and I am doing, it uses 
+FSTP to a dword.  Which means the Intel architecture overflow handling 
+checks for overflow, and therefore
+
+> : F>S  F>D D>S ;
+
+does not produce the same result.
+
+1e15 f>d drop . -1530494976  ok
+1e15 f>s . -2147483648  ok
+</pre>
+
+
+
+<h4>Change History</h4>
+
+
+initial version  15 March 2012<br>
+version 1.1  First Revision  09 April 2012<br>
+Charles G. Montgomery  <tt>cgm<tt>@</tt>physics.utoledo.edu</tt>
+
+
+<h4>Problem</h4>
+
+It is not uncommon in forth programs using floating point to need to
+convert a single-cell value to its floating point representation, or
+the reverse, for further use.  While this is possible using the standard
+words S&gt;D D&gt;F F&gt;D and D&gt;S , it can be inconvenient, and may result in
+inefficiency by forcing a conversion to double numbers, particularly
+on systems with a large cell size.  Many systems which provide floating
+point support already include CODE definitions to accomplish these
+tasks.  It may be useful for the Standard to include specifications
+for words to provide these capabilities.
+
+<h4>Proposal</h4>
+
+Add two words to the Floating Extension wordset:
+
+<pre>
+S&gt;F     "s-to-f"        ( n -- ) ( F: -- r ) or ( n -- r )
+</pre>
+r is the floating-point equivalent of the single-cell value n.
+
+<pre>
+F&gt;S     "f-to-s"        ( -- n ) ( F: r -- ) or ( r -- n )
+</pre>
+n is the less significant portion of the double word that would be
+produced by the word F&gt;D applied to the floating-point value r.
+An ambiguous condition exists if applying F&gt;D to r would result in
+an ambiguous condition.
+
+<h4>Remarks</h4>
+
+Specifying F&gt;S in terms of the behavior of F&gt;D should prevent any
+ambiguity that isn't already present in F&gt;D, and inherit its
+freedom from overspecification.  It should ease the task of adding
+these words to a system that doesn't already provide them but does
+include the floating-point word set.  Of course it's an
+"as if" specification.  The value n is what would result from
+executing F&gt;D D&gt;S , although it need not be obtained that way.
+
+<p>Discussions in response to the original version of this proposal
+have largely concentrated on the issue of whether it is good or bad to
+specify the behavior of the proposed word F&gt;S in terms of the specified
+behavior of other words.  I recognize valid points made on both sides
+of this issue; I fail to find either side overwhelmingly persuasive.
+
+<p>An alternative specification which avoids reference to the behavior of
+other words could be:
+
+<pre>
+F&gt;S     "f-to-s"        ( -- n ) ( F: r -- ) or ( r -- n )
+</pre>
+n is one of the single-cell values that corresponds to the floating-
+point value r.  If more than one integer corresponds to r in the
+particular implementation of integer and floating-point values
+provided by the system, it is implementation-dependent which of them
+is returned.  A program which relies on a specific choice must
+declare an environmental dependency (or include code to guarantee
+the desired result, for example by using words like FLOOR or FROUND
+before F&gt;S .)
+<p>An ambiguous condition exists if the floating point representation
+in use does not specify an corresponding integer (for example, NAN
+or INF or some such).
+
+<p>This form of specification is even less precise than the previous,
+since it provides no requirement of consistency in the behavior of
+the two similar words F&gt;D and F&gt;S , which might be considered either
+an advantage or a disadvantage.  It seems to be consistent with the
+general disinclination to restrict floating-point implementations,
+as expressed in Section 12.3.1.2.
+
+<p>There have also been suggestions for adding a larger set of new words,
+such as FROUND&gt;S , FTRUNC&gt;S , which specify the rounding method of the
+floating point value.  But in the cases where this is needed it can be
+handled before invoking F&gt;S.
+
+<p>In practice, S&gt;F is used much more often than F&gt;S .
+
+
+<h4>Reference implementation</h4>
+
+ANS versions could be
+<pre>
+: S&gt;F  S&gt;D D&gt;F ;
+: F&gt;S  F&gt;D D&gt;S ;
+</pre>
+
+<h4>Experience</h4>
+
+The Forth Scientific Library utility files provide high-level
+definitions for these words, so they are available in some form
+in any system that provides the FSL.
+
+<p>Besides this, systems that already provide the words include
+VFX, Gforth, bigForth, 4tH.  I'm sure there are others.
+
+
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+&lt;anton<tt>@</tt>mips.complang.tuwien.ac.at&gt;.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+
+<h5>Ballot for systems</h5>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the brackets
+or in the line below the statement.  Multiple hits for the same system
+are possible (if they do not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+[ ] There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please do
+so informally, and I will aggregate this information in some way.
+
+
+<h5>Ballot for programmers</h5>
+
+Just mark the statements that are correct for you (e.g., by putting
+your name on the line below the statement you agree with).  If some
+statements are true for some of your programs, but not others, please
+mark the statements for the dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+     I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+     proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from the
+proposal (especially if you have used that in your programs), make an
+informal comment, and I will collect these, too. Note that the best time
+to voice such issues is the RfD stage.
