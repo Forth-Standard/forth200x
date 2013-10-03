@@ -1,0 +1,66 @@
+Attendance:
+Leon Wagner
+Andrew Haley
+Willem Botha
+Gerald Wodni
+Bernd Paysan
+Ulrich Hoffmann
+Anton Ertl
+Willi Stricker
+Stephen Pelc
+Peter Knaggs
+
+Voting:
+Willi Stricker is allowed to Vote: 9Y:0:0
+
+2. Minutes of last meeting
+    2 amendments to draft minutes
+    accepted with these two amendments 10Y:0:0
+
+3. Review of Forth 2011.1
+   Discussion including various proposals for minor changes
+
+7. Consideration of the Candidate Release
+   a) Review of rc0
+   b,c,d,f) Chapter 5, Annex B, Annex E is left unchanged, Annex C is
+      deleted 10Y:0:0
+   e) Annex D
+     D.1-D.6 written by Peter Knaggs and accepted 10Y:0:0
+     D.7 written by Peter Knaggs and Anteon Ertl and accepted
+     D.8 Use list of new words written by Peter Knaggs; accepted
+   f) Started revision of Annex E, deferred the rest to Leon Wagner
+
+4. Consideration of proposals (CfV)
+
+   a) S-to-F
+      Discussion about F>S (overspecified in CfV)
+        Bernd Paysan drafts a new specification based on F>D
+     accepted the proposal with Bernd Paysan's F>S specification 
+
+5. Consideration of draft proposals (RfDs)
+
+   
+
+6. Wording changes
+   Discussion of wording change proposed for SUSTITUTE 10Y:0:0
+   Rationale of PARSE cleaned up 10Y:0:0
+
+9. Matters arising
+ TO Rationale revised
+ Wording changes: Occurences of "via" and "assign" examined and often revised
+ Address arithmetic: Revise stack effects
+ Revised Annex A (mostly deletion of differences between Forth-83 and -94;
+   read Forth-94 if you want that)
+ A.18: Bernd Paysan will write rationale for the words of the xchar wordset
+ 
+ How to proceed: There will be a draft (12) and a Snapshot release
+ candidate (rc1) ideally released by SVFig Forth Day (there needs to
+ be a committee vote first).  Then a 6-month review period; any
+ responses should be made through a bug tracker, get assigned to a
+ committee member for drafting a response, and eventually committe
+ consensus for the response.
+
+ Formal standards body: Discussion on whether we shout get the
+ blessing of a formal standards body.  There is no enthusiasm for
+ that, but no decision was taken.
+

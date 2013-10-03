@@ -1,0 +1,122 @@
+1. Attendance
+
+Ulrich Hoffmann
+Willi Stricker
+Peter Knaggs
+Stephen Pelc
+Leon Wagner
+Anton Ertl
+Gerald Wodni
+Bernd Paysan
+Simon Kaphahn
+
+Simon Kaphahn is allowed to vote (7Y:0:0)
+
+2. Minutes
+
+Accepted 8Y:0:0
+
+3. Review
+
+Wording change in 1.3.2 8Y:0:0
+
+3.4.1.3 is not just an editorial change.  Vote for actually making the
+change: 7Y:0:1N
+
+12.6.2.1471 F>S: delete "precisely" 8Y:0:0
+
+Make F>D reflect F>S: no precisely, add "Note"
+
+Append to the note: "because f>s rounds towards 0" 8Y:0:0
+
+Add similar note to F>D 8Y:0:0
+
+Ambiguous condition in S>F and D>F: Should probably be replaced with a
+tighter specification (such as "rounds to nearest"), but not now.
+
+12.6.2.1517 FFIELD name execution: remove "float aligned" 8Y:0:0XS
+and check the other field words
+
+17.6.2.2255 SUBSTITUTE: replace "ambiguous condition" with "error" 8Y:0:0
+            return value n is positive _or zero_ 8Y:0:0
+
+A.1.2 When judging relative merits _of proposed changes to the standard_
+
+A.3.3.2 replace discontinuous with discontiguous
+
+A.6.1.1760 add LOOP to example
+
+A.6.2.0620 add : X ... ; to example
+
+A.6.2.0945 COMPILE, reword AE, BP accepted 9Y:0:0
+
+A.6.2.2008 Delete all but the first sentence of b.4
+
+A.6.2.2295 s/, on the same line,/and on the same line/
+
+A.7 remove the second new paragraph
+
+A.12.6.2.1516 rewording of last paragraph
+
+C.6: some rearrangement and fixes
+
+The document is reflects the decisions of the committee at the 2012
+meeting, apart from the chanes identified above and the ones to be
+discussed in section 6 and 7.  8Y:0:0
+
+4. Turned it into document form with minor substantive changes.  Accepted 9Y:0:0
+
+5. rewritten 9Y:0:0
+
+6. Wording changes
+
+b) New text for C.7.1 proposed by Peter Knaggs 9Y:0:0
+
+c) New text for C.7.2 FP stack stuff by Peter Knaggs 8Y:1N:0 
+
+d) wordset queries: new text 9Y:0:0
+
+e) TO gets new targets; new text, decision delayed
+
+f) Throwable iors: ?
+
+g) EKEY: new text by AE: 9Y:0:0
+
+h) Enhanced locals: Revised text 8Y:0:0
+
+i) fasinh: 8Y:0:0
+
+j) fatan2: 8Y:0:0
+
+k) number prefixes 8Y:0:0 
+
+m) source-id: text drafted at meeting 8Y:0:0
+
+
+8.
+
+a) new text for 18.3.5 by Bernd Paysan 9Y:0:0
+
+11. Date of next meeting:
+
+Electronic vote on October 30 16h UTC on rc2
+Electronic meeting on February 3rd 16h UTC on making rc2 final
+9Y:0:0
+
+2 day meeting before next EuroForth 8Y
+
+
+Any other business
+
+a) Membership list
+  All members and former members should be mentioned
+  All (successful) proposers should be mentioned as contributors
+  9Y:0:0
+
+b) SP: We need a project manager that makes people do their job (no decision)
+
+c) GW: Wiki for standards development
+
+d) AE: Is converting ^C to an exception non-standard?  It is standard,
+because of 9.3.4, and "User Interrupt" is one of the ambiguous
+conditions mentioned there.

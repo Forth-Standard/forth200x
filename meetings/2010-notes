@@ -1,0 +1,100 @@
+Present:
+
+Ulrich Hoffmann
+Peter Knaggs
+Gerald Wodni
+Anton Ertl
+Willem Botha
+Stephen Pelc
+Leon Wagner
+Andrew Haley (from 23rd)
+Bill Stoddart (from 23rd)
+Bern Paysan (from 24th, 13:00)
+
+Accept minutes of last meeting: 7y/0n/0a
+
+Reviewed the Forth200x 09-3 document
+
+Progress reports
+  Text substitution  Action: RfD and CfV
+  Integration of RFIs: take it off-line
+
+Considerations of draft proposals:
+
+Unobsolete FORGET - folded into an RfC
+:NAME - first have a discussion on compilation, and parsing words
+Internationalisation - split off several proposals: substitution, xchars
+   Action: SP, PK, WB: get the rest into proposal format
+Wordset queries: Accepted 7y/0n/0a
+caddr/len withdrawn because of introduction of pchars
+BUFFER:  another RfD and soon after CfV  Action: PK
+File names and Directories:
+  Embedded file systems with \ as directory separators
+  Action: AE documents environmental dependencies and restrictions on
+          other file names
+          SP and LW check whether it is feasible to support / on these
+          file systems
+Directories: AE will pick it up in later years again
+Enhanced local variable syntax: CfV out, votes in, vote later
+SIZE: could be revised based on the feedback, but this has not happened;
+      hard to implement on some systems
+HEADER - same as :NAME
+<BUILDS - would break CREATE ... DOES>.  No chance of adoption.
+IEEE FP - progress report
+  discussion about reference implementation
+FNEGATE - should be rolled into IEEE FP
+Memory Access Words: go back to earlier RfD
+
+
+CfVs:
+
+SYNONYM - 7y/0n/2a put it in TOOLS EXT (by consensus)
+EKEY event record
+  long discussion on lifetime (based on the non-existence of systems with
+          limited lifetime)
+  Change proposal to replace point 4 with the removal of the last paragraph
+	 of the rationale 8y/0n/1a
+  Vote on the modified proposal: 7y/0n/2a
+RfC 9/0/0
+Escaped Strings 8/0/0
+N>R 8/0/0
+Legacy  Long discussion about FORGET
+        Most of the committee wanted to maintain the fantasy 
+	that we will be able to get rid of FORGET
+  without section 4 7y/0n/1a
+     Change the rationale text to the version in the proposal (4.2) 8/0/0
+     adopt the removal of obsolescense (4.1) 1y/7n/0  
+Structures wording 8/0/0
+Enhanced local variable syntax
+  at first we erroneously thought it to be CfVd
+  and we voted on it 6y/0n/2a, but that is moot, because there was no CfV
+xchars (as in CfV) 7/0/1a
+ xchar wording changes 10/0/0
+
+Matters Arising
+  Non-CfV for Extended locals
+    Send out revised RfD
+      wording changes: americanize (for ANSI) up to the editor
+      other wording changes from last RfD feedback
+    Do CfV in a week
+    Have current standings in 2 weeks
+    Do an email vote right afterwards
+  Same for BUFFER:
+  RFIs
+    RFI 1: draft of new wording
+    RFI 4: follow suggestion in TC's reply
+    Both go out as RfCs
+
+
+Date of next meeting
+  Voting meeting: EuroForth, possibly electronic earlier
+  Wait until the document is out before deciding on Spring meeting
+
+Any other business
+  Snapshot: Make the next editorial changes available and vote on them
+	electronically (among the committee members with voting
+	rights) until Nov 1, then make Snapshot (until December 1) by
+	removing the "change" markup.
+  Parsing words in general, EXECUTE-PARSING
+  compilation discussion: tightening up the meaning of all these
+    various behaviours

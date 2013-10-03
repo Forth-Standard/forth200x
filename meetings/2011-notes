@@ -1,0 +1,147 @@
+Present:
+
+Anton Ertl
+Andrew Haley (from 21st 4:45pm)
+Peter Knaggs
+Bernd Paysan
+Stephen Pelc (plus proxy vote from Willem Botha)
+Bill Stoddart (from 22nd afternoon)
+Carsten Strotmann (observer)
+Leon Wagner
+Gerald Wodni (absent on morning 22nd until 11:15)
+
+Minutes:
+Accepted minutes of last meeting: 7Y/0/0
+
+Snapshot:
+Stephen Pelc proposes taking what we have and using it as a snapshot:
+
+We commit to use the 10.2 document with the changes from this meeting
+as the 2011-rc1 snapshot document, with no normative changes except
+for those resulting from feed back from the public review process.  7Y/0/0
+
+Discussion about whether to go through ANSI: stick to ANSI procedures,
+but don't go through the organization for now (may change after
+commercial reasons require it).
+
+
+Review of the document:
+
+Discussion about whether the reference implementations should be
+included in the document.
+
+Legacy: Finetuning of the wording of the rationale for FORGET.
+
+Reference Forth-94 as "Forth 94" and define somewhere what document
+this refers to.
+
+Correct section numbering for Extension queries and Obsolescent
+Environmental Queries in Annex A.
+
+Fine-Tuning of the wording of the rationale Obsolescent Environmental
+Queries.
+
+X:structures2: correct stack-effects to use the correct address types;
+some discussion about whether it should not be, e.g., u|df_addr (or x)
+in order to accomodate the usage for computing offsets, but eventually
+decided against it (for aesthetic and clarity reasons).  Rationale for
+FIELD: add stack comments and remove the other comments to
+implementations.
+
+4. Consideration of proposals
+
+X:enhanced-locals: some wordsmithing of the Rationale
+   accept with revised Rationale: 7Y/0/0
+
+X:buffer: discussion about alignment issues (deferred)
+   wordsmithing of Rationale
+   vote: 7Y/0/0
+
+X:text-substitution:
+   added restrictions to REPLACES (reflecting implementation practice)
+   Rationale will come from Intro of proposal
+   Vote 8Y/0/0
+
+5. Considerations of draft proposals.
+
+X:is
+   Rewordings. 8Y/0/0
+
+FOUND:
+   Addresses a problem that exists, but the proposed solution was not
+   favourably received by the committee.  Some response was written by
+   the TC.  Actually having this proposal in this section is a mistake
+   (it was not submitted as CfV).
+
+Multi-tasking Block Buffers: Minor wordsmithing, then the suggested
+   (non-normative) change was accepted: 9Y/0/0.
+
+SOURCE-ID discussion: Implementations that slurp/mmap on including are
+   standard; programs cannot rely on file positions for files that are
+   being text interpreted, nor that changing the file position has any
+   particular effect.
+
+6. Considerations of Snapshot Candidate Release
+
+a) Numbering of new words: 8Y/0/0
+
+b) Removal of extension queries:
+   Adjusted for number prefixes (optional)
+   Vote: 9Y/0/0
+
+c) Remove Annex F (reference implementations); they are available
+   through the Forth200x web site in a separate document.  9Y/0/0
+
+d) Remove Annex G (test suite); it is available through the Forth200x
+   web site in a separate document.  9Y/0/0
+
+e) Remove the change log (to be replaced with a summary in another
+   Annex).  9Y/0/0
+
+f) Annex C: Remove it.  It is somewhat dated and everyone who reads
+   the standard knows Forth.  9Y/0/0
+
+g) Annex D: Remove most of it and replace it with a summary of the
+   changes from Forth-94.  Action: PK; 9Y/0/0
+
+h) Annex E.  Revise it.  Action: AE
+
+Remove description of proposal process.
+
+7) Progress Reports:
+
+a) Text Substitution: Done
+
+b) I18n: Dependent on Text substitution, now progress is possible
+
+c) Cross compiler: A little bit to report
+
+d) IEEE FP: Nothing to report.  Requires a lot of work.
+
+e) File Names and Directories: SP reports that this can be implemented
+   in his embedded native FAT file system implementation, so we may
+   approach consensus.
+
+f) Directories: Maybe progress from having text substitution.  SP
+   reports that VFX now does source-relative directories through a
+   text substitution macro %idir%.
+
+g) Memory access: some discussion
+
+
+8. Matters arising
+
+Documentation requirements: AE will produce a version that removes
+most of it; ambiguous conditions are collected in an Annex.
+
+Compliance and Labeling: PK will move extensions from other chapters
+   into a table here.
+
+Incomplete xchars in I/O: consensus that this should work.  BP is to
+   draft a response.
+
+
+9. Next meeting
+
+If the snapshot-rc1 is released in 2011, we will have a spring meeting
+   in NL.  In any case we will have a meeting at the next EuroForth.
