@@ -12,26 +12,73 @@ See <a href="#voting">below</a> for voting instructions.
 
 <pre>
 [ ] conforms to ANS Forth.
+ WF32 (Alex McDonald)
+ Gforth (Anton Ertl)
+ SwiftForth (Leon Wagner)
 [ ] already implements the proposal in full since release [ ].
+ WF32 0.3
 [ ] implements the proposal in full in a development version.
+ Gforth
 [ ] will implement the proposal in full in release [ ].
 [ ] will implement the proposal in full in some future release.
 [ ] There are no plans to implement the proposal in full in [ ].
+ SwiftForth
 [ ] will never implement the proposal in full.
+ Mark Wills' system (Mark Wills)
 </pre>
 
 <h5>Programmers</h5>
 
 <pre>
 [ ] I have used (parts of) this proposal in my programs.
+ Alex McDonald
+ Anton Ertl
 [ ] I would use (parts of) this proposal in my programs if the systems
      I am interested in implemented it.
+ Timothy Knox
 [ ] I would use (parts of) this proposal in my programs if this
      proposal was in the Forth standard.
+ Timothy Knox
 [ ] I would not use (parts of) this proposal in my programs.
+ Brad Eckert
+ Roelf Toxopeus
+ Mark Wills
 </pre>
 
 <h5>Informal results</h5>
+
+Brad Eckert writes:
+
+<pre>
+This proposal is oriented more toward tool writers than application
+writers. For applications, it's too weak to be useful. My last application
+that needed to traverse a wordlist simply compiled its own links to the
+dictionary and traversed forward instead of backward.
+
+Tool writers can port their pet tools to the different Forths.
+</pre>
+
+David Harralson writes:
+
+<pre>
+The sentence "Although names of definitions are required to be at least 31 characters in length"
+
+should read
+
+ "Although the maximum length of names of definitions are required to be at least 31 characters in length"
+</pre>
+
+Anton Ertl writes:
+
+<pre>
+The glossary entry for NAME>INTERPRET should probably refer to
+interpretation semantics, not execution semantics, i.e.:
+
+NAME&gt;INTERPRET returns an xt (execution token) as discussed in
+DPANS 3.4.3 Semantics. This xt represents the interpretation semantics
+of the definition. It may be zero if there are no interpretation
+semantics.
+</pre>
 
 <h4>Change History</h4>
 
@@ -371,6 +418,9 @@ mailing to me, and the results will be published here.
 <p>Note that you can be both a system implementor and a programmer, so
 you can submit both kinds of ballots.
 
+<h4>Author</h4>
+
+Alex McDonald
 
 <h5>Ballot for systems</h5>
 

@@ -1,22 +1,28 @@
 #frozen proposals:
 
 CFVS=	2value \
+	buffer \
 	deferred \
 	defined \
 	ekeys \
+	escaped-strings \
 	extension-query \
 	fasinh-lt0 \
 	fatan2 \
 	fp-stack \
 	ftrunc \
 	fvalue \
+	locals \
+	n-to-r \
 	number-prefixes \
 	parse-name \
 	required \
+	s-to-f \
 	structures \
 	synonym \
 	text-substitution \
 	throw-iors \
+	traverse-wordlist \
 	xchar
 
 
