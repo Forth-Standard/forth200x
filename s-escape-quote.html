@@ -9,6 +9,9 @@
   ul.results li:first-line { font-weight: bold; }
   .history dd { margin-bottom: 1ex; }
   .def dd { margin-bottom: 2ex; }
+  div.glossary { text-align: center; margin-top: 1ex; }
+  .glossary span.def { float: left; }
+  .glossary span.wordset { float: right; }
   </style>
 </head>
 <body>
@@ -29,19 +32,23 @@ See <a href="#voting">below</a> for voting instructions.
 	VFX Forth (Win/OSX/Linux)<br/>
 	Forth 7 cross compilers<br />
 	SwiftForth<br />
-	SwiftX
+	SwiftX<br />
+	Gforth
 </dd>
 <dt> [ ] already implements the proposal in full since release [ ].</dt>
 <dd>iForth<br/>
 	VFX Forth (Win/OSX/Linux)<br />
 	SwiftForth (since 3.0.0 07-Aug-2006)<br />
-	SwiftX (since 3.2.2 31-Dec-2003)
+	SwiftX (since 3.2.2 31-Dec-2003)<br />
+	Gforth (since snapshots)
 </dd>
 <dt> [ ] implements the proposal in full in a development version.</dt>
 <dt> [ ] will implement the proposal in full in release [ ].</dt>
 <dt> [ ] will implement the proposal in full in some future release.</dt>
 <dd>Forth 7 cross compilers</dd>
-<dt> [ ] There are no plans to implement the proposal in full in [ ].</dt>
+<dt> [ ] There are no plans to implement the proposal in full in [ ].
+<dd>4tH [3.62.3]</dd>
+</dt>
 <dt> [ ] will never implement the proposal in full.
 </dl>
 
@@ -51,7 +58,8 @@ See <a href="#voting">below</a> for voting instructions.
 <dd>Marcel Hendrix<br/>
 	Mitch Bradley<br/>
 	Gerry Jackson<br />
-	Graham C Smith
+	Graham C Smith<br />
+	Bernd Paysan
 </dd>
 <dt> [ ] I would use (parts of) this proposal in my programs if the systems I am interested in implemented it.</dt>
 <dd>Mitch Bradley<br/>
@@ -62,7 +70,7 @@ See <a href="#voting">below</a> for voting instructions.
 	Gerry Jackson
 </dd>
 <dt> [ ] I would not use (parts of) this proposal in my programs.</dt>
-<dd>
+<dd> Hans Bezemer
 </dd>
 </dl>
 
@@ -87,6 +95,22 @@ See <a href="#voting">below</a> for voting instructions.
 	and compilation as similar as possible.
 	</p>
 </li>
+<li>Hans Bezemer<br/>
+	This word is only available through libraries and the preprocessor and 4tH
+	programmers should consider it foremost as an aid for porting ANS Forth
+	programs. Most of the proposal is supported, except for \m, which is expanded
+	as 'm' instead of CR/LF. It is the only escape code that standard expands to
+	multiple bytes.
+	<p>
+	Due to 4tH's architecture it has ALWAYS been available in 'interpretation'
+	mode (4tH doesn't have a 'real' equivalent to that state - it defined there
+	as 'outside a definition'). The code is expanded at runtime - not compile
+	time.
+	</p><p>
+	In 4tH there are plenty of alternatives to resolve the kind of problems where
+	S\" is the ANS Forth solution. Therefore it is not part of the core. I never
+	used it myself - apart from programs to test the current implementation.
+	</p>
 </ul>
 
 <h2>Rationale</h2>
@@ -167,9 +191,12 @@ Add a new section with the text
 </blockquote>
 
 <strong>11.6.2 File-Access extension words</strong>
-<pre>
-11.6.2.2266 S\&quot;               s-backslash-quote             FILE EXT
-</pre>
+<div class="glossary">
+	<span class="def">11.6.2.2266 <code>S\&quot;</code></span>
+	<span class="wordset">FILE EXT</span>
+	s-backslash-quote
+</div>
+
 <dl class="def">
 <dd>Extend the semantics of 6.2.2266 S\&quot; to be:</dd>
 <dt>Interpretation: ( <em>&quot;ccc&lt;quote&gt;&quot;</em> -- <em>c-addr u</em> )</dt>
