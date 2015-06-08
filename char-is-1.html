@@ -1,0 +1,172 @@
+<title>1 char = 1</title>
+
+<h3>1 chars = 1</h3>
+
+
+<pre>
+Problem
+
+While Forth-94 and Forth-2012 provide the option to systems that
+1 CHARS > 1, to my knowledge no mainstream Forth system has
+made use of this option.  Consequently, many Forth programmers write
+programs that (according to the standard documentation requirements)
+should declare an environmental dependency on 1 CHARS = 1.
+
+Even those programmers that want to avoid this dependency cannot
+easily test that their program does not have it, because so few Forth
+systems are available that do not satisfy this dependency.  And in any
+case, spending an effort to avoid an environmental dependency that all
+interesting systems satisfy seems wasteful; alternatively, declaring
+the environmental dependency does not beneit anyone, either.
+
+
+
+Solution
+
+Characters take one address unit (au)in memory.
+
+CHARS can be implemented as noop
+CHAR+ is equivalent to 1+
+
+These words are not removed.  So programmers who like to program for
+systems (whether existing or not) where 1 CHARS>1 still can do so.
+
+As a consequence, on byte-addressed machines, characters normally take
+one byte; on word-addressed machines, characters and cells take one
+machine word.
+
+
+Remarks
+
+What about word-addressed machines?
+
+Implementing standard Forth on word-addressed machines already
+necessitates that char=au: a character in standard Forth must be at
+least on address unit wide, and be at most as large as a cell; on
+word-addressed machines, cell=au, so char=au follows from that.
+
+There have been occasionaly ideas about supporting a packed character
+representation (with more than one character per au) for
+word-addressed machines, but that is beyond the scope of this
+proposal.
+
+What about nibble-addressed/bit-addressed machines?
+
+No implementations of standard Forth on such machines are known to me;
+probably the benefits of standard systems do not outweigh the costs on
+such restricted machines.  Such machines are becoming rarer over time,
+so if nobody has created such a system yet, it is unlikely to happen
+in the future.  
+
+Still, if anybody wants to create such a system, they would have two
+options: Declare an environmental restriction of having a non-standard
+character size, or implement an address unit size of (e.g.) 8 bits.
+Which option is preferable depends on the use of the system.
+
+What about other unusual hardware setups?
+
+I heard of an embedded system with 16-bit address units and 32-bit
+chars.  If we standardize on 1 chars = 1, the simplest way forward for
+such a system would be to declare an environmental restriction of
+having a non-standard char size; alternatively, one could try to
+change the char size to 16 bits, or the address unit size to 32 bits.
+I don't know enough about the system to make any recommendation among
+these options.
+
+What about Unicode?
+
+An important motivation for the introduction of CHARS and CHAR+ in
+Forth-94 was probably the seeming move to 16-bit characters with
+Unicode in the early 1990s, which also led to 16-bit characters in
+Windows NT (released 1993) and in Java (released 1995).
+
+However, 16 bits turned out to be too little for storing Unicode code
+points (Unicode 2.0 1996), so UTF-16 (Unicode based on 16-bit basic
+units) is is a variable-width encoding; at around the same time UTF-8
+was introduced for encoding Unicode with 8-bit basic units, which
+requires less conversion effort for software based on 8-bit chars, and
+has the same disadvantage of being variable-width as UTF-16 (which
+turns out to play little role in most software).
+
+As a result, with a few exceptions (see below) Forth systems have
+stayed with 8-bit characters, and they are not alone in this: UTF-8 is
+the dominant file representation of Unicode, and most Unix software
+handles Unicode also internally as UTF-8 (can anyone fill in here for
+Windows).
+
+Jax4th and JavaForth
+
+<a href="http://www.well.com/user/jax/rcfb/forth.html">Jax4th</a> was written by Jack Woehr (Jax) as a proof of concept
+implementation of Forth-94, and implements 16-bit characters on a
+byte-addressed platform.  It is not maintained (current platform:
+Windows NT 3.1).
+
+<a href="http://www.rigwit.co.uk/forth/">JavaForth</a> was written in 2014 by Peter Knaggs with primitives in Java.
+It uses 32-bit cells, 16-bit chars and 8-bit address units.  Because
+Java does not allow access to raw memory, JavaForth has to map Forth
+memory to a Java array of some Java type anyway, and is pretty free to
+choose address unit, character and cell size; it seems to me that it
+would be simplest if Java Forth actually implemented
+cell=char=au=32bits.
+
+My impression is that Peter Knaggs chose the address unit and
+character size to allow testing whether programs have an environmental
+dependency on char=au (but that is still difficult for most programs
+because JavaForth implements only the core words).  While one might
+feel that the effort that went into getting this to work would be
+wasted if this proposal is accepted, this effort has been expended
+already, and is no good reason not to standardize the common practice
+that char=au.  JavaForth could adopt the proposal by having 8-bit
+chars or 16-bit aus, or in any other way; or it could keep the current
+choices (and declare an environmental restriction on char>au) to serve
+as testing platform for programs that should be able to cope with that
+environmental restriction.
+
+
+
+Typical use
+
+s" Some string" dup       buffer: s s swap move
+
+instead of Forth-2012:
+
+s" Some string" dup chars buffer: s s swap Cmove
+
+
+
+Proposal
+
+3.1.2 Replace "be at least one address unit wide" with "be exactly one
+address unit wide".
+
+Keep the rest as-is.  While some wordings could be simplified (in
+particular wrt character-aligned addresses, and the definitions of
+CHARS and CHAR+), keeping them as-is gives guidance to programmers who
+want to write char>au-capable code, and to system implementors who
+implement a Forth system with the environmental restriction char>au.
+
+
+Reference implementation
+
+Nearly all standard Forth systems, e.g., SwiftForth, VFX, iForth,
+Gforth, ...
+
+
+Test cases
+
+T{ 0 char+ -> 1 }T
+T{ 1 chars -> 1 }T
+
+
+Experience
+
+Almost universally implemented and widely used.
+
+
+Comments
+
+None yet.
+</pre>
+
+
+
