@@ -1,0 +1,95 @@
+Attendance
+
+Sergey Baranov
+Paul Bennett (from Wednesday 15:00)
+Willem Botha
+Anton Ertl
+Ulrich Hoffmann (from Thursday 10:40-12:30, 16:45-18:00, Friday 9:00-)
+Peter Knaggs
+Stephen Pelc
+Leon Wagner
+Gerald Wodni
+
+
+Sergey Baranov and Paul Bennett were voted to be allowed as voting
+members (6Y:0:0)
+
+The Minutes are an accurate representation of the last meeting: 5Y:2A:0
+
+2.5 Process Amendmends
+
+Stephen Pelc's points:
+Focus
+ Libraries
+ Minutes
+ Acceptance issues (reduce the size of CORE)
+ Marketing
+ We need a driver/chaser
+
+Libraries:
+  relative filenames
+  package format
+    little workshop for package description format
+
+Small embedded systems and the standard
+  Some discussion, no resolution
+
+Discussion on how to load the float wordset portably, and loading
+libraries in general.
+
+Process
+  Minutes
+    Do an electronic vote on the minutes two weeks after the last revision
+      (that had no comments)
+    The electronic vote runs for 14 days
+    Separate Minutes for electronic meetings, same procedure
+    Voting rights are gained and lost from attending physical meetings
+  Revised text of committee membership and electronic meeting
+  8Y:0:0
+  Try out a public electronic meeting
+
+Fix S"
+  make an RfD (volunteer AE)
+
+3a) 1 chars = 1: 6Y:3A:0, 3 people will need more time, so
+    we will vote on it again
+3b) 2s-complement: accepted, further wordsmithing 8Y:0:0
+
+4a) quotations: Feedback:
+  We need to wait some more time for experience
+  The RfD needs to be out on the Forth200x mailing list
+  It would be useful to have:
+    Numbers on the number of short single-use ticked words in programs
+    or on return-address manipulation uses that could be replaced with that
+
+4b) recognizers: Feedback:
+    Needs some more years and more changes to the proposal
+    Criticized things:
+    R:FAIL really necessary?
+    Don't require specific implemention of the text interpreter
+      Allow keeping existing text interpreters for backward compatibility
+      and allow gradual transition
+    More flexible recognizer list handling
+      Allow switching between prepared recognizer lists
+
+4c) Not yet RfD: Packages and Libraries
+  Needs two words
+
+5) No RfCs to discuss
+
+6) Forth Wiki
+  Demonstration and Disciussion
+   
+7)
+ a) Library process
+ b) meaning of xt etc.: delay discussion
+ c) AE does the alternative double input thing
+ d) GW is working on a proposal
+ e) BP should do something, because he has experience with multi-threading
+ f) Internationalisation: Do it as a library: SP, WB
+ g) Cross-compiler: drop it
+ h) IEEE FP: proponents missing; consider a reduced proposal
+ i) Directories/filename: Proponent dropped it
+ j) Memory access: Old proposal too big, try new proposal
+
+9) Next meeting: 2 days again before the next EuroForth
