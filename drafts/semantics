@@ -1,0 +1,152 @@
+This article explains the notions of semantics in Forth-94 (which is
+unchanged in Forth 200x), and eventually discusses some of the murky
+parts of the specification, how to interpret it, and how to clarify
+it.
+
+In the programming language literature, semantics means the meaning of
+some piece of code.  In Forth-94 and Forth 200x, semantics means the
+behaviour or action associated with a word; there are several
+semantics associated with each word (which one is used, depends on the
+context).
+
+The two main semantics are:
+
+Interpretation semantics: used when a word is interpreted by the text
+interpreter in interpret state.
+
+Compilation semantics: used when a word is interpreted by the text
+interpreter in compile state.
+
+Unless explicitly undefined, each word has both of these semantics.
+
+The other semantics are used only to define the interpretation and
+compilation semantics of words:
+
+Execution semantics: For most words (including all user-defined
+words), execution semantics is defined, and interpretation and
+compilation semantics is derived from that: By default the
+interpretation semantics is equal to the execution semantics; and by
+default the compilation semantics of a word are to append the
+execution semantics to the currently defined word.  And if a word is
+defined in the standards document by only giving execution semantics
+without explicit interpretation or compilation semantics, the
+specification of that execution semantics is shown without the
+"execution" label used otherwise.  Don't panic, I will give an example
+below.
+
+Run-time semantics and initiation semantics are helper actions used
+in the definition of other semantics.
+
+Example:  Consider the following piece of code:
+
+: foo + ['] dup ;
+foo
+
+What the text interpreter performs is:
+
+Interpretation semantics of :
+Compilation    semantics of +
+Compilation    semantics of [']
+Compilation    semantics of ;
+Interpretation semantics of foo
+
+Now that's a high-level view.  Let's lower the level in two more steps.
+To avoid extreme verbosity, I'll use some abbreviations:
+
+IS(word): Interpretation semantics of word
+CS(word): Compilation    semantics of word
+ES(word): Execution      semantics of word
+Initiation(word): Initiation semantics shown in the entry for word
+Run-time(word): Run-time semantics shown in the entry for word
+
+IS(:)=ES(:) (unlabeled) creates FOO, and appends Initiation(:) to it.
+CS(+)= append ES(+) (unlabeled) to FOO.
+CS([']) given explicitly: append Run-time([']) to FOO.
+CS(;)   given explicitly: append Run-time(;) to FOO and end definition.
+IS(foo)=ES(foo) defined through the actions above (see below)
+
+So, the execution semantics of FOO are:
+
+Initiation(:)
+ES(+)
+Run-time([']) (push xt of DUP on the stack)
+Run-time(;)
+
+Now initiation(:) and Run-time(;) are concerned with the calling of
+FOO and returning from FOO, so the actual payload of FOO is ES(+) and
+Run-time([']) (which corresponds with the usual intuition).
+
+
+
+What is an execution token?
+
+This is the murky part about semantics in Forth-94.  What semantics
+does an execution token represent?  Before I go into an exegesis of
+the standard text, here's my take on it:
+
+An xt represents some semantics; which ones, depends on what word
+created it.  If it was created with ' or ['], it represents the
+interpretation semantics (if they are undefined, ' and ['] may fail,
+or they may produce an xt for some other semantics).  If the xt was
+created with FIND and the word is a normal or immediate word (where
+the execution semantics are defined and IS(word)=ES(word)), the xt
+also represents the interpretation semantics.  For other words (with
+undefined interpretation semantics and/or with special compilation
+semantics), what xt FIND returns (if any) depends on the system and
+may depend on STATE.
+
+Because, in all defined cases, the xt represents the interpretation
+semantics, it is sufficient for a system to implement interpretation
+and compilation semantics; there is no need to define separate
+execution semantics.
+
+In any case, whatever semantics the xt represents, it can be EXECUTEd
+and COMPILE,d.
+
+
+So here's the justification for my opinion:
+
+At first the definition of "execution token" seems to be clear:
+
+from 2.1:
+ execution token:
+    A value that identifies the execution semantics of a definition. 
+
+However, when I asked about ticking EXIT (which has execution
+semantics, but undefined interpretation semantics), I got the
+following answer from Loring Craymer, a member of the Forth-94 TC:
+
+|Neither
+|' EXIT or ['] EXIT can be relied on to return an xt in a standard system.  See
+|the definition of '.  Unless something was inadvertently changed, any word
+|that would have had the "C" attribute in Forth 79 or Forth 83 is not 
+|guaranteed to be findable by ' or [']; I think that the wording in 6.1.0070
+|("When interpreting, ' name EXECUTE  is equivalent to  name.") preserves
+|that intent:  in 6.1.1380, it is stated that "Interpretation semantics for
+|this word are undefined." 
+
+So maybe the execution token identifies the execution semantics of a
+word, but (as far as ' and ['] are concerned) only if the word has an
+interpretation semantics and that is the same as the execution
+semantics.
+
+The other word that produces XTs is FIND.  The wording (6.1.1550) says: 
+
+|For a given string, the values returned by FIND while compiling may
+|differ from those returned while not compiling.
+
+And the Rationale (A.6.1.1550) states:
+
+|words may exist in two versions: a compiling version and an
+|interpreting version. Hence the values returned by FIND may depend on
+|STATE, and ' and ['] may be unable to find words without
+|interpretation semantics.
+
+Which implies that a word may have more than one execution token, so
+not all execution tokens represent the execution semantics (because
+each word has at most one execution semantics).
+
+To clarify these issues in the standard, we should fix the definition
+of "execution token" in 2.1, and tighten the specification of ', ['],
+and FIND.
+

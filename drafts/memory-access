@@ -1,0 +1,57 @@
+Types:
+w-addr
+l-addr
+x-addr
+w       16-bit word, one cell
+dl      32-bit word, two cells
+qx      64-bit word, 4 cells
+uw      zero-extended 16-bit word, one cell
+ul      zero-extended 32-bit word, two cells
+ux      zero-extended 64-bit word, 4 cells
+..be    big-endian
+..le    little-endian
+
+Words for fetching:
+w@  ( w-addr -- uw|uwbe|uwle )
+w@u ( c-addr -- uw|uwbe|uwle )
+l@  ( l-addr -- ul|ulbe|ulle )
+l@u ( c-addr -- ul|ulbe|ulle )
+x@  ( x-addr -- ux|uxbe|uxle )
+x@u ( c-addr -- ux|uxbe|uxle )
+
+wbe ( uwbe -- uw | w -- wbe )
+wle ( uwbe -- uw | w -- wbe )
+lbe ( ulbe -- ul | l -- lbe )
+lle ( ulbe -- ul | l -- lbe )
+xbe ( uxbe -- ux | x -- xbe )
+xle ( uxbe -- ux | x -- xbe )
+
+w>n  ( uw -- n )
+l>n  ( ul -- n )
+drop  ( ul -- u )
+l>d  ( ul -- d )
+\ l>ud ( ul -- ud )
+x>n  ( ux -- n )
+3drop ( ux -- u )
+x>d  ( ux -- d )
+2drop ( ux -- ud )
+
+
+Words for storing:
+
+>l  ( n|u  -- l )
+\ d>l ( d|ud -- l )
+>x  ( n|u  -- x )
+d>x ( d|ud -- x )
+
+w!  ( w w-addr -- )
+w!u ( w c-addr -- )
+l!  ( l l-addr -- )
+l!u ( l c-addr -- )
+x!  ( x x-addr -- )
+x!u ( x c-addr -- )
+
+Patterns:
+
+[wlx]@u? \([wlx][bl]e\)? [wlx]>\([nud]|ud\)
+\(d?>[lx]\)? \([wlx][bl]e\)? [wlx]!u?

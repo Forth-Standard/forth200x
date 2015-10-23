@@ -1,0 +1,38 @@
+SET-COMPILER changes what COMPILE, does and shall only be used for
+optimization (compiling the same semantics that EXECUTE executes in an
+efficient way).
+
+For doing non-default non-immediate compilation semantics (e.g. S"),
+one may provide some other mechanism (e.g.,
+SET-COMPILATION-SEMANTICS).  This affects what FIND produces in
+compilation state and what NAME>COMP produces, but not how COMPILE,
+behaves.
+
+For the classical text interpreter to work, for words where the
+compilation semantics has been changed, in compile state FIND has to
+produce the xt representing the compilation semantics and indicate
+that the word is immediate.
+
+[COMPILE] may have to special-case some words that are implemented as
+immediate or with SET-COMPILATION-SEMANTICS, but have default
+compilation semantics according to the standard (EXIT and LEAVE in
+Gforth).  Alternatively, one might have an additional flag that
+indicates non-default compilation semantics (but that probably does
+not pay off).
+
+For words that cannot be ticked (compile-only words, TO, Forth-2012
+S", etc.), an implementor can use SET-COMPILER to define its
+compilation semantics (in that case a standard program cannot observe
+that COMPILE, does not behave like POSTPONE LITERAL POSTPONE EXECUTE).
+If a word cannot be ticked nor POSTPONEd (TO, Forth-2012 S" etc.),
+implementors can use state-smart implementations.  Whether the system
+actually gives an error on ticking and/or postponing or provides an xt
+for other uses is up to the system.
+
+Long-term perspective: Use recognizers instead of parsing words,
+deprecate words like S", and eventually have only two kinds of words:
+words with default compilation semantics and compile-only words.
+These can be represented nicely with the classical xt+immediate-flag
+setup.  Many special cases go away.
+
+
