@@ -1,0 +1,146 @@
+Article: 63169 of comp.lang.forth
+Path: eternal-september.org!mx02.eternal-september.org!.POSTED!not-for-mail
+From: C G Montgomery <cgm@physics.utoledo.edu>
+Newsgroups: comp.lang.forth
+Subject: RfD: D>F and S>F second draft
+Date: Sun, 29 Nov 2015 17:19:36 -0500
+Organization: the wetware works
+Lines: 123
+Message-ID: <n3fth9$em1$1@dont-email.me>
+Mime-Version: 1.0
+Content-Type: text/plain; charset="ISO-8859-1"
+Content-Transfer-Encoding: 7Bit
+Injection-Date: Sun, 29 Nov 2015 22:17:14 -0000 (UTC)
+Injection-Info: mx02.eternal-september.org; posting-host="dfed739ec1b333b22cb1cf8c24d138dd";
+	logging-data="15041"; mail-complaints-to="abuse@eternal-september.org";	posting-account="U2FsdGVkX1/54hRlzyqgncVhkwq8Q094"
+User-Agent: KNode/4.14.10
+Cancel-Lock: sha1:niI9xn312XHji9+odgTVXdiEKXI=
+Mail-Copies-To: offnoder@yahoo.com
+Xref: mx02.eternal-september.org comp.lang.forth:63169
+
+Author:
+
+Charles G. Montgomery <cgm@physics.utoledo.edu>
+
+Changes from first draft:
+
+A few minor rewordings, non-normative.
+New Comments on integers outside range of floating-point values.
+
+Problem:
+
+The current Forth Standard specification for D>F states that an ambiguous 
+condition
+exists if the double number D cannot be precisely represented as a 
+floating-point
+value.
+Similarly, the specification for S>F calls for an ambiguous condition if 
+the single
+number N can not be precisely represented as a floating-point value.
+
+The purpose of this proposal is to eliminate these ambiguous conditions by 
+instead specifying that if no floating-point value is precisely equivalent 
+to the provided integer the word provides the floating-point value which 
+is closest to the integer.
+
+This is the behavior provided by some Standard Forth systems, and is often 
+what is most useful for the programmer.
+
+Preliminary Remarks:
+
+While Forth is largely untyped, it recognizes the distinction between 
+integer and floating-point values.  Section 12.3.1.2 says "The internal 
+representation of a floating-point number, including the format and 
+precision of the significand and the format and range of the exponent, is 
+implementation defined."  This seems to presume that the representation of 
+a floating-point value is of the form
+    (significand) * (base)^(exponent)  
+where (significand), (base), and (exponent) are integers.  Since Section 
+12.3.2 refers to the "least significant bit" in defining "round to 
+nearest", (base) is presumably 2.
+I am not aware of any Forth which is not consistent with these 
+presumptions.
+So the "representable values" of floating-point numbers is a countable 
+subset of the uncountable real numbers.
+
+Integers in Forth may be signed or unsigned.  Floating point values are 
+almost invariably signed, so (significand) includes a sign.  D in D>F is 
+presumably signed.
+
+Proposal:
+
+In 2.6.1.1130 D>F  (d -- )(F: -- r) replace 
+"r is the floating point equivalent of d.  An ambiguous condition exists 
+if d cannot be precisely represented as a floating-point value"
+with
+"r is the floating-point value which is nearest to d in the sense of 
+'round to nearest' as given in 12.3.2."
+
+In 12.6.2.2175 S>F  (n -- )(F: -- r) replace 
+"r is the floating-point equivalent of the single-cell value n.  An 
+ambiguous condition exists if n can not be precisely represented as a 
+floating-point value."
+with
+"r is the floating-point value which is nearest to n in the sense of 
+'round to nearest' as given in 12.3.2."
+
+Remove the documentation requirements in section 12.4.1.2 for the no 
+longer existing ambiguous conditions from D>F and S>F.
+
+Further Remarks:
+
+D>F is in the FLOATING word set; S>F is in the FLOATING EXT word set.
+
+The reverse operations, F>D and F>S, are unchanged.  For each, the 
+Standard includes a note pointing out that rounding a floating-point value 
+before using them may be desirable.
+
+No change is needed for the possibly relevant words >FLOAT and REPRESENT.
+
+It remains easy to determine whether the conversion between floats and 
+integers is exact, by comparing an initial integer value with the result 
+of D>F F>D or S>F F>S.
+
+Implementation and Testing:
+
+For any system which provides the FLOATING and FLOATING EXT word sets and 
+does not already comply with this proposal it should not be difficult to 
+implement.
+Whether floating-point support is in hardware or software, if FROUND and 
+similar words can be provided it should be no harder to provide the 
+proposed behavior of D>F and S>F.
+
+The intentional flexibility of the Standard in specifying floating point 
+internal representations makes it difficult to provide tests which have 
+universal applicability to all Standard systems.
+
+Comments:
+
+Discussion has called attention to the situation where an integer lies
+outside the range of representable floating-point values.
+This proposal clearly calls for the valid extreme floating-point value.
+A Standard System could not return something like "inf" or "nan".
+The Forth Standard does not address the use of things like "nan" or "+-
+inf", which can be useful if they are available from a floating-point
+implementation.
+To comply with this proposal, a system might need to test for the 
+condition and provide the required result as the default.  At the cost of 
+one more word in the dictionary, another version could be retained as 
+available.
+A Standard Program should have no problem in testing for the condition and
+taking any desired action. 
+
+An alternative, which I like less but could accept, would be to add to 
+both D>F and S>F "An ambiguous condition exists if the integer value lies
+outside the range of representable floating point values."
+The documentation requirement for this could be considered as included
+already in 12.4.1.2 under
+  "floating point result out of range (e.g.,in 12.6.1.1430 F/)"
+or a separate entry could be devised.
+
+(  end of RfD  )
+
+Regards to all   cgm
+
+
+

@@ -16,7 +16,18 @@ about the proposals for extensions/changes, you can read more about
 other aspects of the standards effort on the <a
 href="forth200x.html">Forth 200<em>x</em></a> page.
 
-<h2>Public Review</h2>
+<h2>Forth-2012</h2>
+
+The <a href="http://www.forth200x.org/documents/forth-2012.pdf">Forth-2012
+document</a> is now available.  You can also look at HTML versions:
+at <a href="http://forth-standard.org/standard/words">forth-standard.org</a>
+(will become Web 2.0-capable in the future) and
+a <a href="http://www.forth200x.org/documents/html/contents.html">simple
+HTML version</a>.
+
+<p>We continue working after reaching this milestone.
+
+<!--<h2>Public Review</h2>
 <p>
 The third release candidate (RC3) of the proposed Forth 2012 standard
 (<a href="documents/forth-rc3.pdf">download</a>)
@@ -27,6 +38,7 @@ Formal comments on the proposed standard should be posted to the
 <a href="http://groups.yahoo.com/group/forth200x/">Forth 200x</a>
 mail list.
 </p>
+-->
 
 <h3>Document Archive</h3>
 <p>
@@ -41,9 +53,9 @@ See <a href="#rfds-without-cfv">below</a> for older RfDs without CfVs.
 
 <ul>
 
-<li> <a href="char-is-1.html">1 chars = 1</a>
-<li> <a href="twos-complement.html">2s-Complement Wrap-Around Integers</a>
-<li> <a href="http://amforth.sourceforge.net/pr/Recognizer-rfc-B.pdf">Recognizers</a> (<a href="http://amforth.sourceforge.net/pr/Recognizer-rfc.pdf">v1</a>)
+<li> <a href="u-d-less-than.txt">Unsigned Double Words Naming Convention</a> (Mailing list submission missing)
+<li> <a href="doublesyntax.txt">New double syntax</a>
+<li> <a href="http://amforth.sourceforge.net/pr/Recognizer-rfc-C.pdf">Recognizers</a> (<a href="http://amforth.sourceforge.net/pr/Recognizer-rfc-B.pdf">v2</a>, <a href="http://amforth.sourceforge.net/pr/Recognizer-rfc.pdf">v1</a>)
 
 </ul>
 
@@ -51,10 +63,28 @@ See <a href="#rfds-without-cfv">below</a> for older RfDs without CfVs.
 
 <h2>Current Standings</h2>
 <ul>
-<li><a href="s-escape-quote.html">Interpreted S\&quot;</a></li>
+<li> <a href="quotations.txt">Quotations</a> (<a href="quotations-v1.txt">v1</a>, <a href="quotations-v2.txt">v2</a>, <a href="quotations-v3.txt">v3</a>)
+<li> <a href="to-f-round">D&gt;F and S&gt;F</a> (RfDs: <a href="to-f-round-v1">v1</a>, <a href="to-f-round-v2">v2</a>)
+<li> <a href="char-is-1.html">1 chars = 1</a>
 </ul>
 
 <h2>CfV results</h2>
+
+<h3>Accepted at the 2015 Forth200<em>x</em> meeting</h3>
+
+<ul>
+<li> <a href="twos-complement.html">2s-Complement Wrap-Around Integers</a>
+</ul>
+
+
+<h2>Proposals included in Forth-2012</h2>
+
+<h3>Accepted at the 2014 Forth200<em>x</em> meeting</h3>
+
+<ul>
+<li><a href="s-escape-quote.html">Interpreted S\&quot;</a></li>
+</ul>
+
 
 <h3>Accepted at the 2013 Forth200<em>x</em> meeting</h3>
 
@@ -184,8 +214,6 @@ See <a href="#rfds-without-cfv">below</a> for older RfDs without CfVs.
 <li> <a href="internationalisation.txt">Internationalisation</a>
 <li> <a href="ieee-fp.txt">IEEE FP</a>
 <li> <a href="fnegate-zero.txt">FNEGATE specification for signed zero</a>
-<li> <a href="directories1.html">File Names and Directories</a>
-<li> <a href="directories.html">Directories</a>
 <li><a href="memory-2010-06-26.txt">Memory Access Words</a>
 	(<a href="http://groups.google.com/group/comp.lang.forth/browse_thread/thread/5bc6daa1f5e38c6b">v2</a>,
 	 <a href="http://groups.google.com/group/comp.lang.forth/browse_thread/thread/98cbade35bfe5eb0">v1</a>)
@@ -199,6 +227,8 @@ See <a href="#rfds-without-cfv">below</a> for older RfDs without CfVs.
 <h2>Shelved RfDs</h2>
 
 <ul>
+<li> <a href="directories1.html">File Names and Directories</a> (withdrawn due to lack of support)
+<li> <a href="directories.html">Directories</a> (withdrawn due to vigorous resistance)
 <li> <a href="http://groups.google.com/group/comp.lang.forth/browse_thread/thread/7f8c1c9493783a82">c-addr/len</a> (widthdrawn due to intorduction of <code>pchar</code>).
 <li> <a href="unobsolete-forget.txt">Unobsolete FORGET</a> (incorporated into <a href="legacy.html">Legacy Wordset</a>
 <li> <a href="http://groups.google.com/group/comp.lang.forth/msg/c0972519979b110d">!ME and @ME</a> (withdrawn <a href="http://groups.google.com/group/comp.lang.forth/msg/42c1f9c6081cbd49">&lt;1695ec44-b35c-4f0d-9065-884ad1df106e@r27g2000yqn.googlegroups.com&gt;</a>)

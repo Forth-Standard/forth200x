@@ -1,0 +1,82 @@
+New double syntax
+=================
+
+Problem
+-------
+
+People coming from other languages expect "1." to be a floating-point
+number.  Standard Forth requires that "1." is interpreted as a
+double-wide integer number.  While some people hail every gratuitious
+difference from other languages as a sign of our independence, this
+makes Forth harder to teach and damages the reputation among
+newcomers: First when they trip across this trap, and further when
+they hear about the reason for this behaviour.
+
+
+Solution
+--------
+
+In the long term, make "1." either non-standard or (even longer-term)
+even make it a floating-point number in the standard.  However, we
+still need a syntax for double-wide integers, and we need to introduce
+this first (and in parallel to the "1." syntax).  So here I propose
+using the syntax "*1" for double-wide integers.
+
+This is just one possible syntax, so if you absolutely cannot live
+with it, I am happy to go for a different one that everybody can live
+with.  But I don't want a bike-shedding discussion, so "I find <other
+syntax> more pleasing" or "How about <other syntax>" is not a good
+argument; a conflict of the proposed syntax with existing practice
+would be a good argument, though.
+
+The further steps would be to make the new syntax standard in the next
+standard (N), and make the "1." syntax obsolescent.  Then
+de-standardize "1."  in standard N+1.  If we then want to standardize
+"1." as FP number, either have one revision cooldown period for this
+syntax and standardize "1." as floating-point value in N+2, or already
+in N+1 without cooldown period.  Yes, it takes long, that's why I want
+to get started.
+
+Proposal
+--------
+
+In "8.3.1 Text interpreter input number conversion", replace
+
+|When the text interpreter processes a number, except a <cnum>, that is
+|immediately followed by a decimal point and is not found as a
+|definition name, the text interpreter shall convert it to a
+|double-cell number.
+
+with
+
+|When the text interpreter processes a number, except a <cnum>, that is
+|immediately preceded by an asterisk or (obsolescent) immediately
+|followed by a decimal point, and is not found as a definition name,
+|the text interpreter shall convert it to a double-cell number.
+
+
+Typical usage
+-------------
+
+*-1
+*$f
+*#-1
+
+
+Reference implementation
+------------------------
+
+When we get recognizers ...:-)
+
+Test cases
+----------
+
+T{ *#-1 -- -1 -1 }T
+T{ *1 -- 1 0 }T
+T{ *$ff -- 255 0 }T
+
+Experience
+----------
+
+None.
+

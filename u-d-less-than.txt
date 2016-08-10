@@ -1,0 +1,81 @@
+Article: 67924 of comp.lang.forth
+X-Received: by 10.98.25.215 with SMTP id 206mr22187829pfz.3.1467469536457;
+        Sat, 02 Jul 2016 07:25:36 -0700 (PDT)
+X-Received: by 10.36.230.69 with SMTP id e66mr145596ith.0.1467469536367; Sat,
+ 02 Jul 2016 07:25:36 -0700 (PDT)
+Path: eternal-september.org!mx02.eternal-september.org!feeder.eternal-september.org!feeder.erje.net!2.eu.feeder.erje.net!newspeer1.nac.net!border2.nntp.dca1.giganews.com!nntp.giganews.com!r1no9167158ige.0!news-out.google.com!o189ni15057ith.0!nntp.google.com!jk6no9142280igb.0!postnews.google.com!glegroupsg2000goo.googlegroups.com!not-for-mail
+Newsgroups: comp.lang.forth
+Date: Sat, 2 Jul 2016 07:25:35 -0700 (PDT)
+Complaints-To: groups-abuse@google.com
+Injection-Info: glegroupsg2000goo.googlegroups.com; posting-host=2600:380:5566:dda9:e5f5:a7e0:cdc:610d;
+ posting-account=KeQULQoAAABcQBGYu2d-i2T2PVg2ZMR6
+NNTP-Posting-Host: 2600:380:5566:dda9:e5f5:a7e0:cdc:610d
+User-Agent: G2/1.0
+MIME-Version: 1.0
+Message-ID: <0bfcdb36-eaf0-4634-8820-049911494e85@googlegroups.com>
+Subject: RfD: Unsigned Double Words Naming Convention
+From: krishna.myneni@ccreweb.org
+Injection-Date: Sat, 02 Jul 2016 14:25:36 +0000
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+Lines: 55
+Xref: mx02.eternal-september.org comp.lang.forth:67924
+
+RfD: Unsigned Double Words Naming Convention
+
+v1 : 2 July 2016  km
+
+
+Problem:
+---------
+
+ANS Forth presently provides a single word for operating on unsigned double=
+ length integers, DU< , within the double number extensions wordset. Other =
+standard words for operating on unsigned double numbers in Forth are desire=
+d to be added to standard Forth (Forth 20xx standard), e.g. a word to print=
+ an unsigned double. A consistent naming convention , compatible with commo=
+nly used practice is highly desirable to alleviate the burden on the progra=
+mmer from having to remember multiple conventions when working with future =
+standardized words.
+
+
+Solution:
+---------
+
+A consistent naming convention for unsigned double number words presents tw=
+o options currently in use: 1) DU<x> or 2) UD<x> , where <x> represents an =
+operation. Based on existing practice and comments made on comp.lang.forth,=
+ the second convention, UD<x> , appears to be preferred. Several arguments =
+may be made in favor of this convention: a) unsigned double numbers are typ=
+ically represented in stack diagrams as ud1 ud2 ... etc, b) the term "unsig=
+ned double" is easier to associate with the desired data type than the term=
+, "double unsigned", 3) implementation of non-standard words in existing Fo=
+rth systems indicates a preference for UD<x>.=20
+
+
+Proposal:
+--------
+
+Introduce a synonym, UD< , into the Forth 20xx standard for the existing st=
+andard word DU< and deprecate the use of DU< .
+
+Reference Implementation:
+------------------------
+
+: UD< ( ud1 ud2 -- b )  DU< ;
+
+
+Existing Practice:
+---------------
+
+Several Forth systems, e.g. Gforth and iForth, provide the presently non-st=
+andard  word UD. for printing an unsigned double to the console, which is i=
+nconsistent with the convention implied by the standard word DU< . SwiftFor=
+th provides DU. for the same purpose, which makes it consistent with the na=
+ming precedent set by DU< .=20
+
+
+
+Krishna Myneni
+
+

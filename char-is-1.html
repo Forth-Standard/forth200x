@@ -2,6 +2,77 @@
 
 <h3>1 chars = 1</h3>
 
+[ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
+
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h5>Systems</h5>
+
+<pre>
+[ ] conforms to ANS Forth.
+  Gforth
+  CForth (Mitch Bradley)
+  Open Firmware (Mitch Bradley)
+  SwiftForth (Leon Wagner)
+  SwiftX (Leon Wagner)
+  bigForth (Bernd Paysan)
+  JavaForth (Peter Knaggs)
+  IronForth (Peter Knaggs)
+[ ] already implements the proposal in full since release [ ].
+  Gforth 0.1alpha
+  amForth 0.1 (Matthias Trute)
+  CForth (Mitch Bradley)
+  Open Firmware (Mitch Bradley)
+  SwiftForth all (Leon Wagner)
+  SwiftX all (Leon Wagner)
+  TurboForth (Mark Wills, for TI-99/4A)
+  bigForth 1.0 (Bernd Paysan)
+  4th 3.62.4 (Hans Bezemer)
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+[ ] There are no plans to implement the proposal in full in [ ].
+  JavaForth (Peter Knaggs)
+  IronForth (Peter Knaggs)
+[ ] will never implement the proposal in full.
+</pre>
+
+<h5>Programmers</h5>
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+ Bernd Paysan
+ Leon Wagner
+ Mitch Bradley
+ Anton Ertl
+ Matthias Trute
+ Mark Wills
+ Hans Bezemer
+[ ] I would use (parts of) this proposal in my programs if the systems
+     I am interested in implemented it.
+ Anton Ertl
+ Matthias Trute
+ Mark Wills
+[ ] I would use (parts of) this proposal in my programs if this
+     proposal was in the Forth standard.
+ Mark Wills
+[ ] I would not use (parts of) this proposal in my programs.
+ Tim Partridge
+
+</pre>
+
+<h5>Informal results</h5>
+
+Peter Knaggs writes:
+
+<pre>
+This proposal is insufficient on its own, it should be paired with a byte  
+access library/wordset.
+</pre>
+
+<h4>Proposal etc.</h4>
 
 <pre>
 Problem
@@ -82,7 +153,7 @@ Windows NT (released 1993) and in Java (released 1995).
 
 However, 16 bits turned out to be too little for storing Unicode code
 points (Unicode 2.0 1996), so UTF-16 (Unicode based on 16-bit basic
-units) is is a variable-width encoding; at around the same time UTF-8
+units) is a variable-width encoding; at around the same time UTF-8
 was introduced for encoding Unicode with 8-bit basic units, which
 requires less conversion effort for software based on 8-bit chars, and
 has the same disadvantage of being variable-width as UTF-16 (which
@@ -168,5 +239,62 @@ Comments
 None yet.
 </pre>
 
+<h4>Author</h4>
+
+M. Anton Ertl
+
+
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+&lt;anton<tt>@</tt>mips.complang.tuwien.ac.at&gt;.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+<h5>Ballot for systems</h5>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the brackets
+or in the line below the statement.  Multiple hits for the same system
+are possible (if they do not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+[ ] There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please do
+so informally, and I will aggregate this information in some way.
+
+
+<h5>Ballot for programmers</h5>
+
+Just mark the statements that are correct for you (e.g., by putting
+your name on the line below the statement you agree with).  If some
+statements are true for some of your programs, but not others, please
+mark the statements for the dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+     I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+     proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from the
+proposal (especially if you have used that in your programs), make an
+informal comment, and I will collect these, too. Note that the best time
+to voice such issues is the RfD stage.
 
 

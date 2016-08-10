@@ -1,0 +1,360 @@
+VOTING INSTRUCTIONS
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+<anton@mips.complang.tuwien.ac.at>.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) on <http://www.forth200x.org/traverse-wordlist.html>. You can
+vote (or change your vote) at any time by mailing to me, and the
+results will be published there.
+
+Note that you can be both a system implementor and a programmer, so you
+can submit both kinds of ballots.
+
+
+CfV: TRAVERSE-WORDLIST
+----------------------
+
+Change Log:
+-----------
+
+20120120        First version
+20120124        Minor typos, added section "Order of node visits"
+                Added to section "Remarks"
+20120125        Minor typos, cleanup and added remarks
+20120203        Changed order of stack for TRAVERSE-WORDLIST
+                to place the xt rightmost.
+                Removed return value from TRAVERSE-WORDLIST.
+                Changed xt-node halt flag to a continue flag.
+                Note that if xt-node modifies the wordlist, the
+                results are undefined.
+                Specify NAME>... supporting words in section 2.2.
+                Tidy up & correction of 4. Remarks
+20120228        Section 2.1 and 2.2 moved and renumbered.
+                Rename NAME>... to NAME>... to more clearly
+                indicate a name token rather than a name.
+                Tidy up table in section 3. Experience, and
+                add note re NAME>... names.
+                Corrected Bruce McFarling's moniker
+20120904        Updates based on comments by Anton Ertl, Peter Knaggs,
+                Bruce McFarling
+20130725        Corrected stack signatures & reduce verbage
+20130812        Updates based on commentary on CLF; NT>.. changed to
+                NAME>...; justification for name token
+
+Problem:
+--------
+
+There are no standard words in Forth for traversing a WORDLIST and
+obtaining basic information about each node. While standard Forth
+provides a great many features for extensibility of the language
+(with CREATE ... DOES> being the classic example), standard Forth
+lacks the basic capability of traversing the wordlist as a part of
+the specification.
+
+Such a capability is needed to provide some kinds of advanced
+programming tools. For example, the programmer may want to determine
+all instances of word name overlaps in all of the wordlists in the
+current search order; or count, display or modify words contained in
+a specific wordlist.
+
+Many systems provide the TOOLS word WORDS that provides human-
+readable output from the current wordlists in CONTEXT. TRAVERSE-
+WORDLIST is a usable factor for the implementation of WORDS.
+
+Solution:
+---------
+
+The proposal is the introduction of a new type and four new words,
+primarily in section "15.6.2 Programming-Tools extension words" of
+document "Forth 2012 RC1" dated 7th November, 2012.
+
+The new type is a "name token" or nt. This is an opaque type returned
+by  TRAVERSE-WORDLIST, which enables the programmer to enumerate the
+contents of a wordlist (which are organised by name). Auxilliary
+words allow the name token to be inspected, and to retrieve the name
+string, and any associated intererpret and comiplation execution
+tokens (xt).
+
+Since this proposal introduces the concept of an opaque nt (name
+token), the following words allow system independent reference to
+specific parts of the node: NAME>STRING NAME>INTERPRET and
+NAME>COMPILE .
+
+Typical use:
+------------
+
+  : WORDS-COUNT ( x nt -- x' f ) DROP 1+ TRUE ;
+  0 ' WORDS-COUNT WID TRAVERSE-WORDLIST . ( count of nodes visited)
+
+prints x', where x' is a count of the total number of nodes in the
+wordlist WID.
+
+  : ALL-WORDS NAME>STRING CR TYPE TRUE ;
+  ' ALL-WORDS GET-CURRENT TRAVERSE-WORDLIST
+
+prints the names of words in the current compilation wordlist.
+
+  : CONTAINS-STRING NAME>STRING 2OVER
+      SEARCH IF CR TYPE THEN FALSE ;
+  S" COM" ' CONTAINS-STRING GET-CURRENT TRAVERSE-WORDLIST
+
+prints the name of a word containing the string "COM", if it exists,
+and then terminates.
+
+
+Remarks:
+--------
+
+There has been a heated debate on CLF as to whether the xt that
+TRAVERSE-WORDLIST executes should be passed an nt (name token) or the
+xt of the defined word. A name token has been chosen for the
+following reasons:
+
+1. The intention of TRAVERSE-WORDLIST is to return the names defined
+in the wordlist, regardless of the xts with which they are associated.
+
+2. A wordlist is organised by name, not by execution token.
+
+3. It is possible to have multiple names for a single xt, and >NAME
+(a common but non-standard mechanism for getting the name of an xt)
+is not able to return any more than a single name.
+
+4. Many systems employ multiple xts for each name. This is explictly
+mentioned in the standard; FIND is permitted to return one xt while
+in interpret state, and another while in compile state.
+
+Proposal:
+---------
+
+TRAVERSE-WORDLIST ( i*x xt wid -- i*x' ) "traverse-wordlist" TOOLS-EXT
+
+Remove wid and xt from the stack. Traverse the wordlist wid,
+executing xt (a user-specified word) once for every word in
+the wordlist.
+
+The invoked xt has the stack diagram ( i*x nt -- i*x' f ).
+
+A non-zero value for f will invoke the xt again with a new nt until
+all the nodes in the wordlist have been exhausted. Setting f to zero
+(FALSE) terminates this traversal, and xt will not be invoked again.
+
+xt will not be invoked if the wordlist wid is empty.
+
+nt is a system-specific name token for the node. The xt can use this
+token to display, count, modify or perform any other action on the
+node that the system providing nt permits. The format of nt is
+opaque, but it is guaranteed to be unique for each word in the
+wordlist.
+
+Note: Use of the stack by TRAVERSE-WORDLIST
+
+Removal of the xt and wid by TRAVERSE-WORDLIST before invoking the xt
+ensures that the data stack is not blocked; it is not permitted to
+maintain control information for the traversal on the data stack.
+This is to allow parameters beyond the nt to be passed to xt. For
+instance, the caller may wish to maintain a count of nodes visited on
+the stack.
+
+Note: Order of node visits
+
+There are a number of orders in which nodes may be visited in a
+wordlist, each of which depends on the specific implementation of
+wordlists. Although they are often based on hash tables, no
+assumptions are made in the specification about internal
+implementations.
+
+TRAVERSE-WORDLIST therefore gives no guarantee as to any specific
+order of node visits to each word through the invoked xt with one
+exception.
+
+If a wordlist contains duplicate entries, SEARCH-WORDLIST and FIND
+for a duplicated name will return the execution token of the last
+temporally defined name. For instance
+
+    : SAMPLE ... ( 1 ) ;
+    : TEST ... ;
+    : RETURNS ... ;
+    : SAMPLE ... ( 2 ) ;
+    : SAMPLE ... ( 3 ) ;
+
+defines five words, one of which, SAMPLE, is defined three times.
+SEARCH-WORDLIST and FIND will only return the last definition (3).
+Whether duplicated nodes are visited or not by TRAVERSE-WORDLIST is
+undefined. TRAVERSE-WORDLIST is only obliged to visit the nodes TEST,
+RETURNS and SAMPLE (3) from the wordlist, and can do so in any order.
+
+Some systems may permit visiting the node for the second and
+subsequent definitions of SAMPLE. Exceptionally in this case,
+TRAVERSE-WORDLIST must visit multiply defined nodes in the order
+newest to oldest (but not necessarily consecutively); that is, SAMPLE
+(3) must be returned before (2), and (2) before (1).
+
+The remaining unique nodes can appear in any order, and may be
+interspersed between the duplicately named and ordered words. If this
+ordering is not possible, then TRAVERSE-WORDLIST must call xt with
+only the FINDable definition of SAMPLE.
+
+TRAVERSE-WORDLIST is affected by the operation of FORGET or MARKER,
+and the results of a traversal must not return words that are
+unFINDable after execution of FORGET or MARKER. Additionally, any
+operation during the execution of xt-node that modifies the structure
+of the wordlist (that is, defining words such as : (colon) or CREATE,
+or execution of FORGET or MARKER) results in undefined behaviour.
+
+Note: :NONAME, SYNONYM and ALIAS
+
+:NONAME definitions have, by definition, no name. TRAVERSE-WORDLIST
+will not return any nt for :NONAME definitions.
+
+Because TRAVERSE-WORDLIST is returning name tokens, it is perfectly
+possible that the nt shares an xt with some other word. Consider:
+
+   SYNONYM NEW OLD
+
+If NEW and OLD are both defined in wordlist wid, then nts for NEW and
+OLD will be returned by TRAVERSE-WORLDLIST, and NAME>INTERPRET and
+NAME>COMPILE may, depending on the implementation, return the same
+corresponding xt for both NEW and OLD.
+
+NAME>STRING    ( nt -- addr count ) "name-to-string"    TOOLS-EXT
+
+NAME>STRING returns the string addr count, the definition name of the
+word represented by nt. Case is dependent on the case-sensitivity of
+the Forth system (see DPANS 3.3.1.2 Definition names). For
+restrictions see /3.1 NAME>STRING Restrictions/
+
+Note: NAME>STRING Restrictions
+
+Implementations may choose to point to the string in the word's header
+built when the word is defined: point to a static buffer that is
+reused on each call; point to a dynamic buffer that is replaced on
+each call: or some other method. Whatever technique is used, the
+following are required of the string returned by NAME>STRING;
+
+  The string is read-only; operations that write to the string are not
+    permitted.
+  Reading outside of the bounds (addr) to (addr+count) is not
+    permitted.
+  The lifetime of the string is only guaranteed up to the next call of
+    NAME>STRING; subsequent calls to NAME>STRING must assume that a
+    different address, length and contents will be returned.
+
+If the string is needed outside of this lifetime, it must be copied to
+another buffer. The alternative - providing a buffer for NAME>STRING's
+used - has been rejected on the grounds that the buffer would have to
+be of an unknown length. Although names of definitions are required
+to be at least 31 characters in length (see /DPANS 3.3.1.2 Definition
+names/) there is no specified upper limit.
+
+NAME>INTERPRET ( nt -- xt )         "name-to-interpret" TOOLS-EXT
+
+NAME>INTERPRET returns an xt (execution token) as discussed in
+DPANS 3.4.3 Semantics. This xt represents the execution semantics
+of the definition. It may be zero if there are no execution semantics.
+
+NAME>COMPILE   ( nt -- w xt )       "name-to-compile"   TOOLS-EXT
+
+xt has the following stack effect: ( i*x w -- j*x ).  EXECUTEing it
+consumes w and performs the compilation semantics of the word
+represented by xt.
+
+Extend DPANS Table 3.1 Data Types
+
+Symbol    Data type          Size on stack
+nt        name token                1 cell
+
+Add section DPANS 3.1.3.5 Name tokens
+
+Different definitions have different name tokens, although
+information obtainable from the token may be identical for different
+name tokens; for instance, NAME>STRING for different values of nt may
+return the same string.
+
+Reference implementation:
+-------------------------
+
+Implementation of TRAVERSE-WORDLIST requires carnal knowledge of the
+structure of the wordlist. The following example assumes that the
+wordlist is a singly linked list, anchored at wid, with the name token
+at a cell offset.
+
+    : traverse-wordlist ( i*x xt wid -- i*x' )
+        begin @ dup
+        while
+          2dup 2>r
+          cell + swap execute ( i*x nt -- i*x' f )
+          2r> rot
+        while repeat then 2drop ;
+
+Testing:
+--------
+
+Not completed.
+
+Experience:
+-----------
+
+The wordlist traversal functionality is available through very
+similar words in
+
+  WF32          TRAVERSE-WORDLIST
+  Win32Forth    VOC-ITERATE
+  VFX           WalkWordList
+  iForth        doWORDS
+  ciForth       FOR-WORDS
+  lxf/ntf       WALK-WORDLIST
+
+Commonly used to implement WORDS, these functions and others are
+individual solutions with conflicting stack requirements and names.
+However, all provided similar functionality to the proposed TRAVERSE-
+WORDLIST, namely, the ability to inspect the individual entries in a
+wordlist.
+
+Comments:
+---------
+
+
+
+
+
+Ballot for systems
+------------------
+
+If you maintain several systems, please mention the systems separately
+in the ballot. Insert the system name or version between the brackets
+or in the line below the statement. Multiple hits for the same system
+are possible (if they do not conflict).
+
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+[ ] There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+
+If you want to provide information on partial implementation, please do
+so informally, and I will aggregate this information in some way.
+
+Ballot for programmers
+----------------------
+
+Just mark the statements that are correct for you (e.g., by putting
+your name on the line below the statement you agree with). If some
+statements are true for some of your programs, but not others, please
+mark the statements for the dominating class of programs you write.
+
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+    I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+    proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+
+If you feel that there is closely related functionality missing from
+the proposal (especially if you have used that in your programs),
+make an informal comment, and I will collect these, too. Note that
+the best time to voice such issues is the RfD stage.
+
+Author: Alex McDonald
+Votetaker: Anton Ertl

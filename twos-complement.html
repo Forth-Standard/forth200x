@@ -2,6 +2,105 @@
 
 <h3>2s-Complement Wrap-Around Integers</h3>
 
+[ <a href="rfds.html">RfDs/CfVs</a> | <a href="proposals.html">Other proposals</a> ]
+
+<h4>Poll standings</h4>
+
+See <a href="#voting">below</a> for voting instructions.
+
+<h5>Systems</h5>
+
+<pre>
+[ ] conforms to ANS Forth.
+  Gforth (Anton Ertl)
+  iForth (Marcel Hendrix)
+  CForth (Mitch Bradley)
+  Open Firmware (Mitch Bradley)
+  bigForth (Bernd Paysan)
+  SwiftForth (Leon Wagner)
+  SwiftX (Leon Wagner)
+  JavaForth (Peter Knaggs)
+  IronForth (Peter Knaggs)
+[ ] already implements the proposal in full since release [ ].
+  Gforth 0.1alpha (Anton Ertl)
+  iForth 0 (Marcel Hendrix)
+  amForth 0.1 (Matthias Trute)
+  CForth (Mitch Bradley)
+  Open Firmware (Mitch Bradley)
+  bigForth 1.0 (Bernd Paysan)
+  SwiftForth all (Leon Wagner)
+  SwiftX all (Leon Wagner)
+  TurboForth (Mark Wills, for TI-99/4A)
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+[ ] There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+  JavaForth (Peter Knaggs)
+  IronForth (Peter Knaggs)
+</pre>
+
+<h5>Programmers</h5>
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+ Leon Wagner
+ Bernd Paysan
+ Mitch Bradley
+ Anton Ertl
+ Marcel Hendrix
+ Matthias Trute
+ Mark Wills
+[ ] I would use (parts of) this proposal in my programs if the systems
+     I am interested in implemented it.
+ Anton Ertl
+ Marcel Hendrix
+ Matthias Trute
+ Mark Wills
+[ ] I would use (parts of) this proposal in my programs if this
+     proposal was in the Forth standard.
+ Mark Wills
+[ ] I would not use (parts of) this proposal in my programs.
+ Tim Partridge
+</pre>
+
+<h5>Informal results</h5>
+
+Peter Knaggs writes:
+
+<pre>
+You forget 4.1.2:
+
+producing a result out of range, e.g., multiplication (using *) results in  
+a value too big to be represented by a single-cell integer (6.1.0090 *,  
+6.1.0100 */, 6.1.0110 */MOD, 6.1.0570 >NUMBER,
+6.1.1561 FM/MOD, 6.1.2214 SM/REM, 6.1.2370 UM/MOD, 8.6.1.1820 M*/);
+</pre>
+
+He also writes that JavaForth and IronForth do not implement this
+proposal and throw -11 when an overflow occurs.
+
+<p>Hans Bezemer writes:
+
+<pre>
+4tH is implemented in C and consequently takes on the identity of the
+compilant. And that is how it should be IMHO. Enforcing 2s-complement would
+mean implementing my own arithmatic routines - and that I won't do.
+
+On the other hand, lots of double, unsigned and floating point library
+routines of 4tH are based on 2s complement. However, if a user on a signed
+magnitude or 1s complement machine would adapt them and offer them for
+inclusion, I'd include 'em.
+
+I think a standard should unify stuff by abstraction - not exclude
+technologies by being specific. So, this vote is a whole-hearted NO. If this
+means 4tH is diverging from Forth-200x then it is what it is.
+</pre>
+
+
+
+<h4>Proposal etc.</h4>
+
 <pre>
 Changes since the first RfD:
 
@@ -17,9 +116,10 @@ Problem
 
 Many programs depend on 2s-complement representation of negative
 integers (e.g., assuming that TRUE is -1), and on wraparound behaviour
-on integer overflow, and in the current standard need to declare an
-environmental dependency on these features.  These programs should
-become unconditionally standard programs.
+on integer overflow; examples are hash functions and cryptography.  In
+the current standard these programs need to declare an environmental
+dependency on these features.  These programs should become
+unconditionally standard programs.
 
 To my knowledge, all Forth systems provide these features and all
 architectures developed since about 1970 support 2s-complement (this
@@ -150,4 +250,59 @@ used to exist and have died out, like 1s-complement).
 </pre>
 
 
+<h4>Author</h4>
 
+M. Anton Ertl
+
+<h4><a name="voting">Voting instructions</a></h4>
+
+Fill out the appropriate ballot(s) below and mail it/them to me
+&lt;anton<tt>@</tt>mips.complang.tuwien.ac.at&gt;.  Your vote will be published
+(including your name (without email address) and/or the name of your
+system) here.  You can vote (or change your vote) at any time by
+mailing to me, and the results will be published here.
+
+<p>Note that you can be both a system implementor and a programmer, so
+you can submit both kinds of ballots.
+
+<h5>Ballot for systems</h5>
+
+If you maintain several systems, please mention the systems separately
+in the ballot.  Insert the system name or version between the brackets
+or in the line below the statement.  Multiple hits for the same system
+are possible (if they do not conflict).
+
+<pre>
+[ ] conforms to ANS Forth.
+[ ] already implements the proposal in full since release [ ].
+[ ] implements the proposal in full in a development version.
+[ ] will implement the proposal in full in release [ ].
+[ ] will implement the proposal in full in some future release.
+[ ] There are no plans to implement the proposal in full in [ ].
+[ ] will never implement the proposal in full.
+</pre>
+
+If you want to provide information on partial implementation, please do
+so informally, and I will aggregate this information in some way.
+
+
+<h5>Ballot for programmers</h5>
+
+Just mark the statements that are correct for you (e.g., by putting
+your name on the line below the statement you agree with).  If some
+statements are true for some of your programs, but not others, please
+mark the statements for the dominating class of programs you write.
+
+<pre>
+[ ] I have used (parts of) this proposal in my programs.
+[ ] I would use (parts of) this proposal in my programs if the systems
+     I am interested in implemented it.
+[ ] I would use (parts of) this proposal in my programs if this
+     proposal was in the Forth standard.
+[ ] I would not use (parts of) this proposal in my programs.
+</pre>
+
+If you feel that there is closely related functionality missing from the
+proposal (especially if you have used that in your programs), make an
+informal comment, and I will collect these, too. Note that the best time
+to voice such issues is the RfD stage.

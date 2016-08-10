@@ -1,0 +1,295 @@
+RfD: Quotations
+---------------
+
+Change history
+--------------
+28Jul2015 Alex McDonald v1 initial draft
+04Aug2015 Alex McDonald v2 update
+    added & extended "Rationale", "Discussion"
+    formalised "Specification"
+    corrected "Implementation"
+    added "References"
+01Jul2016 Anton Ertl v3
+    various non-substantive changes throughout
+    removed revised definition of RECURSE
+    revised the stack effect to have quotation-sys colon-sys
+    revised the specification wording
+    added tests
+28Jul2016 Anton Ertl v4
+    ";" and ";CODE" in quotations are now ambiguous (v3 ToDo result)
+    Added q6 test (please try it!)
+    minor changes
+    
+
+Quotations
+==========
+
+The essence of quotations is to provide nested colon definitions,
+in which the inner definition(s) are nameless. The expression
+
+: foo ... [: some words ;] ... ;
+
+is equivalent to
+
+:noname some words ; Constant #temp#
+: foo ... #temp# ... ;
+
+A simple quotation is an anonymous colon definition that is defined
+inside a colon definition or quotation.
+
+Rationale
+---------
+
+There is no situation where quotations cannot be implemented by
+existing Forth words. Specifcially, :NONAME and : provide all the
+features proposed for quotations. Their advantage is as a syntactic
+"sugar" that permits a nameless definition in close proximity to its
+use; and that it avoids generating one-use names only for the purpose
+of refering to the definition inside another word.
+
+One example use of quotations is to provide a solution to the use
+of CATCH in a form close to other languages' TRY ... EXCEPT
+blocks.
+
+: hex. ( u -- )
+  base @ >r
+  [: hex u. ;] catch
+  r> base ! throw ;
+
+The advantage of using CATCH here is that the BASE is restored even if
+there is an exception (e.g., a user interrupt) during the "U.".
+
+Moreover, return-address manipulation has often been used as a way to
+split a definition into several parts, e.g,:
+
+: foo bar list> bla blub ;
+
+where LIST> is a return-address manipulating word and executes the BLA
+BLUB part of the word possibly several times.  This demonstrates that
+introducing a helper definition is unattractive to these programmers;
+with quotations this code could be written without helper word as
+
+: foo bar [: bla blub ;] map-list ;
+
+The advantages of this variant are: 1) Implementating quotations puts
+less restrictions on the Forth system than implementing manipulable
+return-addresses (which would restrict tail-call elimination and
+inlining).  2) It is immediately visible to the reader that there is a
+separate definition containing BLA BLUB.
+
+Experience
+----------
+
+Under the term "Phrases", quotations have been in MacForth since at
+least 1987. They are documented in the infamous "missing chapter" of
+the MacForth manual.
+
+Implementations exist in (at least) VFX, Gforth and iForth, and in the
+iForth case appear to have some significant use and history.  The
+Gforth development version from 2016-06-28 contains 70 occurences of
+";]".
+
+Interactions
+------------
+
+Quotations change the "current definition" that a number of words (in
+particular, RECURSE, DOES> and locals) refer to, so we have to look at
+the interactions of these words and locals.
+
+In these interactions there is a conflict between interface simplicity
+and implementation simplicity.  Disallowing all combinations of
+quotations and these words would give most freedom to implementors to
+choose the simplest implementation, but it would make for an interface
+full of blind alleys: If you choose one feature, you cannot choose any
+of the others; and if you need another feature, you have to back out
+of using the first one.  Moreover, all these restrictions would have
+to be specified in the standard.
+
+This is not desirable, so here we propose to make all these words work
+for quotations as well as they work for standalone definitions; this
+is relatively cheap to implement.
+
+
+RECURSE
+
+RECURSE inside a quotation calls the quotation directly surrounding
+the RECURSE, not the containing colon definition.
+
+DOES>
+
+A DOES> part inside a quotation ends with the terminating ";]"
+
+Using DOES> is actually a useful example of using quotations.  E.g.,
+<https://www.complang.tuwien.ac.at/forth/struct.fs> contains two
+helper words (DOFIELD and DOZEROFIELD) in the following code:
+
+  : dofield ( -- )
+  does> ( name execution: addr1 -- addr2 )
+      @ + ;
+  
+  : dozerofield ( -- )
+      immediate
+  does> ( name execution: -- )
+      drop ;
+  
+  : field ( align1 offset1 align size "name" --  align2 offset2 )
+      \ name execution: addr1 -- addr2
+      2 pick >r \ this uglyness is just for optimizing with dozerofield
+      create-field
+      r> if \ offset<>0
+        dofield
+      else
+        dozerofield
+      then ;
+
+Quotations allow to write this more compactly as:
+
+  : field ( align1 offset1 align size "name" --  align2 offset2 )
+      \ name execution: addr1 -- addr2
+      2 pick >r \ this uglyness is just for optimizing with dozerofield
+      create-field
+      r> if \ offset<>0
+        [: does> ( addr1 -- addr2 ) @ + ;]
+      else
+        immediate [: does> ( -- ) drop ;]
+      then
+      execute ;
+
+The second RfD proposed to allow RECURSE after DOES> in general
+(currently it is ambiguous), but this is not common practice yet, so
+the present version removed this part of the proposal in order to
+focus on the quotations proper.
+
+Locals
+
+A quotation may not be able to access the locals of the outer word
+because it has no knowledge of when it might be executed and hence
+whether outer locals are still alive. It does permit defining and
+accessing its own locals.  Note that this means that both the
+quotation and the containing definition may define locals.
+
+: foo ... [: {: a b :} a b + ;] ... ; \ unambiguous
+: bar {: a b :} ... [: a b + ;] ... ; \ ambiguous
+: bla {: a ;} ... [: {: b ;} ... b ... ;] ... a ... ; \ unambiguous
+
+The present proposal does not propose that a quotation can access the
+locals of a containing definition, because the implementation would be
+relatively complex, impose a run-time overhead, and the lifetime of
+the locals would be restricted (unless we are willing to accept
+further complexity).  While there are a number of people who are very
+keen to have such a feature, it is not clear how much it would be
+used.  System implementors are encouraged to provide support for
+accessing outer locals on an experimental basis so that programmers
+can explore the usefulness of this feature, possibly resulting in a
+proposal for this feature in the future.
+
+
+Syntax
+------
+
+The following notations have been seen in the wild, oldest first.
+    :| ... |;
+    :[ ... ]:
+    [: ... ;]
+    
+The notation [: ;] appears to have popular support.
+
+
+Specification
+-------------
+
+New system-compilation type quotation-sys with an
+implementation-dependent size on the stack.  This type contains the
+data that needs to be saved for the enclosing colon definition and
+restored after the end of the quotation.  [Note: we use it in
+combination with colon-sys, because DOES> uses colon-sys during
+compilation.]
+
+[:         bracket-colon
+  Interpretation: Interpretation semantics for this word are undefined.
+
+  Compilation: ( -- quotation-sys colon-sys )
+
+  suspends compiling to the current definition, starts a new nested
+  definition with execution token xt, and compilation continues with
+  this nested definition. Locals may be defined in the nested
+  definition.  An ambiguous condition exists if a name is used that
+  satisfies the following constraints: 1) It is not the name of a
+  currently visible local of the current quotation.  2) It is the name
+  of a local that was visible right before the start of the present
+  quotation or any of the containing quotations.
+
+;]         semi-bracket
+  Interpretation: Interpretation semantics for this word are undefined.
+
+  Compilation: ( c: quotation-sys colon-sys -- )
+
+  Ends the current nested definition, and resumes compilation to the
+  previous (containing) current definition. It appends the following
+  run-time to the (containing) current definition:
+
+  run-time: ( -- xt )
+
+  xt is the execution token of the nested definition.
+
+Add the following ambiguous condition to ";" and ";CODE":
+
+An ambiguous condition exists if the compilation semantics of ";" or
+";CODE" are performed inside a quotation.
+
+
+Implementation
+--------------
+
+It is not possible to define quotations in ISO Forth. The following
+is an outline definition, where SAVE-DEFINITION-STATE and RESTORE-
+DEFINITION-STATE require carnal knowledge of the system and are left
+to the implementor.
+
+: [: ( c: -- quotation-sys colon-sys )
+  postpone ahead save-definition-state :noname ; immediate
+: ;] ( c: quotation-sys colon-sys -- ) ( s: -- xt )
+  postpone ; >r restore-definition-state
+  postpone then r> postpone literal ; immediate
+
+
+Compliance Tests
+----------------
+
+\ works on Gforth:
+
+T{ : q1 [: 1 ;] ;  q1 execute -> 1 }T
+T{ : q2 [: [: 2 ;] ;] ;  q2 execute execute -> 2 }T
+T{ : q3 {: a :} [: {: a b :} b a ;] ;  1 2 3 q3 execute -> 2 1 }T
+T{ : q4 [: dup if dup 1- recurse then ;] ;  3 q4 execute .s -> 3 2 1 0 }T
+T{ : q5 [: does> drop 4 ;] 5 swap ;  create x  q5 execute x -> 5 4 }T
+T{ : q6 {: a :} [: {: a b :} b a ;] a 1+ ;  1 2 q6 swap execute -> 3 1 }T
+
+
+References
+----------
+
+Stephen Pelc wrote this; see
+
+http://newsgroups.derkeiler.com/Archive/Comp/comp.lang.forth/2012-07/msg00791.html
+
+I (Alex McDonald) have taken it and modified it as a proposed RfD,
+and have removed the discussion of closures. http://www.forth200x.org/
+
+I (Anton Ertl) have taken it and revised it.
+
+The following notes on quotations and closures incorporate material
+from several people, including Anton Ertl, Andrew Haley, Marcel
+Hendrix, Ward Mcfarland, Bernd Paysan, and Elizabeth Rather. If you
+have been left out and want acknowledgement, please let me know.
+
+Additional contributors: Gerry Jackson and others.
+
+[Note]
+The phrase "ambiguous condition" has a specific meaning in Forth
+standards. An ambiguous condition is "a circumstance for which this
+standard does not prescribe a specific behavior". The RfD process
+also states: "If you want to leave something open to the system
+implementor, make that explicit, e.g., by making it an ambiguous
+condition."
+

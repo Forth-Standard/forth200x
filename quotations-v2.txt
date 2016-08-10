@@ -1,0 +1,217 @@
+Path: eternal-september.org!mx02.eternal-september.org!.POSTED!not-for-mail
+From: "Alex McDonald" <blog@rivadpm.com>
+Newsgroups: comp.lang.forth
+Subject: RFD: Quotations V2 update
+Date: Tue, 4 Aug 2015 11:05:52 +0100
+Organization: A noiseless patient Spider
+Lines: 199
+Message-ID: <mpq2n2$85u$1@dont-email.me>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+Injection-Date: Tue, 4 Aug 2015 10:04:18 +0000 (UTC)
+Injection-Info: mx02.eternal-september.org; posting-host="28eaec307206083f7583d4d4a86636ed";
+	logging-data="8382"; mail-complaints-to="abuse@eternal-september.org";	posting-account="U2FsdGVkX1+qzE4dldKGPnsqCS6YLtLajHOb4fypNVE="
+X-Newsreader: NewsMan Pro 3.0.8 (Freeware)
+Cancel-Lock: sha1:Zpi6IE5ru1q2JlcIT+KHdSElEBc=
+Xref: mx02.eternal-september.org comp.lang.forth:60310
+
+For discussion. Tests for Annex F have not been developed yet.
+
+------>
+
+RfD: Quotations
+---------------
+
+Change history
+--------------
+28Jul2015 Alex McDonald v1 initial draft
+04Aug2015 Alex McDonald v2 update
+    added & extended "Rationale", "Discussion"
+    formalised "Specification"
+    corrected "Implementation"
+    added "References"
+
+Quotations
+==========
+
+The essence of quotations is to provide nested colon definitions,
+in which the inner definition(s) are nameless. The expression
+
+: foo ... [: some words ;] ... ;
+
+is equivalent to
+
+:noname some words ; Constant #temp#
+: foo ... #temp# ... ;
+
+A simple quotation is an anonymous colon definition that is defined
+inside a colon definition or quotation.
+
+Rationale
+---------
+
+There is no situation where quotations cannot be implemented by
+existing Forth words. Specifcially, :NONAME and : provide all the
+features proposed for quotations. Their advantage is as a syntactic
+"sugar" that permits a nameless definition in close proximity to its
+use; and that it avoids generating one-use names only for the purpose
+of refering to the definition inside another word.
+
+One example use of quotations is to provide a solution to the use
+of CATCH in a form close to other languages' TRY ... EXCEPT
+blocks.
+
+: foo ( i*x -- j*x )
+    setup
+    [: fee fi fo fum ;] catch
+    if ... then
+    teardown
+    ( throw again ) ;
+
+Under the term "Phrases", quotations have been in MacForth since at
+least 1987. They are documented in the infamous "missing chapter" of
+the MacForth manual.
+
+Implementations exist in (at least) VFX, Gforth and iForth, and in
+the iForth case appear to have some significant use and history.
+
+Discussion
+----------
+
+If quotations are to have the same privileges as words defined with :
+and :NONAME they should be able to use local variables and use
+RECURSE and DOES>.
+
+RECURSE: Recursion is defined as recursing to the start of the
+quotation, not the enclosing definition.
+
+DOES>: As with a normal definition that closes the DOES> action with ;
+(semi-colon), a DOES> in a quotation is closed at the terminating ;]
+
+While implementing support for DOES> and RECURSE, it has been
+proposed to remove the following inconsistency in the definition of 
+6.1.2120 RECURSE; "An ambiguous condition exists if RECURSE appears in
+a definition after DOES>." The proposal is to remoive that sentence
+and permit a RECURSE to the start of the DOES> definition to be
+consistent with :NONAME : and the proposed [: .
+
+The above features are illustrated here.
+
+: foo create [: , does> @ dup if . recurse then ;] swap 0= ;
+^A           ^B   ^C    ^x                      ^D         ^E
+
+There are 3 definitions: A-E, B-D and C-D.
+ The definition of FOO is the code between A and E.
+ The quotation returned by executing FOO is the code between B and D
+ The DOES> clause is the code between C and D
+
+RECURSE calls the code immediately after C (marked x) as it is the
+latest definition, and not the DOES> as it is consumed during
+compilation.
+
+Locals: A quotation may not be able to access the locals of the outer
+word because it has no knowledge of when it might be executed and
+hence whether outer locals are still alive. It does permit defining and
+accessing its own locals.
+
+: foo ... [: {: a b :} a b + ;] ... ; \ unambiguous
+: bar {: a b :} ... [: a b + ;] ... ; \ ambiguous
+
+There has been some discussion about providing higher-order or
+embedded functions that are able to refer to their parent's locals
+during their execution. This is a middle ground between the proposal
+here and full closures that (almost always) require garbage
+collection, and it would permit execution of the quotation in the
+execution scope of the parent; in the BAR example above, if the
+quotation was executed prior to the return of BAR to its caller.
+
+There are two schools of thought.
+
+1. Define [: ;] such that a standard program may not access
+   local variables of the outer definition inside the quotation.
+
+2. Permit such a feature, but restrict valid execution of the
+   quotation to the lifetime of the parent's execution.
+
+Solution 2 requires some form of locals frame, and may be excessively
+complex to implement; it appears to have few advantages over
+the simpler quotations as proposed here.
+
+Specification
+-------------
+
+The following notations have been seen in the wild, oldest first.
+    :| ... |;
+    :[ ... ]:
+    [: ... ;]
+    
+The notation [: ;] appears to have popular support.
+
+[: ( c: -- quotation-sys )
+  Interpretation: Interpretation semantics for this word are undefined.
+  Compilation: ( c: -- quotation-sys ) suspends compiling to the
+  current definition, starts a new nested definition, and compilation
+  continues with this nested definition. Locals may be defined in the
+  nested definition. It is an ambiguous condition [note 1] if outer
+  locals are visible and referred to in the nested definition.
+
+;] ( c: quotation-sys -- ) ( s: -- xt )
+  Interpretation: Interpretation semantics for this word are undefined.
+  Compilation: Ends the current nested definition, and resumes
+  compilation to the previous current definition. It appends the
+  following run-time to the current definition:
+  run-time: ( -- xt )
+  xt is the execution token to execute the nested definition.
+
+6.1.2120 RECURSE CORE
+  Interpretation: Interpretation semantics for this word are undefined.
+  Compilation: ( тт )
+  Append the execution semantics of the current definition to the
+  current definition.
+  See: 6.1.1250 DOES>, 6.1.2120 RECURSE, A.6.1.2120 RECURSE.
+
+Implementation
+--------------
+
+It is not possible to define quotations in ISO Forth. The following
+is an outline definition, where save-definition-state and restore-
+definition-state require carnal knowledge of the system and are left
+to the implementor.
+
+: [: ( c: -- quotation-sys )
+  postpone ahead save-definition-state :noname ; immediate
+: ;] ( c: quotation-sys -- ) ( s: -- xt )
+  postpone ; >r restore-definition-state
+  postpone then r> postpone literal ; immediate
+
+Compliance Tests
+----------------
+
+tbd
+
+References
+----------
+
+Stephen Pelc wrote this; see
+
+http://newsgroups.derkeiler.com/Archive/Comp/comp.lang.forth/2012-07/msg00791.html
+
+I (Alex McDonald) have taken it and modified it as a proposed RfD,
+and have removed the discussion of closures. http://www.forth200x.org/
+
+The following notes on quotations and closures incorporate material
+from several people, including Anton Ertl, Andrew Haley, Marcel
+Hendrix, Ward Mcfarland, Bernd Paysan, and Elizabeth Rather. If you
+have been left out and want acknowledgement, please let me know.
+
+Additional contributors; Hugh Aguilar and Gerry Jackson.
+
+[Note 1]
+The phrase "ambiguous condition" has a specific meaning in Forth
+standards. An ambiguous condition is "a circumstance for which this
+standard does not prescribe a specific behavior". The RfD process
+also states: "If you want to leave something open to the system
+implementor, make that explicit, e.g., by making it an ambiguous
+condition."
+

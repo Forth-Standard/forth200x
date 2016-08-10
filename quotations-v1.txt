@@ -1,0 +1,119 @@
+Path: eternal-september.org!mx02.eternal-september.org!.POSTED!not-for-mail
+From: "Alex McDonald" <blog@rivadpm.com>
+Newsgroups: comp.lang.forth
+Subject: RfD: Quotations
+Date: Tue, 28 Jul 2015 21:22:14 +0100
+Organization: A noiseless patient Spider
+Lines: 101
+Message-ID: <mp8o6q$plc$1@dont-email.me>
+Mime-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 7bit
+Injection-Date: Tue, 28 Jul 2015 20:20:42 +0000 (UTC)
+Injection-Info: mx02.eternal-september.org; posting-host="28eaec307206083f7583d4d4a86636ed";
+	logging-data="26284"; mail-complaints-to="abuse@eternal-september.org";	posting-account="U2FsdGVkX1+2tM7AarypF8xIfRwDY0/8d42QpUoEKQM="
+X-Newsreader: NewsMan Pro 3.0.8 (Freeware)
+Cancel-Lock: sha1:LWCzkvFMcRqeK8qt8L28+zBsSFo=
+Xref: mx02.eternal-september.org comp.lang.forth:60103
+
+Stephen Pelc wrote this; see
+
+http://newsgroups.derkeiler.com/Archive/Comp/comp.lang.forth/2012-07/msg00791.html
+
+I (Alex McDonald) have taken it and modified it as a proposed RfD,
+and have removed the discussion of closures. http://www.forth200x.org/
+
+The following notes on quotations and closures incorporate material
+from several people, including Anton Ertl, Andrew Haley, Marcel
+Hendrix, Ward Mcfarland, Bernd Paysan, and Elizabeth Rather. If you
+have been left out and want acknowledgement, please let me know.
+
+Quotations
+==========
+
+Discussion
+----------
+The essence of quotations is to provide nested colon definitions,
+in which the inner definition(s) are nameless. The expression
+
+: foo ... [: some words ;] ... ;
+
+is equivalent to
+
+:noname some words ; Constant #temp#
+: foo ... #temp# ... ;
+
+A simple quotation is an anonymous colon definition that is defined
+inside a colon definition or quotation.
+
+If quotations are to have the same privileges as words defined with :
+and :NONAME they should be able to use local variables and use
+RECURSE and DOES>.
+
+Locals: A quotation may not be able to access the locals of the outer
+word because it has no knowledge of when it might be executed and
+hence whether outer locals are still alive. It does permit defining and
+accessing its own locals.
+
+: foo ... [: {: a b :} a b + ;] ... ; \ unambiguous
+: bar {: a b :} ... [: a b + ;] ... ; \ ambiguous
+
+RECURSE: Recursion is defined as recursing to the start of the
+quotation, not the enclosing definition.
+
+DOES>: As with a normal definition that closes the DOES> action with ;
+(semi-colon), a DOES> in a quotation is closed at the terminating ;]
+
+One example use of quotations is to provide a solution to the use
+of CATCH in a form close to other languages' TRY ... EXCEPT
+blocks.
+
+: foo ( i*x -- j*x )
+    setup
+    [: fee fi fo fum ;] catch
+    if ... then
+    teardown
+    ( throw again ) ;
+
+Under the term "Phrases", quotations have been in MacForth since at
+least 1987. They are documented in the infamous "missing chapter" of
+the MacForth manual.
+
+Implementations exist in (at least) VFX, Gforth and iForth.
+
+Specification
+-------------
+The following notations have been seen in the wild, oldest first.
+    :| ... |;
+    :[ ... ]:
+    [: ... ;]
+
+[: ( -- c: nested-sys )
+Compilation: suspends compiling to the current definition, starts a
+new nested definition, and compilation continues with this nested
+definition. It is an ambiguous condition if outer locals are visible
+and referred to in the nested definition. Locals may be defined in
+the nested definition. Inside the nested definition RECURSE applies
+to the nested definition.
+
+;] ( c: nested-sys -- )
+Compilation: Ends the current nested definition, and resumes
+compilation to the previous current definition. This includes ending
+the action of DOES> if any. It appends the following run-time to the
+current definition:
+
+run-time: ( -- xt )
+xt is the execution token to execute the nested definition.
+
+Implementation
+--------------
+
+It is not possible to define quotations in ISO Forth. The following
+is an outline definition.
+
+: [: ( -- c: nested-sys )
+    postpone ahead :noname ; immediate
+
+: ;] ( c: nested-sys -- ) ( -- xt )
+    postpone ; postpone then ; immediate
+
