@@ -7,25 +7,68 @@ Systems
 [ ] conforms to ANS Forth.
   Gforth (Anton Ertl)
   SwiftForth, SwiftX (Leon Wagner)
+  Open Firmware? (Mitch Bradley)
+  VFX Forth (Stephen Pelc)
+  amForth? (Matthias Trute)
+  bigForth (Bernd Paysan)
+  JavaForth/IronForth (Peter Knaggs)
+  Gerry Jackson's system
+  MinForth (non-public)
 [ ] already implements the proposal in full since release [ ].
+  VFX Forth 4.71 (Stephen Pelc)
+  amForth? 5.1 (Matthias Trute)
+  bigForth 2.4.0 (Bernd Paysan)
 [ ] implements the proposal in full in a development version.
   Gforth (Anton Ertl)
+  Gerry Jackson's system
 [ ] will implement the proposal in full in release [ ].
 [ ] will implement the proposal in full in some future release.
+  Open Firmware? (Mitch Bradley)
 [ ] There are no plans to implement the proposal in full in [ ].
   SwiftForth, SwiftX (Leon Wagner)
+  JavaForth/IronForth (Peter Knaggs)
 [ ] will never implement the proposal in full.
+  4th 3.62.2 (Hans Bezemer) implements it partly (not locals and not DOES>)
+  MinForth (non-public)
 
 Programmers
 
 [ ] I have used (parts of) this proposal in my programs.
   Anton Ertl
+  Hans Bezemer
+  Matthias Trute
+  Bernd Paysan
+  Gerry Jackson
+  Julien Fondren
 [ ] I would use (parts of) this proposal in my programs if the systems
      I am interested in implemented it.
+  Matthias Trute
+  Paul Rubin
 [ ] I would use (parts of) this proposal in my programs if this
      proposal was in the Forth standard.
+  Paul Rubin
 [ ] I would not use (parts of) this proposal in my programs.
   Leon Wagner
+  Stephen Pelc
+  Roelf Toxopeus
+  Peter Knaggs
+  minforth@arcor.de
+
+Comments:
+
+Bernd Paysan writes:
+Actually, it's a lot older (than bigForth 2.4.0), but was called :[ ]:
+before 2.4.0, and it goes back to the mist of time, where I haven't
+used version control.
+
+The tests don't run through unmodified in bigForth either, due to Forth 2012
+locals.
+
+Gerry Jackson writes:
+I would like to see [: ... ;] behave like :NONAME ... ; in interpetation 
+mode
+
+
 
 CfV: Quotations
 ---------------
