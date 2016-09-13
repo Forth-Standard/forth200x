@@ -34,7 +34,7 @@ Add similar note to F>D 8Y:0:0
 Ambiguous condition in S>F and D>F: Should probably be replaced with a
 tighter specification (such as "rounds to nearest"), but not now.
 
-12.6.2.1517 FFIELD name execution: remove "float aligned" 8Y:0:0XS
+12.6.2.1517 FFIELD name execution: remove "float aligned" 8Y:0:0
 and check the other field words
 
 17.6.2.2255 SUBSTITUTE: replace "ambiguous condition" with "error" 8Y:0:0
@@ -61,7 +61,7 @@ A.12.6.2.1516 rewording of last paragraph
 C.6: some rearrangement and fixes
 
 The document is reflects the decisions of the committee at the 2012
-meeting, apart from the chanes identified above and the ones to be
+meeting, apart from the changes identified above and the ones to be
 discussed in section 6 and 7.  8Y:0:0
 
 4. Turned it into document form with minor substantive changes.  Accepted 9Y:0:0
