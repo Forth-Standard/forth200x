@@ -1,0 +1,121 @@
+Attendance:
+
+Willem Botha
+Stephen Pelc
+Leon Wagner
+Andrew Haley
+Peter Knaggs
+Ulrich Hoffmann
+Gerald Wodni
+Anton Ertl
+Bernd Paysan
+Sergey Baranov
+
+Review of document
+  Accepted except for a few changes 7Y:0:0 (AH, BP, SB absent)
+
+Constitution
+  Accepted 10Y:0:0
+
+  Vote: Chair: SP 6, AE 4
+        Editor: PK 10
+        Technical Edoitor: GW 10
+        Treasurer: BP 10
+
+Stephen Pelc takes on the duties of the chair
+
+Publishing the standard:
+  It should have an ISBN.  Discussion and subcommittee appointed
+  Some changes of introductory material
+
+Rolling document update: The last standard is now Forth-2012.
+  Discussion, especially about extension queries
+  Accept 10Y:0:0
+
+1 Chars=1: Accept: 9Y:1N:0A
+
+Quotations: Accept: 6Y:1N:3A (no consensus, more practice wanted)
+
+S>F D>F: Accept: 10Y:0N:0N
+
+Discussion of RfDs:
+Recognizers: Presentation and discussion
+Memory Access: Presentation and discussion, subcommittee BP SP
+New double syntax: Only destandardize, no new syntax, #1. is enough
+  groups separators as a possible separate proposal
+UD<
+  While most committee members prefer UD as a prefix, they currently
+  do not feel that this is sufficient grounds for renaming DU<.
+  However, proposing new words with a UD prefix is fine, and if they
+  are accepted, maybe the feeling of the committee about DU< will
+  change.
+
+Proposals from forth-standard.org
+
+wlscope
+    Presentation and discussion; BP will make a reply on behalf of the
+    committee.
+Defer is not
+     Presentation and Discussion: AE will reply: The committee knows
+     how to implement forward declarations without the extra fetch
+     required by deferred words.  However, the benefit (a minor
+     speedup in a relatively rare case) does not justify the cost in
+     our opinion.
+
+Progress reports:
+  single xt: No progress BP/SP/AE
+  Floating point input: What is this about?  Delete it
+  Socket wordset/library: Small progress GW
+  Multi-Tasking/threading: Common practice exists: AH/GW
+  Internationalization: SP/PK/WB
+  Cross-compilers: The starting point for the proposal is now
+     outdated, and there is no client interest in standardizing
+     cross-compilers.  Therefore abandon it (SP).
+  IEEE FP: IEEE 754 is now so complex that it is too much work both in
+     the specification and in the implementation to follow that in the
+     Forth standard.  There is a lot of common practice based on all
+     FP hardware these days providing IEEE FP, and programs just can
+     declare an environmental dependency on that.  Therefore abandon
+     the proposal (AH).
+
+Matters arising
+  Libraries/Packages
+    directory words needed; discussion
+  Experimental Proposals
+     For some RfDs, we want to encourage the community to implement
+     them in systems experimentally, and use them in programs to
+     encourage feedback and common practice; the proposal is still
+     subject to change, but the perspective is that something in that
+     vein is intended to be standardized in the future.  10Y:0:0
+  Proposals Process
+     I was absent during this discussion
+  Extension Queries
+     SP writes a proposal that removes the "maybe" answer
+  Ambiguous Conditions
+     Let's try to get rid of ambiguous conditions; proposals needed
+  
+Any other business
+  Directory Access
+    Discussion, GW writes summary
+  C Interface
+    Work on standardizing calling
+    Name: as in the C function, use same case
+    Order of parameters: leftmost bottom, rightmost top
+    FP values are converted between the Forth type and whatever
+      the C function expects or returns
+    Integers: Some are passed as doubles: identify which types are
+      doubles per standard
+    Strings: divergent practice, const char * is string
+    Declarations: covered by using SWIG?
+    dll/.so files: no common practice yet
+      OS-Type query
+  Case Insensitivity
+    RfD on making ASCII characters case insensitive AE
+
+  
+  
+
+  
+
+
+
