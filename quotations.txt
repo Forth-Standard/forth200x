@@ -158,9 +158,10 @@ least 1987. They are documented in the infamous "missing chapter" of
 the MacForth manual.
 
 Implementations exist in (at least) VFX, Gforth and iForth, and in the
-iForth case appear to have some significant use and history.  The
-Gforth development version from 2016-06-28 contains 70 occurences of
-";]".
+iForth case appear to have some significant use and history [Post-CfV
+Marcel Hendrix wrote that this is incorrect for iForth
+<0ab91601-2dd0-4950-9471-f226979eab4b@googlegroups.com>].  The Gforth
+development version from 2016-06-28 contains 70 occurences of ";]".
 
 Interactions
 ------------
