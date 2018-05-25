@@ -1,1 +1,2 @@
 IndexIgnore Stuff
+AddType 'text/markdown; charset=UTF-8' md
