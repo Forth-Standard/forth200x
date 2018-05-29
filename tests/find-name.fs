@@ -23,3 +23,9 @@ t{ s" fnt6" find-name name>compile   execute -> 51 }t
 : fnt8 find-name name>compile execute ; immediate
 t{ s" fnt6" ] fnt8 [ -> 51 }t
 t{ s" fnt0hfshkshdfskl" find-name -> 0 }t
+t{ s\" s\"" find-name name>interpret execute bla" s" bla" compare -> 0 }t
+t{ : fnt9 [ s\" s\"" find-name name>compile execute ble" ] ; -> }t
+t{ fnt9 s" ble" compare -> 0 }t
+: fnta find-name name>interpret execute ; immediate
+t{ : fntb [ s\" s\"" ] fnta bli" 2literal ; -> }t
+t{ fntb s" bli" compare -> 0 }t
