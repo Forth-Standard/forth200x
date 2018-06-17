@@ -1,5 +1,6 @@
 ## ChangeLog
 
+2018-05-17: Wording changes following the suggestion by JennyBrien
 2018-05-29: Specify FIND for words without interpretation semantics,
 and loosen it for TO IS ACTION-OF.  Added Remarks section for a
 rationale of these additions.
@@ -25,18 +26,20 @@ Replace the text in the specification of FIND with:
 > Find the definition named in the counted string at c-addr.  If the
 > definition is not found, return c-addr and zero.  If the definition is
 > found, return xt 1 or xt -1.  The returned values may differ between
-> interpretation and compilation state.  In interpretation state,
-> EXECUTEing the returned xt performs the interpretation semantics of
-> the word.  In compilation state, the returned values represent the
+> interpretation and compilation state:
+>
+> In interpretation state: If the definition has interpretation
+> semantics, FIND returns xt 1 or xt -1, and EXECUTEing xt performs
+> the interpretation semantics of the word.  If the definition has no
+> interpretation semantics, FIND may produce c-addr 0; if it produces
+> xt 1 or xt -1, EXECUTEing xt performs a system-dependent action.
+>
+> In compilation state, the returned values represent the
 > compilation semantics: if xt 1 is returned, then EXECUTEing xt
 > performs the compilation semantics; if xt -1 is returned, then
 > COMPILE,ing xt performs the compilation semantics.
-> 
-> In interpretation STATE, FIND may produce c-addr 0 if the definition
-> has no interpretation semantics; if it produces xt 1 or xt -1,
-> the returned xt represents a system-dependent action.
 >  
-> If the definition if for a word for which POSTPONE is ambiguous, it is
+> If the definition is for a word for which POSTPONE is ambiguous, it is
 > ambiguous to perform the xt returned by FIND in a STATE different from
 > the STATE during FIND.
 
