@@ -29,3 +29,18 @@ t{ fnt9 s" ble" compare -> 0 }t
 : fnta find-name name>interpret execute ; immediate
 t{ : fntb [ s\" s\"" ] fnta bli" 2literal ; -> }t
 t{ fntb s" bli" compare -> 0 }t
+: fnt-interpret-words ( ... "rest-of-line" -- ... )
+    begin
+        parse-name dup while
+            2dup find-name dup if
+                nip nip state @ if name>compile else name>interpret then execute
+            else
+                drop 2drop
+            then
+    repeat 2drop ;
+t{ fnt-interpret-words fnt5 value fntd fnt6 to fntd
+fntd -> fnt6 }t
+t{ fnt-interpret-words s" yyy" : fnte s" yyy" ; fnte compare
+-> 0 }t
+t{ fnt-interpret-words : fntc {: xa xb :} xa xb to xa to xb xa xb s" xxx" ; s" xxx" swap fntc compare
+-> 0 }t
