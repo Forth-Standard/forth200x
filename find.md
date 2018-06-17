@@ -1,6 +1,7 @@
 ## ChangeLog
 
 2018-05-17: Wording changes following the suggestion by JennyBrien
+
 2018-05-29: Specify FIND for words without interpretation semantics,
 and loosen it for TO IS ACTION-OF.  Added Remarks section for a
 rationale of these additions.
