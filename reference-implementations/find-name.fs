@@ -5,6 +5,13 @@
 
 \ this file is in the public domain
 
+[defined] gforth [if]
+    \ Gforth's implementation of {: ... uses a system-specific
+    \ wordlist that does not work with the FIND-NAME-IN below.
+    \ Therefore we use the reference implementation of {: instead.
+    require locals.fs
+[then]
+
 : >lower ( c1 -- c2 )
     dup 'A' 'Z' 1+ within bl and or ;
 : istr= ( addr1 u1 addr2 u2 -- flag )

@@ -1,0 +1,142 @@
+# Forth 200x Standards Committee Sep 6-8 2017 Minutes
+
+## Attendance
+
+- Howerd Oakford (voted by the committee to be full member)
+- Sergey Baranov
+- Jermaine Davies (Observer)
+- Willem Botha
+- Stephen Pelc
+- Leon Wagner
+- Andrew Haley
+- Anton Ertl
+- Bernd Paysan
+- Gerald Wodni
+- Paul E. Bennet
+- Ulrich Hoffmann (from Wednesday 16:00)
+- Peter Knaggs (from Thursday 9:00)
+
+Notetakers: SB AE PK
+
+## Procedures
+
+Discussion about what to do with proposals on forth-standard.org, and
+what to do with the old channels (mailing list and comp.lang.forth).
+
+The proposal process moves to http://forth-standard.org.  New
+proposals need to be made only there, and proposals elsewhere are no
+longer accepted as official.  10Y:0N:0A
+
+The committee can distinguish unfinished, but promising proposals as
+"committee-supported proposal".
+
+## Reports
+
+Have libraries for the memory access proposals (both of them)  **SP/LW/BP**  
+and see what sticks  10Y:0:0
+
+## Proposals
+
+### a) CS-DROP
+some revision necessary **UH/AE**
+
+### b) Unsigned double naming convention
+Proposal dead, make proposal for destandardizing "123."  **AE**
+
+### d) Quotations
+
+see CfVs
+
+## CfVs
+
+Quotations: 11Y:0N:1A
+
+## Workshops
+
+### a) Publications issues
+
+Discussion.  Change the legal notice to make it clearer that
+Forth-2012 is something more solid than mere drafts.  **LW**  
+Add features to Forth-standard.org **GW**  
+Publish source on Github **PK**  
+
+### b) Recognizers
+
+Bikeshedding discussion on names, resulting in suggested name changes
+Promote to committe-supported proposal: is on the right track but
+needs more work; suggest name changes   10Y:0:1A  **BP Matthias Trute**  
+Work on stack handling   **BP**
+
+### c) Single-XT
+
+Lively discussion.  
+E.g., should "LOCATE I" show the location of I or is it allowed to show
+the location of R@?  
+FIND-NAME FIND-NAME-IN proposal   **AE**  
+FIND-XT proposal                  **SP**
+
+### d) Directories
+
+Presentation and discussion with some progress   **GW**
+
+### e) multi-tasking
+
+Presentation.  Work towards proposal  **AH**
+
+### f) sockets
+
+Discussion  **GW**
+
+### g) i18n
+
+Presentation, discussion and suggested changes  **SP**  
+language and country codes **BP/PK**
+
+### h) S\" and S" from file
+
+Move interpretation semantics to core/core-ext versions 11Y:0:0  
+Draft the change: **AE**
+
+### i) remove ambiguous conditions
+
+Make the exception wordset mandatory 12Y:0:0  
+Draft change  **AE**
+
+Turn ambiguous condition in 3.4 into "possibly do system-specific
+recognizers; when unsuccessful, perform -13 throw"  12Y:0:0  
+  Rewording AE/UH 11Y:0N:1A
+
+For the ambiguous condition in 3.4.1, perform -18 throw.  12Y:0:0  
+  Rewording **LW/UH**
+
+3.3.3 stay ambiguous.  Mention it explicitly **PK**  11Y:0:0  
+Rationale Draft by AE  12Y:0:0
+
+3.3.3.1 stay ambiguous  11Y:0:0  
+Rationale Draft by AE  12Y:0:0
+
+argument type incompatible with specified input parameter: keep it,
+remove the example. **UH**    12Y:0:0
+
+### j) compilation (together with c)
+
+Presentation and some discussion
+
+
+## Matters arising
+
+Discussion of proposals:
+
+Implementations requiring BOTH 32 bit single floats and 64 bit double floats.
+(forth-standard.org zhtoor).
+  response on part of the committee **GW**
+
+The value of STATE should be restored 
+(forth-standard.org AlexDyachenko).
+  No committee response for now  AE
+
+Drop Double Number Input (comp.lang.forth, Matthias Trute).
+  Unlikely to find consenus in the foreseeable future  **AE**
+
+Electronic Meeting
+  Dec 14th 19h CET 18h UTC 10h PST
