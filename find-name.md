@@ -1,3 +1,8 @@
+## ChangeLog
+
+2018-08-15 Reference implementation now provides FIND-NAME-IN; more
+information on other systems; added NAME-PRINTER example
+
 ## Problem
 
 `FIND` has several problems:
@@ -11,7 +16,8 @@
  3. As currently specified (there is a proposal for fixing that), it
  fails to meet the goal of guaranteeing that the user-defined
  text-interpreter (outlined in the [rationale of
- COMPILE,](http://forth-standard.org/standard/rationale#rat:core:COMPILE,)).
+ COMPILE,](http://forth-standard.org/standard/rationale#rat:core:COMPILE,))
+ works.
 
 As a consequence of problem 2, the following implementation of ' is
 wrong:
@@ -93,6 +99,12 @@ defer name>statetoken ( nt -- ... xt )
   else
      ... \ process numbers
   then ;
+
+\ a defining word for words that print their name
+: name-printer ( "name" -- )
+  >in @ create >in ! parse-name get-current find-name-in ,
+does> ( -- )
+  @ name>string type ;
 ```
 
 ## Remarks
@@ -129,18 +141,7 @@ wid. Return its name token nt, if found, otherwise 0.
 
 ## Reference implementation
 
-Implementing `FIND-NAME-IN` requires carnal knowledge of the system.
-
-```
-: find-name {: c-addr u -- nt | 0 :}
-  get-order 0 swap 0 ?do ( widn...widi nt|0 )
-    dup 0= if
-      drop c-addr u rot find-name-in
-    else
-      nip
-    then
-  loop ;
-```
+[Reference Implementation](http://www.forth200x.org/reference-implementations/find-name.fs)
 
 ## Testing
 
@@ -154,5 +155,8 @@ Gforth has implemented `FIND-NAME` and (under the name
 [1996](http://git.savannah.gnu.org/cgit/gforth.git/commit/?id=3955fa40889bd5e49e995e08e0606c7c6905028e).
 No problems were reported or found internally.
 
-Several other systems have been reported to implement `FIND-NAME`
-under this or other names (e.g., FOUND in ciforth).
+amForth has `FIND-NAME` "since ever" (first release 2006), and
+`FIND-NAME-IN` under the name `SEARCH-NAME`.
+
+Other systems have been reported to implement `FIND-NAME` under this
+or other names (e.g., FOUND in ciforth).
