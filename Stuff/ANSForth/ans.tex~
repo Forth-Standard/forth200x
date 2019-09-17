@@ -1,0 +1,773 @@
+\documentclass[10pt,a4paper]{book}
+\usepackage{a4wide}
+\usepackage{supertabular}
+\usepackage{graphicx}
+
+\newcommand{\docversion}{dpANS99a}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\lhead[\leftmark]{\docversion}
+\rhead[\docversion]{\leftmark}
+\lfoot[\rm\thepage]{}
+\rfoot[]{\rm\thepage}
+\cfoot{}
+\renewcommand{\footrulewidth}{0.4pt}
+\newcommand{\collate}{! `` \# \$ \% \& ' ( ) * + , - . / digits : ; $<$ = $>$ ? @ ALPHA [ $\backslash$ ] \^{} \_ ` alpha \{ | \} \~{}}
+
+% Line numbers on the page
+%\usepackage[pagewise,modulo]{lineno}
+
+% Change bars
+%\usepackage[DVIps,outerbars]{changebar}
+
+% Rationale Files
+%\usepackage[nosolutionfiles]{answers}
+%\usepackage{answers}
+
+%\usepackage{calc}
+%\usepackage{graphicx}
+%\usepackage{multicol}
+%\usepackage[normalem]{ulem}
+%% Please set your language here
+\usepackage[breaklinks=true]{hyperref}
+
+
+\parskip=0.7\baselineskip
+\parindent=0pt
+
+\makeatletter
+
+% Fudge a fix for the lineno package
+\def\reserved@f{}
+
+% Define a new Glossary file
+\newwrite\wordfile
+\immediate\openout\wordfile=\jobname.wrd
+
+% Define Forth Word handling routines: \word and \begin{newword}
+
+% Define Chater with Core wordset
+\newcounter{word@core}
+\setcounter{word@core}{6}
+
+% "Normal" or "Extended" wordset
+\newif\if@ext
+
+\newcommand{\extended}{\@exttrue\label{wordlist:\word@list-ext}}
+
+\newcommand{\setwordlist}[1]{\gdef\word@list{#1}}
+
+\newcommand{\wordlist}[1]{%
+	\gdef\word@list{#1}
+	\@extfalse
+	\label{wordlist:#1}
+	\chaptermark{\MakeUppercase{#1} Word Set}
+	\Ifopen{rationale}{%
+		\Closesolutionfile{rationale}
+	}{}
+	\Opensolutionfile{rationale}[#1]
+	\Writetofile{rationale}{\protect\setwordlist{#1}}
+}
+
+\setwordlist{core}
+
+
+\newcounter{word@count}
+\renewcommand{\theword@count}{%
+	\ifnum\value{word@core}=\value{chapter}\thesection\else\thesubsection\fi.%
+	\ifnum\value{word@count}<1000 0\fi
+	\ifnum\value{word@count}<100  0\fi
+	\ifnum\value{word@count}<10   0\fi
+	\arabic{word@count}%
+}
+
+\newif\if@star
+\newcommand{\word@def}[1][\@empty]{%
+	\setcounter{word@count}{\word@num}
+	%
+	% Label the word
+	%
+	\def\@currentlabel{\theword@count}
+	\edef\@currentlabelname{\word@name}
+	\def\@currentHref{\word@list.\word@label}
+	\label{\word@list:\word@label}
+	%
+	% Write Glossary entry
+	%
+	\immediate\write\wordfile{\string\entry%
+		{\theword@count}%					<number>
+		{\word@name}%						<name>
+		{\word@list}%						<wordlist>
+		{\if@ext EXT\fi}%					<ext wordlist>
+		{\word@label}%						<label>
+		\ifx#1\@empty\else[#1]\fi%			<english>
+	}
+	%
+	% Generate the header line
+	%
+	\pagebreak[3]
+	\makebox[0.5\textwidth][l]{%
+		\textbf{\theword@count}\quad%
+%		\texttt{\word@name}
+		\hyperdef{\word@list}{\word@label}{\texttt{\word@name}}
+	}
+	\ifx#1\@empty\else ``#1'' \fi
+	\hfill \MakeUppercase{\word@list}
+	\if@ext EXT \fi
+	\\[-6ex]
+	%
+	% Start main definition of the word
+	%
+	\samepage
+	\list{}{
+		\setlength{\leftmargin}{7.6em}
+		\advance\leftmargin by \labelsep
+		\setlength{\itemsep}{2pt}
+		\setlength{\itemindent}{-5.5em}
+		\renewcommand{\makelabel}[1]{
+			\samepage
+			\hbox to 6.8em{\hfil\textsf{##1}}
+		}
+	}
+	\if@star\else\item\fi\relax
+}
+
+\newenvironment{word@new}[3][\@empty]{
+	\ifx#1\@empty\def\word@label{#3}\else\def\word@label{#1}\fi
+	\def\word@num{#2}
+	\def\word@name{#3}
+	\word@def
+}{
+	\endlist\par\pagebreak[3]
+}
+
+\newenvironment{newword}{\@starfalse\begin{word@new}}{\end{word@new}}
+\newenvironment{newword*}{\@startrue\begin{word@new}}{\end{word@new}}
+
+
+\newcommand{\stack}[3][\@empty]{%
+	( \ifx#1\@empty\else #1: \fi\textit{#2 \texttt{--} #3} )
+}
+
+\newcommand{\tab}{\hspace*{2em}}
+\renewcommand{\arg}[1]{$\langle$\textit{#1}$\rangle$}
+
+\newcommand{\bs}{\char"5C}	% \symbol{'134}} % \char"5C}
+\renewcommand{\tilde}{\char"7E}
+
+%\newcommand{\0}{0}
+
+
+% Extend cross reference handling
+
+% #1 Number
+% #2 Page
+% #3 Name
+% #4 Link
+\newcommand{\word@word}[4]{\hyperref{}{}{#4}{\textbf{\texttt{#3}}}}
+
+\newcommand{\word}[2][\word@list]{%
+	\expandafter\ifx\csname r@#1:#2\endcsname\relax%
+		% word is not in the given list, try core
+		\expandafter\ifx\csname r@core:#2\endcsname\relax%
+			% word not in core !
+				\textbf{\texttt{#2}}
+		\else
+			% word in core wordlist
+			\expandafter\expandafter\expandafter\word@word\csname r@core:#2\endcsname
+		\fi
+	\else
+		% word in given wordlist
+		\expandafter\expandafter\expandafter\word@word\csname r@#1:#2\endcsname
+	\fi
+}
+
+% \xref{label}{text} (section reference)
+% \wref{label}{text} (word reference)
+% \rref{label}{text} (rationale ref)
+
+\newcommand{\word@sec}[4]{\textbf{\hyperref{}{}{#4}{#1 #3}}}
+\newcommand{\xref}[2]{%
+	\expandafter\ifx\csname r@#1\endcsname\relax%
+		\textbf{[#1] #2}%
+	\else%
+		\expandafter\expandafter\expandafter\word@sec\csname r@#1\endcsname
+	\fi
+}
+
+\newcommand{\word@ref}[4]{\hyperref{}{}{#4}{\textbf{#1 \texttt{#3}}}}
+\newcommand{\wref}[2]{%
+	\expandafter\ifx\csname r@#1\endcsname\relax%
+		\word@ref{[#1]}{}{#2}{\word@list.#2}%    \textbf{?? #2}%
+	\else%
+		\expandafter\expandafter\expandafter\word@ref\csname r@#1\endcsname%
+	\fi%
+}
+
+\newcommand{\rref}[2]{%
+	\expandafter\ifx\csname r@rat:#1\endcsname\relax%
+		\word@ref{[rat:#1]}{}{#2}{rat:#2}%
+	\else%
+		\expandafter\expandafter\expandafter\word@ref\csname r@rat:#1\endcsname%
+	\fi%
+}
+
+% Word Rational
+
+\renewcommand{\solutionextension}{rat}
+
+\Newassociation{rationale}{ratword}{rationale}
+
+\renewcommand{\ratwordparams}{%
+	{\Currentlabel}%
+	{\word@list}%
+	{\word@label}%
+	{\word@name}
+}
+
+\renewenvironment{ratword}[4]{%
+	\pagebreak[3]
+	\Ifanswerfiles{%
+		\hyperdef{rationale.#2}{#3}{%
+			\textbf{A.#1 \quad \hyperref{}{#2}{#3}{\texttt{#4}}}
+		} \\[-1.3\baselineskip]
+		\list{}{\setlength{\leftmargin}{2em}}
+		\item\relax
+	}{%
+		\vspace*{0.7\baselineskip}
+		\hbox to 7.1em{\hfil%
+			\hyperdef{rationale.#2}{#3}{\textsf{Rationale:}}%
+		}
+		\setlength{\leftmargin}{2em}
+		\vspace*{-1.3\baselineskip}
+	}
+	\def\@currentlabel{A.#1}
+	\edef\@currentlabelname{#4}
+	\def\@currentHref{rationale.#2.#3}
+	\label{rat:#2:#3}
+}{%
+	\Ifanswerfiles{\endlist}{}
+}
+
+
+\Newassociation{info}{ratinfo}{rationale}
+
+\renewenvironment{ratinfo}[1]{%
+	\renewcommand{\@startsection}[7]{%
+		\vskip ##4%
+		\hyperdef{##1}{A.#1}{
+			{##6 A.#1~~ ##7\Ifanswerfiles{}{ (\textsl{Rationale})}}
+		}
+		\vskip ##4
+		\def\@currentlabel{A.#1}
+		\edef\@currentlabelname{##7}
+		\def\@currentHref{##1.A.#1}
+		\addcontentsline{toc}{##1}{\protect\numberline{A.#1}##7}
+	}
+	\Ifanswerfiles{}{%
+		\list{}{\setlength{\leftmargin}{3em}}
+		\item\relax
+	}
+}{\Ifanswerfiles{\par}{\endlist}}
+
+
+
+% Define a new format for heading
+\setcounter{secnumdepth}{4}
+
+\renewcommand{\chapter}{\@startsection
+	{chapter}{0}{0pt}{1pt}{\baselineskip}
+	{\normalfont\LARGE\bfseries}
+}
+\renewcommand{\chaptermark}[1]{
+	\markboth{\textbf{\thechapter. #1}}{}
+}
+\renewcommand{\section}{\@startsection
+	{section}{1}{0pt}{1pt}{1pt}
+	{\normalfont\Large\bfseries}
+}
+\renewcommand{\subsection}{\@startsection
+	{subsection}{2}{0pt}{1pt}{1pt}
+	{\normalfont\large\bfseries}
+}
+\renewcommand{\subsubsection}{\@startsection
+	{subsubsection}{3}{0pt}{1pt}{1pt}
+	{\normalfont\normalsize\bfseries}
+}
+
+\newcommand{\annex}[1]{%
+	\refstepcounter{chapter}
+	\begin{center}
+		\normalfont\Large
+		{\bfseries Annex \thechapter} \\
+		(informative) \\
+		{\bfseries #1}
+	\end{center}
+	\chaptermark{#1}
+    \addcontentsline{toc}{chapter}{\protect\numberline{\thechapter}#1}
+}
+
+% Modify itemize and enumerate environments
+
+\renewcommand{\labelenumi}{\alph{enumi})}
+\renewcommand{\labelenumii}{\arabic{enumii})}
+
+\renewcommand{\labelitemi}{\bfseries --}
+\renewcommand{\labelitemii}{\m@th\bullet}
+
+% Reduce space between to \hline commads
+
+\doublerulesep=1pt
+
+\makeatother 
+
+
+
+\begin{document}
+\include{titlepage}
+\thispagestyle{empty}
+
+\frontmatter
+\setcounter{tocdepth}{2}
+{\parskip 0pt \tableofcontents}	\addcontentsline{toc}{chapter}{\contentsname}
+%{\parskip 0pt \listoftables}	\addcontentsline{toc}{chapter}{\listtablename}
+%{\parskip 0pt \listoffigures}	\addcontentsline{toc}{chapter}{\listfigurename}
+%{\parskip 0pt \listofprograms}	\addcontentsline{toc}{chapter}{\listprogramname}
+
+\newpage
+\linenumbers
+\include{foreward}
+\include{members}
+
+\mainmatter
+
+% Part I: Introduction
+
+\include{intro}
+\include{notation}
+\include{usage}
+\include{doc}
+\include{label}
+
+% Part II: Glossary
+
+\raggedbottom
+\cfoot{\collate}
+
+\addtocontents{toc}{\setcounter{tocdepth}{0}}
+\include{core}
+\include{block}
+\include{double}
+\include{exception}
+\include{facility}
+\include{file}
+\include{float}
+\include{locals}
+\include{memory}
+\include{tools}
+\include{search}
+\addtocontents{toc}{\setcounter{tocdepth}{1}}
+\include{string}
+
+% Close the Rational output file
+\Closesolutionfile{rationale}
+
+% Close the glossary file
+\immediate\closeout\wordfile
+
+\flushbottom
+\cfoot{}
+
+% Part III: Rational
+\appendix
+\include{rationale}
+
+% Part IV: Informative background
+
+\include{bib}
+\include{history}
+\include{diff}
+\include{port}
+
+% Part V: Index
+
+\include{alpha}
+
+\end{document}
+
+
+   6.1.0010	!				store				CORE
+   6.1.0030	# 				number-sign			CORE
+   6.1.0040	#> 				number-sign-greater	CORE
+   6.1.0050	#S 				number-sign-s		CORE
+   6.2.0060	#TIB 			number-t-i-b		CORE EXT
+   6.1.0070	' 				tick				CORE
+   6.1.0080	( 				paren				CORE
+11.6.1.0080	( 				paren				FILE
+13.6.1.0086	(LOCAL) 		paren-local-paren	LOCAL
+   6.1.0090	* 				star				CORE
+   6.1.0100	*/ 				star-slash			CORE
+   6.1.0110	*/MOD 			star-slash-mod		CORE
+   6.1.0120	+ 				plus				CORE
+   6.1.0130	+! 				plus-store			CORE
+   6.1.0140	+LOOP 			plus-loop			CORE
+   6.1.0150	, 				comma				CORE
+   6.1.0160	- 				minus				CORE
+17.6.1.0170	-TRAILING 		dash-trailing		STRING
+   6.1.0180 .				dot					CORE
+   6.1.0190	." 				dot-quote			CORE
+   6.2.0200	.( 				dot-paren			CORE EXT
+   6.2.0210	.R 				dot-r				CORE EXT
+   6.1.0220	.S 				dot-s				TOOLS
+   6.1.0230	/ 				slash				CORE
+   6.1.0240	/MOD 			slash-mod			CORE
+17.6.1.0245	/STRING 		slash-string		STRING
+   6.1.0250	0< 				zero-less			CORE
+   6.2.0260	0<> 			zero-not-equals		CORE EXT
+   6.1.0270	0= 				zero-equals			CORE
+   6.2.0280	0> 				zero-greater		CORE EXT
+   6.1.0290	1+ 				one-plus			CORE
+   6.1.0300	1- 				one-minus			CORE
+   6.1.0310	2! 				two-store			CORE
+   6.1.0320	2* 				two-star			CORE
+   6.1.0330	2/ 				two-slash			CORE
+   6.2.0340	2>R 			two-to-r			CORE EXT
+   6.1.0350	2@ 				two-fetch			CORE
+ 8.6.1.0360	2CONSTANT		two-constant		DOUBLE
+   6.1.0370	2DROP 			two-drop			CORE
+   6.1.0380	2DUP 			two-dupe			CORE
+ 8.6.1.0390	2LITERAL		two-literal			DOUBLE
+   6.1.0400	2OVER 			two-over			CORE
+   6.2.0410	2R> 			two-r-from			CORE EXT
+   6.2.0415	2R@ 			two-r-fetch			CORE EXT
+ 8.6.2.0420	2ROT 			two-rote			DOUBLE EXT
+   6.1.0430	2SWAP 			two-swap			CORE
+ 8.6.1.0440	2VARIABLE 		two-variable		DOUBLE
+   6.1.0450	: 				colon				CORE
+   6.2.0455	:NONAME 		colon-no-name		CORE EXT
+   6.1.0460	;				semicolon			CORE
+15.6.2.0470	;CODE 			semicolon-code		TOOLS EXT
+   6.1.0480	<				less-than			CORE
+   6.1.0490	<#				less-number-sign	CORE
+   6.2.0500	<>				not-equals			CORE EXT
+   6.1.0530	=				equals				CORE
+   6.1.0540	>				greater-than		CORE
+   6.1.0550	>BODY 			to-body				CORE
+12.6.1.0558	>FLOAT 			to-float			FLOATING
+   6.1.0560	>IN 			to-in				CORE
+   6.1.0570	>NUMBER 		to-number			CORE
+   6.1.0580	>R 				to-r				CORE
+15.6.1.0600	? 				question			TOOLS
+   6.2.0620	?DO 			question-do			CORE EXT
+   6.1.0630	?DUP 			question-dupe		CORE
+   6.1.0650	@ 				fetch				CORE
+   6.1.0670	ABORT 								CORE
+ 9.6.2.0670 ABORT 								EXCEPTION EXT
+   6.1.0680	ABORT" 			abort-quote			CORE
+ 9.6.2.0680	ABORT" 			abort-quote			EXCEPTION EXT
+   6.1.0690	ABS 			abs					CORE
+   6.1.0695	ACCEPT 								CORE
+   6.2.0700	AGAIN 								CORE EXT
+15.6.2.0702	AHEAD 								TOOLS EXT
+   6.1.0705	ALIGN 								CORE
+   6.1.0706	ALIGNED 							CORE
+14.6.1.0707 ALLOCATE 							MEMORY
+   6.1.0710	ALLOT 								CORE
+16.6.2.0715	ALSO 								SEARCH EXT
+   6.1.0720	AND 								CORE
+15.6.2.0740	ASSEMBLER							TOOLS EXT
+10.6.1.0742	AT-XY 			at-x-y				FACILITY
+   6.1.0750	BASE 								CORE
+   6.1.0760	BEGIN 								CORE
+   6.1.0765	BIN 								FILE
+   6.1.0770	BL 				b-l					CORE
+17.6.1.0780	BLANK 								STRING
+ 7.6.1.0790	BLK 			b-l-k				BLOCK
+ 7.6.1.0800	BLOCK 								BLOCK
+ 7.6.1.0820	BUFFER 								BLOCK
+15.6.2.0830	BYE 								TOOLS EXT
+   6.1.0850	C! 				c-store				CORE
+   6.2.0855	C" 				c-quote				CORE EXT
+   6.1.0860	C, 				c-comma				CORE
+   6.1.0870	C@ 				c-fetch				CORE
+   6.2.0873	CASE 								CORE EXT 
+ 9.6.1.0875	CATCH 								EXCEPTION
+   6.1.0880	CELL+ 			cell-plus			CORE
+   6.1.0890	CELLS 								CORE
+   6.1.0895	CHAR 			char				CORE
+   6.1.0897	CHAR+ 			char-plus			CORE
+   6.1.0898	CHARS 			chars				CORE
+
+11.6.1.0900 CLOSE-FILE							FILE
+17.6.1.0910 CMOVE			c-move				STRING
+17.6.1.0920 CMOVE>			c-move-up			STRING
+15.6.2.0930 CODE								TOOLS EXT
+17.6.1.0935 COMPARE								STRING
+   6.2.0945 COMPILE,		compile-comma		CORE EXT
+   6.1.0950 CONSTANT							CORE
+   6.2.0970 CONVERT								CORE EXT
+   6.1.0980 COUNT								CORE
+   6.1.0990 CR				c-r					CORE
+   6.1.1000 CREATE								CORE
+11.6.1.1010 CREATE-FILE							FILE
+15.6.2.1015 CS-PICK			c-s-pick			TOOLS EXT
+15.6.2.1020 CS-ROLL			c-s-roll			TOOLS EXT
+ 8.6.1.1040 D+				d-plus				DOUBLE
+ 8.6.1.1050 D-				d-minus				DOUBLE
+ 8.6.1.1060 D				d-dot				DOUBLE
+ 8.6.1.1070 D.R				d-dot-r				DOUBLE
+ 8.6.1.1075 D0<				d-zero-less			DOUBLE
+ 8.6.1.1080 D0=				d-zero-equals		DOUBLE
+ 8.6.1.1090 D2*				d-two-star			DOUBLE
+ 8.6.1.1100 D2/				d-two-slash			DOUBLE
+ 8.6.1.1110 D<				d-less-than			DOUBLE
+ 8.6.1.1120 D=				d-equals			DOUBLE
+12.6.1.1130 D>F				d-to-f				FLOATING
+ 8.6.1.1140 D>S				d-to-s				DOUBLE
+ 8.6.1.1160 DABS			d-abs				DOUBLE
+   6.1.1170 DECIMAL								CORE
+16.6.1.1180 DEFINITIONS							SEARCH
+11.6.1.1190 DELETE-FILE							FILE
+   6.1.1200 DEPTH								CORE
+12.6.2.1203 DF!				d-f-store			FLOATING EXT
+12.6.2.1204 DF@				d-f-fetch			FLOATING EXT
+12.6.2.1205 DFALIGN			d-f-align			FLOATING EXT
+12.6.2.1207 DFALIGNED		d-f-aligned			FLOATING EXT
+12.6.2.1208 DFLOAT+			d-float-plus		FLOATING EXT
+12.6.2.1209 DFLOATS			d-floats			FLOATING EXT
+ 8.6.1.1210 DMAX			d-max				DOUBLE
+ 8.6.1.1220 DMIN			d-min				DOUBLE
+ 8.6.1.1230 DNEGATE			d-negate			DOUBLE
+   6.1.1240 DO									CORE
+   6.1.1250 DOES>			does				CORE
+   6.1.1260 DROP								CORE
+ 8.6.2.1270 DU<				d-u-less			DOUBLE EXT
+15.6.1.1280 DUMP								TOOLS
+   6.1.1290 DUP				dupe				CORE
+15.6.2.1300 EDITOR								TOOLS EXT
+10.6.2.1305 EKEY			e-key				FACILITY EXT
+10.6.2.1306 EKEY>CHAR		e-key-to-char		FACILITY EXT
+10.6.2.1307 EKEY?			e-key-question		FACILITY EXT
+   6.1.1310 ELSE								CORE
+   6.1.1320 EMIT								CORE
+10.6.2.1325 EMIT?			emit-question		FACILITY EXT
+ 7.6.2.1330 EMPTY-BUFFERS						BLOCK EXT
+
+   6.2.1342 ENDCASE			end-case			CORE EXT
+   6.2.1343 ENDOF			end-of				CORE EXT
+   6.1.1345 ENVIRONMENT?	environment-query	CORE
+   6.2.1350 ERASE								CORE EXT
+   6.1.1360 EVALUATE							CORE
+ 7.6.1.1360 EVALUATE							BLOCK
+   6.1.1370 EXECUTE								CORE
+   6.1.1380 EXIT								CORE
+   6.2.1390 EXPECT								CORE EXT
+12.6.1.1400 F!				f-store				FLOATING
+12.6.1.1410 F*				f-star				FLOATING
+12.6.2.1415 F**				f-star-star			FLOATING EXT
+12.6.1.1420 F+				f-plus				FLOATING
+12.6.1.1425 F-				f-minus				FLOATING
+12.6.2.1427 F.				f-dot				FLOATING EXT
+12.6.1.1430 F/				f-slash				FLOATING
+12.6.1.1440 F0<				f-zero-less-than	FLOATING
+12.6.1.1450 F0=				f-zero-equals		FLOATING
+12.6.1.1460 F<				f-less-than			FLOATING
+12.6.1.1470 F>D				f-to-d				FLOATING
+12.6.1.1472 F@				f-fetch				FLOATING
+12.6.2.1474 FABS			f-abs				FLOATING EXT
+12.6.2.1476 FACOS			f-a-cos				FLOATING EXT
+12.6.2.1477 FACOSH			f-a-cosh			FLOATING EXT
+12.6.1.1479 FALIGN			f-align				FLOATING
+12.6.1.1483 FALIGNED		f-aligned			FLOATING
+12.6.2.1484 FALOG			f-a-log				FLOATING EXT
+   6.2.1485 FALSE								CORE EXT
+12.6.2.1486 FASIN			f-a-sine			FLOATING EXT
+12.6.2.1487 FASINH			f-a-cinch			FLOATING EXT
+12.6.2.1488 FATAN			f-a-tan				FLOATING EXT
+12.6.2.1489 FATAN2			f-a-tan-two			FLOATING EXT
+12.6.2.1491 FATANH			f-a-tan-h			FLOATING EXT
+12.6.1.1492 FCONSTANT		f-constant			FLOATING
+12.6.2.1493 FCOS			f-cos				FLOATING EXT
+12.6.2.1494 FCOSH			f-cosh				FLOATING EXT
+12.6.1.1497 FDEPTH			f-depth				FLOATING
+12.6.1.1500 FDROP			f-drop				FLOATING
+12.6.1.1510 FDUP			f-dupe				FLOATING
+12.6.2.1513 FE.				f-e-dot				FLOATING EXT
+12.6.2.1515 FEXP			f-e-x-p				FLOATING EXT
+12.6.2.1516 FEXPM1			f-e-x-p-m-one		FLOATING EXT
+11.6.1.1520 FILE-POSITION						FILE
+11.6.1.1522 FILE-SIZE							FILE
+11.6.2.1524 FILE-STATUS							FILE EXT
+   6.1.1540 FILL								CORE
+   6.1.1550 FIND								CORE
+16.6.1.1550 FIND								SEARCH
+12.6.1.1552 FLITERAL		f-literal			FLOATING
+12.6.2.1553 FLN				f-l-n				FLOATING EXT
+12.6.2.1554 FLNP1			f-l-n-p-one			FLOATING EXT
+12.6.1.1555 FLOAT+			float-plus			FLOATING
+12.6.1.1556 FLOATS								FLOATING
+12.6.2.1557 FLOG			f-log				FLOATING EXT
+
+12.6.1.1558	FLOOR								FLOATING
+ 7.6.1.1559	FLUSH								BLOCK
+   6.2.1560	FLUSH-FILE							FILE EXT
+   6.1.1561	FM/MOD			f-m-slash-mod		CORE
+12.6.1.1562	FMAX			f-max				FLOATING
+12.6.1.1565	FMIN			f-min				FLOATING
+12.6.1.1567	FNEGATE			f-negate			FLOATING
+15.6.2.1580	FORGET								TOOLS EXT
+16.6.2.1590	FORTH								SEARCH EXT
+16.6.1.1595	FORTH-WORDLIST						SEARCH
+12.6.1.1600	FOVER			f-over				FLOATING
+14.6.1.1605	FREE								MEMORY
+12.6.1.1610	FROT			f-rote				FLOATING
+12.6.1.1612	FROUND			f-round				FLOATING
+12.6.2.1613	FS.				f-s-dot				FLOATING EXT
+12.6.2.1614	FSIN			f-sine				FLOATING EXT
+12.6.2.1616	FSINCOS			f-sine-cos			FLOATING EXT
+12.6.2.1617	FSINH			f-cinch				FLOATING EXT
+12.6.2.1618	FSQRT			f-square-root		FLOATING EXT
+12.6.1.1620	FSWAP			f-swap				FLOATING
+12.6.2.1625	FTAN			f-tan				FLOATING EXT
+12.6.2.1626	FTANH			f-tan-h				FLOATING EXT
+12.6.1.1630	FVARIABLE		f-variable			FLOATING
+12.6.2.1640	F~				f-proximate			FLOATING EXT
+16.6.1.1643	GET-CURRENT							SEARCH
+16.6.1.1647	GET-ORDER							SEARCH
+   6.1.1650	HERE								CORE
+   6.2.1660	HEX									CORE EXT
+   6.1.1670	HOLD								CORE
+   6.1.1680	I									CORE
+   6.1.1700	IF									CORE
+   6.1.1710 IMMEDIATE							CORE
+   6.1.1717	INCLUDE-FILE						FILE
+   6.1.1718	INCLUDED							FILE
+   6.1.1720	INVERT								CORE
+   6.1.1730	J									CORE
+   6.1.1750	KEY									CORE
+10.6.1.1755	KEY?			key-question		FACILITY
+   6.1.1760	LEAVE								CORE
+ 7.6.2.1770	LIST								BLOCK EXT
+   6.1.1780	LITERAL								CORE
+ 7.6.1.1790	LOAD								BLOCK
+13.6.2.1795	LOCALS|			locals-bar			LOCAL EXT
+   6.1.1800	LOOP								CORE
+   6.1.1805	LSHIFT			l-shift				CORE
+   6.1.1810	M*				m-star				CORE
+ 8.6.1.1820	M*/				m-star-slash		DOUBLE
+ 8.6.1.1830	M+				m-plus				DOUBLE
+   6.2.1850 MARKER								CORE EXT
+   6.1.1870	MAX									CORE
+   6.1.1880	MIN									CORE
+   6.1.1890	MOD									CORE
+   6.1.1900	MOVE								CORE
+10.6.2.1905	MS									FACILITY EXT
+   6.1.1910	NEGATE								CORE
+   6.2.1930	NIP									CORE EXT
+   6.2.1950	OF									CORE EXT
+   6.2.1965	ONLY								SEARCH EXT
+   6.1.1970	OPEN-FILE							FILE
+   6.1.1980	OR									CORE
+   6.2.1985	ORDER								SEARCH EXT
+   6.1.1990	OVER								CORE
+   6.2.2000	PAD									CORE EXT
+10.6.1.2005	PAGE								FACILITY
+   6.2.2008	PARSE								CORE EXT
+   6.2.2030	PICK								CORE EXT
+   6.1.2033	POSTPONE							CORE
+12.6.2.2035	PRECISION							FLOATING EXT
+   6.2.2037	PREVIOUS							SEARCH EXT
+   6.2.2040	QUERY								CORE EXT
+   6.1.2050	QUIT								CORE
+11.6.1.2054	R/O				r-o					FILE
+   6.1.2056	R/W				r-w					FILE
+   6.1.2060	R>				r-from				CORE
+   6.1.2070	R@				r-fetch				CORE
+   6.1.2080	READ-FILE							FILE
+   6.1.2090	READ-LINE							FILE
+   6.1.2120	RECURSE								CORE
+   6.2.2125	REFILL								CORE EXT
+ 7.6.2.2125	REFILL								BLOCK EXT
+   6.2.2125	REFILL								FILE EXT
+   6.2.2130 RENAME-FILE							FILE EXT
+   6.1.2140	REPEAT								CORE
+   6.1.2142	REPOSITION-FILE						FILE
+12.6.1.2143	REPRESENT							FLOATING
+14.6.1.2145	RESIZE								MEMORY
+   6.1.2147	RESIZE-FILE							FILE
+   6.2.2148	RESTORE-INPUT						CORE EXT
+   6.2.2150	ROLL								CORE EXT
+   6.1.2160	ROT				rote				CORE
+   6.1.2162	RSHIFT			r-shift				CORE
+   6.1.2165	S"				s-quote				CORE
+   6.1.2165	S"				s-quote				FILE
+   6.1.2170	S>D				s-to-d				CORE
+ 7.6.1.2180	SAVE-BUFFERS						BLOCK
+   6.2.2182	SAVE-INPUT							CORE EXT
+ 7.6.2.2190	SCR				s-c-r				BLOCK EXT
+17.6.1.2191	SEARCH								STRING
+   6.1.2192	SEARCH-WORDLIST						SEARCH
+15.6.1.2194	SEE									TOOLS
+   6.1.2195	SET-CURRENT							SEARCH
+   6.1.2197	SET-ORDER							SEARCH
+12.6.2.2200	SET-PRECISION						FLOATING EXT
+12.6.2.2202	SF!				s-f-store			FLOATING EXT
+12.6.2.2203	SF@				s-f-fetch			FLOATING EXT
+12.6.2.2204	SFALIGN			s-f-align			FLOATING EXT
+12.6.2.2206	SFALIGNED		s-f-aligned			FLOATING EXT
+12.6.2.2207	SFLOAT+			s-float-plus		FLOATING EXT
+12.6.2.2208	SFLOATS			s-floats			FLOATING EXT
+   6.1.2210	SIGN								CORE
+17.6.1.2212	SLITERAL							STRING
+   6.1.2214	SM/REM			s-m-slash-rem		CORE
+   6.1.2216	SOURCE								CORE
+   6.2.2218	SOURCE-ID		source-i-d			CORE EXT
+11.6.1.2218	SOURCE-ID		source-i-d			FILE
+   6.1.2220	SPACE								CORE
+   6.1.2230	SPACES								CORE
+   6.2.2240	SPAN								CORE EXT
+   6.1.2250	STATE								CORE
+15.6.2.2250	STATE								TOOLS EXT
+   6.1.2260	SWAP								CORE
+   6.1.2270	THEN								CORE
+   6.1.2275	THROW								EXCEPTION
+ 7.6.2.2280	THRU								BLOCK EXT
+   6.2.2290	TIB				t-i-b				CORE EXT
+10.6.2.2292	TIME&DATE		time-and-date		FACILITY EXT
+   6.2.2295	TO									CORE EXT
+13.6.1.2295	TO									LOCAL
+   6.2.2298	TRUE								CORE EXT
+   6.2.2300	TUCK								CORE EXT
+   6.1.2310	TYPE								CORE
+   6.1.2320	U				u-dot				CORE
+   6.2.2330	U.R				u-dot-r				CORE EXT
+   6.1.2340	U<				u-less-than			CORE
+   6.2.2350	U>				u-greater-than		CORE EXT
+   6.1.2360	UM*				u-m-star			CORE
+   6.1.2370	UM/MOD			u-m-slash-mod		CORE
+   6.1.2380	UNLOOP								CORE
+   6.1.2390	UNTIL								CORE
+   6.2.2395	UNUSED								CORE EXT
+ 7.6.1.2400	UPDATE								BLOCK
+   6.2.2405 VALUE								CORE EXT
+   6.1.2410	VARIABLE							CORE
+   6.1.2425	W/O				w-o					FILE
+   6.1.2430	WHILE								CORE
+   6.2.2440	WITHIN								CORE EXT
+   6.1.2450	WORD								CORE
+   6.1.2460	WORDLIST							SEARCH
+15.6.1.2465	WORDS								TOOLS
+   6.1.2480	WRITE-FILE							FILE
+   6.1.2485	WRITE-LINE							FILE
+   6.1.2490	XOR				x-or				CORE
+   6.1.2500	[				left-bracket		CORE
+   6.1.2510	[']				bracket-tick		CORE
+   6.1.2520	[CHAR]			bracket-char		CORE
+   6.2.2530	[COMPILE]		bracket-compile		CORE EXT
+15.6.2.2531	[ELSE]			bracket-else		TOOLS EXT
+15.6.2.2532	[IF]			bracket-if			TOOLS EXT
+15.6.2.2533	[THEN]			bracket-then		TOOLS EXT
+   6.2.2535	\				backslash			CORE EXT
+ 7.6.2.2535	\				backslash			BLOCK EXT
+   6.1.2540	]				right-bracket		CORE

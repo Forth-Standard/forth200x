@@ -1,0 +1,711 @@
+
+alpha.tex,179
+\label{annex:index}2,62
+% \entry{number}{name}{wordlist}{ext}{label}[english]11,373
+\newcommand{\entry}[5]{%13,440
+	\makebox[5em][r]{\ref{\word@list:\word@label}} \quad23,633
+
+ans.tex,845
+\newcommand{\extended}{\@exttrue\label{wordlist:\word@list-ext}}57,1270
+	\label{wordlist:#1}64,1417
+	\chaptermark{\MakeUppercase{#1} Word Set}65,1438
+	\label{\word@list:\word@label}94,2142
+	\immediate\write\wordfile{\string\entry%98,2237
+		\advance\leftmargin by \labelsep125,2861
+	\label{rat:#2:#3}248,5839
+\renewcommand{\chapter}{\@startsection279,6459
+\renewcommand{\chaptermark}[1]{283,6569
+\renewcommand{\section}{\@startsection286,6642
+\renewcommand{\subsection}{\@startsection290,6742
+\renewcommand{\subsubsection}{\@startsection294,6848
+	\refstepcounter{chapter}300,6978
+	\chaptermark{#1}307,7125
+\renewcommand{\labelenumi}{\alph{enumi})}313,7275
+\renewcommand{\labelenumii}{\arabic{enumii})}314,7317
+\renewcommand{\labelitemi}{\bfseries --}316,7364
+\renewcommand{\labelitemii}{\m@th\bullet}317,7405
+\appendix383,8618
+
+bib.tex,23
+\label{annex:bib}2,27
+
+block.tex,1286
+\chapter{The optional Block word set} % 71,1
+\section{The optional Block word set}5,78
+\section{Introduction} % 7.131,1338
+\section{Additional terms} % 7.233,1370
+\subsection{Additional terms}49,1816
+\section{Additional usage requirements} % 7.359,2077
+\subsection{Environmental queries} % 7.3.161,2126
+Append table \ref{block:env} to table \ref{table:env}.63,2185
+	\label{block:env}70,2362
+\subsection{Data space} % 7.3.284,2747
+\subsection{Block buffer regions} % 7.3.390,2893
+\label{block:buffers}91,2936
+\subsection{Parsing} % 7.3.4122,4245
+\subsection{Possible action on an ambiguous condition} % 7.3.5142,5017
+\section{Additional documentation requirements} % 7.4152,5293
+\subsection{System documentation} % 7.4.1154,5350
+\subsubsection{Implementation-defined options} % 7.4.1.1156,5395
+\subsubsection{Ambiguous conditions} % 7.4.1.2165,5652
+\subsubsection{Other system documentation} % 7.4.1.3177,6071
+\subsection{Program documentation} % 7.4.2185,6316
+\section{Compliance and labeling} % 7.5192,6451
+\subsection{ANS Forth systems} % 7.5.1194,6494
+\subsection{ANS Forth programs} % 7.5.2208,7048
+\section{Glossary} % 7.6224,7656
+\subsection{Glossary}227,7698
+\subsection{Block words} % 7.6.1230,7735
+\subsection{Block extension words} % 7.6.2358,11695
+
+core.tex,229
+\chapter{Glossary} % 61,1
+\section{Core words} % 6.13,27
+\subsection{Core words}7,88
+\section{Core extension words} % 6.22811,83863
+\subsection{Core extension words} % A.6.22816,83930
+		(see \ref{rat:core:2toR}).2961,88065
+
+diff.tex,975
+\label{annex:diff}2,70
+\section{FIG Forth (circa 1978)} % D.110,330
+\section{Forth 79} % D.234,1484
+\section{Forth 83} % D.351,2160
+\section{Recent developments} % D.478,3570
+\section{ANS Forth approach} % D.5129,5952
+\section{Differences from Forth 83} % D.6176,8326
+\subsection{Stack width} % D.6.1178,8371
+\subsection{Number representation} % D.6.2230,10264
+\subsection{Address units} % D.6.3273,12131
+\subsection{Address increment for a cell is no longer two} % D.6.4312,13791
+\subsection{Address alignment} % D.6.5366,15959
+\subsection{Division/modulus rounding direction} % D.6.6448,19372
+\subsection{Immediacy} % D.6.7514,22566
+\label{diff:immediate}515,22598
+\subsection{Input character set} % D.6.8646,28995
+\subsection{Shifting with \word{UM/MOD}} % D.6.9684,30592
+\subsection{Vocabularies / wordlists} % D.6.10729,32398
+\subsection{Multiprogramming impact} % D.6.11796,35853
+\subsection{Words not provided in executable form} % D.6.12859,38570
+
+doc.tex,548
+\chapter{Documentation requirements}2,19
+\label{doc}3,57
+\section{System documentation} % 4.110,301
+\label{doc:system}11,339
+\subsection{Implementation-defined options} % 4.1.113,361
+\subsection{Ambiguous conditions} % 4.1.2 ===========================127,4077
+\subsection{Other system documentation} % 4.1.3275,8660
+\section{Program documentation} % 4.2 ===============================297,9179
+\label{doc:program}298,9250
+\subsection{Environmental dependencies} % 4.2.1300,9273
+\subsection{Other program documentation} % 4.2.2344,10720
+
+double.tex,1206
+\chapter{The optional Double-Number word set} % 81,1
+\section{The optional Double-Number word set}5,87
+Refer to \ref{rat:types} for a discussion of data types in Forth.35,1298
+\section{Introduction} % 8.138,1370
+\section{Additional terms and notation} % 8.246,1761
+\section{Additional usage requirements} % 8.350,1819
+\subsection{Environmental queries} % 8.3.152,1868
+Append table \ref{double:env} to table \ref{table:env}.54,1927
+	\label{double:env}61,2106
+\subsection{Text interpreter input number conversion} % 8.3.275,2510
+\section{Additional documentation requirements} % 8.490,3098
+\subsection{System documentation} % 8.4.192,3155
+\subsubsection{Implementation-defined options} % 8.4.1.194,3200
+\subsubsection{Ambiguous conditions} % 8.4.1.2100,3329
+\subsubsection{Other system documentation} % 8.4.1.3106,3473
+\subsection{Program documentation} % 8.4.2112,3598
+\section{Compliance and labeling} % 8.5119,3715
+\subsection{ANS Forth systems} % 8.5.1121,3758
+\subsection{ANS Forth programs} % 8.5.2137,4370
+\section{Glossary} % 8.6153,5033
+\subsection{Glossary}156,5075
+\subsection{Double-Number words} % 8.6.1159,5112
+\subsection{Double-Number extension words} % 8.6.2408,11765
+
+exception.tex,1610
+\chapter{The optional Exception word set} % 91,1
+\section{The optional Exception word set}5,86
+\section{Introduction} % 9.1163,7646
+\section{Additional terms and notation} % 9.2165,7678
+\section{Additional usage requirements} % 9.3168,7734
+\subsection{Additional usage requirements}171,7797
+\subsection{THROW values} % 9.3.1181,8199
+\label{exception:throw}182,8234
+\subsection{Exception frame} % 9.3.2198,8905
+\subsection{Exception stack} % 9.3.3205,9195
+\subsection{Environmental queries} % 9.3.4211,9387
+Append table \ref{exception:env} to table \ref{table:env}.213,9446
+	\label{exception:env}220,9628
+\subsection{Possible actions on an ambiguous condition} % 9.3.5234,10033
+\label{exception:ambiguous}235,10098
+ambiguous conditions listed in table \ref{table:throw} shall use the238,10235
+	\label{table:throw}246,10458
+\subsection{Exception handling} % 9.3.6293,13145
+\subsubsection{Exception handling}308,13797
+\section{Additional documentation requirements} % 9.4320,14376
+\subsection{System documentation} % 9.4.1322,14433
+\subsubsection{Implementation-defined options} % 9.4.1.1324,14478
+\subsubsection{Ambiguous conditions} % 9.4.1.2333,14804
+\subsubsection{Other system documentation} % 9.4.1.3338,14921
+\subsection{Program documentation} % 9.4.2343,15044
+\section{Compliance and labeling} % 9.5348,15157
+\subsection{ANS Forth systems} % 9.5.1350,15200
+\subsection{ANS Forth programs} % 9.5.2364,15782
+\section{Glossary} % 9.6379,16416
+\subsection{Glossary}382,16458
+\subsection{Exception words} % 9.6.1385,16495
+\subsection{Exception extension words} % 9.6.2484,20447
+
+facility.tex,1220
+\chapter{The optional Facility word set} % 101,1
+\section{The optional Facility word set}5,85
+\section{Introduction} % 10.18,141
+\section{Additional terms and notation} % 10.210,174
+\section{Additional usage requirements} % 10.313,231
+\subsection{Character types} % 10.3.115,281
+\subsection{Environmental queries} % 10.3.221,477
+Append table \ref{facility:env} to table \ref{table:env}.22,535
+	\label{facility:env}29,715
+\section{Additional documentation requirements} % 10.443,1115
+\subsection{System documentation} % 10.4.145,1173
+\subsubsection{Implementation-defined options} % 10.4.1.147,1219
+\subsubsection{Ambiguous conditions} % 10.4.1.256,1498
+\subsubsection{Other system documentation} % 10.4.1.363,1673
+\subsection{Program documentation} % 10.4.269,1799
+\subsubsection{Environmental dependencies} % 10.4.2.171,1846
+\subsubsection{Other program documentation} % 10.4.2.278,2019
+\section{Compliance and labeling} % 10.584,2146
+\subsection{ANS Forth systems} % 10.5.186,2190
+\subsection{ANS Forth programs} % 10.5.2100,2766
+\section{Glossary} % 10.6115,3394
+\subsection{Glossary}118,3437
+\subsection{Facility words} % 10.6.1121,3474
+\subsection{Facility extension words} % 10.6.2189,6148
+
+file.tex,1984
+\chapter{The optional File-Access word set} % 111,1
+\section{The optional File-Access word set}5,84
+\section{Introduction} % 11.140,1766
+\section{Additional terms} % 11.259,2486
+\section{Additional usage requirements} % 11.373,2847
+\subsection{Additional usage requirements}76,2911
+\subsection{Data types} % 11.3.179,2969
+Append table \ref{file:types} to table \ref{table:datatypes}.81,3018
+	\label{file:types}86,3130
+\subsubsection{File identifiers} % 11.3.1.199,3456
+\subsubsection{I/O results} % 11.3.1.2106,3713
+\label{file:ior}107,3753
+\subsubsection{File access methods} % 11.3.1.3119,4232
+\subsubsection{File names} % 11.3.1.4124,4353
+\label{file:names}125,4392
+\subsection{Blocks in files} % 11.3.2131,4588
+\label{file:blocks}132,4627
+\subsubsection{Blocks in files}146,5125
+\subsection{Environmental queries} % 11.3.3156,5502
+Append table \ref{file:env} to table \ref{table:env}.158,5562
+	\label{file:env}165,5739
+\subsection{Input source} % 11.3.4179,6121
+\label{file:source}180,6157
+\subsection{Other transient regions} % 11.3.5197,6841
+\label{file:buffers}198,6888
+\subsection{Parsing} % 11.3.6204,7074
+\label{file:parsing}205,7105
+\section{Additional documentation requirements} % 11.4221,7683
+\subsection{System documentation} % 11.4.1223,7741
+\subsubsection{Implementation-defined options} % 11.4.1.1225,7787
+\subsubsection{Ambiguous conditions} % 11.4.1.2251,8892
+\subsubsection{Other system documentation} % 11.4.1.3269,9676
+\subsection{Program documentation} % 11.4.2274,9800
+\subsubsection{nvironmental dependencies} % 11.4.2.1276,9847
+\subsubsection{Other program documentation} % 11.4.2.2284,10129
+\section{Compliance and labeling} % 11.5289,10254
+\subsection{ANS Forth systems} % 11.5.1291,10298
+\subsection{ANS Forth programs} % 11.5.2305,10895
+\section{Glossary} % 11.6321,11546
+\subsection{Glossary}324,11589
+\subsection{File Access words} % 11.6.1327,11626
+\subsection{File-Access extension words} % 11.6.2869,30619
+
+float.tex,2352
+\chapter{The optional Floating-Point word set} % 121,1
+\section{The optional Floating-Point word set} % A.125,91
+\section{Introduction} % 12.179,3592
+\section{Additional terms and notation} % 12.281,3625
+\subsection{Definition of terms} % 12.2.183,3675
+\label{float:terms}84,3718
+\subsection{Notation} % 12.2.2104,4350
+\subsubsection{Numeric notation} % 12.2.2.1106,4384
+\subsubsection{Stack notation} % 12.2.2.2127,5210
+\section{Additional usage requirements} % 12.3135,5409
+\subsection{Additional usage requirements} % A.12.3138,5473
+\subsection{Data types} % 12.3.1141,5540
+\label{float:datatypes}142,5574
+Append table \ref{float:types} to table \ref{table:datatypes}.144,5614
+	\label{float:types}149,5728
+\subsubsection{Addresses} % 12.3.1.1160,5979
+\label{float:addr}161,6017
+\subsubsection{Floating-point numbers} % 12.3.1.2178,6796
+\label{float:num}179,6847
+\subsection{Floating-point operations} % 12.3.2188,7136
+\label{float:ops}189,7185
+\subsection{Floating-point stack} % 12.3.3200,7634
+\label{float:stack}201,7678
+\subsection{Environmental queries} % 12.3.4217,8285
+Append table \ref{float:env} table \ref{table:env}.219,8345
+	\label{float:env}226,8520
+\subsection{Address alignment} % 12.3.5246,9219
+\subsubsection{Address alignment} % A.12.3.5258,9668
+\subsection{Variables} % 12.3.6276,10421
+\subsection{Text interpreter input number conversion} % 12.3.7283,10714
+\label{float:conv}284,10778
+\subsubsection{Text interpreter input number conversion} % A.12.3.7319,12041
+\section{Additional documentation requirements} % 12.4332,12674
+\subsection{System documentation} % 12.4.1334,12732
+\subsubsection{Implementation-defined options} % 12.4.1.1336,12778
+\subsubsection{Ambiguous conditions} % 12.4.1.2351,13390
+\subsubsection{Other system documentation} % 12.4.1.3397,15167
+\subsection{Program documentation} % 12.4.2402,15291
+\subsubsection{Environmental dependencies} % 12.4.2.1404,15338
+\subsubsection{Other program documentation} % 12.4.2.2411,15552
+\section{Compliance and labeling} % 12.5416,15677
+\subsection{ANS Forth systems} % 12.5.1418,15721
+\subsection{ANS Forth programs} % 12.5.2433,16340
+\section{Glossary} % 12.6450,17013
+\subsection{Glossary} % A.12.6453,17056
+\subsection{Floating-Point words} % 12.6.1456,17102
+\subsection{Floating-Point extension words} % 12.6.2856,28482
+
+foreward.tex,24
+\chapter*{Foreword}1,1
+
+history.tex,1061
+\label{annex:intro}2,46
+\ref{annex:bib} for those interested in learning more about Forth.10,415
+\section{Features of Forth} % C.112,485
+\section{History of Forth} % C.278,4085
+\section{Hardware implementations of Forth} % C.3120,6252
+\section{Standardization efforts} % C.4142,7309
+\section{Programming in Forth} % C.5161,8171
+\subsection{The Forth dictionary} % C.5.1216,10792
+\subsection{Push-down stacks} % C.5.2258,13013
+\subsection{Interpreters} % C.5.3302,15286
+\subsection{Assembler} % C.5.4354,18070
+\subsection{Virtual memory} % C.5.5379,19365
+Forth source block is given in Fig. \ref{fig:block} below.403,20741
+\subsection{Programming environment} % C.5.6429,21973
+\subsection{Advanced programming features} % C.5.7451,23100
+\subsection{A programming example} % C.5.8568,28988
+Figure \ref{fig:block} contains a typical block of Forth source. It570,29041
+	\label{fig:block}626,31196
+\section{Multiprogrammed systems} % C.6696,34614
+\section{Design and management considerations} % C.7729,36428
+\section{Conclusion} % C.8756,37733
+
+intro.tex,1367
+\chapter{Introduction}9,190
+\section{Purpose}11,216
+\section{Scope}18,543
+\subsection{Inclusions}22,697
+\subsection{Exclusions} % 1.2.229,927
+\label{intro:exclusions}30,960
+\section{Document organization}49,1773
+\subsection{Word sets}51,1808
+sets, defined in sections \ref{wordlist:block} through60,2319
+\ref{wordlist:string}, are optional, making it possible to provide61,2349
+\subsubsection{Text sections}64,2476
+\subsubsection{Glossary sections}74,2875
+\subsection{Annexes}79,3039
+Annex \ref{annex:rationale} provides some of the rationale behind the83,3122
+Annex \ref{annex:bib} is a short bibliography on Forth.89,3424
+Annex \ref{annex:intro} provides an introduction to Forth.91,3483
+Annex \ref{annex:diff} discusses the compatibility of ANS Forth93,3545
+Annex \ref{annex:port} presents some techniques for writing portable96,3677
+Annex \ref{annex:index} includes the words from all word sets in a99,3773
+\section{Future directions}102,3894
+\subsection{New technology}104,3925
+\subsection{Obsolescent features}110,4130
+  \ref{core:numTIB}	& \word{numTIB}121,4583
+& \ref{tools:FORGET}& \word[tools]{FORGET}122,4620
+& \ref{core:SPAN}	& \word{SPAN} \\123,4664
+  \ref{core:CONVERT}& \word{CONVERT}124,4700
+& \ref{core:QUERY}	& \word{QUERY}125,4738
+& \ref{core:TIB}	& \word{TIB} \\126,4773
+  \ref{core:EXPECT}	& \word{EXPECT} \\127,4807
+
+label.tex,447
+\chapter{Compliance and labeling}2,19
+\label{label}3,54
+\section{ANS Forth systems} % 5.1 ===================================5,71
+\label{label:label}6,142
+\subsection{System compliance} % 5.1.18,165
+\label{label:system}9,205
+\subsection{System labeling} % 5.1.221,748
+\section{ANS Forth programs} % 5.2 ==================================41,1506
+\subsection{Program compliance} % 5.2.143,1579
+\subsection{Program labeling} % 5.2.250,1829
+
+locals.tex,2482
+\chapter{The optional Locals word set} % 131,1
+\section{The optional Locals word set} % A.135,80
+\label{rat:locals}6,127
+To reinforce the intent of section \ref{wordlist:local}, here are105,4124
+\ref{locals:rules}a. In e) the declaration of \texttt{TEMP} is legal192,7423
+around the declaration of its locals violates \ref{locals:rules}b, and218,8591
+violates \ref{locals:rules}c. \texttt{JANE} in h) violates220,8699
+\ref{locals:rules}d by accessing locals after placing the sum of221,8750
+\ref{locals:rules}e. The attempt to \word{EXECUTE} the local called236,9223
+\section{Introduction} % 13.1252,9941
+\section{Additional terms and notation} % 13.2256,10033
+\section{Additional usage requirements} % 13.3260,10092
+\subsection{Additional usage requirements} % A.13.3263,10156
+Rule \ref{locals:rules}d could be relaxed without affecting the265,10216
+integrity of the rest of this structure. \ref{locals:rules}c could266,10317
+\ref{locals:rules}b forbids the use of the data stack for local269,10355
+\ref{locals:rules}d until any data placed onto the return stack by the280,10933
+by Section \ref{locals:rules}g. Although words, such as \word{LOCAL},293,11669
+\subsection{Locals} % 13.3.1300,11926
+\subsection{Environmental queries} % 13.3.2307,12185
+Append table \ref{local:env} to table \ref{table:env}.309,12245
+	\label{local:env}316,12422
+\subsection{Processing locals} % 13.3.3332,12908
+\label{local:locals}333,12949
+\subsubsection{Compilation semantics} % 13.3.3.1347,13545
+\subsubsection{Syntax restrictions} % 13.3.3.2405,16303
+\label{locals:rules}406,16351
+\section{Additional documentation requirements} % 13.4447,17893
+\subsection{System documentation} % 13.4.1449,17951
+\subsubsection{Implementation-defined options} % 13.4.1.1451,17997
+\subsubsection{Ambiguous conditions} % 13.4.1.2458,18223
+\subsubsection{Other system documentation} % 13.4.1.3466,18501
+\subsection{Program documentation} % 13.4.2471,18625
+\subsubsection{Environmental dependencies} % 13.4.2.1473,18672
+\subsubsection{Other program documentation} % 13.4.2.2479,18875
+\section{Compliance and labeling} % 13.5485,19002
+\subsection{ANS Forth systems} % 13.5.1487,19046
+\subsection{ANS Forth programs} % 13.5.2501,19608
+\section{Glossary} % 13.6517,20224
+\subsection{Glossary} % A.13.6520,20267
+\subsection{Locals words} % 13.6.1523,20313
+\subsection{Locals extension words} % 13.6.2622,23755
+		is given in \ref{rat:locals}, above. It is intended as an651,24941
+
+members.tex,65
+\chapter*{X3 Membership}1,1
+\chapter*{X3J14 Membership}89,3588
+
+memory.tex,1277
+\chapter{The optional Memory-Allocation word set} % 141,1
+\section{The optional Memory-Allocation word set} % A.145,92
+\section{Introduction} % 14.117,658
+\section{Additional terms and notation} % 14.219,691
+\section{Additional usage requirements} % 14.322,748
+\subsection{I/O Results data type} % 14.3.124,798
+\label{mem:ior}25,843
+Append table \ref{mem:types} to table \ref{table:datatypes}.32,1091
+	\label{mem:types}37,1202
+\subsection{Environmental queries} % 14.3.249,1435
+Append table \ref{mem:env} to table \ref{table:env}.51,1495
+	\label{mem:env}58,1671
+\subsection{Allocated regions} % 14.3.372,2094
+\section{Additional documentation requirements} % 14.480,2332
+\subsection{System documentation} % 14.4.182,2390
+\subsubsection{Implementation-defined options} % 14.4.1.184,2436
+\subsubsection{Ambiguous conditions} % 14.4.1.293,2710
+\subsubsection{Other system documentation} % 14.4.1.398,2828
+\subsection{Program documentation} % 14.4.2103,2952
+\section{Compliance and labeling} % 14.5108,3066
+\subsection{ANS Forth systems} % 14.5.1110,3110
+\subsection{ANS Forth programs} % 14.5.2126,3751
+\section{Glossary} % 14.6143,4445
+\subsection{Memory-Allocation words} % 14.6.1145,4474
+\subsection{Memory-Allocation extension words} % 14.6.2222,7153
+
+notation.tex,757
+\chapter{Terms, notation, and references}2,19
+\section{Definitions of terms}24,944
+\label{notation:terms}25,976
+\section{Notation} % ================================================254,8900
+\subsection{Numeric notation}256,8973
+\subsection{Stack notation}265,9357
+are shown in table \ref{table:datatypes}.277,9821
+\subsection{Parsed-text notation}290,10324
+that text is specified by an abbreviation from table \ref{table:syntax},293,10484
+	\label{table:syntax}304,10814
+\subsection{Glossary notation}328,11671
+\subsubsection{Glossary index line}336,11955
+\item Word-set designator from table \ref{table:wordsets}.349,12413
+	\label{table:wordsets}356,12585
+\subsubsection{Glossary semantic description}378,13185
+\section{References}385,13473
+
+port.tex,722
+\label{annex:port}2,64
+\section{Introduction} % E.14,86
+\section{Hardware peculiarities} % E.238,1961
+\label{port:hardware}39,2001
+\subsection{Data/memory abstraction} % E.2.141,2026
+\subsection{Definitions} % E.2.254,2754
+\subsection{Addressing memory} % E.2.393,5051
+\subsection{Alignment problems} % E.2.4151,8180
+\section{Number representation} % E.3197,10428
+\subsection{Big endian vs. little endian} % E.3.1203,10656
+\subsection{ALU organization} % E.3.2227,11772
+\section{Forth system implementation} % E.4259,13462
+\subsection{Definitions} % E.4.1269,13987
+\subsection{Stacks} % E.4.2313,16458
+\section{ROMed application disciplines and conventions} % E.5332,17411
+\section{Summary} % E.6377,19480
+
+rationale.tex,2418
+\label{annex:rationale}2,48
+\section{Introduction} % A.15,95
+\subsection{Purpose} % A.1.17,127
+\subsection{Scope} % A.1.29,159
+\subsection{Document organization} % A.1.366,2280
+\subsubsection{Word sets} % A.1.3.168,2326
+\section{Terms and notation} % A.2152,6614
+\subsection{Definitions of terms} % A.2.1154,6652
+\subsection{Notation} % A.2.2192,8173
+\subsubsection{Stack notation} % A.2.2.2194,8206
+\section{Usage requirements} % A.3211,9076
+\subsection{Data-types} % A.3.1233,10123
+\label{rat:types}234,10156
+\subsubsection{Character types} % A.3.1.2264,11552
+\subsubsection{Single-cell types} % A.3.1.3404,18343
+\label{rat:cstring}516,22760
+\subsubsection{Cell-pair types} % A.3.1.4544,23872
+\subsection{The Implementation environment} % A.3.2596,25345
+\subsubsection{Numbers} % A.3.2.1598,25400
+\subsubsection{Arithmetic} % A.3.2.2672,28587
+\subsubsection{Stacks} % A.3.2.3704,30220
+control structures shown in \textbf{figure \ref{fig:basic}}.728,31543
+	\label{fig:basic}734,31719
+\ref{table:control}} shows the desired behavior.757,32852
+	\label{table:control}762,32997
+shown in \textbf{figure \ref{fig:additional}}, can be defined. The796,34351
+	\label{fig:additional}828,35768
+examples in \textbf{figure \ref{fig:extended}}, with additional836,36023
+	\label{fig:extended}858,37190
+\subsubsection{Environmental queries} % A.3.2.6918,39710
+\subsection{The Forth dictionary} % A.3.3942,40836
+\subsubsection{Name space} % A.3.3.1949,41154
+\subsubsection{Code space} % A.3.3.2977,42652
+\subsubsection{Data space} % A.3.3.3979,42692
+Section \ref{usage:contiguous} does prescribe conditions under which1037,45582
+\subsection{The Forth text interpreter} % A.3.41091,47513
+\subsubsection{Semantics} % A.3.4.31093,47564
+\label{rat:interpret}1113,48545
+\subsubsection{Compilation} % A.3.4.51122,48972
+\section{Documentation requirements} % A.4 ==========================1130,49281
+\subsection{System documentation} % A.4.11132,49354
+\subsection{Program documentation} % A.4.21134,49399
+\section{Compliance and labeling} % A.5 =============================1136,49445
+\subsection{ANS Forth systems} % A.5.11138,49518
+Section \ref{label:label} defines the criteria that a system must1140,49568
+\subsection{ANS Forth programs} % A.5.21163,50994
+\subsubsection{Program labeling} % A.5.2.21166,51068
+\section{Glossary} % A.6 ============================================1195,52470
+
+search.tex,1614
+\chapter{The optional Search-Order word set} % 161,1
+\section{The optional Search-Order word set} % A.165,87
+\section{Introduction} % 16.165,3029
+\section{Additional terms and notation} % 16.267,3062
+\subsubsection{Additional terms} % A.16.279,3371
+\section{Additional usage requirements} % 16.388,3557
+\subsection{Data types} % 16.3.190,3607
+Append table \ref{search:types} to table \ref{table:datatypes}.95,3756
+	\label{search:types}100,3870
+\subsection{Environmental queries} % 16.3.2115,4262
+Append table \ref{search:env} to table \ref{table:env}.117,4322
+	\label{search:env}124,4501
+\subsection{Finding definition names} % 16.3.3140,5021
+\label{search:find}141,5069
+\subsubsection{Finding definition names} % A.16.3.3165,6064
+\subsection{Contiguous regions} % 16.3.4181,6550
+\section{Additional documentation requirements} % 16.4187,6791
+\subsection{System documentation} % 16.4.1189,6849
+\subsubsection{Implementation-defined options} % 16.4.1.1191,6895
+\subsubsection{Ambiguous conditions} % 16.4.1.2202,7239
+\subsubsection{Other system documentation} % 16.4.1.3213,7560
+\subsection{Program documentation} % 16.4.2219,7686
+\subsubsection{Environmental dependencies} % 16.4.2.1221,7733
+\subsubsection{Other program documentation} % 16.4.2.2228,7945
+\section{Compliance and labeling} % 16.5235,8074
+\subsection{ANS Forth systems} % 16.5.1237,8118
+\subsection{ANS Forth programs} % 16.5.2252,8723
+\section{Glossary} % 16.6269,9382
+\subsection{Glossary} % A.16.6272,9425
+\subsection{Search-Order words} % 16.6.1275,9471
+\subsection{Search-Order extension words} % 16.6.2404,14019
+
+string.tex,699
+\chapter{The optional String word set} % 171,1
+\section{The optional String word set}5,81
+\section{Introduction} % 17.18,135
+\section{Additional terms and notation} % 17.210,168
+\section{Additional usage requirements} % 17.314,227
+Append table \ref{string:env} to table \ref{table:env}.16,290
+	\label{string:env}23,469
+\section{Additional documentation requirements} % 17.437,859
+\section{Compliance and labeling} % 17.541,926
+\subsection{Compliance and labeling} % 17.5.143,970
+\subsection{ANS Forth programs} % 17.5.257,1538
+\section{Glossary} % 17.673,2154
+\subsection{Glossary}76,2197
+\subsection{String words} % 17.6.179,2234
+\subsection{String extension words} % 17.6.2257,8225
+
+titlepage.tex,0
+
+tools.tex,1312
+\chapter{The optional Programming-Tools word set} % 151,1
+\section{The optional Programming-Tools word set} % A.155,91
+\section{Introduction} % 15.129,1197
+\section{Additional terms and notation} % 15.234,1328
+\section{Additional usage requirements} % 15.338,1387
+\subsection{Environmental queries} % 15.3.140,1437
+Append table \ref{tools:env} to table \ref{table:env}.42,1497
+	\label{tools:env}49,1675
+\subsection{The Forth dictionary} % 15.3.263,2086
+\label{tools:dict}64,2130
+\section{Additional documentation requirements} % 15.476,2536
+\subsection{System documentation} % 15.4.178,2594
+\subsubsection{Implementation-defined options} % 15.4.1.180,2640
+\subsubsection{Ambiguous conditions} % 15.4.1.296,3159
+\subsubsection{Other system documentation} % 15.4.1.3113,3887
+\subsection{Program documentation} % 15.4.2119,4013
+\subsubsection{Environmental dependencies} % 15.4.2.1121,4060
+\subsubsection{Other program documentation} % 15.4.2.2128,4230
+\section{Compliance and labeling} % 15.5134,4357
+\subsection{ANS Forth systems} % 15.5.1136,4401
+\subsection{ANS Forth programs} % 15.5.2152,5042
+\section{Glossary} % 15.6170,5738
+\subsection{Glossary} % A.15.6173,5781
+\subsection{Programming-Tools words} % 15.6.1176,5827
+\subsection{Programming-Tools extension words} % 15.6.2270,8702
+
+usage.tex,5463
+\chapter{Usage requirements}2,19
+\label{usage}3,49
+\section{Data types} % 3.126,1052
+\label{usage:data}27,1080
+Table \ref{table:datatypes} summarizes the data types used38,1446
+	\label{table:datatypes}46,1729
+\subsection{Data-type relationships} % 3.1.199,4029
+\subsection{Character types} % 3.1.2127,5006
+\label{usage:char}128,5044
+as shown in table \ref{table:ASCII}.136,5345
+\subsubsection{Graphic characters} % 3.1.2.1138,5367
+\label{usage:ASCII}139,5413
+\ref{table:ASCII}, are taken directly from ANS X3.4-1974 (ASCII)143,5556
+\subsubsection{Control characters} % 3.1.2.2152,6008
+\label{usage:control}153,6054
+	\label{table:ASCII}167,6548
+\subsection{Single-cell types} % 3.1.3204,8249
+\label{usage:cell}205,8289
+\subsubsection{Flags} % 3.1.3.1216,8762
+\label{usage:flags}217,8795
+\subsubsection{Integers} % 3.1.3.2225,9156
+\subsubsection{Addresses} % 3.1.3.3233,9483
+\label{usage:addr}234,9520
+\subsubsection{Counted strings} % 3.1.3.4252,10332
+\label{usage:cstring}253,10375
+\subsubsection{Execution tokens} % 3.1.3.5263,10763
+\subsection{Cell-pair types} % 3.1.4268,10904
+\label{usage:2cell}269,10942
+\subsubsection{Double-cell integers} % 3.1.4.1277,11255
+\subsubsection{Character strings} % 3.1.4.2295,12012
+\subsection{System types} % 3.1.5300,12178
+\subsubsection{System-compilation types} % 3.1.5.1305,12311
+(see \ref{usage:controlstack}). The possible presence of such items308,12440
+\subsubsection{System-execution types} % 3.1.5.2336,13695
+\section{The implementation environment} % 3.2 =======================355,14511
+\subsection{Numbers} % 3.2.1357,14585
+\subsubsection{Internal number representation} % 3.2.1.1359,14617
+\label{usage:number}360,14675
+\subsubsection{Digit conversion} % 3.2.1.2370,15000
+\label{usage:digits}371,15044
+\subsubsection{Free-field number display} % 3.2.1.3389,15933
+\label{usage:dot}390,15986
+\subsection{Arithmetic} % 3.2.2402,16494
+\subsubsection{Integer division} % 3.2.2.1404,16529
+\label{usage:div}405,16573
+\ref{table:floor} and \ref{table:round}.428,17717
+		\label{table:floor}441,18164
+		\label{table:round}460,18673
+\subsubsection{Other integer operations} % 3.2.2.2478,19103
+\label{usage:intops}479,19155
+\subsection{Stacks} % 3.2.3485,19355
+\subsubsection{Data stack} % 3.2.3.1487,19386
+\label{usage:datastack}488,19424
+\subsubsection{Control-flow stack} % 3.2.3.2492,19504
+\label{usage:controlstack}493,19550
+\subsubsection{Return stack} % 3.2.3.3512,20366
+\label{usage:returnstack}513,20406
+\subsection{Operator terminal} % 3.2.4540,21517
+\subsubsection{User input device} % 3.2.4.1544,21603
+\label{usage:input}545,21648
+\subsubsection{User output device} % 3.2.4.2553,21837
+\label{usage:output}554,21883
+\subsection{Mass storage} % 3.2.5559,21985
+\subsection{Environmental queries} % 3.2.6565,22211
+\label{usage:env}566,22255
+\word{ENVIRONMENT?}. Table \ref{table:env} contains571,22480
+	\label{table:env}579,22720
+			(i.e., not a subset as defined in \ref{label:system}) \\598,23436
+\section{The Forth dictionary} % 3.3 ================================633,24890
+\label{usage:dict}634,24961
+\subsection{Name space} % 3.3.1646,25468
+\subsubsection{Word lists} % 3.3.1.1651,25587
+\subsubsection{Definition names} % 3.3.1.2657,25815
+\label{usage:names}658,25859
+\subsection{Code space} % 3.3.2671,26286
+\subsection{Data space} % 3.3.3 676,26405
+\label{usage:dataspace}677,26439
+\subsubsection{Address alignment} % 3.3.3.1686,26858
+\label{usage:aaddr}687,26903
+\subsubsection{Contiguous regions} % 3.3.3.2712,28161
+\label{usage:contiguous}713,28207
+\subsubsection{Variables} % 3.3.3.3740,29517
+\label{usage:var}741,29554
+\subsubsection{Text-literal regions} % 3.3.3.4756,29982
+\label{usage:"literal}757,30030
+\subsubsection{Input buffers} % 3.3.3.5767,30419
+\label{usage:inbuf}768,30460
+\subsubsection{Other transient regions} % 3.3.3.6802,32147
+\label{usage:transient}803,32198
+\section{The Forth text interpreter} % 3.4 ==========================847,34328
+\label{usage:command}848,34399
+	(see \ref{usage:parsing});865,35101
+\item Search the dictionary name space (see \ref{usage:find}).867,35170
+	\item if interpreting, perform the interpretation semantics of the definition (see \ref{usage:interpret}), and continue at a).871,35349
+		definition (see \ref{usage:compile}), and continue at a).874,35475
+	(see \ref{usage:numbers}). If successful:879,35650
+	(see \ref{usage:ambiguous}).889,36023
+\subsection{Parsing} % 3.4.1 Parsing892,36067
+\label{usage:parsing}893,36105
+\subsubsection{Delimiters} % 3.4.1.1923,37579
+\label{usage:delim}924,37617
+\subsubsection{Syntax} % 3.4.1.2934,37989
+\label{usage:syntax}935,38023
+given for each control-flow word in \ref{annex:rationale} (Annex A).943,38473
+\subsubsection{Text interpreter input number conversion} % 3.4.1.3950,38692
+\label{usage:numbers}951,38760
+\subsection{Finding definition names} % 3.4.2961,39072
+\label{usage:find}962,39119
+\subsection{Semantics} % 3.4.3981,39933
+\label{usage:semantics}982,39965
+\subsubsection{Execution semantics} % 3.4.3.1996,40602
+\subsubsection{Interpretation semantics} % 3.4.3.21012,41325
+\label{usage:interpret}1013,41377
+\subsubsection{Compilation semantics} % 3.4.3.31028,41991
+\label{usage:compile}1029,42040
+\subsection{Possible actions on an ambiguous condition} % 3.4.41037,42307
+\label{usage:ambiguous}1038,42372
+\subsection{Compilation} % 3.4.51056,42877
+\label{usage:compilation}1057,42911

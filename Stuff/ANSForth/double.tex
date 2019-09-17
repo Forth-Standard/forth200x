@@ -1,0 +1,424 @@
+\chapter{The optional Double-Number word set} % 8
+\wordlist{double}
+
+\begin{info}
+\section{The optional Double-Number word set}
+
+Forth systems on 8-bit and 16-bit processors often find it necessary
+to deal with double-length numbers. But many Forths on small embedded
+systems do not, and many users of Forth on systems with a cell size of
+32-bits or more find that the necessity for double-length numbers is
+much diminished. Therefore, we have factored the words that manipulate
+double-length entities into this optional word set.
+
+Please note that the naming convention used in this word set conveys
+some important information:
+
+\begin{enumerate}
+\item[1.]
+	Words whose names are of the form \texttt{2}\emph{xxx} deal
+	with cell pairs, where the relationship between the cells is
+	unspecified. They may be two-vectors, double-length numbers, or
+	any pair of cells that it is convenient to manipulate together.
+
+\item[2.]
+	Words with names of the form \texttt{D}\emph{xxx} deal
+	specifically with double-length integers.
+
+\item[3.]
+	Words with names of the form \texttt{M}\emph{xxx} deal with
+	some combination of single and double integers. The order in
+	which these appear on the stack is determined by long-standing
+	common practice.
+\end{enumerate}
+
+Refer to \ref{rat:types} for a discussion of data types in Forth.
+\end{info}
+
+\section{Introduction} % 8.1
+
+Sixteen-bit Forth systems often use double-length numbers. However, many
+Forths on small embedded systems do not, and many users of Forth on systems
+with a cell size of 32 bits or more find that the use of double-length
+numbers is much diminished. Therefore, the words that manipulate
+double-length entities have been placed in this optional word set.
+
+\section{Additional terms and notation} % 8.2
+
+None.
+
+\section{Additional usage requirements} % 8.3
+
+\subsection{Environmental queries} % 8.3.1
+
+Append table \ref{double:env} to table \ref{table:env}.
+
+See: \xref{usage:env}{3.2.6 Environmental queries}.
+
+\begin{table}[ht]
+  \begin{center}
+	\caption{Environmental Query Strings}
+	\label{double:env}
+	\begin{tabular}{p{9em}rcp{0.42\textwidth}}
+		\hline\hline
+		\multicolumn{2}{l}{String \hfill Value data type} & Constant? & Meaning \\
+		\hline
+		\texttt{DOUBLE}		& \emph{flag}	& no	&
+			double-number word set present \\
+		\texttt{DOUBLE-EXT}	& \emph{flag}	& no	&
+			double-number extensions word set present \\
+		\hline\hline
+	\end{tabular}
+  \end{center}
+\end{table}
+
+\subsection{Text interpreter input number conversion} % 8.3.2
+
+When the text interpreter processes a number that is immediately
+followed by a decimal point and is not found as a definition name,
+the text interpreter shall convert it to a double-cell number.
+
+For example, entering \word[core]{DECIMAL} \texttt{1234} leaves the
+single-cell number \texttt{1234} on the stack, and entering
+\word[core]{DECIMAL} \texttt{1234.} leaves the double-cell number
+\texttt{1234} \texttt{0} on the stack.
+
+See: \xref{usage:numbers}{3.4.1.3 Text interpreter input number
+	conversion}.
+
+
+\section{Additional documentation requirements} % 8.4
+
+\subsection{System documentation} % 8.4.1
+
+\subsubsection{Implementation-defined options} % 8.4.1.1
+
+\begin{itemize}
+\item no additional requirements.
+\end{itemize}
+
+\subsubsection{Ambiguous conditions} % 8.4.1.2
+
+\begin{itemize}
+\item $d$ outside range of $n$ in \wref{double:DtoS}{D>S}.
+\end{itemize}
+
+\subsubsection{Other system documentation} % 8.4.1.3
+
+\begin{itemize}
+\item no additional requirements.
+\end{itemize}
+
+\subsection{Program documentation} % 8.4.2
+
+\begin{itemize}
+\item no additional requirements.
+\end{itemize}
+
+
+\section{Compliance and labeling} % 8.5
+
+\subsection{ANS Forth systems} % 8.5.1
+
+The phrase ``Providing the Double-Number word set'' shall be
+appended to the label of any Standard System that provides all
+of the Double-Number word set.
+
+The phrase ``Providing \emph{name(s)} from the Double-Number
+Extensions word set'' shall be appended to the label of any
+Standard System that provides portions of the Double-Number
+Extensions word set.
+
+The phrase ``Providing the Double-Number Extensions word set''
+shall be appended to the label of any Standard System that
+provides all of the Double-Number and Double-Number Extensions
+word sets.
+
+\subsection{ANS Forth programs} % 8.5.2
+
+The phrase ``Requiring the Double-Number word set'' shall be
+appended to the label of Standard Programs that require the
+system to provide the Double-Number word set.
+
+The phrase ``Requiring \emph{name(s)} from the Double-Number
+Extensions word set'' shall be appended to the label of Standard
+Programs that require the system to provide portions of the
+Double-Number Extensions word set.
+
+The phrase ``Requiring the Double-Number Extensions word set''
+shall be appended to the label of Standard Programs that require
+the system to provide all of the Double-Number and Double-Number
+Extensions word sets.
+
+\section{Glossary} % 8.6
+
+\begin{info}
+\subsection{Glossary}
+\end{info}
+
+\subsection{Double-Number words} % 8.6.1
+
+\begin{newword}{0360}{2CONSTANT}[two-constant]
+	\stack{$x_1$ $x_2$ ``\arg{spaces}name''}{}
+
+	Skip leading space delimiters. Parse \emph{name} delimited by
+	a space. Create a definition for \emph{name} with the execution
+	semantics defined below.
+
+	\emph{name} is referred to as a ``two-constant''.
+
+\item[\emph{name} Execution:]
+	\stack{}{$x_1$ $x_2$}
+
+	Place cell pair $x_1$ $x_2$ on the stack.
+
+\item[See:]
+	\xref{usage:parsing}{3.4.1 Parsing}.
+
+	\begin{rationale} % A.8.6.1.0360 2CONSTANT
+		Typical use:
+			\texttt{x1} \texttt{x2} \word{2CONSTANT} \emph{name}
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword*}{0390}{2LITERAL}[two-literal]
+\item[Interpretation:]
+	Interpretation semantics for this word are undefined.
+
+\item[Compilation:]
+	\stack{$x_1$ $x_2$}{}
+
+	Append the run-time semantics below to the current definition.
+
+\item[Run-time:]
+	\stack{}{$x_1$ $x_2$}
+
+	Place cell pair $x_1$ $x_2$ on the stack.
+
+	\begin{rationale} % A.8.6.1.0390 2LITERAL
+		\setwordlist{core}
+		Typical use:
+			\word{:} \texttt{X} {\ldots}
+				\word{[} \texttt{x1} \texttt{x2} \word{]} \word[double]{2LITERAL}
+			{\ldots} \word{;}
+		\setwordlist{double}
+	\end{rationale}
+\end{newword*}
+
+
+\begin{newword}{0440}{2VARIABLE}[two-variable]
+	\stack{``\arg{spaces}name''}{}
+
+	Skip leading space delimiters. Parse \emph{name} delimited by a
+	space. Create a definition for \emph{name} with the execution
+	semantics defined below. Reserve two consecutive cells of data
+	space.
+
+	\emph{name} is referred to as a ``two-variable''.
+
+\item[\emph{name} Execution:]
+	\stack{}{a-addr}
+
+	\emph{a-addr} is the address of the first (lowest address)
+	cell of two consecutive cells in data space reserved by
+	\word{2VARIABLE} when it defined \emph{name}. A program is
+	responsible for initializing the contents.
+
+\item[See:]
+	\xref{usage:parsing}{3.4.1 Parsing},
+	\wref{core:VARIABLE}{VARIABLE}.
+
+	\begin{rationale} % A.8.6.1.0440 2VARIABLE
+		Typical use:
+			\word{2VARIABLE} \emph{name}
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{1040}{D+}[d-plus]
+	\stack{$d_1$\textbar ud$_1$ $d_2$\textbar ud$_2$}{$d_3$\textbar ud$_3$}
+
+	Add $d_2$\textbar\emph{ud}$_2$ to $d_1$\textbar\emph{ud}$_1$,
+	giving the sum $d_3$\textbar\emph{ud}$_3$.
+\end{newword}
+
+
+\begin{newword}{1050}{D-}[d-minus]
+	\stack{$d_1$\textbar ud$_1$ $d_2$\textbar ud$_2$}{$d_3$\textbar ud$_3$}
+
+	Subtract $d_2$\textbar\emph{ud}$_2$ from $d_1$\textbar\emph{ud}$_1$,
+	giving the difference $d_3$\textbar\emph{ud}$_3$.
+\end{newword}
+
+
+\begin{newword}{1060}{D.}[d-dot]
+	\stack{d}{}
+
+	Display $d$ in free field format.
+\end{newword}
+
+
+\begin{newword}{1070}{D.R}[d-dot-r]
+	\stack{d n}{}
+
+	Display $d$ right aligned in a field $n$ characters wide.
+	If the number of characters required to display $d$ is greater
+	than $n$, all digits are displayed with no leading spaces in
+	a field as wide as necessary.
+
+	\begin{rationale} % A.8.6.1.1070 D.R
+		In \word{D.R}, the ``R'' is short for RIGHT.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}[D0less]{1075}{D0<}[d-zero-less]
+	\stack{d}{flag}
+
+	\emph{flag} is true if and only if $d$ is less than zero.
+\end{newword}
+
+
+\begin{newword}{1080}{D0=}[d-zero-equals]
+	\stack{xd}{flag}
+
+	\emph{flag} is true if and only if \emph{xd} is equal to zero.
+\end{newword}
+
+
+\begin{newword}{1090}{D2*}[d-two-star]
+	\stack{xd$_1$}{xd$_2$}
+
+	\emph{xd}$_2$ is the result of shifting \emph{xd}$_1$ one bit
+	toward the most-significant bit, filling the vacated
+	least-significant bit with zero.
+
+	\begin{rationale} % A.8.6.1.1090 D2*
+		See: \rref{core:2*}{2*} for applicable discussion.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{1100}{D2/}[d-two-slash]
+	\stack{xd$_1$}{xd$_2$}
+
+	\emph{xd}$_2$ is the result of shifting \emph{xd}$_1$ one bit
+	toward the least-significant bit, leaving the most-significant
+	bit unchanged.
+
+	\begin{rationale} % A.8.6.1.1100 D2/
+		See: \rref{core:2/}{2/} for applicable discussion.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}[Dless]{1110}{D<}[d-less-than]
+	\stack{$d_1$ $d_2$}{flag}
+
+	\emph{flag} is true if and only if $d_1$ is less than $d_2$.
+\end{newword}
+
+
+\begin{newword}{1120}{D=}[d-equals]
+	\stack{xd$_1$ xd$_2$}{flag}
+
+	\emph{flag} is true if and only if \emph{xd}$_1$ is bit-for-bit
+	the same as \emph{xd}$_2$.
+\end{newword}
+
+
+\begin{newword}[DtoS]{1140}{D>S}[d-to-s]
+	\stack{d}{n}
+
+	$n$ is the equivalent of $d$. An ambiguous condition exists if
+	$d$ lies outside the range of a signed single-cell number.
+
+	\begin{rationale} % A.8.6.1.1140 D>S
+		There exist number representations, e.g., the sign-magnitude
+		representation, where reduction from double- to single-precision
+		cannot simply be done with \word[core]{DROP}. This word,
+		equivalent to \word[core]{DROP} on two's complement systems,
+		desensitizes application code to number representation and
+		facilitates portability.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{1160}{DABS}[d-abs]
+	\stack{d}{ud}
+
+	\emph{ud} is the absolute value of $d$.
+\end{newword}
+
+
+\begin{newword}{1210}{DMAX}[d-max]
+	\stack{$d_1$ $d_2$}{$d_3$}
+
+	$d_3$ is the greater of $d_1$ and $d_2$.
+\end{newword}
+
+
+\begin{newword}{1220}{DMIN}[d-min]
+	\stack{$d_1$ $d_2$}{$d_3$}
+
+	$d_3$ is the lesser of $d_1$ and $d_2$.
+\end{newword}
+
+
+\begin{newword}{1230}{DNEGATE}[d-negate]
+	\stack{$d_1$}{$d_2$}
+
+	$d_2$ is the negation of $d_1$.
+\end{newword}
+
+
+\begin{newword}{1820}{M*/}[m-star-slash]
+	\stack{$d_1$ $n_1$ $+n_2$}{$d_2$}
+
+	Multiply $d_1$ by $n_1$ producing the triple-cell intermediate
+	result $t$. Divide $t$ by $+n_2$ giving the double-cell quotient
+	$d_2$. An ambiguous condition exists if $+n_2$ is zero or
+	negative, or the quotient lies outside of the range of a
+	double-precision signed integer.
+
+	\begin{rationale} % A.8.6.1.1820 M*/
+		\word{M*/} was once described by Chuck Moore as the most
+		useful arithmetic operator in Forth. It is the main workhorse
+		in most computations involving double-cell numbers. Note that
+		some systems allow signed divisors. This can cost a lot in
+		performance on some CPUs. The requirement for a positive
+		divisor has not proven to be a problem.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{1830}{M+}[m-plus]
+	\stack{$d_1$\textbar ud$_1$ n}{$d_2$\textbar ud$_2$}
+
+	Add $n$ to $d_1$\textbar\emph{ud}$_1$, giving the sum
+	$d_2$\textbar\emph{ud}$_2$.
+
+	\begin{rationale} % A.8.6.1.1830 M+
+		\word{M+} is the classical method for integrating.
+	\end{rationale}
+\end{newword}
+
+
+\subsection{Double-Number extension words} % 8.6.2
+\extended
+
+\begin{newword}{0420}{2ROT}[two-rote]
+	\stack{$x_1$ $x_2$ $x_3$ $x_4$ $x_5$ $x_6$}{$x_3$ $x_4$ $x_5$ $x_6$ $x_1$ $x_2$}
+
+	Rotate the top three cell pairs on the stack bringing cell pair
+	$x_1$ $x_2$ to the top of the stack.
+\end{newword}
+
+
+\begin{newword}[DUless]{1270}{DU<}[d-u-less]
+	\stack{ud$_1$ ud$_2$}{flag}
+
+	\emph{flag} is true if and only if \emph{ud}$_1$ is less than
+	\emph{ud}$_2$.
+\end{newword}

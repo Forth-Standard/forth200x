@@ -1,0 +1,35 @@
+ProposalTemplate.txt
+23 October 2005
+
+Rationale
+=========
+
+Problem
+-------
+
+Current practice
+----------------
+
+Solution
+--------
+
+
+Proposal
+========
+Glossary
+  name  stack effect, wordset [X:cccc]
+Text
+  Formal description
+  Compilation behaviour
+  Execution behaviour
+  Ambiguous conditions and throw code
+
+
+Labelling
+=========
+ENVIRONMENT? impact - table 3.5 in Basis1
+  name   stack   conditions
+
+THROW/ior impact - table 9.2 in Basis1
+  value  text
+
