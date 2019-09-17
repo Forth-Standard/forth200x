@@ -19,17 +19,14 @@ Remote observers: No, because committee members want to freely speak
 their mind, and need to know who observes.  The prospect of being
 recorded was seen as particularly problematic.
 
-### 2a) (SFP) The meeting minutes are not detailed enough for people
-who did not participate in the meeting.
+### 2a) (SFP) The meeting minutes are not detailed enough for people who did not participate in the meeting.
 
 Needs volunteers, but we will try to be more verbose.
 
-### 2b) (SFP) GW should put the meeting agendas and minutes at forth-
-standard.org; 2c) (SFP) Other actions to migrate forth200x.org to forth-
-standard.org have not been implemented.
+### 2b) (SFP) GW should put the meeting agendas and minutes at forth-standard.org; 2c) (SFP) Other actions to migrate forth200x.org to forth-standard.org have not been implemented.
 
 Workshop on forth-standard.org and forth200x.org integration.  GW, AE, PK
-Already done: https://github.com/Forth-Standard/forth200x
+First part already done: [https://github.com/Forth-Standard/forth200x]
 
 ### 2d) (PJK et al) Move updated proposal process to document.
 
@@ -56,7 +53,7 @@ No electronic meeting
 
 ### 3b) Editor
 
-See 2d.  There is github.com/PeterKnaggs/forth-standard
+See 2d.  There is [https://github.com/Forth-Standard/forth-standard]
 
 ### 3c) Technical
 
