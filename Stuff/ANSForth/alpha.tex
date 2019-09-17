@@ -1,0 +1,46 @@
+\annex{Alphabetic list of words} % F (informative annex)}}}
+\label{annex:index}
+
+In the following list, the last, four-digit, part of the reference
+number establishes a sequence corresponding to the alphabetic ordering
+of all standard words. The first two or three parts indicate the word
+set and glossary section in which the word is defined.
+
+\makeatletter
+
+% \entry{number}{name}{wordlist}{ext}{label}[english]
+
+\newcommand{\entry}[5]{%
+	\def\word@num{#1}
+	\def\word@name{#2}
+	\def\word@list{#3}
+	\def\word@ext{#4}
+	\def\word@label{#5}
+	\word@show
+}
+
+\newcommand{\word@show}[1][\@empty]{%
+	\makebox[5em][r]{\ref{\word@list:\word@label}} \quad
+	\makebox[0.3\textwidth][l]{%
+		\hyperref{}{}{\word@list.\word@label}{\textbf{\texttt{\word@name}}}
+		\dotfill
+	}%
+	\ifx#1\@empty \,\,\else ``#1''\fi \dotfill%
+	\MakeUppercase{\word@list \ifx\word@ext\@empty\else ~EXT\fi}%
+	\makebox[3em]{\dotfill\pageref{\word@list:\word@label}} \\
+}
+\makeatother
+
+
+\IfFileExists{\jobname.wds}{
+	\input{\jobname.wds}
+}{
+	\IfFileExists{\jobname.wrd}{
+		\begin{center}
+			\textbf{Unsorted List}
+		\end{center}
+		\input{\jobname.wrd}
+	}{
+		File not found !
+	}
+}

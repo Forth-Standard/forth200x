@@ -1,0 +1,74 @@
+\section{Forth 200X Treffen auf der EuroForth 2015}
+
+An den beiden Tagen vor der EuroForth 2015 in Bath fand wieder einmal
+das Treffen des Forth~200X Komittees statt, das am nächsten
+Forth-Standard arbeitet.
+
+Diesmal standen zwei Erweiterungsvorschläge zur Abstimmung:
+
+\textbf{2s-Complement Wrap-Around Integers} legt die
+Zweierkomplementdarstellung als einzige Darstellung für negative ganze
+Zahlen fest (bisher waren theoretisch auch Einerkomplement und
+Sign-Magnitude standard, wurden aber nicht genutzt).  Außerdem soll
+bei einem Überlauf vieler ganzzahliger Operationen das Ergebnis
+mittels Modulo-Arithmetik berechnet werden, wie das die Forth-Systeme
+auch jetzt schon machen (bisher war Überlauf eine \emph{ambigouous
+  condition}, ein Standard-Programm durfte also keinen Überlauf
+haben).  Die vorgeschlagene Änderung ermöglicht es, Hash-Funktionen
+und Kryptographie in Standard-Forth ohne Verrenkungen zu
+programmieren.  Dieser Vorschlag wurde einstimmig angenommen.
+
+\textbf{1 chars = 1} legt fest, dass ein Character\footnote{Hierbei
+  sind \emph{Characters} im Sinne einer kleinen Speichereinheit
+  gemeint, darstellbare Zeichen werden können seit dem xchar-Wordset
+  von Forth-2012 mit mehreren Characters repräsentiert werden.}  genau
+eine address unit (typischerweise ein Byte, auf wort-adressierten
+Maschinen eine Cell) groß ist.  Dadurch wären Forth-Systeme mit
+address units $<8$ bits nicht mehr standard (solche Systeme gab es
+aber ohnehin nicht), und auch nicht Forth-Systeme mit Bytes als
+address units und 16-bit Characters (da gab es nur experimentelle
+Forth-Systeme); dafür würden viele Programme Standard, in denen
+\code{chars} vergessen oder absichtlich weggelassen wurde.  Die
+ursprüngliche Idee von \code{chars} war wohl, dass die Welt in
+Richtung 16-bit Zeichen gehen würde, was aber durch Unicode 2.0 (für
+das 16 bits nicht mehr ausreichen) und die Erfindung von UTF-8 (sodass
+man auch mit 8-bit-Einheiten Unicode darstellen kann) überholt war; in
+Forth-2012 spiegelt sich diese Entwicklung in der Einführung des
+xchar-Wordsets wider, die Möglichkeit zu 16-bit Characters auf
+byte-adressierten Maschinen würde mit dem vorliegenden Vorschlag
+entfernt.
+
+Bei der Abstimmung zum Vorschlag \emph{1 chars = 1} gab es drei
+Enthaltungen, weil diese Mitglieder sich noch nicht ausreichend klar
+über das Thema waren; da das nicht für einen Konsens spricht, haben
+wir den Vorschlag als vorerst nicht akzeptiert eingestuft und werden
+ihn nächstes Jahr erneut aufgreifen.
+
+Weiters wurden noch unfertige Vorschläge diskutiert, allen voran
+\textbf{Quotations} und \textbf{Recognizers}. Bei beiden wollte das
+Kommittee auf mehr Erfahrungen warten.  Bei den meisten älteren
+Vorschlägen gab es keine Fortschritte.
+
+Neben diesen konkreten Vorschlägen drehte sich in diesem Treffen viel
+darum, wie wir den Standard künftig entwickeln wollen:
+
+Gerald Wodni stellte die Web-Version des Standards vor
+\url{http://forth-standard.org}, die in Zukunft zu einer
+Web~2.0-Version werden soll, wo Benutzer Fragen zu einem Wort stellen
+können, Beispiel dafür posten können, oder Änderungsvorschläge posten
+können.
+
+Er stellte auch die überarbeitete Form des Paket-Repositories
+\url{http://theforth.net} vor, und wir gaben da noch einige Anregungen
+zum Format der Paket-Metadaten.
+
+Wir wollen auch ausprobieren, an künftigen elektronischen
+Standardisierungstreffen auch Beobachter (oder genauer Zuhörer)
+teilnehmen zu lassen, die nicht Mitglieder des Kommittees sind.
+Solche Treffen finden gelegentlich statt, um Dinge abzuschließen, die
+beim physischen Treffen angefangen wurden, aber wo zum Beispiel die
+genaue Formulierung nicht fertig war.
+
+Das nächste Treffen findet in den zwei Tagen vor der EuroForth 2016 in
+Konstanz statt.  Ihr seid herzlich eingeladen, diesem Treffen
+beizuwohnen.

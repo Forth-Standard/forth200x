@@ -1,0 +1,259 @@
+\chapter{The optional String word set} % 17
+\wordlist{string}
+
+\begin{info}
+\section{The optional String word set}
+\end{info}
+
+\section{Introduction} % 17.1
+
+\section{Additional terms and notation} % 17.2
+
+None.
+
+\section{Additional usage requirements} % 17.3
+
+Append table \ref{string:env} to table \ref{table:env}.
+
+See: \xref{usage:env}{3.2.6 Environmental queries}.
+
+\begin{table}[ht]
+  \begin{center}
+	\caption{Environmental Query Strings}
+	\label{string:env}
+	\begin{tabular}{p{9em}rcp{0.42\textwidth}}
+		\hline\hline
+		\multicolumn{2}{l}{String \hfill Value data type} & Constant? & Meaning \\
+		\hline
+		\texttt{STRING}		& \emph{flag}	& no	&
+			string word set present \\
+		\texttt{STRING-EXT}	& \emph{flag}	& no	&
+			string extensions word set present \\
+		\hline\hline
+	\end{tabular}
+  \end{center}
+\end{table}
+
+\section{Additional documentation requirements} % 17.4
+
+None.
+
+\section{Compliance and labeling} % 17.5
+
+\subsection{Compliance and labeling} % 17.5.1
+
+The phrase ``Providing the String word set'' shall be appended to
+the label of any Standard System that provides all of the String
+word set.
+
+The phrase ``Providing \emph{name(s)} from the String Extensions
+word set'' shall be appended to the label of any Standard System
+that provides portions of the String Extensions word set.
+
+The phrase ``Providing the String Extensions word set'' shall be
+appended to the label of any Standard System that provides all of
+the String and String Extensions word sets.
+
+\subsection{ANS Forth programs} % 17.5.2
+
+The phrase ``Requiring the String word set'' shall be appended to
+the label of Standard Programs that require the system to provide
+the String word set.
+
+The phrase ``Requiring \emph{name(s)} from the String Extensions
+word set'' shall be appended to the label of Standard Programs that
+require the system to provide portions of the String Extensions
+word set.
+
+The phrase ``Requiring the String Extensions word set'' shall be
+appended to the label of Standard Programs that require the system
+to provide all of the String and String Extensions word sets.
+
+
+\section{Glossary} % 17.6
+
+\begin{info}
+\subsection{Glossary}
+\end{info}
+
+\subsection{String words} % 17.6.1
+
+
+\begin{newword}{0170}{-TRAILING}[dash-trailing]
+	\stack{c-addr $u_1$}{c-addr $u_2$}
+
+	If $u_1$ is greater than zero, $u_2$ is equal to $u_1$ less the
+	number of spaces at the end of the character string specified by
+	\emph{c-addr} $u_1$. If $u_1$ is zero or the entire string
+	consists of spaces, $u_2$ is zero.
+\end{newword}
+
+
+\begin{newword}{0245}{/STRING}[slash-string]
+	\stack{c-addr$_1$ $u_1$ n}{c-addr$_2$ $u_2$}
+
+	Adjust the character string at \emph{c-addr}$_1$ by $n$
+	characters. The resulting character string, specified by
+	\emph{c-addr}$_2$ $u_2$, begins at \emph{c-addr}$_1$ plus $n$
+	characters and is $u_1$ minus $n$ characters long.
+
+	\begin{rationale}
+		\word{/STRING} is used to remove or add characters relative
+		to the ``left'' end of the character string. Positive values
+		of $n$ will exclude characters from the string while negative
+		values of $n$ will include characters to the left of the
+		string. \word{/STRING} is a natural factor of \word[core]{WORD}
+		and commonly available.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{0780}{BLANK}
+	\stack{c-addr u}{}
+
+	If $u$ is greater than zero, store the character value for
+	space in $u$ consecutive character positions beginning at
+	\emph{c-addr}.
+\end{newword}
+
+
+\begin{newword}{0910}{CMOVE}[c-move]
+	\stack{c-addr$_1$ c-addr$_2$ u}{}
+
+	If $u$ is greater than zero, copy $u$ consecutive characters
+	from the data space starting at \emph{c-addr}$_1$ to that
+	starting at \emph{c-addr}$_2$, proceeding character-by-character
+	from lower addresses to higher addresses.
+
+\item[Contrast with:]
+	\wref{string:CMOVEtop}{CMOVE>}.
+
+	\begin{rationale}
+		If \emph{c-addr}$_2$ lies within the source region (i.e., when
+		\emph{c-addr}$_2$ is not less than \emph{c-addr}$_1$ and
+		\emph{c-addr}$_2$ is less than the quantity \emph{c-addr}$_1$
+		$u$ \word[core]{CHARS} \word[core]{+}), memory propagation
+		occurs.
+
+		Typical use: Assume a character string at address
+		100: ``ABCD''. Then after 
+		\begin{quote}\ttfamily
+			100 \word[core]{DUP} ~ \word[core]{CHAR+} ~ 3 \word{CMOVE}
+		\end{quote}
+		the string at address 100 is ``AAAA''.
+
+		Rationale for \word{CMOVE} and \word{CMOVEtop} follows
+		\word[core]{MOVE}.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}[CMOVEtop]{0920}{CMOVE>}[c-move-up]
+	\stack{c-addr$_1$ c-addr$_2$ u}{}
+
+	If $u$ is greater than zero, copy $u$ consecutive characters
+	from the data space starting at \emph{c-addr}$_1$ to that
+	starting at \emph{c-addr}$_2$, proceeding character-by-character
+	from higher addresses to lower addresses.
+
+\item[Contrast with:]
+	\wref{string:CMOVE}{CMOVE}.
+
+	\begin{rationale}
+		If \emph{c-addr}$_1$ lies within the destination region (i.e.,
+		when \emph{c-addr}$_1$ is greater than or equal to
+		\emph{c-addr}$_2$ and \emph{c-addr}$_2$ is less than the
+		quantity \emph{c-addr}$_1$ $u$ \word[core]{CHARS}
+		\word[core]{+}), memory propagation	occurs.
+
+		Typical use: Assume a character string at address
+		100: ``ABCD''. Then after
+		\begin{quote}\ttfamily
+			100 \word[core]{DUP} \word[core]{CHAR+} \word[core]{SWAP}
+			3 \word{CMOVEtop}
+		\end{quote}
+		the string at address 100 is ``DDDD''.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{0935}{COMPARE}
+	\stack{c-addr$_1$ $u_1$ c-addr$_2$ $u_2$}{n}
+
+	Compare the string specified by \emph{c-addr}$_1$ $u_1$ to the
+	string specified by \emph{c-addr}$_2$ $u_2$. The strings are
+	compared, beginning at the given addresses, character by
+	character, up to the length of the shorter string or until a
+	difference is found. If the two strings are identical, $n$ is
+	zero. If the two strings are identical up to the length of the
+	shorter string, $n$ is minus-one (-1) if $u_1$ is less than $u_2$
+	and one (1) otherwise. If the two strings are not identical up to
+	the length of the shorter string, $n$ is minus-one (-1) if the
+	first non-matching character in the string specified by
+	\emph{c-addr}$_1$ $u_1$ has a lesser numeric value than the
+	corresponding character in the string specified by
+	\emph{c-addr}$_2$ $u_2$ and one (1) otherwise.
+
+	\begin{rationale}
+		Existing Forth systems perform string comparison operations
+		using words that differ in spelling, input and output
+		arguments, and case sensitivity. One in widespread use
+		was chosen.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{2191}{SEARCH}
+	\stack{c-addr$_1$ $u_1$ c-addr$_2$ $u_2$}{c-addr$_3$ $u_3$ flag}
+
+	Search the string specified by \emph{c-addr}$_1$ $u_1$ for the
+	string specified by \emph{c-addr}$_2$ $u_2$. If \emph{flag} is
+	true, a match was found at \emph{c-addr}$_3$ with $u_3$
+	characters remaining. If \emph{flag} is false there was no match
+	and \emph{c-addr}$_3$ is \emph{c-addr}$_1$ and $u_3$ is $u_1$.
+
+	\begin{rationale}
+		Existing Forth systems perform string searching operations
+		using words that differ in spelling, input and output
+		arguments, and case sensitivity. One in widespread use was
+		chosen.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword*}{2212}{SLITERAL}
+\item[Interpretation:]
+	Interpretation semantics for this word are undefined.
+
+\item[Compilation:]
+	\stack{c-addr$_1$ u}{}
+
+	Append the run-time semantics given below to the current
+	definition.
+
+\item[Run-time:]
+	\stack{}{c-addr$_2$ u}
+
+	Return \emph{c-addr}$_2$ $u$ describing a string consisting of
+	the characters specified by \emph{c-addr}$_1$ $u$ during
+	compilation. A program shall not alter the returned string.
+
+	\begin{rationale}
+		The current functionality of \wref{core:Sq}{S"} may be
+		provided by the following definition:
+		\setwordlist{core}
+		\begin{quote}\ttfamily
+			\word{:} \word{Sq} \word{p} "ccc<quote>" -- ) \\
+			\tab \word{[CHAR]} " \word{PARSE} ~
+				\word{POSTPONE} \word[string]{SLITERAL} \\
+			\word{;} \word{IMMEDIATE}
+		\end{quote}
+		\setwordlist{string}
+	\end{rationale}
+
+\end{newword*}
+
+
+\subsection{String extension words} % 17.6.2
+
+None.

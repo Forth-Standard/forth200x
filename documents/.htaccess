@@ -1,0 +1,4 @@
+#deny from proxy.tuwien.ac.at
+#ReadmeName README.txt
+AddDescription "LaTeX Source" *.zip
+AddDescription "processed PDF" *.pdf

@@ -1,0 +1,496 @@
+\chapter{The optional Facility word set} % 10
+\wordlist{facility}
+
+\begin{info}
+\section{The optional Facility word set}
+\end{info}
+
+\section{Introduction} % 10.1
+
+\section{Additional terms and notation} % 10.2
+None.
+
+\section{Additional usage requirements} % 10.3
+
+\subsection{Character types} % 10.3.1
+Programs that use more than seven bits of a character by
+\word{EKEY} have an environmental dependency.
+
+See: \xref{usage:char}{3.1.2 Character types}.
+
+\subsection{Environmental queries} % 10.3.2
+Append table \ref{facility:env} to table \ref{table:env}.
+
+See: \xref{usage:env}{3.2.6 Environmental queries}.
+
+\begin{table}[h]
+  \begin{center}
+	\caption{Environmental Query Strings}
+	\label{facility:env}
+	\begin{tabular}{p{9em}rcp{0.42\textwidth}}
+		\hline\hline
+		\multicolumn{2}{l}{String \hfill Value data type} & Constant? & Meaning \\
+		\hline
+		\texttt{FACILITY}		& \emph{flag}	& no	&
+			facility word set present \\
+		\texttt{FACILITY-EXT}	& \emph{flag}	& no	&
+			facility extensions word set present \\
+		\hline\hline
+	\end{tabular}
+  \end{center}
+\end{table}
+
+\section{Additional documentation requirements} % 10.4
+
+\subsection{System documentation} % 10.4.1
+
+\subsubsection{Implementation-defined options} % 10.4.1.1
+
+\begin{itemize}
+\item encoding of keyboard events \wref{facility:EKEY}{EKEY});
+\item duration of a system clock tick;
+\item repeatability to be expected from execution of
+	\wref{facility:MS}{MS}.
+\end{itemize}
+
+\subsubsection{Ambiguous conditions} % 10.4.1.2
+
+\begin{itemize}
+\item \wref{facility:AT-XY}{AT-XY} operation can't be performed on
+	user output device.
+\end{itemize}
+
+\subsubsection{Other system documentation} % 10.4.1.3
+
+\begin{itemize}
+\item no additional requirements.
+\end{itemize}
+
+\subsection{Program documentation} % 10.4.2
+
+\subsubsection{Environmental dependencies} % 10.4.2.1
+
+\begin{itemize}
+\item using more than seven bits of a character in
+	\wref{facility:EKEY}{EKEY}.
+\end{itemize}
+
+\subsubsection{Other program documentation} % 10.4.2.2
+
+\begin{itemize}
+\item no additional requirements.
+\end{itemize}
+
+\section{Compliance and labeling} % 10.5
+
+\subsection{ANS Forth systems} % 10.5.1
+
+The phrase ``Providing the Facility word set'' shall be appended to
+the label of any Standard System that provides all of the Facility
+word set.
+
+The phrase ``Providing \emph{name(s)} from the Facility Extensions
+word set'' shall be appended to the label of any Standard System
+that provides portions of the Facility Extensions word set.
+
+The phrase ``Providing the Facility Extensions word set'' shall be
+appended to the label of any Standard System that provides all of
+the Facility and Facility Extensions word sets.
+
+\subsection{ANS Forth programs} % 10.5.2
+
+The phrase ``Requiring the Facility word set'' shall be appended to
+the label of Standard Programs that require the system to provide
+the Facility word set.
+
+The phrase ``Requiring \emph{name(s)} from the Facility Extensions
+word set'' shall be appended to the label of Standard Programs that
+require the system to provide portions of the Facility Extensions
+word set.
+
+The phrase ``Requiring the Facility Extensions word set'' shall be
+appended to the label of Standard Programs that require the system
+to provide all of the Facility and Facility Extensions word sets.
+
+\section{Glossary} % 10.6
+
+\begin{info}
+\subsection{Glossary}
+\end{info}
+
+\subsection{Facility words} % 10.6.1
+
+\begin{newword}{0742}{AT-XY}[at-x-y]
+	\stack{$u_1$ $u_2$}{}
+
+	Perform implementation-dependent steps so that the next
+	character displayed will appear in column $u_1$, row $u_2$ of
+	the user output device, the upper left corner of which is
+	column zero, row zero. An ambiguous condition exists if the
+	operation cannot be performed on the user output device with
+	the specified parameters.
+
+	\begin{rationale} % A.10.6.1.0742 AT-XY
+		Most implementors supply a method of positioning a cursor on
+		a CRT screen, but there is great variance in names and stack
+		arguments. This version is supported by at least one major
+		vendor.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{1755}{KEY?}[key-question]
+	\stack{}{flag}
+
+	If a character is available, return \emph{true}. Otherwise,
+	return \emph{false}. If non-character keyboard events are
+	available before the first valid character, they are discarded
+	and are subsequently unavailable. The character shall be
+	returned by the next execution of \word[core]{KEY}.
+
+	After \word{KEY?} returns with a value of \emph{true},
+	subsequent executions of \word{KEY?} prior to the execution
+	of \word[core]{KEY} or \word{EKEY} also return \emph{true},
+	without discarding keyboard events.
+
+	\begin{rationale} % A.10.6.1.1755 KEY?
+		The Technical Committee has gone around several times on the
+		stack effects. Whatever is decided will violate somebody's
+		practice and penalize some machine. This way doesn't interfere
+		with type-ahead on some systems, while requiring the
+		implementation of a single-character buffer on machines where
+		polling the keyboard inevitably results in the destruction of
+		the character.
+
+		Use of \word[core]{KEY} or \word{KEY?} indicates that the
+		application does not wish to bother with non-character events,
+		so they are discarded, in anticipation of eventually receiving
+		a valid character. Applications wishing to handle non-character
+		events must use \word{EKEY} and \word{EKEY?}. It is possible
+		to mix uses of \word{KEY?}/\word[core]{KEY} and
+		\word{EKEY?}/\word{EKEY} within a single application, but
+		the application must use \word{KEY?} and \word[core]{KEY} only
+		when it wishes to discard non-character events until a valid
+		character is received.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{2005}{PAGE}
+	\stack{}{}
+
+	Move to another page for output. Actual function depends on the
+	output device. On a terminal, \word{PAGE} clears the screen and
+	resets the cursor position to the upper left corner. On a
+	printer, \word{PAGE} performs a form feed.
+\end{newword}
+
+
+\subsection{Facility extension words} % 10.6.2
+\extended
+
+\begin{newword}{1305}{EKEY}[e-key]
+	\stack{}{u}
+
+	Receive one keyboard event $u$. The encoding of keyboard events
+	is implementation defined.
+
+\item[See:]
+	\wref{facility:KEY?}{KEY?},
+	\wref{core:KEY}{KEY}.
+
+	\begin{rationale} % A.10.6.2.1305 EKEY
+		\word{EKEY} provides a standard word to access a system-dependent
+		set of ``raw'' keyboard events, including events corresponding
+		to members of the standard character set, events corresponding
+		to other members of the implementation-defined character set,
+		and keystrokes that do not correspond to members of the
+		character set.
+
+		\word{EKEY} assumes no particular numerical correspondence
+		between particular event code values and the values representing
+		standard characters. On some systems, this may allow two
+		separate keys that correspond to the same standard character
+		to be distinguished from one another.
+
+		In systems that combine both keyboard and mouse events into a
+		single ``event stream'', the single number returned by
+		\word{EKEY} may be inadequate to represent the full range of
+		input possibilities. In such systems, a single ``event record''
+		may include a time stamp, the x,y coordinates of the mouse
+		position, the keyboard state, and the state of the mouse
+		buttons. In such systems, it might be appropriate for \word{EKEY}
+		to return the address of an ``event record'' from which the
+		other information could be extracted.
+
+		Also, consider a hypothetical Forth system running under
+		MS-DOS on a PC-compatible computer. Assume that the
+		implementation-defined character set is the ``normal'' 8-bit
+		PC character set. In that character set, the codes from 0 to
+		127 correspond to ASCII characters. The codes from 128 to 255
+		represent characters from various non-English languages,
+		mathematical symbols, and some graphical symbols used for line
+		drawing. In addition to those characters, the keyboard can
+		generate various other ``scan codes'', representing such
+		non-character events as arrow keys and function keys.
+
+		There may be multiple keys, with different scan codes,
+		corresponding to the same standard character. For example,
+		the character representing the number ``1'' often appears both
+		in the row of number keys above the alphabetic keys, and also
+		in the separate numeric keypad.
+
+		When a program asks the MS-DOS operating system for a keyboard
+		event, it receives either a single non-zero byte, representing
+		a character, or a zero byte followed by a ``scan code'' byte,
+		representing a non-character keyboard event (e.g., a function
+		key).
+
+		\word{EKEY} represents each keyboard event as a single number,
+		rather than as a sequence of numbers. For the system described
+		above, the following would be a reasonable implementation of
+		\word{EKEY} and related words:
+
+		\begin{quote}
+			The \texttt{MAX-CHAR} environmental query would return 255.
+
+			Assume the existence of a word
+			\texttt{DOS-KEY} \stack{}{char}
+			which executes the MS-DOS ``Direct STDIN Input'' system call
+			(Interrupt 21h, Function 07h) and a word
+			\texttt{DOS-KEY?} \stack{}{flag}
+			which executes the MS-DOS ``Check STDIN Status'' system call
+			(Interrupt 21h, Function 0Bh).
+
+			\setwordlist{core}\ttfamily
+			\begin{tabbing}
+			\tab \= \tab \= \tab \= \tab \= \hspace{7em} \= \kill
+			\word{:} \word[facility]{EKEY?}~ \word{p} -- flag )~
+				DOS-KEY?~ \word{0ne} \word{;} \\[\parskip]
+
+			\word{:} \word[facility]{EKEY}~ \word{p} -- u )~
+				DOS-KEY~ \word{?DUP} \word{0=} \word{IF}~
+					DOS-KEY 256 \word{+}~ \word{THEN} \word{;} \\[\parskip]
+
+			\+ \word{:} \word[facility]{EKEYtoCHAR} \word{p} u -- u false | char true ) \\
+				\+ \word{DUP} 255 \word{more} \word{IF} 		\>\>\>\>	\word{p} u ) \\
+					\word{DUP} 259 \word{=} \word{IF} 		\>\>\>		\word{bs} 259 is Ctrl-@ (ASCII NUL) \\
+					\> \word{DROP} 0 \word{TRUE} \word{EXIT}\>\>		\word{bs} so replace with character \\
+				\- \word{THEN} \word{FALSE} \word{EXIT}		\>\>\>		\word{bs} otherwise extended character \\
+			\- \word{THEN} \word{TRUE}						\>\>\>\>	\word{bs} normal extended ASCII char. \\
+			\word{;} \\[\parskip]
+
+			\word{VARIABLE} PENDING-CHAR ~ -1 PENDING-CHAR \word{!} \\[\parskip]
+
+			\+ \word{:} \word[facility]{KEY?}~ \word{p} -- flag ) \\
+				\+ PENDING-CHAR \word{@} \word{0less} \word{IF} \\
+					\+ \word{BEGIN}~ \word[facility]{EKEY?} \word{WHILE} \\
+						\+ \word[facility]{EKEY} \word[facility]{EKEYtoCHAR} \word{IF} \\
+						\-	PENDING-CHAR \word{!}~ \word{TRUE} \word{EXIT} \\
+					\- \word{THEN} \word{DROP} \\
+				\- \word{REPEAT}~ \word{FALSE} \word{EXIT} \\
+			\- \word{THEN}~ \word{TRUE} \\
+			\word{;} \\[\parskip]
+
+			\+ \word{:} \word{KEY}~ \word{p} -- char ) \\
+				\+ PENDING-CHAR \word{@} \word{0less} \word{IF} \\
+					\word{BEGIN}~ \word[facility]{EKEY}~ \word[facility]{EKEYtoCHAR} \word{0=} \word{WHILE} \\
+					\> \word{DROP} \\
+				\-	\word{REPEAT}~ \word{EXIT} \\
+			\- \word{THEN}~ PENDING-CHAR \word{@}~ -1 PENDING-CHAR \word{!} \\
+			\word{;}
+			\end{tabbing}
+		\end{quote}
+
+		\setwordlist{facility}
+		This is a full-featured implementation, providing the
+		application program with an easy way to either handle
+		non-character events (with \word{EKEY}), or to ignore them
+		and to only consider ``real'' characters (with
+		\word[core]{KEY}).
+
+		Note that \word{EKEY} maps scan codes from 0 to 255 into
+		numbers from 256 to 511. \word{EKEY} maps the number 259,
+		representing the keyboard combination Ctrl-Shift-@, to the
+		character whose numerical value is 0 (ASCII NUL). Many ASCII
+		keyboards generate ASCII NUL for Ctrl-Shift-@, so we use that
+		key combination for ASCII NUL (which is otherwise unavailable
+		from MS-DOS, because the zero byte signifies that another
+		scan-code byte follows).
+
+		One consequence of using the ``Direct STDIN Input'' system call
+		(function 7) instead of the ``STDIN Input'' system call
+		(function 8) is that the normal DOS ``Ctrl-C interrupt'' behavior
+		is disabled when the system is waiting for input (Ctrl-C would
+		still cause an interrupt while characters are being output). On
+		the other hand, if the ``STDIN Input'' system call (function 8)
+		were used to implement \word{EKEY}, Ctrl-C interrupts would be
+		enabled, but Ctrl-Shift-@ would also cause an interrupt, because
+		the operating system would treat the second byte of the 0,3
+		sequence as a Ctrl-C, even though the 3 is really a scan code
+		and not a character. One ``best of both worlds'' solution is to
+		use function 8 for the first byte received by \word{EKEY}, and
+		function 7 for the scan code byte. For example:
+
+		\begin{quote}
+			\setwordlist{core}\ttfamily
+			\begin{tabbing}
+			\tab \= \tab \= \tab \= \tab \= \hspace{7em} \= \kill
+			\+ \word{:} \word[facility]{EKEY}~ \word{p} -- u ) \\
+				\+ DOS-KEY-FUNCTION-8~ \word{?DUP}~ \word{0=}~ \word{IF} \\
+					DOS-KEY-FUNCTION-7~ \word{DUP} 3~ \word{=}~ \word{IF} \\
+					\> \word{DROP} 0~ \word{ELSE}~ 256 \word{+}\\
+				\- \word{THEN} \\
+			\- \word{THEN} \\
+			\word{;}
+			\end{tabbing}
+		\end{quote}
+		\setwordlist{facility}
+
+		Of course, if the Forth implementor chooses to pass Ctrl-C
+		through to the program, without using it for its usual
+		interrupt function, then DOS function 7 is appropriate in both
+		cases (and some additional care must be taken to prevent a
+		typed-ahead Ctrl-C from interrupting the Forth system during
+		output operations).
+
+		A Forth system might also choose a simpler implementation of
+		\word[core]{KEY}, without implementing \word{EKEY}, as follows:
+
+		\setwordlist{core}
+		\begin{quote}\ttfamily
+			\word{:} \word{KEY}~~ \word{p} -- char )~
+				DOS-KEY~
+			\word{;}
+
+			\word{:} \word[facility]{KEY?}~ \word{p} -- flag )~
+				DOS-KEY?~ \word{0ne}~
+			\word{;}
+		\end{quote}
+		\setwordlist{facility}
+
+		The disadvantages of the simpler version are:
+
+		\begin{enumerate}
+		\item An application program that uses \word[core]{KEY},
+			expecting to receive only valid characters, might receive a
+			sequence of bytes (e.g., a zero byte followed by a byte with
+			the same numerical value as the letter ``A'' that appears to
+			contain a valid character, even though the user pressed a key
+			(e.g., function key 4) that does not correspond to any valid
+			character.
+
+		\item An application program that wishes to handle non-character
+			events will have to execute \word[core]{KEY} twice if it
+			returns zero the first time. This might appear to be a
+			reasonable and easy thing to do. However, such code is not
+			portable to other systems that do not use a zero byte as an
+			``escape'' code. Using the \word{EKEY} approach, the
+			algorithm for handling keyboard events can be the same for
+			all systems; the system dependencies can be reduced to a
+			table or set of constants listing the system-dependent key
+			codes used to access particular application functions.
+			Without \word{EKEY}, the algorithm, not just the table, is
+			likely to be system dependent.
+		\end{enumerate}
+
+		Another approach to \word{EKEY} on MS-DOS is to use the BIOS
+		``Read Keyboard Status'' function (Interrupt 16h, Function 01h)
+		or the related ``Check Keyboard'' function (Interrupt 16h,
+		Function 11h). The advantage of this function is that it allows
+		the program to distinguish between different keys that correspond
+		to the same character (e.g. the two ``1'' keys). The disadvantage
+		is that the BIOS keyboard functions read only the keyboard. They
+		cannot be ``redirected'' to another ``standard input'' source,
+		as can the DOS STDIN Input functions.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}[EKEYtoCHAR]{1306}{EKEY>CHAR}[e-key-to-char]
+	\stack{u}{u false ~\textbar~ char true}
+
+	If the keyboard event $u$ corresponds to a character in the
+	implementation-defined character set, return that character and
+	\emph{true}. Otherwise return $u$ and \emph{false}.
+
+	\begin{rationale} % A.10.6.2.1306 EKEY>CHAR
+		\word{EKEYtoCHAR} translates a keyboard event into the
+		corresponding member of the character set, if such a
+		correspondence exists for that event.
+
+		It is possible that several different keyboard events may
+		correspond to the same character, and other keyboard events
+		may correspond to no character.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{1307}{EKEY?}[e-key-question]
+	\stack{}{flag}
+
+	If a keyboard event is available, return \emph{true}. Otherwise
+	return \emph{false}. The event shall be returned by the next
+	execution of \word{EKEY}.
+
+	After \word{EKEY?} returns with a value of \emph{true},
+	subsequent executions of \word{EKEY?} prior to the execution of
+	\word[core]{KEY}, \word{KEY?} or \word{EKEY} also return
+	\emph{true}, referring to the same event.
+\end{newword}
+
+
+\begin{newword}{1325}{EMIT?}[emit-question]
+	\stack{}{flag}
+
+	\emph{flag} is true if the user output device is ready to
+	accept data and the execution of \word[core]{EMIT} in place of
+	\word{EMIT?} would not have suffered an indefinite delay. If
+	the device status is indeterminate, \emph{flag} is true.
+
+	\begin{rationale} % A.10.6.2.1325 EMIT?
+		An indefinite delay is a device related condition, such as
+		printer off-line, that requires operator intervention before
+		the device will accept new data.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{1905}{MS}
+	\stack{u}{}
+
+	Wait at least $u$ milliseconds.
+
+\item[Note:]
+	The actual length and variability of the time period depends
+	upon the implementation-defined resolution of the system clock
+	and upon other system and computer characteristics beyond the
+	scope of this Standard.
+
+	\begin{rationale} % A.10.6.2.1905 MS
+		Although their frequencies vary, every system has a clock.
+		Since many programs need to time intervals, this word is
+		offered. Use of milliseconds as an internal unit of time is
+		a practical ``least common denominator'' external unit. It
+		is assumed implementors will use ``clock ticks'' (whatever
+		size they are) as an internal unit and convert as appropriate.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}[TIMEandDATE]{2292}{TIME\&DATE}[time-and-date]
+	\stack{}{$+n_1$ $+n_2$ $+n_3$ $+n_4$ $+n_5$ $+n_6$}
+
+	Return the current time and date.
+	$+n_1$ is the second \{0{\ldots}59\},
+	$+n_2$ is the minute \{0{\ldots}59\},
+	$+n_3$ is the hour \{0{\ldots}23\},
+	$+n_4$ is the day \{1{\ldots}31\},
+	$+n_5$ is the month \{1{\ldots}12\}, and
+	$+n_6$ is the year (e.g., 1991).
+
+	\begin{rationale} % A.10.6.2.2292 TIME&DATE
+		Most systems have a real-time clock/calendar.
+		This word gives portable access to it.
+	\end{rationale}
+\end{newword}

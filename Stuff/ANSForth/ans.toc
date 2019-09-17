@@ -1,0 +1,479 @@
+\contentsline {chapter}{Contents}{iii}{section*.1}
+\contentsline {section}{Forward}{iv}{section*.2}
+\contentsline {section}{X3 Membership}{v}{section*.3}
+\contentsline {section}{X3J14 Membership}{vi}{section*.4}
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Purpose}{1}{section.1.1}
+\contentsline {section}{\numberline {1.2}Scope}{1}{section.1.2}
+\contentsline {subsection}{\numberline {1.2.1}Inclusions}{1}{subsection.1.2.1}
+\contentsline {subsection}{\numberline {1.2.2}Exclusions}{1}{subsection.1.2.2}
+\contentsline {section}{\numberline {1.3}Document organization}{1}{section.1.3}
+\contentsline {subsection}{\numberline {1.3.1}Word sets}{1}{subsection.1.3.1}
+\contentsline {subsubsection}{\numberline {1.3.1.1}Text sections}{2}{subsubsection.1.3.1.1}
+\contentsline {subsubsection}{\numberline {1.3.1.2}Glossary sections}{2}{subsubsection.1.3.1.2}
+\contentsline {subsection}{\numberline {1.3.2}Annexes}{2}{subsection.1.3.2}
+\contentsline {section}{\numberline {1.4}Future directions}{2}{section.1.4}
+\contentsline {subsection}{\numberline {1.4.1}New technology}{2}{subsection.1.4.1}
+\contentsline {subsection}{\numberline {1.4.2}Obsolescent features}{2}{subsection.1.4.2}
+\contentsline {chapter}{\numberline {2}Terms, notation, and references}{4}{chapter.2}
+\contentsline {section}{\numberline {2.1}Definitions of terms}{4}{section.2.1}
+\contentsline {section}{\numberline {2.2}Notation}{6}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Numeric notation}{6}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Stack notation}{7}{subsection.2.2.2}
+\contentsline {subsection}{\numberline {2.2.3}Parsed-text notation}{7}{subsection.2.2.3}
+\contentsline {subsection}{\numberline {2.2.4}Glossary notation}{7}{subsection.2.2.4}
+\contentsline {subsubsection}{\numberline {2.2.4.1}Glossary index line}{7}{subsubsection.2.2.4.1}
+\contentsline {subsubsection}{\numberline {2.2.4.2}Glossary semantic description}{8}{subsubsection.2.2.4.2}
+\contentsline {section}{\numberline {2.3}References}{8}{section.2.3}
+\contentsline {chapter}{\numberline {3}Usage requirements}{9}{chapter.3}
+\contentsline {section}{\numberline {3.1}Data types}{9}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Data-type relationships}{9}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Character types}{9}{subsection.3.1.2}
+\contentsline {subsubsection}{\numberline {3.1.2.1}Graphic characters}{10}{subsubsection.3.1.2.1}
+\contentsline {subsubsection}{\numberline {3.1.2.2}Control characters}{10}{subsubsection.3.1.2.2}
+\contentsline {subsection}{\numberline {3.1.3}Single-cell types}{11}{subsection.3.1.3}
+\contentsline {subsubsection}{\numberline {3.1.3.1}Flags}{11}{subsubsection.3.1.3.1}
+\contentsline {subsubsection}{\numberline {3.1.3.2}Integers}{11}{subsubsection.3.1.3.2}
+\contentsline {subsubsection}{\numberline {3.1.3.3}Addresses}{11}{subsubsection.3.1.3.3}
+\contentsline {subsubsection}{\numberline {3.1.3.4}Counted strings}{12}{subsubsection.3.1.3.4}
+\contentsline {subsubsection}{\numberline {3.1.3.5}Execution tokens}{12}{subsubsection.3.1.3.5}
+\contentsline {subsection}{\numberline {3.1.4}Cell-pair types}{12}{subsection.3.1.4}
+\contentsline {subsubsection}{\numberline {3.1.4.1}Double-cell integers}{12}{subsubsection.3.1.4.1}
+\contentsline {subsubsection}{\numberline {3.1.4.2}Character strings}{12}{subsubsection.3.1.4.2}
+\contentsline {subsection}{\numberline {3.1.5}System types}{12}{subsection.3.1.5}
+\contentsline {subsubsection}{\numberline {3.1.5.1}System-compilation types}{12}{subsubsection.3.1.5.1}
+\contentsline {subsubsection}{\numberline {3.1.5.2}System-execution types}{13}{subsubsection.3.1.5.2}
+\contentsline {section}{\numberline {3.2}The implementation environment}{13}{section.3.2}
+\contentsline {subsection}{\numberline {3.2.1}Numbers}{13}{subsection.3.2.1}
+\contentsline {subsubsection}{\numberline {3.2.1.1}Internal number representation}{13}{subsubsection.3.2.1.1}
+\contentsline {subsubsection}{\numberline {3.2.1.2}Digit conversion}{13}{subsubsection.3.2.1.2}
+\contentsline {subsubsection}{\numberline {3.2.1.3}Free-field number display}{13}{subsubsection.3.2.1.3}
+\contentsline {subsection}{\numberline {3.2.2}Arithmetic}{14}{subsection.3.2.2}
+\contentsline {subsubsection}{\numberline {3.2.2.1}Integer division}{14}{subsubsection.3.2.2.1}
+\contentsline {subsubsection}{\numberline {3.2.2.2}Other integer operations}{14}{subsubsection.3.2.2.2}
+\contentsline {subsection}{\numberline {3.2.3}Stacks}{14}{subsection.3.2.3}
+\contentsline {subsubsection}{\numberline {3.2.3.1}Data stack}{14}{subsubsection.3.2.3.1}
+\contentsline {subsubsection}{\numberline {3.2.3.2}Control-flow stack}{14}{subsubsection.3.2.3.2}
+\contentsline {subsubsection}{\numberline {3.2.3.3}Return stack}{15}{subsubsection.3.2.3.3}
+\contentsline {subsection}{\numberline {3.2.4}Operator terminal}{15}{subsection.3.2.4}
+\contentsline {subsubsection}{\numberline {3.2.4.1}User input device}{15}{subsubsection.3.2.4.1}
+\contentsline {subsubsection}{\numberline {3.2.4.2}User output device}{15}{subsubsection.3.2.4.2}
+\contentsline {subsection}{\numberline {3.2.5}Mass storage}{15}{subsection.3.2.5}
+\contentsline {subsection}{\numberline {3.2.6}Environmental queries}{15}{subsection.3.2.6}
+\contentsline {section}{\numberline {3.3}The Forth dictionary}{15}{section.3.3}
+\contentsline {subsection}{\numberline {3.3.1}Name space}{16}{subsection.3.3.1}
+\contentsline {subsubsection}{\numberline {3.3.1.1}Word lists}{16}{subsubsection.3.3.1.1}
+\contentsline {subsubsection}{\numberline {3.3.1.2}Definition names}{16}{subsubsection.3.3.1.2}
+\contentsline {subsection}{\numberline {3.3.2}Code space}{16}{subsection.3.3.2}
+\contentsline {subsection}{\numberline {3.3.3}Data space}{17}{subsection.3.3.3}
+\contentsline {subsubsection}{\numberline {3.3.3.1}Address alignment}{17}{subsubsection.3.3.3.1}
+\contentsline {subsubsection}{\numberline {3.3.3.2}Contiguous regions}{17}{subsubsection.3.3.3.2}
+\contentsline {subsubsection}{\numberline {3.3.3.3}Variables}{17}{subsubsection.3.3.3.3}
+\contentsline {subsubsection}{\numberline {3.3.3.4}Text-literal regions}{18}{subsubsection.3.3.3.4}
+\contentsline {subsubsection}{\numberline {3.3.3.5}Input buffers}{18}{subsubsection.3.3.3.5}
+\contentsline {subsubsection}{\numberline {3.3.3.6}Other transient regions}{18}{subsubsection.3.3.3.6}
+\contentsline {section}{\numberline {3.4}The Forth text interpreter}{19}{section.3.4}
+\contentsline {subsection}{\numberline {3.4.1}Parsing}{19}{subsection.3.4.1}
+\contentsline {subsubsection}{\numberline {3.4.1.1}Delimiters}{20}{subsubsection.3.4.1.1}
+\contentsline {subsubsection}{\numberline {3.4.1.2}Syntax}{20}{subsubsection.3.4.1.2}
+\contentsline {subsubsection}{\numberline {3.4.1.3}Text interpreter input number conversion}{20}{subsubsection.3.4.1.3}
+\contentsline {subsection}{\numberline {3.4.2}Finding definition names}{20}{subsection.3.4.2}
+\contentsline {subsection}{\numberline {3.4.3}Semantics}{20}{subsection.3.4.3}
+\contentsline {subsubsection}{\numberline {3.4.3.1}Execution semantics}{21}{subsubsection.3.4.3.1}
+\contentsline {subsubsection}{\numberline {3.4.3.2}Interpretation semantics}{21}{subsubsection.3.4.3.2}
+\contentsline {subsubsection}{\numberline {3.4.3.3}Compilation semantics}{21}{subsubsection.3.4.3.3}
+\contentsline {subsection}{\numberline {3.4.4}Possible actions on an ambiguous condition}{21}{subsection.3.4.4}
+\contentsline {subsection}{\numberline {3.4.5}Compilation}{21}{subsection.3.4.5}
+\contentsline {chapter}{\numberline {4}Documentation requirements}{22}{chapter.4}
+\contentsline {section}{\numberline {4.1}System documentation}{22}{section.4.1}
+\contentsline {subsection}{\numberline {4.1.1}Implementation-defined options}{22}{subsection.4.1.1}
+\contentsline {subsection}{\numberline {4.1.2}Ambiguous conditions}{23}{subsection.4.1.2}
+\contentsline {subsection}{\numberline {4.1.3}Other system documentation}{24}{subsection.4.1.3}
+\contentsline {section}{\numberline {4.2}Program documentation}{25}{section.4.2}
+\contentsline {subsection}{\numberline {4.2.1}Environmental dependencies}{25}{subsection.4.2.1}
+\contentsline {subsection}{\numberline {4.2.2}Other program documentation}{25}{subsection.4.2.2}
+\contentsline {chapter}{\numberline {5}Compliance and labeling}{26}{chapter.5}
+\contentsline {section}{\numberline {5.1}ANS Forth systems}{26}{section.5.1}
+\contentsline {subsection}{\numberline {5.1.1}System compliance}{26}{subsection.5.1.1}
+\contentsline {subsection}{\numberline {5.1.2}System labeling}{26}{subsection.5.1.2}
+\contentsline {section}{\numberline {5.2}ANS Forth programs}{26}{section.5.2}
+\contentsline {subsection}{\numberline {5.2.1}Program compliance}{26}{subsection.5.2.1}
+\contentsline {subsection}{\numberline {5.2.2}Program labeling}{26}{subsection.5.2.2}
+\contentsline {chapter}{\numberline {6}Glossary}{27}{chapter.6}
+\contentsline {section}{\numberline {6.1}Core words}{27}{section.6.1}
+\contentsline {subsection}{\numberline {A.6.1}Core words}{27}{subsection.A.6.1}
+\contentsline {section}{\numberline {6.2}Core extension words}{56}{section.6.2}
+\contentsline {subsection}{\numberline {A.6.2}Core extension words}{56}{subsection.A.6.2}
+\global \c@tocdepth 0\relax 
+\contentsline {chapter}{\numberline {7}The optional Block word set}{73}{chapter.7}
+\contentsline {section}{\numberline {A.7}The optional Block word set}{73}{section.A.7}
+\contentsline {section}{\numberline {7.1}Introduction}{73}{section.7.1}
+\contentsline {section}{\numberline {7.2}Additional terms}{73}{section.7.2}
+\contentsline {subsection}{\numberline {A.7.2}Additional terms}{73}{subsection.A.7.2}
+\contentsline {section}{\numberline {7.3}Additional usage requirements}{73}{section.7.3}
+\contentsline {subsection}{\numberline {7.3.1}Environmental queries}{73}{subsection.7.3.1}
+\contentsline {subsection}{\numberline {7.3.2}Data space}{74}{subsection.7.3.2}
+\contentsline {subsection}{\numberline {7.3.3}Block buffer regions}{74}{subsection.7.3.3}
+\contentsline {subsection}{\numberline {7.3.4}Parsing}{74}{subsection.7.3.4}
+\contentsline {subsection}{\numberline {7.3.5}Possible action on an ambiguous condition}{74}{subsection.7.3.5}
+\contentsline {section}{\numberline {7.4}Additional documentation requirements}{75}{section.7.4}
+\contentsline {subsection}{\numberline {7.4.1}System documentation}{75}{subsection.7.4.1}
+\contentsline {subsubsection}{\numberline {7.4.1.1}Implementation-defined options}{75}{subsubsection.7.4.1.1}
+\contentsline {subsubsection}{\numberline {7.4.1.2}Ambiguous conditions}{75}{subsubsection.7.4.1.2}
+\contentsline {subsubsection}{\numberline {7.4.1.3}Other system documentation}{75}{subsubsection.7.4.1.3}
+\contentsline {subsection}{\numberline {7.4.2}Program documentation}{75}{subsection.7.4.2}
+\contentsline {section}{\numberline {7.5}Compliance and labeling}{75}{section.7.5}
+\contentsline {subsection}{\numberline {7.5.1}ANS Forth systems}{75}{subsection.7.5.1}
+\contentsline {subsection}{\numberline {7.5.2}ANS Forth programs}{75}{subsection.7.5.2}
+\contentsline {section}{\numberline {7.6}Glossary}{76}{section.7.6}
+\contentsline {subsection}{\numberline {A.7.6}Glossary}{76}{subsection.A.7.6}
+\contentsline {subsection}{\numberline {7.6.1}Block words}{76}{subsection.7.6.1}
+\contentsline {subsection}{\numberline {7.6.2}Block extension words}{77}{subsection.7.6.2}
+\contentsline {chapter}{\numberline {8}The optional Double-Number word set}{79}{chapter.8}
+\contentsline {section}{\numberline {A.8}The optional Double-Number word set}{79}{section.A.8}
+\contentsline {section}{\numberline {8.1}Introduction}{79}{section.8.1}
+\contentsline {section}{\numberline {8.2}Additional terms and notation}{79}{section.8.2}
+\contentsline {section}{\numberline {8.3}Additional usage requirements}{79}{section.8.3}
+\contentsline {subsection}{\numberline {8.3.1}Environmental queries}{79}{subsection.8.3.1}
+\contentsline {subsection}{\numberline {8.3.2}Text interpreter input number conversion}{79}{subsection.8.3.2}
+\contentsline {section}{\numberline {8.4}Additional documentation requirements}{80}{section.8.4}
+\contentsline {subsection}{\numberline {8.4.1}System documentation}{80}{subsection.8.4.1}
+\contentsline {subsubsection}{\numberline {8.4.1.1}Implementation-defined options}{80}{subsubsection.8.4.1.1}
+\contentsline {subsubsection}{\numberline {8.4.1.2}Ambiguous conditions}{80}{subsubsection.8.4.1.2}
+\contentsline {subsubsection}{\numberline {8.4.1.3}Other system documentation}{80}{subsubsection.8.4.1.3}
+\contentsline {subsection}{\numberline {8.4.2}Program documentation}{80}{subsection.8.4.2}
+\contentsline {section}{\numberline {8.5}Compliance and labeling}{80}{section.8.5}
+\contentsline {subsection}{\numberline {8.5.1}ANS Forth systems}{80}{subsection.8.5.1}
+\contentsline {subsection}{\numberline {8.5.2}ANS Forth programs}{80}{subsection.8.5.2}
+\contentsline {section}{\numberline {8.6}Glossary}{80}{section.8.6}
+\contentsline {subsection}{\numberline {A.8.6}Glossary}{81}{subsection.A.8.6}
+\contentsline {subsection}{\numberline {8.6.1}Double-Number words}{81}{subsection.8.6.1}
+\contentsline {subsection}{\numberline {8.6.2}Double-Number extension words}{83}{subsection.8.6.2}
+\contentsline {chapter}{\numberline {9}The optional Exception word set}{84}{chapter.9}
+\contentsline {section}{\numberline {A.9}The optional Exception word set}{84}{section.A.9}
+\contentsline {section}{\numberline {9.1}Introduction}{86}{section.9.1}
+\contentsline {section}{\numberline {9.2}Additional terms and notation}{86}{section.9.2}
+\contentsline {section}{\numberline {9.3}Additional usage requirements}{86}{section.9.3}
+\contentsline {subsection}{\numberline {A.9.3}Additional usage requirements}{86}{subsection.A.9.3}
+\contentsline {subsection}{\numberline {9.3.1}THROW values}{86}{subsection.9.3.1}
+\contentsline {subsection}{\numberline {9.3.2}Exception frame}{86}{subsection.9.3.2}
+\contentsline {subsection}{\numberline {9.3.3}Exception stack}{86}{subsection.9.3.3}
+\contentsline {subsection}{\numberline {9.3.4}Environmental queries}{86}{subsection.9.3.4}
+\contentsline {subsection}{\numberline {9.3.5}Possible actions on an ambiguous condition}{86}{subsection.9.3.5}
+\contentsline {subsection}{\numberline {9.3.6}Exception handling}{87}{subsection.9.3.6}
+\contentsline {subsubsection}{\numberline {A.9.3.6}Exception handling}{87}{subsubsection.A.9.3.6}
+\contentsline {section}{\numberline {9.4}Additional documentation requirements}{88}{section.9.4}
+\contentsline {subsection}{\numberline {9.4.1}System documentation}{88}{subsection.9.4.1}
+\contentsline {subsubsection}{\numberline {9.4.1.1}Implementation-defined options}{88}{subsubsection.9.4.1.1}
+\contentsline {subsubsection}{\numberline {9.4.1.2}Ambiguous conditions}{88}{subsubsection.9.4.1.2}
+\contentsline {subsubsection}{\numberline {9.4.1.3}Other system documentation}{88}{subsubsection.9.4.1.3}
+\contentsline {subsection}{\numberline {9.4.2}Program documentation}{88}{subsection.9.4.2}
+\contentsline {section}{\numberline {9.5}Compliance and labeling}{88}{section.9.5}
+\contentsline {subsection}{\numberline {9.5.1}ANS Forth systems}{88}{subsection.9.5.1}
+\contentsline {subsection}{\numberline {9.5.2}ANS Forth programs}{88}{subsection.9.5.2}
+\contentsline {section}{\numberline {9.6}Glossary}{88}{section.9.6}
+\contentsline {subsection}{\numberline {A.9.6}Glossary}{88}{subsection.A.9.6}
+\contentsline {subsection}{\numberline {9.6.1}Exception words}{88}{subsection.9.6.1}
+\contentsline {subsection}{\numberline {9.6.2}Exception extension words}{90}{subsection.9.6.2}
+\contentsline {chapter}{\numberline {10}The optional Facility word set}{91}{chapter.10}
+\contentsline {section}{\numberline {A.10}The optional Facility word set}{91}{section.A.10}
+\contentsline {section}{\numberline {10.1}Introduction}{91}{section.10.1}
+\contentsline {section}{\numberline {10.2}Additional terms and notation}{91}{section.10.2}
+\contentsline {section}{\numberline {10.3}Additional usage requirements}{91}{section.10.3}
+\contentsline {subsection}{\numberline {10.3.1}Character types}{91}{subsection.10.3.1}
+\contentsline {subsection}{\numberline {10.3.2}Environmental queries}{91}{subsection.10.3.2}
+\contentsline {section}{\numberline {10.4}Additional documentation requirements}{91}{section.10.4}
+\contentsline {subsection}{\numberline {10.4.1}System documentation}{91}{subsection.10.4.1}
+\contentsline {subsubsection}{\numberline {10.4.1.1}Implementation-defined options}{91}{subsubsection.10.4.1.1}
+\contentsline {subsubsection}{\numberline {10.4.1.2}Ambiguous conditions}{91}{subsubsection.10.4.1.2}
+\contentsline {subsubsection}{\numberline {10.4.1.3}Other system documentation}{91}{subsubsection.10.4.1.3}
+\contentsline {subsection}{\numberline {10.4.2}Program documentation}{92}{subsection.10.4.2}
+\contentsline {subsubsection}{\numberline {10.4.2.1}Environmental dependencies}{92}{subsubsection.10.4.2.1}
+\contentsline {subsubsection}{\numberline {10.4.2.2}Other program documentation}{92}{subsubsection.10.4.2.2}
+\contentsline {section}{\numberline {10.5}Compliance and labeling}{92}{section.10.5}
+\contentsline {subsection}{\numberline {10.5.1}ANS Forth systems}{92}{subsection.10.5.1}
+\contentsline {subsection}{\numberline {10.5.2}ANS Forth programs}{92}{subsection.10.5.2}
+\contentsline {section}{\numberline {10.6}Glossary}{92}{section.10.6}
+\contentsline {subsection}{\numberline {A.10.6}Glossary}{92}{subsection.A.10.6}
+\contentsline {subsection}{\numberline {10.6.1}Facility words}{92}{subsection.10.6.1}
+\contentsline {subsection}{\numberline {10.6.2}Facility extension words}{93}{subsection.10.6.2}
+\contentsline {chapter}{\numberline {11}The optional File-Access word set}{98}{chapter.11}
+\contentsline {section}{\numberline {A.11}The optional File-Access word set}{98}{section.A.11}
+\contentsline {section}{\numberline {11.1}Introduction}{98}{section.11.1}
+\contentsline {section}{\numberline {11.2}Additional terms}{98}{section.11.2}
+\contentsline {section}{\numberline {11.3}Additional usage requirements}{99}{section.11.3}
+\contentsline {subsection}{\numberline {A.11.3}Additional usage requirements}{99}{subsection.A.11.3}
+\contentsline {subsection}{\numberline {11.3.1}Data types}{99}{subsection.11.3.1}
+\contentsline {subsubsection}{\numberline {11.3.1.1}File identifiers}{99}{subsubsection.11.3.1.1}
+\contentsline {subsubsection}{\numberline {11.3.1.2}I/O results}{99}{subsubsection.11.3.1.2}
+\contentsline {subsubsection}{\numberline {11.3.1.3}File access methods}{99}{subsubsection.11.3.1.3}
+\contentsline {subsubsection}{\numberline {11.3.1.4}File names}{99}{subsubsection.11.3.1.4}
+\contentsline {subsection}{\numberline {11.3.2}Blocks in files}{99}{subsection.11.3.2}
+\contentsline {subsubsection}{\numberline {A.11.3.2}Blocks in files}{99}{subsubsection.A.11.3.2}
+\contentsline {subsection}{\numberline {11.3.3}Environmental queries}{100}{subsection.11.3.3}
+\contentsline {subsection}{\numberline {11.3.4}Input source}{100}{subsection.11.3.4}
+\contentsline {subsection}{\numberline {11.3.5}Other transient regions}{100}{subsection.11.3.5}
+\contentsline {subsection}{\numberline {11.3.6}Parsing}{100}{subsection.11.3.6}
+\contentsline {section}{\numberline {11.4}Additional documentation requirements}{100}{section.11.4}
+\contentsline {subsection}{\numberline {11.4.1}System documentation}{100}{subsection.11.4.1}
+\contentsline {subsubsection}{\numberline {11.4.1.1}Implementation-defined options}{100}{subsubsection.11.4.1.1}
+\contentsline {subsubsection}{\numberline {11.4.1.2}Ambiguous conditions}{101}{subsubsection.11.4.1.2}
+\contentsline {subsubsection}{\numberline {11.4.1.3}Other system documentation}{101}{subsubsection.11.4.1.3}
+\contentsline {subsection}{\numberline {11.4.2}Program documentation}{101}{subsection.11.4.2}
+\contentsline {subsubsection}{\numberline {11.4.2.1}nvironmental dependencies}{101}{subsubsection.11.4.2.1}
+\contentsline {subsubsection}{\numberline {11.4.2.2}Other program documentation}{101}{subsubsection.11.4.2.2}
+\contentsline {section}{\numberline {11.5}Compliance and labeling}{101}{section.11.5}
+\contentsline {subsection}{\numberline {11.5.1}ANS Forth systems}{101}{subsection.11.5.1}
+\contentsline {subsection}{\numberline {11.5.2}ANS Forth programs}{102}{subsection.11.5.2}
+\contentsline {section}{\numberline {11.6}Glossary}{102}{section.11.6}
+\contentsline {subsection}{\numberline {A.11.6}Glossary}{102}{subsection.A.11.6}
+\contentsline {subsection}{\numberline {11.6.1}File Access words}{102}{subsection.11.6.1}
+\contentsline {subsection}{\numberline {11.6.2}File-Access extension words}{108}{subsection.11.6.2}
+\contentsline {chapter}{\numberline {12}The optional Floating-Point word set}{110}{chapter.12}
+\contentsline {section}{\numberline {A.12}The optional Floating-Point word set}{110}{section.A.12}
+\contentsline {section}{\numberline {12.1}Introduction}{111}{section.12.1}
+\contentsline {section}{\numberline {12.2}Additional terms and notation}{111}{section.12.2}
+\contentsline {subsection}{\numberline {12.2.1}Definition of terms}{111}{subsection.12.2.1}
+\contentsline {subsection}{\numberline {12.2.2}Notation}{111}{subsection.12.2.2}
+\contentsline {subsubsection}{\numberline {12.2.2.1}Numeric notation}{111}{subsubsection.12.2.2.1}
+\contentsline {subsubsection}{\numberline {12.2.2.2}Stack notation}{111}{subsubsection.12.2.2.2}
+\contentsline {section}{\numberline {12.3}Additional usage requirements}{111}{section.12.3}
+\contentsline {subsection}{\numberline {A.12.3}Additional usage requirements}{111}{subsection.A.12.3}
+\contentsline {subsection}{\numberline {12.3.1}Data types}{111}{subsection.12.3.1}
+\contentsline {subsubsection}{\numberline {12.3.1.1}Addresses}{111}{subsubsection.12.3.1.1}
+\contentsline {subsubsection}{\numberline {12.3.1.2}Floating-point numbers}{112}{subsubsection.12.3.1.2}
+\contentsline {subsection}{\numberline {12.3.2}Floating-point operations}{112}{subsection.12.3.2}
+\contentsline {subsection}{\numberline {12.3.3}Floating-point stack}{112}{subsection.12.3.3}
+\contentsline {subsection}{\numberline {12.3.4}Environmental queries}{112}{subsection.12.3.4}
+\contentsline {subsection}{\numberline {12.3.5}Address alignment}{112}{subsection.12.3.5}
+\contentsline {subsubsection}{\numberline {A.12.3.5}Address alignment}{113}{subsubsection.A.12.3.5}
+\contentsline {subsection}{\numberline {12.3.6}Variables}{113}{subsection.12.3.6}
+\contentsline {subsection}{\numberline {12.3.7}Text interpreter input number conversion}{113}{subsection.12.3.7}
+\contentsline {subsubsection}{\numberline {A.12.3.7}Text interpreter input number conversion}{113}{subsubsection.A.12.3.7}
+\contentsline {section}{\numberline {12.4}Additional documentation requirements}{114}{section.12.4}
+\contentsline {subsection}{\numberline {12.4.1}System documentation}{114}{subsection.12.4.1}
+\contentsline {subsubsection}{\numberline {12.4.1.1}Implementation-defined options}{114}{subsubsection.12.4.1.1}
+\contentsline {subsubsection}{\numberline {12.4.1.2}Ambiguous conditions}{114}{subsubsection.12.4.1.2}
+\contentsline {subsubsection}{\numberline {12.4.1.3}Other system documentation}{115}{subsubsection.12.4.1.3}
+\contentsline {subsection}{\numberline {12.4.2}Program documentation}{115}{subsection.12.4.2}
+\contentsline {subsubsection}{\numberline {12.4.2.1}Environmental dependencies}{115}{subsubsection.12.4.2.1}
+\contentsline {subsubsection}{\numberline {12.4.2.2}Other program documentation}{115}{subsubsection.12.4.2.2}
+\contentsline {section}{\numberline {12.5}Compliance and labeling}{115}{section.12.5}
+\contentsline {subsection}{\numberline {12.5.1}ANS Forth systems}{115}{subsection.12.5.1}
+\contentsline {subsection}{\numberline {12.5.2}ANS Forth programs}{115}{subsection.12.5.2}
+\contentsline {section}{\numberline {12.6}Glossary}{115}{section.12.6}
+\contentsline {subsection}{\numberline {A.12.6}Glossary}{115}{subsection.A.12.6}
+\contentsline {subsection}{\numberline {12.6.1}Floating-Point words}{115}{subsection.12.6.1}
+\contentsline {subsection}{\numberline {12.6.2}Floating-Point extension words}{120}{subsection.12.6.2}
+\contentsline {chapter}{\numberline {13}The optional Locals word set}{127}{chapter.13}
+\contentsline {section}{\numberline {A.13}The optional Locals word set}{127}{section.A.13}
+\contentsline {section}{\numberline {13.1}Introduction}{129}{section.13.1}
+\contentsline {section}{\numberline {13.2}Additional terms and notation}{129}{section.13.2}
+\contentsline {section}{\numberline {13.3}Additional usage requirements}{129}{section.13.3}
+\contentsline {subsection}{\numberline {A.13.3}Additional usage requirements}{129}{subsection.A.13.3}
+\contentsline {subsection}{\numberline {13.3.1}Locals}{130}{subsection.13.3.1}
+\contentsline {subsection}{\numberline {13.3.2}Environmental queries}{130}{subsection.13.3.2}
+\contentsline {subsection}{\numberline {13.3.3}Processing locals}{130}{subsection.13.3.3}
+\contentsline {subsubsection}{\numberline {13.3.3.1}Compilation semantics}{130}{subsubsection.13.3.3.1}
+\contentsline {subsubsection}{\numberline {13.3.3.2}Syntax restrictions}{131}{subsubsection.13.3.3.2}
+\contentsline {section}{\numberline {13.4}Additional documentation requirements}{132}{section.13.4}
+\contentsline {subsection}{\numberline {13.4.1}System documentation}{132}{subsection.13.4.1}
+\contentsline {subsubsection}{\numberline {13.4.1.1}Implementation-defined options}{132}{subsubsection.13.4.1.1}
+\contentsline {subsubsection}{\numberline {13.4.1.2}Ambiguous conditions}{132}{subsubsection.13.4.1.2}
+\contentsline {subsubsection}{\numberline {13.4.1.3}Other system documentation}{132}{subsubsection.13.4.1.3}
+\contentsline {subsection}{\numberline {13.4.2}Program documentation}{132}{subsection.13.4.2}
+\contentsline {subsubsection}{\numberline {13.4.2.1}Environmental dependencies}{132}{subsubsection.13.4.2.1}
+\contentsline {subsubsection}{\numberline {13.4.2.2}Other program documentation}{132}{subsubsection.13.4.2.2}
+\contentsline {section}{\numberline {13.5}Compliance and labeling}{132}{section.13.5}
+\contentsline {subsection}{\numberline {13.5.1}ANS Forth systems}{132}{subsection.13.5.1}
+\contentsline {subsection}{\numberline {13.5.2}ANS Forth programs}{132}{subsection.13.5.2}
+\contentsline {section}{\numberline {13.6}Glossary}{132}{section.13.6}
+\contentsline {subsection}{\numberline {A.13.6}Glossary}{132}{subsection.A.13.6}
+\contentsline {subsection}{\numberline {13.6.1}Locals words}{133}{subsection.13.6.1}
+\contentsline {subsection}{\numberline {13.6.2}Locals extension words}{134}{subsection.13.6.2}
+\contentsline {chapter}{\numberline {14}The optional Memory-Allocation word set}{135}{chapter.14}
+\contentsline {section}{\numberline {A.14}The optional Memory-Allocation word set}{135}{section.A.14}
+\contentsline {section}{\numberline {14.1}Introduction}{135}{section.14.1}
+\contentsline {section}{\numberline {14.2}Additional terms and notation}{135}{section.14.2}
+\contentsline {section}{\numberline {14.3}Additional usage requirements}{135}{section.14.3}
+\contentsline {subsection}{\numberline {14.3.1}I/O Results data type}{135}{subsection.14.3.1}
+\contentsline {subsection}{\numberline {14.3.2}Environmental queries}{135}{subsection.14.3.2}
+\contentsline {subsection}{\numberline {14.3.3}Allocated regions}{135}{subsection.14.3.3}
+\contentsline {section}{\numberline {14.4}Additional documentation requirements}{136}{section.14.4}
+\contentsline {subsection}{\numberline {14.4.1}System documentation}{136}{subsection.14.4.1}
+\contentsline {subsubsection}{\numberline {14.4.1.1}Implementation-defined options}{136}{subsubsection.14.4.1.1}
+\contentsline {subsubsection}{\numberline {14.4.1.2}Ambiguous conditions}{136}{subsubsection.14.4.1.2}
+\contentsline {subsubsection}{\numberline {14.4.1.3}Other system documentation}{136}{subsubsection.14.4.1.3}
+\contentsline {subsection}{\numberline {14.4.2}Program documentation}{136}{subsection.14.4.2}
+\contentsline {section}{\numberline {14.5}Compliance and labeling}{136}{section.14.5}
+\contentsline {subsection}{\numberline {14.5.1}ANS Forth systems}{136}{subsection.14.5.1}
+\contentsline {subsection}{\numberline {14.5.2}ANS Forth programs}{136}{subsection.14.5.2}
+\contentsline {section}{\numberline {14.6}Glossary}{136}{section.14.6}
+\contentsline {subsection}{\numberline {14.6.1}Memory-Allocation words}{136}{subsection.14.6.1}
+\contentsline {subsection}{\numberline {14.6.2}Memory-Allocation extension words}{137}{subsection.14.6.2}
+\contentsline {chapter}{\numberline {15}The optional Programming-Tools word set}{138}{chapter.15}
+\contentsline {section}{\numberline {A.15}The optional Programming-Tools word set}{138}{section.A.15}
+\contentsline {section}{\numberline {15.1}Introduction}{138}{section.15.1}
+\contentsline {section}{\numberline {15.2}Additional terms and notation}{138}{section.15.2}
+\contentsline {section}{\numberline {15.3}Additional usage requirements}{138}{section.15.3}
+\contentsline {subsection}{\numberline {15.3.1}Environmental queries}{138}{subsection.15.3.1}
+\contentsline {subsection}{\numberline {15.3.2}The Forth dictionary}{138}{subsection.15.3.2}
+\contentsline {section}{\numberline {15.4}Additional documentation requirements}{139}{section.15.4}
+\contentsline {subsection}{\numberline {15.4.1}System documentation}{139}{subsection.15.4.1}
+\contentsline {subsubsection}{\numberline {15.4.1.1}Implementation-defined options}{139}{subsubsection.15.4.1.1}
+\contentsline {subsubsection}{\numberline {15.4.1.2}Ambiguous conditions}{139}{subsubsection.15.4.1.2}
+\contentsline {subsubsection}{\numberline {15.4.1.3}Other system documentation}{139}{subsubsection.15.4.1.3}
+\contentsline {subsection}{\numberline {15.4.2}Program documentation}{139}{subsection.15.4.2}
+\contentsline {subsubsection}{\numberline {15.4.2.1}Environmental dependencies}{139}{subsubsection.15.4.2.1}
+\contentsline {subsubsection}{\numberline {15.4.2.2}Other program documentation}{139}{subsubsection.15.4.2.2}
+\contentsline {section}{\numberline {15.5}Compliance and labeling}{139}{section.15.5}
+\contentsline {subsection}{\numberline {15.5.1}ANS Forth systems}{139}{subsection.15.5.1}
+\contentsline {subsection}{\numberline {15.5.2}ANS Forth programs}{140}{subsection.15.5.2}
+\contentsline {section}{\numberline {15.6}Glossary}{140}{section.15.6}
+\contentsline {subsection}{\numberline {A.15.6}Glossary}{140}{subsection.A.15.6}
+\contentsline {subsection}{\numberline {15.6.1}Programming-Tools words}{140}{subsection.15.6.1}
+\contentsline {subsection}{\numberline {15.6.2}Programming-Tools extension words}{141}{subsection.15.6.2}
+\contentsline {chapter}{\numberline {16}The optional Search-Order word set}{147}{chapter.16}
+\contentsline {section}{\numberline {A.16}The optional Search-Order word set}{147}{section.A.16}
+\contentsline {section}{\numberline {16.1}Introduction}{147}{section.16.1}
+\contentsline {section}{\numberline {16.2}Additional terms and notation}{147}{section.16.2}
+\contentsline {subsubsection}{\numberline {A.16.2}Additional terms}{147}{subsubsection.A.16.2}
+\contentsline {section}{\numberline {16.3}Additional usage requirements}{148}{section.16.3}
+\contentsline {subsection}{\numberline {16.3.1}Data types}{148}{subsection.16.3.1}
+\contentsline {subsection}{\numberline {16.3.2}Environmental queries}{148}{subsection.16.3.2}
+\contentsline {subsection}{\numberline {16.3.3}Finding definition names}{148}{subsection.16.3.3}
+\contentsline {subsubsection}{\numberline {A.16.3.3}Finding definition names}{148}{subsubsection.A.16.3.3}
+\contentsline {subsection}{\numberline {16.3.4}Contiguous regions}{149}{subsection.16.3.4}
+\contentsline {section}{\numberline {16.4}Additional documentation requirements}{149}{section.16.4}
+\contentsline {subsection}{\numberline {16.4.1}System documentation}{149}{subsection.16.4.1}
+\contentsline {subsubsection}{\numberline {16.4.1.1}Implementation-defined options}{149}{subsubsection.16.4.1.1}
+\contentsline {subsubsection}{\numberline {16.4.1.2}Ambiguous conditions}{149}{subsubsection.16.4.1.2}
+\contentsline {subsubsection}{\numberline {16.4.1.3}Other system documentation}{149}{subsubsection.16.4.1.3}
+\contentsline {subsection}{\numberline {16.4.2}Program documentation}{149}{subsection.16.4.2}
+\contentsline {subsubsection}{\numberline {16.4.2.1}Environmental dependencies}{149}{subsubsection.16.4.2.1}
+\contentsline {subsubsection}{\numberline {16.4.2.2}Other program documentation}{149}{subsubsection.16.4.2.2}
+\contentsline {section}{\numberline {16.5}Compliance and labeling}{149}{section.16.5}
+\contentsline {subsection}{\numberline {16.5.1}ANS Forth systems}{149}{subsection.16.5.1}
+\contentsline {subsection}{\numberline {16.5.2}ANS Forth programs}{150}{subsection.16.5.2}
+\contentsline {section}{\numberline {16.6}Glossary}{150}{section.16.6}
+\contentsline {subsection}{\numberline {A.16.6}Glossary}{150}{subsection.A.16.6}
+\contentsline {subsection}{\numberline {16.6.1}Search-Order words}{150}{subsection.16.6.1}
+\contentsline {subsection}{\numberline {16.6.2}Search-Order extension words}{151}{subsection.16.6.2}
+\contentsline {chapter}{\numberline {17}The optional String word set}{154}{chapter.17}
+\contentsline {section}{\numberline {A.17}The optional String word set}{154}{section.A.17}
+\contentsline {section}{\numberline {17.1}Introduction}{154}{section.17.1}
+\contentsline {section}{\numberline {17.2}Additional terms and notation}{154}{section.17.2}
+\contentsline {section}{\numberline {17.3}Additional usage requirements}{154}{section.17.3}
+\contentsline {section}{\numberline {17.4}Additional documentation requirements}{154}{section.17.4}
+\contentsline {section}{\numberline {17.5}Compliance and labeling}{154}{section.17.5}
+\contentsline {subsection}{\numberline {17.5.1}Compliance and labeling}{154}{subsection.17.5.1}
+\contentsline {subsection}{\numberline {17.5.2}ANS Forth programs}{154}{subsection.17.5.2}
+\contentsline {section}{\numberline {17.6}Glossary}{155}{section.17.6}
+\contentsline {subsection}{\numberline {A.17.6}Glossary}{155}{subsection.A.17.6}
+\contentsline {subsection}{\numberline {17.6.1}String words}{155}{subsection.17.6.1}
+\contentsline {subsection}{\numberline {17.6.2}String extension words}{156}{subsection.17.6.2}
+\global \c@tocdepth 1\relax 
+\contentsline {chapter}{\numberline {A}Rationale}{157}{appendix.A}
+\contentsline {section}{\numberline {A.1}Introduction}{157}{section.A.1}
+\contentsline {subsection}{\numberline {A.1.1}Purpose}{157}{subsection.A.1.1}
+\contentsline {subsection}{\numberline {A.1.2}Scope}{157}{subsection.A.1.2}
+\contentsline {subsection}{\numberline {A.1.3}Document organization}{157}{subsection.A.1.3}
+\contentsline {subsubsection}{\numberline {A.1.3.1}Word sets}{157}{subsubsection.A.1.3.1}
+\contentsline {section}{\numberline {A.2}Terms and notation}{159}{section.A.2}
+\contentsline {subsection}{\numberline {A.2.1}Definitions of terms}{159}{subsection.A.2.1}
+\contentsline {subsection}{\numberline {A.2.2}Notation}{159}{subsection.A.2.2}
+\contentsline {subsubsection}{\numberline {A.2.2.1}Stack notation}{159}{subsubsection.A.2.2.1}
+\contentsline {section}{\numberline {A.3}Usage requirements}{159}{section.A.3}
+\contentsline {subsection}{\numberline {A.3.1}Data-types}{160}{subsection.A.3.1}
+\contentsline {subsubsection}{\numberline {A.3.1.2}Character types}{160}{subsubsection.A.3.1.2}
+\contentsline {subsubsection}{\numberline {A.3.1.3}Single-cell types}{162}{subsubsection.A.3.1.3}
+\contentsline {paragraph}{\numberline {A.3.1.3.1}Flags}{162}{paragraph.A.3.1.3.1}
+\contentsline {paragraph}{\numberline {A.3.1.3.2}Integers}{162}{paragraph.A.3.1.3.2}
+\contentsline {paragraph}{\numberline {A.3.1.3.3}Addresses}{163}{paragraph.A.3.1.3.3}
+\contentsline {paragraph}{\numberline {A.3.1.3.4}Counted strings}{163}{paragraph.A.3.1.3.4}
+\contentsline {paragraph}{\numberline {A.3.1.3.5}Execution tokens}{163}{paragraph.A.3.1.3.5}
+\contentsline {subsubsection}{\numberline {A.3.1.4}Cell-pair types}{164}{subsubsection.A.3.1.4}
+\contentsline {paragraph}{\numberline {A.3.1.4.1}Double-Cell Integers}{164}{paragraph.A.3.1.4.1}
+\contentsline {paragraph}{\numberline {A.3.1.4.2}Character strings}{164}{paragraph.A.3.1.4.2}
+\contentsline {subsection}{\numberline {A.3.2}The Implementation environment}{164}{subsection.A.3.2}
+\contentsline {subsubsection}{\numberline {A.3.2.1}Numbers}{164}{subsubsection.A.3.2.1}
+\contentsline {paragraph}{\numberline {A.3.2.1.2}Digit conversion}{165}{paragraph.A.3.2.1.2}
+\contentsline {subsubsection}{\numberline {A.3.2.2}Arithmetic}{165}{subsubsection.A.3.2.2}
+\contentsline {paragraph}{\numberline {A.3.2.2.1}Integer division}{165}{paragraph.A.3.2.2.1}
+\contentsline {subsubsection}{\numberline {A.3.2.3}Stacks}{166}{subsubsection.A.3.2.3}
+\contentsline {paragraph}{\numberline {A.3.2.3.2}Control-flow stack}{166}{paragraph.A.3.2.3.2}
+\contentsline {paragraph}{\numberline {A.3.2.3.3}Return stack}{169}{paragraph.A.3.2.3.3}
+\contentsline {subsubsection}{\numberline {A.3.2.4}Environmental queries}{169}{subsubsection.A.3.2.4}
+\contentsline {subsection}{\numberline {A.3.3}The Forth dictionary}{169}{subsection.A.3.3}
+\contentsline {subsubsection}{\numberline {A.3.3.1}Name space}{169}{subsubsection.A.3.3.1}
+\contentsline {paragraph}{\numberline {A.3.3.1.2}Definition names}{169}{paragraph.A.3.3.1.2}
+\contentsline {subsubsection}{\numberline {A.3.3.2}Code space}{170}{subsubsection.A.3.3.2}
+\contentsline {subsubsection}{\numberline {A.3.3.3}Data space}{170}{subsubsection.A.3.3.3}
+\contentsline {paragraph}{\numberline {A.3.3.3.1}Address alignment}{170}{paragraph.A.3.3.3.1}
+\contentsline {paragraph}{\numberline {A.3.3.3.2}Contiguous regions}{171}{paragraph.A.3.3.3.2}
+\contentsline {paragraph}{\numberline {A.3.3.3.6}Other transient regions}{171}{paragraph.A.3.3.3.6}
+\contentsline {subsection}{\numberline {A.3.4}The Forth text interpreter}{172}{subsection.A.3.4}
+\contentsline {subsubsection}{\numberline {A.3.4.1}Semantics}{172}{subsubsection.A.3.4.1}
+\contentsline {paragraph}{\numberline {A.3.4.1.2}Interpretation semantics}{172}{paragraph.A.3.4.1.2}
+\contentsline {subsubsection}{\numberline {A.3.4.2}Compilation}{172}{subsubsection.A.3.4.2}
+\contentsline {section}{\numberline {A.4}Documentation requirements}{172}{section.A.4}
+\contentsline {subsection}{\numberline {A.4.1}System documentation}{172}{subsection.A.4.1}
+\contentsline {subsection}{\numberline {A.4.2}Program documentation}{172}{subsection.A.4.2}
+\contentsline {section}{\numberline {A.5}Compliance and labeling}{172}{section.A.5}
+\contentsline {subsection}{\numberline {A.5.1}ANS Forth systems}{172}{subsection.A.5.1}
+\contentsline {subsection}{\numberline {A.5.2}ANS Forth programs}{173}{subsection.A.5.2}
+\contentsline {subsubsection}{\numberline {A.5.2.2}Program labeling}{173}{subsubsection.A.5.2.2}
+\contentsline {section}{\numberline {A.6}Glossary}{173}{section.A.6}
+\contentsline {chapter}{\numberline {B}Bibliography}{174}{appendix.B}
+\contentsline {chapter}{\numberline {C}Perspective}{176}{appendix.C}
+\contentsline {section}{\numberline {C.1}Features of Forth}{176}{section.C.1}
+\contentsline {section}{\numberline {C.2}History of Forth}{177}{section.C.2}
+\contentsline {section}{\numberline {C.3}Hardware implementations of Forth}{177}{section.C.3}
+\contentsline {section}{\numberline {C.4}Standardization efforts}{178}{section.C.4}
+\contentsline {section}{\numberline {C.5}Programming in Forth}{178}{section.C.5}
+\contentsline {subsection}{\numberline {C.5.1}The Forth dictionary}{179}{subsection.C.5.1}
+\contentsline {subsection}{\numberline {C.5.2}Push-down stacks}{179}{subsection.C.5.2}
+\contentsline {subsection}{\numberline {C.5.3}Interpreters}{180}{subsection.C.5.3}
+\contentsline {subsection}{\numberline {C.5.4}Assembler}{180}{subsection.C.5.4}
+\contentsline {subsection}{\numberline {C.5.5}Virtual memory}{181}{subsection.C.5.5}
+\contentsline {subsection}{\numberline {C.5.6}Programming environment}{182}{subsection.C.5.6}
+\contentsline {subsection}{\numberline {C.5.7}Advanced programming features}{182}{subsection.C.5.7}
+\contentsline {subsection}{\numberline {C.5.8}A programming example}{183}{subsection.C.5.8}
+\contentsline {section}{\numberline {C.6}Multiprogrammed systems}{185}{section.C.6}
+\contentsline {section}{\numberline {C.7}Design and management considerations}{185}{section.C.7}
+\contentsline {section}{\numberline {C.8}Conclusion}{186}{section.C.8}
+\contentsline {chapter}{\numberline {D}Compatibility analysis of ANS Forth}{187}{appendix.D}
+\contentsline {section}{\numberline {D.1}FIG Forth (circa 1978)}{187}{section.D.1}
+\contentsline {section}{\numberline {D.2}Forth 79}{187}{section.D.2}
+\contentsline {section}{\numberline {D.3}Forth 83}{187}{section.D.3}
+\contentsline {section}{\numberline {D.4}Recent developments}{188}{section.D.4}
+\contentsline {section}{\numberline {D.5}ANS Forth approach}{188}{section.D.5}
+\contentsline {section}{\numberline {D.6}Differences from Forth 83}{189}{section.D.6}
+\contentsline {subsection}{\numberline {D.6.1}Stack width}{189}{subsection.D.6.1}
+\contentsline {subsection}{\numberline {D.6.2}Number representation}{190}{subsection.D.6.2}
+\contentsline {subsection}{\numberline {D.6.3}Address units}{190}{subsection.D.6.3}
+\contentsline {subsection}{\numberline {D.6.4}Address increment for a cell is no longer two}{191}{subsection.D.6.4}
+\contentsline {subsection}{\numberline {D.6.5}Address alignment}{191}{subsection.D.6.5}
+\contentsline {subsection}{\numberline {D.6.6}Division/modulus rounding direction}{192}{subsection.D.6.6}
+\contentsline {subsection}{\numberline {D.6.7}Immediacy}{193}{subsection.D.6.7}
+\contentsline {subsection}{\numberline {D.6.8}Input character set}{195}{subsection.D.6.8}
+\contentsline {subsection}{\numberline {D.6.9}Shifting with \word {UM/MOD}}{195}{subsection.D.6.9}
+\contentsline {subsection}{\numberline {D.6.10}Vocabularies / wordlists}{196}{subsection.D.6.10}
+\contentsline {subsection}{\numberline {D.6.11}Multiprogramming impact}{196}{subsection.D.6.11}
+\contentsline {subsection}{\numberline {D.6.12}Words not provided in executable form}{197}{subsection.D.6.12}
+\contentsline {chapter}{\numberline {E}ANS Forth portability guide}{198}{appendix.E}
+\contentsline {section}{\numberline {E.1}Introduction}{198}{section.E.1}
+\contentsline {section}{\numberline {E.2}Hardware peculiarities}{198}{section.E.2}
+\contentsline {subsection}{\numberline {E.2.1}Data/memory abstraction}{198}{subsection.E.2.1}
+\contentsline {subsection}{\numberline {E.2.2}Definitions}{198}{subsection.E.2.2}
+\contentsline {subsection}{\numberline {E.2.3}Addressing memory}{199}{subsection.E.2.3}
+\contentsline {subsection}{\numberline {E.2.4}Alignment problems}{200}{subsection.E.2.4}
+\contentsline {section}{\numberline {E.3}Number representation}{200}{section.E.3}
+\contentsline {subsection}{\numberline {E.3.1}Big endian vs. little endian}{200}{subsection.E.3.1}
+\contentsline {subsection}{\numberline {E.3.2}ALU organization}{201}{subsection.E.3.2}
+\contentsline {section}{\numberline {E.4}Forth system implementation}{201}{section.E.4}
+\contentsline {subsection}{\numberline {E.4.1}Definitions}{201}{subsection.E.4.1}
+\contentsline {subsection}{\numberline {E.4.2}Stacks}{202}{subsection.E.4.2}
+\contentsline {section}{\numberline {E.5}ROMed application disciplines and conventions}{202}{section.E.5}
+\contentsline {section}{\numberline {E.6}Summary}{203}{section.E.6}
+\contentsline {chapter}{\numberline {F}Alphabetic list of words}{204}{appendix.F}

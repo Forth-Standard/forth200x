@@ -1,0 +1,67 @@
+Article: 79523 of comp.lang.forth
+X-Received: by 10.99.96.204 with SMTP id u195mr1310806pgb.28.1496564758081;
+        Sun, 04 Jun 2017 01:25:58 -0700 (PDT)
+X-Received: by 10.157.83.41 with SMTP id g41mr321165oth.13.1496564758039; Sun,
+ 04 Jun 2017 01:25:58 -0700 (PDT)
+Path: eternal-september.org!news.eternal-september.org!news.eternal-september.org!feeder.eternal-september.org!news.glorb.com!67no1047231itx.0!news-out.google.com!m134ni4848itb.0!nntp.google.com!67no1047226itx.0!postnews.google.com!glegroupsg2000goo.googlegroups.com!not-for-mail
+Newsgroups: comp.lang.forth
+Date: Sun, 4 Jun 2017 01:25:57 -0700 (PDT)
+Complaints-To: groups-abuse@google.com
+Injection-Info: glegroupsg2000goo.googlegroups.com; posting-host=93.224.109.201;
+ posting-account=qgXzEAoAAAALWFdOM6uy8CZPVuqEAmv-
+NNTP-Posting-Host: 93.224.109.201
+User-Agent: G2/1.0
+MIME-Version: 1.0
+Message-ID: <a5b211f0-f38f-4188-9cfb-ac80ba0e482f@googlegroups.com>
+Subject: RFD: Drop double numbers as input format
+From: Matthias Trute <matthias.trute@gmail.com>
+Injection-Date: Sun, 04 Jun 2017 08:25:58 +0000
+Content-Type: text/plain; charset="UTF-8"
+Xref: news.eternal-september.org comp.lang.forth:79523
+
+A radical one. I admit.
+
+Problem
+=======
+
+Double numbers are specified as integer numbers with
+values beyond cell size (e.g. 65535 on a 16-bit system). 
+They shall be entered with a trailing dot. Common practice
+is that the dot can be at any place within the number 
+string which conflicts with floating point number formats.
+
+
+Solution
+========
+
+To avoid the syntax confusion and since double numbers
+have a fixed stack order, there is no immediate need
+to directly enter double numbers at all. The number 1. 
+can be written as the sequence 1 0 with single cell numbers
+without portabilities issues.
+
+With the wide spread usage of 32 and 64-bit systems, the
+need for double cell numbers as input format is expected
+to be less important.
+
+Proposal
+========
+
+Remove the trailing dot specification from the standard 
+and remove the double number as an input format for
+integer numbers. All other occurrences of double numbers
+are left unchanged.
+
+Experience
+==========
+
+None
+
+Typical Usage
+=============
+
+Existing double cell input formats are to be split into
+two literals. Existing sequences such as "1." are to be
+replaced with " 1 0 ".
+
+

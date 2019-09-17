@@ -1,0 +1,2842 @@
+This is pdfeTeX, Version 3.14159-1.10b-2.1 (Web2C 7.4.5) (format=pdflatex 2005.10.26)  26 OCT 2005 21:21
+entering extended mode
+**ans
+(./ans.tex{/usr/share/texmf/pdftex/config/pdftex.cfg}
+LaTeX2e <2001/06/01>
+Babel <v3.7h> and hyphenation patterns for american, french, german, ngerman, b
+ahasa, basque, catalan, croatian, czech, danish, dutch, finnish, greek, iceland
+ic, irish, italian, latin, magyar, norsk, norsk, portuges, romanian, russian, s
+lovak, slovene, spanish, swedish, turkish, ukrainian, nohyphenation, loaded.
+(/usr/share/texmf/tex/latex/base/book.cls
+Document Class: book 2001/04/21 v1.4e Standard LaTeX document class
+(/usr/share/texmf/tex/latex/base/bk10.clo
+File: bk10.clo 2001/04/21 v1.4e Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@chapter=\count80
+\c@section=\count81
+\c@subsection=\count82
+\c@subsubsection=\count83
+\c@paragraph=\count84
+\c@subparagraph=\count85
+\c@figure=\count86
+\c@table=\count87
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/share/texmf/tex/latex/misc/a4wide.sty
+Package: a4wide 1994/08/30
+
+(/usr/share/texmf/tex/latex/ntgclass/a4.sty
+Package: a4 1999/03/03 v1.2f A4 based page layout
+))
+(/usr/share/texmf/tex/latex/misc/supertabular.sty
+Package: supertabular 2002/07/19 v4.1e the supertabular environment
+\c@tracingst=\count88
+\ST@wd=\dimen103
+\ST@rightskip=\skip43
+\ST@leftskip=\skip44
+\ST@parfillskip=\skip45
+\ST@pageleft=\dimen104
+\ST@headht=\dimen105
+\ST@tailht=\dimen106
+\ST@pagesofar=\dimen107
+\ST@pboxht=\dimen108
+\ST@lineht=\dimen109
+\ST@stretchht=\dimen110
+\ST@prevht=\dimen111
+\ST@toadd=\dimen112
+\ST@dimen=\dimen113
+\ST@pbox=\box26
+)
+(/usr/share/texmf/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/share/texmf/tex/latex/graphics/graphics.sty
+Package: graphics 2001/07/07 v1.0n Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texmf/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/share/texmf/tex/latex/config/graphics.cfg
+File: graphics.cfg 2001/08/31 v1.1 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: pdftex.def on input line 80.
+
+(/usr/share/texmf/tex/latex/graphics/pdftex.def
+File: pdftex.def 2002/06/19 v0.03k graphics/color for pdftex
+\Gread@gobject=\count89
+))
+\Gin@req@height=\dimen114
+\Gin@req@width=\dimen115
+)
+(/usr/share/texmf/tex/latex/fancyhdr/fancyhdr.sty
+\headwidth=\dimen116
+) (./lineno.sty
+Package: lineno 2005/05/16 line numbers on paragraphs v4.3
+\linenopenalty=\count90
+\output=\toks15
+\linenoprevgraf=\count91
+\linenumbersep=\dimen117
+\linenumberwidth=\dimen118
+\c@linenumber=\count92
+\c@pagewiselinenumber=\count93
+\c@LN@truepage=\count94
+\c@internallinenumber=\count95
+\c@internallinenumbers=\count96
+\quotelinenumbersep=\dimen119
+\bframerule=\dimen120
+\bframesep=\dimen121
+\bframebox=\box27
+LaTeX Info: Redefining \\ on input line 2980.
+)
+(./answers.sty
+Package: answers 1996/07/10
+
+Package `answers' <16 Dec 1997 17:05:29 BST>.
+Copyright (C) 1990,1994 Mike Piff, University of Sheffield, England
+No answer files being produced
+(/usr/share/texmf/tex/latex/tools/verbatim.sty
+Package: verbatim 2001/03/12 v1.5p LaTeX2e package for verbatim enhancements
+\every@verbatim=\toks16
+\verbatim@line=\toks17
+\verbatim@in@stream=\read1
+))
+(/usr/share/texmf/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2003/01/22 v6.73n Hypertext links for LaTeX
+\@linkdim=\dimen122
+\Hy@linkcounter=\count97
+\Hy@pagecounter=\count98
+
+(/usr/share/texmf/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2003/01/22 v6.73n Hyperref: PDFDocEncoding definition (HO)
+)
+(/usr/share/texmf/tex/latex/config/hyperref.cfg
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive and teTeX
+)
+Package hyperref Info: Option `breaklinks' set `true' on input line 1744.
+Package hyperref Info: Hyper figures OFF on input line 1792.
+Package hyperref Info: Link nesting OFF on input line 1797.
+Package hyperref Info: Hyper index ON on input line 1800.
+Package hyperref Info: Plain pages ON on input line 1805.
+Package hyperref Info: Backreferencing OFF on input line 1812.
+
+Implicit mode ON; LaTeX internals redefined
+Package hyperref Info: Bookmarks ON on input line 1916.
+(/usr/share/texmf/tex/latex/misc/url.sty
+\Urlmuskip=\muskip10
+Package: url 1999/03/28  ver 1.5x  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 2055.
+\Fld@menulength=\count99
+\Field@Width=\dimen123
+\Fld@charsize=\dimen124
+\Choice@toks=\toks18
+\Field@toks=\toks19
+Package hyperref Info: Hyper figures OFF on input line 2513.
+Package hyperref Info: Link nesting OFF on input line 2518.
+Package hyperref Info: Hyper index ON on input line 2521.
+Package hyperref Info: backreferencing OFF on input line 2528.
+Package hyperref Info: Link coloring OFF on input line 2533.
+\c@Item=\count100
+\c@Hfootnote=\count101
+)
+*hyperref using default driver hpdftex*
+(/usr/share/texmf/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2003/01/22 v6.73n Hyperref driver for pdfTeX
+
+(/usr/share/texmf/tex/latex/psnfss/pifont.sty
+Package: pifont 2002/09/08 PSNFSS-v9.0a Pi font support (SPQR) 
+LaTeX Font Info:    Try loading font information for U+pzd on input line 62.
+
+(/usr/share/texmf/tex/latex/psnfss/upzd.fd
+File: upzd.fd 2001/06/04 font definitions for U/pzd.
+)
+LaTeX Font Info:    Try loading font information for U+psy on input line 63.
+
+(/usr/share/texmf/tex/latex/psnfss/upsy.fd
+File: upsy.fd 2001/06/04 font definitions for U/psy.
+))
+\Fld@listcount=\count102
+\@outlinefile=\write3
+)
+\wordfile=\write4
+\openout4 = `ans.wrd'.
+
+\c@word@core=\count103
+\c@word@count=\count104
+ (./ans.aux (./titlepage.aux)
+(./foreward.aux) (./members.aux) (./intro.aux) (./notation.aux) (./usage.aux)
+(./doc.aux) (./label.aux) (./core.aux) (./block.aux) (./double.aux)
+(./exception.aux
+
+LaTeX Warning: Label `wordlist:core-ext' multiply defined.
+
+
+LaTeX Warning: Label `core:ABORT' multiply defined.
+
+
+LaTeX Warning: Label `core:ABORTq' multiply defined.
+
+) (./facility.aux) (./file.aux) (./float.aux) (./locals.aux) (./memory.aux)
+(./tools.aux) (./search.aux) (./string.aux) (./rationale.aux) (./bib.aux)
+(./history.aux) (./diff.aux) (./port.aux) (./alpha.aux))
+\openout1 = `ans.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 327.
+LaTeX Font Info:    ... okay on input line 327.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 327.
+LaTeX Font Info:    ... okay on input line 327.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 327.
+LaTeX Font Info:    ... okay on input line 327.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 327.
+LaTeX Font Info:    ... okay on input line 327.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 327.
+LaTeX Font Info:    ... okay on input line 327.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 327.
+LaTeX Font Info:    ... okay on input line 327.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 327.
+LaTeX Font Info:    ... okay on input line 327.
+
+(/usr/share/texmf/tex/context/base/supp-pdf.tex
+(/usr/share/texmf/tex/context/base/supp-mis.tex
+loading : Context Support Macros / Missing
+\protectiondepth=\count105
+\scratchcounter=\count106
+\scratchtoks=\toks20
+\scratchdimen=\dimen125
+\scratchskip=\skip46
+\scratchmuskip=\muskip11
+\scratchbox=\box28
+\scratchread=\read2
+\scratchwrite=\write5
+\zeropoint=\dimen126
+\minusone=\count107
+\thousandpoint=\dimen127
+\emptytoks=\toks21
+\nextbox=\box29
+\nextdepth=\dimen128
+\everyline=\toks22
+\!!counta=\count108
+\!!countb=\count109
+\recursecounter=\count110
+)
+loading : Context Support Macros / PDF
+\nofMPsegments=\count111
+\nofMParguments=\count112
+\everyMPtoPDFconversion=\toks23
+)
+Package hyperref Info: Link coloring OFF on input line 327.
+ (/usr/share/texmf/tex/latex/hyperref/nameref.sty
+Package: nameref 2001/01/27 v2.19 Cross-referencing by name of section
+\c@section@level=\count113
+)
+LaTeX Info: Redefining \ref on input line 327.
+LaTeX Info: Redefining \pageref on input line 327.
+ (./ans.out) (./ans.out)
+\openout3 = `ans.out'.
+
+\openout2 = `titlepage.aux'.
+
+
+(./titlepage.tex [1
+
+
+
+{/var/lib/texmf/dvips/config/pdftex.map}]) [2
+
+
+] (./ans.toc
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 2.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 2.
+
+! pdfTeX warning (ext4): destination with the same identifier (name{page.1}) ha
+s been already used, duplicate ignored
+<to be read again> 
+                   \penalty 
+l.87 ...Documentation requirements}{22}{chapter.4}
+                                                   [1]
+! pdfTeX warning (ext4): destination with the same identifier (name{page.2}) ha
+s been already used, duplicate ignored
+<to be read again> 
+                   \penalty 
+l.430 ... {C.2}History of Forth}{177}{section.C.2}
+                                                   [2])
+\tf@toc=\write6
+\openout6 = `ans.toc'.
+
+ [3]
+\openout2 = `foreward.aux'.
+
+ (./foreward.tex)
+[4
+
+]
+\openout2 = `members.aux'.
+
+ (./members.tex
+Overfull \hbox (23.99998pt too wide) in paragraph at lines 19--59
+[] 
+ []
+
+[5
+
+
+]
+Overfull \hbox (23.99998pt too wide) in paragraph at lines 59--83
+[] 
+ []
+
+
+Overfull \hbox (23.99998pt too wide) in paragraph at lines 106--122
+[] 
+ []
+
+[6]
+Overfull \hbox (23.99998pt too wide) in paragraph at lines 122--135
+[] 
+ []
+
+
+Overfull \hbox (24.0pt too wide) in paragraph at lines 141--158
+[] 
+ []
+
+)
+Overfull \hbox (48.0pt too wide) in paragraph at lines 159--341
+[] 
+ []
+
+[7] [8
+
+
+]
+\openout2 = `intro.aux'.
+
+ (./intro.tex
+! pdfTeX warning (ext4): destination with the same identifier (name{page.1}) ha
+s been already used, duplicate ignored
+<to be read again> 
+                   \penalty 
+l.63 
+      [1
+
+]
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <10> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 121.
+)
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+
+! pdfTeX warning (ext4): destination with the same identifier (name{page.2}) ha
+s been already used, duplicate ignored
+<to be read again> 
+                   \penalty 
+l.347 \include{intro}
+                      [2]
+! pdfTeX warning (ext4): destination with the same identifier (name{page.3}) ha
+s been already used, duplicate ignored
+<to be read again> 
+                   \penalty 
+l.347 \include{intro}
+                      [3]
+\openout2 = `notation.aux'.
+
+ (./notation.tex
+! pdfTeX warning (ext4): destination with the same identifier (name{page.4}) ha
+s been already used, duplicate ignored
+<to be read again> 
+                   \penalty 
+l.87 
+      [4
+
+
+]
+! pdfTeX warning (ext4): destination with the same identifier (name{page.5}) ha
+s been already used, duplicate ignored
+<to be read again> 
+                   \penalty 
+l.180 
+       [5]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 260.
+
+ (/usr/share/texmf/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/bx/it' in size <10> not available
+(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 260.
+LaTeX Font Info:    Font shape `OMS/cmr/bx/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/b/n' tried instead on input line 263.
+
+! pdfTeX warning (ext4): destination with the same identifier (name{page.6}) ha
+s been already used, duplicate ignored
+<to be read again> 
+                   \penalty 
+l.269 \begin{quote}
+                    [6]
+LaTeX Font Info:    Font shape `OMS/cmr/m/it' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 285.
+
+! pdfTeX warning (ext4): destination with the same identifier (name{page.7}) ha
+s been already used, duplicate ignored
+<to be read again> 
+                   \penalty 
+l.351 \end{itemize}
+                    [7]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <8> on input line 402.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <6> on input line 402.
+)
+! pdfTeX warning (ext4): destination with the same identifier (name{page.8}) ha
+s been already used, duplicate ignored
+<to be read again> 
+                   \penalty 
+l.348 \include{notation}
+                         [8]
+\openout2 = `usage.aux'.
+
+ (./usage.tex
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 135.
+ [9
+
+
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [10]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <9> on input line 169.
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <9> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 192.
+
+[11]
+Overfull \hbox (21.59976pt too wide) in paragraph at lines 286--288
+[]/cmr10/The implementation-defined range of double-cell non-negative in-te-ger
+s shall in-clude /cmsy10/f/cmr10/0 ... 2147483647/cmsy10/g/cmr10/. 
+ []
+
+
+Overfull \hbox (4.43306pt too wide) in paragraph at lines 289--294
+[]/cmr10/The implementation-defined range of double-cell un-signed in-te-gers s
+hall in-clude /cmsy10/f/cmr10/0 ... 4294967295/cmsy10/g/cmr10/.
+ []
+
+
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [12]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [13]
+Overfull \hbox (2.22221pt too wide) in paragraph at lines 437--476
+[]$[]$ $[]$ 
+ []
+
+[14]
+Overfull \hbox (4.49904pt too wide) in paragraph at lines 614--614
+[]/cmtt10/RETURN-STACK-CELLS| 
+ []
+
+[15]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [16]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [17]
+[18] [19]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [20])
+[21]
+\openout2 = `doc.aux'.
+
+ (./doc.tex [22
+
+
+]
+Overfull \hbox (5.30971pt too wide) in paragraph at lines 111--114
+[]/cmr10/type of di-vi-sion round-ing ([]/cmbx10/3.2.2.1 In-te-ger di-vi-sion[]
+/cmr10/, []/cmbx10/6.1.0100 /cmtt10/*/[]/cmr10/, []/cmbx10/6.1.0110 /cmtt10/*/M
+OD[]/cmr10/, []/cmbx10/6.1.0230
+ []
+
+
+Overfull \hbox (17.02225pt too wide) in paragraph at lines 185--197
+/cmtt10/>NUMBER[]/cmr10/, []/cmbx10/6.1.1561 /cmtt10/FM/MOD[]/cmr10/, []/cmbx10
+/6.1.2214 /cmtt10/SM/REM[]/cmr10/, []/cmbx10/6.1.2370 /cmtt10/UM/MOD[]/cmr10/, 
+[]/cmbx10/6.2.0970 /cmtt10/CONVERT[]/cmr10/, []/cmbx10/8.6.1.1820
+ []
+
+[23] [24]) [25]
+\openout2 = `label.aux'.
+
+ (./label.tex) [26
+
+
+]
+\openout2 = `core.aux'.
+
+ (./core.tex
+\rationale@file=\write7
+
+Underfull \hbox (badness 10000) in paragraph at lines 10--10
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 20--20
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 38--38
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 53--53
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 69--69
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 98--98
+
+ []
+
+[27
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 121--121
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 129--129
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 147--147
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 165--165
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 176--176
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 186--186
+
+ []
+
+[28]
+Underfull \hbox (badness 10000) in paragraph at lines 224--224
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 246--246
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 257--257
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 268--268
+
+ []
+
+[29]
+Underfull \hbox (badness 10000) in paragraph at lines 308--308
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 324--324
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 341--341
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 348--348
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 355--355
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 363--363
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 371--371
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 384--384
+
+ []
+
+[30]
+Underfull \hbox (badness 10000) in paragraph at lines 403--403
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 419--419
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 437--437
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 443--443
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 450--450
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 457--457
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 464--464
+
+ []
+
+[31]
+
+LaTeX Font Warning: Font shape `OT1/cmss/m/it' in size <10> not available
+(Font)              Font shape `OT1/cmss/m/sl' tried instead on input line 486.
+
+
+
+Overfull \hbox (0.84439pt too wide) detected at line 486
+ /cmssi10/name /cmss10/Execution:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 519--519
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 559--559
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 568--568
+
+ []
+
+[32]
+Underfull \hbox (badness 10000) in paragraph at lines 580--580
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 588--588
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 598--598
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 616--616
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 625--625
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 646--646
+
+ []
+
+[33]
+Underfull \hbox (badness 10000) in paragraph at lines 666--666
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 673--673
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 684--684
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 696--696
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 727--727
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 735--735
+
+ []
+
+[34]
+Underfull \hbox (badness 10000) in paragraph at lines 820--820
+
+ []
+
+[35]
+Underfull \hbox (badness 10000) in paragraph at lines 842--842
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 857--857
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 879--879
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 886--886
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 894--894
+
+ []
+
+[36]
+Underfull \hbox (badness 10000) in paragraph at lines 933--933
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 947--947
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 959--959
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 975--975
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 987--987
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1016--1016
+
+ []
+
+[37]
+Underfull \hbox (badness 10000) in paragraph at lines 1032--1032
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1049--1049
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1060--1060
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1068--1068
+
+ []
+
+
+Overfull \hbox (0.84439pt too wide) detected at line 1076
+ /cmssi10/name /cmss10/Execution:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1093--1093
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1103--1103
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1112--1112
+
+ []
+
+[38]
+Overfull \hbox (0.84439pt too wide) detected at line 1122
+ /cmssi10/name /cmss10/Execution:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1148--1148
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1155--1155
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1163--1163
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1209--1209
+
+ []
+
+[39]
+Overfull \hbox (0.84439pt too wide) detected at line 1243
+ /cmssi10/name /cmss10/Execution:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1273--1273
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1279--1279
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1287--1287
+
+ []
+
+[40]
+Underfull \hbox (badness 10000) in paragraph at lines 1321--1321
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1340--1340
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1377--1377
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1402--1402
+
+ []
+
+[41]
+Underfull \hbox (badness 10000) in paragraph at lines 1415--1415
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1442--1442
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1450--1450
+
+ []
+
+
+Overfull \hbox (4.84402pt too wide) in paragraph at lines 1461--1466
+[][]/cmbx10/3.4.2 Find-ing def-i-ni-tion names[]/cmr10/, []/cmbx10/A.6.1.0070 /
+cmtt10/'[]/cmr10/, []/cmbx10/A.6.1.2510 /cmtt10/['][]/cmr10/, []/cmbx10/A.6.1.2
+033
+ []
+
+[42]
+Underfull \hbox (badness 10000) in paragraph at lines 1517--1517
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1577--1577
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1587--1587
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1596--1596
+
+ []
+
+[43]
+Underfull \hbox (badness 10000) in paragraph at lines 1610--1610
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1651--1651
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1669--1669
+
+ []
+
+[44]
+Underfull \hbox (badness 10000) in paragraph at lines 1723--1723
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1754--1754
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1777--1777
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1809--1809
+
+ []
+
+[45]
+Underfull \hbox (badness 10000) in paragraph at lines 1833--1833
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1880--1880
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1890--1890
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1904--1904
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1911--1911
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1918--1918
+
+ []
+
+[46]
+Underfull \hbox (badness 10000) in paragraph at lines 1934--1934
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1963--1963
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1974--1974
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1981--1981
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1988--1988
+
+ []
+
+[47]
+Overfull \hbox (2.02174pt too wide) in paragraph at lines 2013--2023
+[][]/cmtt10/POSTPONE[] /cmr10/re-places most of the func-tion-al-ity of /cmtt10
+/COMPILE /cmr10/and []/cmtt10/[COMPILE][]/cmr10/. /cmtt10/COMPILE
+ []
+
+
+Overfull \hbox (3.02364pt too wide) in paragraph at lines 2040--2046
+[]/cmr10/For these rea-sons, /cmtt10/COMPILE /cmr10/has not been in-cluded in t
+he Stan-dard and []/cmtt10/[COMPILE][]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2050--2050
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2070--2070
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2090--2090
+
+ []
+
+[48]
+Underfull \hbox (badness 10000) in paragraph at lines 2111--2111
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2153--2153
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2189--2189
+
+ []
+
+[49]
+Underfull \hbox (badness 10000) in paragraph at lines 2196--2196
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2206--2206
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2246--2246
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2255--2255
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2264--2264
+
+ []
+
+[50]
+Underfull \hbox (badness 10000) in paragraph at lines 2308--2308
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2337--2337
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2344--2344
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2351--2351
+
+ []
+
+[51]
+Underfull \hbox (badness 10000) in paragraph at lines 2436--2436
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2443--2443
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2479--2479
+
+ []
+
+[52]
+Underfull \hbox (badness 10000) in paragraph at lines 2497--2497
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2504--2504
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2514--2514
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2522--2522
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2538--2538
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2574--2574
+
+ []
+
+[53]
+Underfull \hbox (badness 10000) in paragraph at lines 2602--2602
+
+ []
+
+
+Overfull \hbox (0.84439pt too wide) detected at line 2611
+ /cmssi10/name /cmss10/Execution:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2629--2629
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2660--2660
+
+ []
+
+[54]
+Underfull \hbox (badness 10000) in paragraph at lines 2690--2690
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2697--2697
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2723--2723
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2762--2762
+
+ []
+
+[55]
+Underfull \hbox (badness 10000) in paragraph at lines 2792--2792
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2841--2841
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2858--2858
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2879--2879
+
+ []
+
+[56]
+Underfull \hbox (badness 10000) in paragraph at lines 2893--2893
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2900--2900
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2907--2907
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2939--2939
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2966--2966
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 2988--2988
+
+ []
+
+[57] [58]
+Underfull \hbox (badness 10000) in paragraph at lines 3134--3134
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3142--3142
+
+ []
+
+[59]
+Underfull \hbox (badness 10000) in paragraph at lines 3198--3198
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3229--3229
+
+ []
+
+[60]
+Underfull \hbox (badness 10000) in paragraph at lines 3280--3280
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3316--3316
+
+ []
+
+[61]
+Underfull \hbox (badness 10000) in paragraph at lines 3364--3364
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3393--3393
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3431--3431
+
+ []
+
+[62]
+Underfull \hbox (badness 10000) in paragraph at lines 3472--3472
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3480--3480
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3515--3515
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3525--3525
+
+ []
+
+[63]
+Underfull \hbox (badness 10000) in paragraph at lines 3532--3532
+
+ []
+
+
+Overfull \hbox (0.84439pt too wide) detected at line 3538
+ /cmssi10/name /cmss10/Execution:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3567--3567
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3574--3574
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3615--3615
+
+ []
+
+[64]
+Underfull \hbox (badness 10000) in paragraph at lines 3636--3636
+
+ []
+
+[65]
+Underfull \hbox (badness 10000) in paragraph at lines 3736--3738
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3754--3754
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3768--3768
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3787--3787
+
+ []
+
+[66]
+Underfull \hbox (badness 10000) in paragraph at lines 3820--3820
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3835--3835
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3850--3850
+
+ []
+
+[67]
+Overfull \hbox (6.80292pt too wide) in paragraph at lines 3945--3947
+[]/cmr10/Examples of how an im-ple-men-ta-tion might use the re-turn val-ues fr
+om []/cmtt10/SAVE-INPUT[]
+ []
+
+[68]
+Underfull \hbox (badness 10000) in paragraph at lines 3968--3968
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 3989--3989
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4000--4000
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4017--4017
+
+ []
+
+[69]
+Underfull \hbox (badness 10000) in paragraph at lines 4059--4059
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4075--4075
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4081--4081
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4091--4091
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4102--4102
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4110--4110
+
+ []
+
+
+Overfull \hbox (0.84439pt too wide) detected at line 4118
+ /cmssi10/name /cmss10/Execution:
+ []
+
+[70]
+Underfull \hbox (badness 10000) in paragraph at lines 4145--4145
+
+ []
+
+
+Overfull \hbox (10.1612pt too wide) in paragraph at lines 4196--4201
+| []/cmtt10/>R[]   []OVER[] []<[] []0=[] []([] test flag1 )   []SWAP[] []R>[] [
+]<[] []([] flag1 flag2
+ []
+
+[71]
+Overfull \hbox (3.83118pt too wide) in paragraph at lines 4225--4228
+[]/cmr10/For two's-complement ma-chines that ig-nore arith-metic over-flow (mos
+t ma-chines),
+ []
+
+
+Overfull \hbox (10.16122pt too wide) in paragraph at lines 4229--4232
+[][]/cmtt10/:[] []WITHIN[] []([] test low high -- flag )   []OVER[] []-[] []>R[
+] []-[] []R>[] []U<[]   [];[] 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4237--4237
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 4262--4262
+
+ []
+
+) [72]
+\openout2 = `block.aux'.
+
+ (./block.tex [73
+
+
+] [74] [75]
+Underfull \hbox (badness 10000) in paragraph at lines 232--232
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 248--248
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 275--275
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 303--303
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 309--309
+
+ []
+
+[76]
+Underfull \hbox (badness 10000) in paragraph at lines 317--317
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 335--335
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 343--343
+
+ []
+
+
+Overfull \hbox (30.41154pt too wide) in paragraph at lines 351--355
+[][]/cmbx10/7.6.1.0800 /cmtt10/BLOCK[]/cmr10/, []/cmbx10/7.6.1.0820 /cmtt10/BUF
+FER[]/cmr10/, []/cmbx10/7.6.1.1559 /cmtt10/FLUSH[]/cmr10/, []/cmbx10/7.6.1.2180
+ /cmtt10/SAVE-BUFFERS[]/cmr10/. 
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 362--362
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 373--373
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 384--384
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 401--401
+
+ []
+
+[77]
+Underfull \hbox (badness 10000) in paragraph at lines 414--414
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 422--422
+
+ []
+
+) [78]
+\openout2 = `double.aux'.
+
+ (./double.tex
+Underfull \hbox (badness 10000) in paragraph at lines 69--70
+[]/cmr10/double-number ex-ten-sions word set
+ []
+
+[79
+
+
+] [80]
+Underfull \hbox (badness 10000) in paragraph at lines 161--161
+
+ []
+
+
+Overfull \hbox (0.84439pt too wide) detected at line 170
+ /cmssi10/name /cmss10/Execution:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 185--185
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 210--210
+
+ []
+
+
+Overfull \hbox (0.84439pt too wide) detected at line 220
+ /cmssi10/name /cmss10/Execution:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 239--239
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 247--247
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 255--255
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 262--262
+
+ []
+
+[81]
+Underfull \hbox (badness 10000) in paragraph at lines 276--276
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 283--283
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 290--290
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 303--303
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 316--316
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 323--323
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 331--331
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 348--348
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 355--355
+
+ []
+
+[82]
+Underfull \hbox (badness 10000) in paragraph at lines 362--362
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 369--369
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 376--376
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 396--396
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 411--411
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 419--419
+
+ []
+
+) [83]
+\openout2 = `exception.aux'.
+
+ (./exception.tex [84
+
+
+] [85]
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <9> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 254.
+
+Overfull \hbox (15.97841pt too wide) in paragraph at lines 248--290
+ [] 
+ []
+
+[86] [87]
+Underfull \hbox (badness 10000) in paragraph at lines 388--388
+
+ []
+
+[88]
+Underfull \hbox (badness 10000) in paragraph at lines 407--407
+
+ []
+
+[89]
+! pdfTeX warning (ext4): destination with the same identifier (name{core.ABORT}
+) has been already used, duplicate ignored
+<to be read again> 
+                   \penalty 
+l.488 ^^IE
+          xtend the semantics of \wref{core:ABORT}{ABORT} to be:
+Underfull \hbox (badness 10000) in paragraph at lines 488--488
+
+ []
+
+! pdfTeX warning (ext4): destination with the same identifier (name{core.ABORTq
+}) has been already used, duplicate ignored
+<to be read again> 
+                   \penalty 
+l.500 ...wword}[ABORTq]{0680}{ABORT"}[abort-quote]
+                                                  
+Underfull \hbox (badness 10000) in paragraph at lines 500--500
+
+ []
+
+) [90]
+\openout2 = `facility.aux'.
+
+ (./facility.tex [91
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 123--123
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 142--142
+
+ []
+
+[92]
+Underfull \hbox (badness 10000) in paragraph at lines 180--180
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 192--192
+
+ []
+
+[93] [94] [95]
+Underfull \hbox (badness 10000) in paragraph at lines 410--410
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 429--429
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 443--443
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 460--460
+
+ []
+
+[96]
+Overfull \hbox (25.91469pt too wide) in paragraph at lines 465--469
+[]/cmr10/The ac-tual length and vari-abil-ity of the time pe-riod de-pends upon
+ the implementation-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 481--481
+
+ []
+
+) [97]
+\openout2 = `file.aux'.
+
+ (./file.tex [98
+
+
+] [99] [100]
+Overfull \hbox (1.0113pt too wide) in paragraph at lines 258--261
+[]/cmr10/I/O ex-cep-tion read-ing or clos-ing /cmti10/fileid /cmr10/([]/cmbx10/
+11.6.1.1717 /cmtt10/INCLUDE-FILE[]/cmr10/, []/cmbx10/11.6.1.1718 /cmtt10/INCLUD
+ED[]/cmr10/); 
+ []
+
+[101]
+Underfull \hbox (badness 10000) in paragraph at lines 329--329
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 343--343
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 373--373
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 381--381
+
+ []
+
+[102]
+Underfull \hbox (badness 10000) in paragraph at lines 409--409
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 418--418
+
+ []
+
+
+Overfull \hbox (21.39795pt too wide) in paragraph at lines 420--423
+[]/cmti10/ud /cmr10/is the cur-rent file po-si-tion for the file iden-ti-fied b
+y /cmti10/fileid/cmr10/. /cmti10/ior /cmr10/is the implementation-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 427--427
+
+ []
+
+
+Overfull \hbox (12.70345pt too wide) in paragraph at lines 429--434
+[]/cmti10/ud /cmr10/is the size, in char-ac-ters, of the file iden-ti-fied by /
+cmti10/fileid/cmr10/. /cmti10/ior /cmr10/is the implementation-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 438--438
+
+ []
+
+[103]
+Underfull \hbox (badness 10000) in paragraph at lines 488--488
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 524--524
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 549--549
+
+ []
+
+[104]
+Underfull \hbox (badness 10000) in paragraph at lines 561--561
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 574--574
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 628--628
+
+ []
+
+[105]
+Underfull \hbox (badness 10000) in paragraph at lines 703--703
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 716--716
+
+ []
+
+[106]
+Overfull \hbox (30.22885pt too wide) in paragraph at lines 726--729
+[]/cmr10/At the con-clu-sion of the op-er-a-tion, []/cmtt10/FILE-SIZE[] /cmr10/
+re-turns the value /cmti10/ud /cmr10/and []/cmtt10/FILE-POSITION[]
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 736--736
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 798--798
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 820--820
+
+ []
+
+[107]
+Underfull \hbox (badness 10000) in paragraph at lines 833--833
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 851--851
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 873--873
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 884--884
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 896--896
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 913--913
+
+ []
+
+[108]) [109]
+\openout2 = `float.aux'.
+
+ (./float.tex [110
+
+
+]
+Overfull \hbox (1.99843pt too wide) in paragraph at lines 92--94
+[]/cmr10/The ad-dress of a mem-ory lo-ca-tion at which a 64-bit IEEE double-
+ []
+
+[111] [112] [113]
+Overfull \hbox (7.41312pt too wide) in paragraph at lines 391--395
+[]/cmr10/string larger than pictured-numeric out-put area ([]/cmbx10/12.6.2.142
+7 /cmtt10/F[]/cmr10/, []/cmbx10/12.6.2.1513 /cmtt10/FE[]/cmr10/, []/cmbx10/12.6
+.2.1613
+ []
+
+[114]
+Underfull \hbox (badness 10000) in paragraph at lines 459--459
+
+ []
+
+[115]
+Underfull \hbox (badness 10000) in paragraph at lines 509--509
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 519--519
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 527--527
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 535--535
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 543--543
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 551--551
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 561--561
+
+ []
+
+[116]
+Underfull \hbox (badness 10000) in paragraph at lines 569--569
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 577--577
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 585--585
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 597--597
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 605--605
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 613--613
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 621--621
+
+ []
+
+
+Overfull \hbox (0.84439pt too wide) detected at line 631
+ /cmssi10/name /cmss10/Execution:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 646--646
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 656--656
+
+ []
+
+[117]
+Underfull \hbox (badness 10000) in paragraph at lines 664--664
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 672--672
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 699--699
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 708--708
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 716--716
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 724--724
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 732--732
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 740--740
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 748--748
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 756--756
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 764--764
+
+ []
+
+[118]
+Underfull \hbox (badness 10000) in paragraph at lines 776--776
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 784--784
+
+ []
+
+
+Overfull \hbox (0.84439pt too wide) detected at line 794
+ /cmssi10/name /cmss10/Execution:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 813--813
+
+ []
+
+[119]
+Underfull \hbox (badness 10000) in paragraph at lines 859--859
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 877--877
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 896--896
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 907--907
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 918--918
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 929--929
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 937--937
+
+ []
+
+[120]
+Underfull \hbox (badness 10000) in paragraph at lines 945--945
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 967--967
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 975--975
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 985--985
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 994--994
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1002--1002
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1011--1011
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1020--1020
+
+ []
+
+[121]
+Underfull \hbox (badness 10000) in paragraph at lines 1028--1028
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1069--1069
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1079--1079
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1087--1087
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1095--1095
+
+ []
+
+[122]
+Underfull \hbox (badness 10000) in paragraph at lines 1115--1115
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1123--1123
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1179--1179
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1188--1188
+
+ []
+
+[123]
+Underfull \hbox (badness 10000) in paragraph at lines 1212--1212
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1221--1221
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1247--1247
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1255--1255
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1268--1268
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1276--1276
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1285--1285
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1294--1294
+
+ []
+
+[124]
+Underfull \hbox (badness 10000) in paragraph at lines 1302--1302
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1327--1327
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1335--1335
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1342--1342
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1360--1360
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1379--1379
+
+ []
+
+[125]
+Underfull \hbox (badness 10000) in paragraph at lines 1390--1390
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1401--1401
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 1412--1412
+
+ []
+
+) [126]
+\openout2 = `locals.aux'.
+
+ (./locals.tex [127
+
+
+]
+LaTeX Font Info:    Try loading font information for OMS+cmtt on input line 111
+.
+LaTeX Font Info:    No file OMScmtt.fd. on input line 111.
+
+
+LaTeX Font Warning: Font shape `OMS/cmtt/m/n' undefined
+(Font)              using `OMS/cmsy/m/n' instead
+(Font)              for symbol `textbraceleft' on input line 111.
+
+[128]
+Overfull \hbox (5.56085pt too wide) in paragraph at lines 227--232
+| /cmsy10/f /cmtt10/B A /cmsy10/g []/cmtt10/['][] A []EXECUTE[]  5 []['][] B []
+>BODY[] []![]  [][[] []'[] A []][] []LITERAL[] LEE [];[] 
+ []
+
+[129] [130] [131]
+Overfull \hbox (5.42403pt too wide) in paragraph at lines 453--456
+[]/cmr10/maximum num-ber of lo-cals in a def-i-ni-tion ([]/cmbx10/13.3.3 Pro-ce
+ss-ing lo-cals[]/cmr10/, []/cmbx10/13.6.2.1795 /cmtt10/LOCALS|[]/cmr10/). 
+ []
+
+[132]
+Underfull \hbox (badness 10000) in paragraph at lines 525--525
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 582--582
+
+ []
+
+[133]
+Underfull \hbox (badness 10000) in paragraph at lines 625--625
+
+ []
+
+) [134]
+\openout2 = `memory.aux'.
+
+ (./memory.tex [135
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 149--149
+
+ []
+
+[136]
+Underfull \hbox (badness 10000) in paragraph at lines 171--171
+
+ []
+
+
+Overfull \hbox (19.90224pt too wide) in paragraph at lines 179--181
+[]/cmr10/If the op-er-a-tion suc-ceeds, /cmti10/ior /cmr10/is zero. If the op-e
+r-a-tion fails, /cmti10/ior /cmr10/is the implementation-
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 190--190
+
+ []
+
+) [137]
+\openout2 = `tools.aux'.
+
+ (./tools.tex [138
+
+
+] [139]
+Underfull \hbox (badness 10000) in paragraph at lines 178--178
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 198--198
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 213--213
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 229--229
+
+ []
+
+[140]
+Underfull \hbox (badness 10000) in paragraph at lines 252--252
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 274--274
+
+ []
+
+
+Overfull \hbox (0.84439pt too wide) detected at line 305
+ /cmssi10/name /cmss10/Execution:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 328--328
+
+ []
+
+[141]
+Underfull \hbox (badness 10000) in paragraph at lines 349--349
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 360--360
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 367--367
+
+ []
+
+
+Overfull \hbox (0.84439pt too wide) detected at line 381
+ /cmssi10/name /cmss10/Execution:
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 401--401
+
+ []
+
+[142]
+Underfull \hbox (badness 10000) in paragraph at lines 445--445
+
+ []
+
+
+Overfull \hbox (8.53835pt too wide) in paragraph at lines 451--453
+[]/cmr10/( C: /cmti10/orig$[]$/cmsy10/j/cmti10/dest$[]$ orig$[]$/cmsy10/j/cmti1
+0/dest$[]$ ... orig$[]$/cmsy10/j/cmti10/dest$[]$ /cmitt10/-- /cmti10/orig$[]$/c
+msy10/j/cmti10/dest$[]$ ... orig$[]$/cmsy10/j/cmti10/dest$[]$
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 483--483
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 494--494
+
+ []
+
+[143]
+Underfull \hbox (badness 10000) in paragraph at lines 531--531
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 551--551
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 579--579
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 613--613
+
+ []
+
+[144] [145]) [146]
+\openout2 = `search.aux'.
+
+ (./search.tex [147
+
+
+] [148]
+Overfull \hbox (1.84525pt too wide) in paragraph at lines 224--226
+[]/cmr10/requiring more than eight word-lists in the search or-der ([]/cmbx10/1
+6.3.3 Find-ing def-i-ni-tion names[]/cmr10/). 
+ []
+
+[149]
+Underfull \hbox (badness 10000) in paragraph at lines 278--278
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 292--292
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 316--316
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 326--326
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 333--333
+
+ []
+
+[150]
+Underfull \hbox (badness 10000) in paragraph at lines 344--344
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 372--372
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 380--380
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 394--394
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 408--408
+
+ []
+
+[151]
+Overfull \hbox (25.91109pt too wide) in paragraph at lines 442--445
+[][]/cmtt10/:[] VOCABULARY    []([] name -- ) []WORDLIST[] []CREATE[] [],[]   D
+O-VOCABULARY
+ []
+
+
+Overfull \hbox (4.91127pt too wide) in paragraph at lines 446--450
+[][]/cmtt10/:[] []ALSO[]          []([] -- ) []GET-ORDER[]   []OVER[] []SWAP[] 
+1+ []SET-ORDER[]
+ []
+
+
+Overfull \hbox (4.91127pt too wide) in paragraph at lines 451--455
+[][]/cmtt10/:[] []PREVIOUS[]      []([] -- ) []GET-ORDER[]   []SWAP[] []DROP[] 
+1- []SET-ORDER[]
+ []
+
+
+Overfull \hbox (15.41118pt too wide) in paragraph at lines 456--460
+[][]/cmtt10/:[] []DEFINITIONS[]   []([] -- ) []GET-ORDER[]   []OVER[] []SET-CUR
+RENT[] DISCARD
+ []
+
+
+Overfull \hbox (18.30202pt too wide) in paragraph at lines 499--505
+/cmr10/re-spond-ing def-i-ni-tion of []/cmtt10/FIND[]/cmr10/. The im-ple-men-ta
+-tions of []/cmtt10/WORDLIST[]/cmr10/, []/cmtt10/SEARCH-WORDLIST[]/cmr10/,
+ []
+
+[152]
+Underfull \hbox (badness 10000) in paragraph at lines 558--558
+
+ []
+
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <7> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 563.
+
+Underfull \hbox (badness 10000) in paragraph at lines 568--568
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 577--577
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 594--594
+
+ []
+
+) [153]
+\openout2 = `string.aux'.
+
+ (./string.tex [154
+
+
+]
+Underfull \hbox (badness 10000) in paragraph at lines 82--82
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 92--92
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 112--112
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 120--120
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 151--151
+
+ []
+
+[155]
+Underfull \hbox (badness 10000) in paragraph at lines 181--181
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 207--207
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 225--225
+
+ []
+
+) [156]
+\openout2 = `rationale.aux'.
+
+ (./rationale.tex
+Overfull \hbox (0.96472pt too wide) in paragraph at lines 36--64
+[][] 
+ []
+
+[157
+
+
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [158]
+[159] [160]
+Overfull \hbox (4.66455pt too wide) in paragraph at lines 391--395
+/cmr10/that dis-play in-for-ma-tion cached in the most sig-nif-i-cant bits of c
+har-ac-ters in an implementation-
+ []
+
+[161] [162] [163] [164]
+Underfull \vbox (badness 3078) has occurred while \output is active []
+
+ [165]
+
+Package pdftex.def Warning: Option `bb' does not make sense,
+(pdftex.def)                using `viewport' instead on input line 732.
+
+<basic.png, id=5897, 660.4675pt x 202.7575pt>
+File: basic.png Graphic file (type png)
+ <use basic.png> [166 <./basic.png>]
+
+Package pdftex.def Warning: Option `bb' does not make sense,
+(pdftex.def)                using `viewport' instead on input line 826.
+
+<additional.png, id=5915, 530.98375pt x 262.9825pt>
+File: additional.png Graphic file (type png)
+ <use additional.png>
+[167 <./additional.png>]
+
+Package pdftex.def Warning: Option `bb' does not make sense,
+(pdftex.def)                using `viewport' instead on input line 856.
+
+<extended.png, id=5967, 600.2425pt x 463.7325pt>
+File: extended.png Graphic file (type png)
+ <use extended.png> [168 <./extended.png>] [169] [170] [171] [172]) [173]
+\openout2 = `bib.aux'.
+
+ (./bib.tex [174
+
+
+]) [175]
+\openout2 = `history.aux'.
+
+
+(./history.tex [176
+
+
+]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [177]
+[178] [179] [180]
+Underfull \vbox (badness 10000) has occurred while \output is active []
+
+ [181]
+[182] [183] [184] [185]) [186]
+\openout2 = `diff.aux'.
+
+ (./diff.tex
+Overfull \hbox (1.82195pt too wide) in paragraph at lines 41--45
+/cmr10/addressing vir-tual ma-chine. It pre-scribed an im-ple-men-ta-tion tech-
+nique known as ``in-di-rect threaded
+ []
+
+[187
+
+
+] [188]
+Underfull \hbox (badness 10000) in paragraph at lines 206--220
+
+ []
+
+[189] [190] [191] [192]
+Underfull \hbox (badness 10000) in paragraph at lines 500--510
+
+ []
+
+[193] [194]
+LaTeX Font Info:    Font shape `OT1/cmtt/bx/n' in size <12> not available
+(Font)              Font shape `OT1/cmtt/m/n' tried instead on input line 684.
+ [195] [196]) [197]
+\openout2 = `port.aux'.
+
+ (./port.tex [198
+
+
+] [199] [200] [201] [202])
+[203]
+\openout2 = `alpha.aux'.
+
+ (./alpha.tex (./ans.wds))
+Underfull \hbox (badness 10000) in paragraph at lines 1--395
+
+ []
+
+[204
+
+
+] [205] [206] [207] [208] [209] [210] [211] (./ans.aux (./titlepage.aux)
+(./foreward.aux) (./members.aux) (./intro.aux) (./notation.aux) (./usage.aux)
+(./doc.aux) (./label.aux) (./core.aux) (./block.aux) (./double.aux)
+(./exception.aux) (./facility.aux) (./file.aux) (./float.aux) (./locals.aux)
+(./memory.aux) (./tools.aux) (./search.aux) (./string.aux) (./rationale.aux)
+(./bib.aux) (./history.aux) (./diff.aux) (./port.aux) (./alpha.aux))
+
+LaTeX Font Warning: Some font shapes were not available, defaults substituted.
+
+
+LaTeX Warning: There were multiply-defined labels.
+
+ ) 
+Here is how much of TeX's memory you used:
+ 5826 strings out of 94960
+ 74991 string characters out of 1182469
+ 256532 words of memory out of 1000001
+ 7446 multiletter control sequences out of 10000+50000
+ 13992 words of font info for 49 fonts, out of 500000 for 1000
+ 198 hyphenation exceptions out of 1000
+ 37i,13n,43p,222b,581s stack positions out of 1500i,500n,5000p,200000b,5000s
+ 7947 PDF objects out of 300000
+ 1282 named destinations out of 131072
+ 1060 words of extra memory for PDF output out of 65536
+
+! pdfTeX warning (dest): name{core.9.6.2.0680 ABORT"} has been referenced but d
+oes not exist, replaced by a fixed one
+
+{/usr/share/texmf/dvips/tetex/09fbbfac.enc}</usr/share/texmf/fonts/type1/bluesk
+y/cm/cmtt12.pfb>{/usr/share/texmf/dvips/tetex/f7b6d320.enc}</usr/share/texmf/fo
+nts/type1/bluesky/cm/cmr12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmtt8.p
+fb>{/usr/share/texmf/dvips/tetex/bbad153f.enc}</usr/share/texmf/fonts/type1/blu
+esky/cm/cmsy7.pfb>{/usr/share/texmf/dvips/tetex/aae443f0.enc}</usr/share/texmf/
+fonts/type1/bluesky/cm/cmmi7.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmssi
+10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmbxsl10.pfb></usr/share/texmf/
+fonts/type1/bluesky/cm/cmss10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmmi
+9.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmsy9.pfb></usr/share/texmf/font
+s/type1/bluesky/cm/cmtt9.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr9.pfb>
+</usr/share/texmf/fonts/type1/bluesky/cm/cmmi10.pfb></usr/share/texmf/fonts/typ
+e1/bluesky/cm/cmr8.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmr6.pfb></usr/
+share/texmf/fonts/type1/bluesky/cm/cmsy10.pfb>{/usr/share/texmf/dvips/tetex/b6a
+4d7c7.enc}</usr/share/texmf/fonts/type1/bluesky/cm/cmitt10.pfb>{/usr/share/texm
+f/dvips/tetex/74afc74c.enc}</usr/share/texmf/fonts/type1/bluesky/cm/cmbxti10.pf
+b>{/usr/share/texmf/dvips/tetex/10037936.enc}</usr/share/texmf/fonts/type1/blue
+sky/cm/cmbsy10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmtt10.pfb></usr/sh
+are/texmf/fonts/type1/bluesky/cm/cmr7.pfb></usr/share/texmf/fonts/type1/bluesky
+/cm/cmti10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmss8.pfb></usr/share/t
+exmf/fonts/type1/bluesky/cm/cmr10.pfb></usr/share/texmf/fonts/type1/bluesky/cm/
+cmr17.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmbx12.pfb></usr/share/texmf
+/fonts/type1/bluesky/cm/cmti12.pfb></usr/share/texmf/fonts/type1/bluesky/cm/cmb
+x10.pfb>
+Output written on ans.pdf (221 pages, 2129445 bytes).

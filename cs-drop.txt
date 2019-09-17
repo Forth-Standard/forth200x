@@ -1,0 +1,260 @@
+CS-DROP "Request for Discussion"
+================================
+
+Change History
+--------------
+
+2017-07-27      First version
+
+Problem
+-------
+
+Forth-94 and Forth-2012 provide explicit access to the control flow stack by
+means of the words CS-PICK and CS-ROLL in the Programming-Tools extension
+wordset (TOOLS EXT). These words allow to copy and rearrange control
+flow (orig and dest) items.
+
+BEGIN, IF and AHEAD put control flow orig resp. dest items onto the
+control flow stack.
+
+There is however no way to remove an item from the control flow stack without
+actually resolving the item.
+This limits the abilty to define more complex control structures
+within the standard's scope.
+
+Solution
+--------
+
+A control flow stack operator - CS-DROP - to discard  the top most control
+flow (orig or dest) item can be defined to supply the missing functionality.
+Combined with the re-arrangement capability of CS-ROLL this would allow to
+remove arbitrary orig or dest items from the control flow stack (up to the
+first colon-sys, do-sys, case-sys, or of-sys).
+
+Proposal
+--------
+
+Add the word CS-DROP to the Tools Extension wordset (TOOLS EXT).
+
+CS-DROP "c-s-drop" TOOLS EXT
+
+  - Interpretation: Interpretation semantics for this word are undefined.
+
+  - Execution: ( C: orig|dest -- )
+    Remove the top item orig|dest from the control flow stack.
+    An ambiguous condition exists if the top control flow stack item
+    is not an orig or dest.
+
+
+Typical Use
+-----------
+
+Typical use of CS-DROP would be in defining elaborated control structures.
+
+As an example for the use fo CS-DROP we create a simple DSL for defining
+finite state machines (FSMs).
+This DSL builds up a table of branch targets on the control flow stack
+at compile time when starting to define a new FSM. At the end of the FSM definition, this
+table is removed from the control flow stack without resolving any further items in it.
+See the definition of ;FSM below.
+
+    : FSM: ( u -- u ) \ Define a finite state machine
+           ( C: -- colon-sys dest_u-1 orig_u-1 ... dest_0 orig_0 )
+        >r :
+        POSTPONE ahead \ jump to first mentioned state
+        r@ 0 ?DO  POSTPONE begin  POSTPONE ahead   LOOP \ construct jump table on control flow stack
+        r@ 2* cs-roll  POSTPONE then
+        r> ;
+
+    : ;FSM ( u -- )
+           ( C: colon-sys dest_u-1 orig_u-1 ... dest_0 orig_0 -- )
+        -------------------------------------------
+        2* 0 ?DO  CS-DROP  LOOP \ remove jump table
+        -------------------------------------------
+        POSTPONE ;
+    ; immediate
+
+Refer to appendix A for the complete FSM DSL.
+
+Remarks
+-------
+
+Several Forth-94 and Forth-2012 systems already define CS-DROP or the same
+functionality under a different name. It is already common practice so it
+is only consequent to stadardize its use.
+
+
+Reference implementation
+------------------------
+
+As standard systems are
+
+  - free to choose an appropriate representation
+    for dest and orig control flow stack items and also
+
+  - free to choose the data stack as control flow stack
+    or a separate stack for this purpose and
+
+  - as there is no standard to way to inspect whether the topmost
+    item on the control flow stack is an orig or dest
+
+a standard definition for CS-DROP cannot be provided.
+
+An estimation would be the following definitions that however
+only allow to remove dest items from the control flow stack
+and would create an ambigous condition if used with an orig.
+They also compile code in the dictionary.
+
+    : cs-drop ( C: dest -- )  postpone true postpone until ;
+
+    : cs-drop ( C: dest -- )  postpone ahead 1 cs-roll postpone again postpone then ;
+
+CS-DROP can easily implemented in a system specific way if system knowledge
+about the control flow stack implementation is available.
+
+As an example SwiftForth uses a single cell on the data stack as an
+orig or dest control flow item, so a definition for CS-DROP in SwiftForth is:
+
+    : CS-DROP ( C: orig|dest -- )  DROP ;
+
+Win32Forth uses two cells on the data stack as an orig or dest
+control flow item, so a defintions for CS-DROP in Win32Forth is:
+
+    : CS-DROP ( C: orig|dest -- )  2DROP ;
+
+
+Testing
+-------
+
+The following tests assure that CS-DROP actually removes the top most
+control stack item:
+
+    t{ 99 :noname begin [ CS-DROP ] ; drop -> 99 }t  \ dest
+    t{ 99 :noname if    [ CS-DROP ] ; drop -> 99 }t  \ origin
+
+
+Experience
+----------
+
+CS-DROP is already available in the following systems:
+
+   - gForth     version 0.7.9 (not in 0.7.3)
+   - VFX        version 4.7.2
+   - PFE        version 0.33.71
+   - DXForth    version 4.30
+
+Similar functionality with a different name is supported by:
+
+   - FLT        version 1.3.2   as   (delete-cs-item)
+
+
+
+CS-DROP is not (yet) supported in:
+
+   - SwiftForth version 3.6.3,    sample definition given above
+   - Win32Forth version 6.15.04,  sample definition given above
+
+
+There are numerous discussions on comp.lang.forth (e.g. [3][4]) about
+control structure implementation using control flow stack manipulations.
+Among the non standard system specific words mentioned in this context
+CS-DROP is widely accepted.
+
+There seems to be a prior similar proposal probably by Guido U. Draheim
+as the PFE Forth documentation [2] suggests.
+
+
+References
+----------
+
+[1] http://dxforth.netbay.com.au/cfsext.html
+[2] http://forth.sourceforge.net/word/cs-drop/
+[3] https://groups.google.com/forum/#!topic/comp.lang.forth/64GKthsYVFs
+[4] https://groups.google.com/forum/#!msg/comp.lang.forth/QCrKjzxodj0/RpPpq8Jp0AoJ
+
+Author
+------
+
+Ulrich Hoffmann uho@xlerb.de
+
+
+
+Appendix
+========
+
+Sample Use of CS-DROP to implement a domain specific language for defining
+finite state machines.
+
+    \ Finite State Machine DSL to demonstrate use of CS-DROP    uho 2017-07-27
+
+    : FSM: ( u -- u ) \ Define a finite state machine
+           ( C: -- colon-sys dest_u-1 orig_u-1 ... dest_0 orig_0 )
+        >r :
+        POSTPONE ahead \ jump to first mentioned state
+        r@ 0 ?DO  POSTPONE begin  POSTPONE ahead   LOOP \ construct jump table on control flow stack
+        r@ 2* cs-roll  POSTPONE then
+        r> ;
+
+    : ;FSM ( u -- )
+           ( C: colon-sys dest_u-1 orig_u-1 ... dest_0 orig_0 -- )
+        2* 0 ?DO CS-DROP LOOP \ remove jump table
+        POSTPONE ;
+    ; immediate
+
+    : State: ( u -- u+1 )  \ Define a new state name
+        Create immediate dup , 1+ Does> @ ;
+
+    : ) ( u i -- ) \ resolve state orig
+        ( C: dest_u-1 orig_u-1 ... dest_0 orig_0 -- dest_u-1 orig_u-1 ... dest_0 orig_0 )
+        swap >r   2* CS-PICK POSTPONE then  r> ; immediate
+
+    : resolve ( i --  )
+        ( C: dest_u-1 orig_u-1 ... dest_0 orig_0 -- dest_u-1 orig_u-1 ... dest_0 orig_0 )
+        2* 1+ CS-PICK POSTPONE again ;
+
+    : -> ( u -- u ) \ transfer to new state
+        >r ' execute resolve r> ; immediate
+
+    : cs--roll ( u -- )
+       ( C: orig_u|dest_u ... orig_0|dest_0 -- orig_0|dest_0 orig_u|dest_u ... orig_1|dest_1 )
+       dup 0 ?DO dup >r cs-roll r> LOOP drop ;
+
+    : ->{ ( u -- u )
+        ( C: dest_u-1 orig_u-1 ... dest_0 orig_0 -- dest_u-1 orig_u-1 ... dest_0 orig_0 dest orig )
+        >r  POSTPONE begin  POSTPONE if  r> ; immediate
+
+    : } ( u i -- u )
+        ( C: dest_u-1 orig_u-1 ... dest_0 orig_0 dest orig -- dest_u-1 orig_u-1 ... dest_0 orig_0 )
+        swap >r  1+ resolve  POSTPONE then  CS-DROP  r> ; immediate
+
+
+    \ The FSM DSL is used like this:
+
+    0
+    State: init
+    State: accept-As
+    State: accept-Bs
+    State: accept-Cs
+    State: done
+
+    FSM: A+(B*|C*) ( -- )  \ accept one or more As followed by any number of Bs or any numbers of Cs
+
+      init )       '"' emit  key
+                   dup 'A' =  ->{ emit      key accept-As }
+                   -> done
+
+      accept-As )  dup 'A' =  ->{ emit      key accept-As }
+                   dup 'B' =  ->{ emit      key accept-Bs }
+                   dup 'C' =  ->{ emit      key accept-Cs }
+                   -> done
+
+      accept-Bs )  dup 'B' =  ->{ emit      key accept-Bs }
+                   -> done
+
+      accept-Cs )  dup 'C' =  ->{ emit      key accept-Cs }
+                   -> done
+
+      done )       '"' emit
+                   drop \ not accepted char
+
+    ;FSM

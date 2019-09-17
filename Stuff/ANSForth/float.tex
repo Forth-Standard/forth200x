@@ -1,0 +1,1420 @@
+\chapter{The optional Floating-Point word set} % 12
+\wordlist{floating}
+
+\begin{info}
+\section{The optional Floating-Point word set} % A.12
+
+The Technical Committee has considered many proposals dealing with
+the inclusion and makeup of the Floating-Point Word Sets in ANS
+Forth. Although it has been argued that ANS Forth should not address
+floating-point arithmetic and numerous Forth applications do not need
+floating-point, there are a growing number of important Forth
+applications from spread sheets to scientific computations that
+require the use of floating-point arithmetic. Initially the Technical
+Committee adopted proposals that made the \emph{Forth Vendors Group
+Floating-Point Standard}, first published in 1984, the framework for
+inclusion of Floating-Point in ANS Forth. There is substantial common
+practice and experience with the Forth Vendors Group Floating-Point
+Standard. Subsequently the Technical Committee adopted proposals that
+placed the basic floating-point arithmetic, stack and support words
+in the Floating-Point word set and the floating-point transcendental
+functions in the Floating-Point Extensions word set. The Technical
+Committee also adopted proposals that:
+
+\begin{itemize}
+\item changed names for clarity and consistency; e.g.,
+	\texttt{REALS} to \word{FLOATS}, and
+	\texttt{REAL+} to \word{FLOAT+}.
+\item removed words; e.g., \texttt{FPICK}.
+\item added words for completeness and increased functionality; e.g.,
+	\word{FSINCOS},
+	\word{Ftilde},
+	\word{DF@},
+	\word{DF!},
+	\word{SF@} and
+	\word{SF!}
+\end{itemize}
+
+Several issues concerning the Floating-Point word set were resolved
+by consensus in the Technical Committee:
+
+\begin{description}
+\item [Floating-point stack:]
+	By default the floating-point stack is separate from the data
+	and return stacks; however, an implementation may keep
+	floating-point numbers on the data stack. A program can determine
+	whether floating-point numbers are kept on the data stack by
+	passing the string \texttt{FLOATING-STACK} to \word[core]{ENVIRONMENT?}
+	It is the experience of several members of the Technical Committee
+	that with proper coding practices it is possible to write
+	floating-point code that will run identically on systems with a
+	separate floating-point stack and with floating-point numbers kept
+	on the data stack.
+
+\item[Floating-point input:]
+	The current base must be \word[core]{DECIMAL}. Floating-point input
+	is not allowed in an arbitrary base. All floating-point numbers to
+	be interpreted by an ANS Forth system must contain the exponent
+	indicator ``\texttt{E}'' (see \xref{float:conv}{12.3.7 Text
+	interpreter input number conversion}). Consensus in the Technical
+	Committee deemed this form of floating-point input to be in more
+	common use than the alternative that would have a floating-point
+	input mode that would allow numbers with embedded decimal points
+	to be treated as floating-point numbers.
+
+\item[Floating-point representation:]
+	Although the format and precision of the significand and the format
+	and range of the exponent of a floating-point number are
+	implementation defined in ANS Forth, the Floating-Point Extensions
+	word set contains the words
+	\word{DF@}, \word{SF@}, \word{DF!}, and \word{SF!}
+	for fetching and storing double- and single-precision IEEE
+	floating-point-format numbers to memory. The IEEE floating-point
+	format is commonly used by numeric math co-processors and for
+	exchange of floating-point data between programs and systems.
+\end{description}
+
+\end{info}
+
+\section{Introduction} % 12.1
+
+\section{Additional terms and notation} % 12.2
+
+\subsection{Definition of terms} % 12.2.1
+\label{float:terms}
+
+\begin{description}
+\item[float-aligned address:]
+	The address of a memory location at which a floating-point
+	number can be accessed.
+
+\item[double-float-aligned address:]
+	The address of a memory location at which a 64-bit IEEE
+	double-precision floating-point number can be accessed.
+
+\item[single-float-aligned address:]
+	The address of a memory location at which a 32-bit IEEE
+	single-precision floating-point number can be accessed.
+
+\item[IEEE floating-point number:]
+	A single- or double-precision floating-point number as defined
+	in \textbf{ANSI/IEEE 754-1985}.
+\end{description}
+
+\subsection{Notation} % 12.2.2
+
+\subsubsection{Numeric notation} % 12.2.2.1
+
+The following notation is used to define the syntax of the external
+representation of floating-point numbers:
+
+Each component of a floating-point number is defined with a rule
+consisting of the name of the component (italicized in angle-brackets,
+e.g., \arg{sign}, the characters \textsf{:=} and a concatenation of
+tokens and metacharacters;
+
+Tokens may be literal characters (in bold face, e.g., \texttt{E}) or
+rule names in angle brackets (e.g., \arg{digit}; The metacharacter *
+is used to specify zero or more occurrences of the preceding token
+(e.g., \arg{digit}*);
+
+Tokens enclosed with [ and ] are optional (e.g., [\arg{sign}]);
+
+Vertical bars separate choices from a list of tokens enclosed with
+braces (e.g., \{ \texttt{+} {\textbar} \texttt{-} \}).
+
+
+\subsubsection{Stack notation} % 12.2.2.2
+
+Floating-point stack notation when the floating-point stack is
+separate from the data stack is:
+\begin{quote}
+\stack[F]{before}{after}
+\end{quote}
+
+\section{Additional usage requirements} % 12.3
+
+\begin{info}
+\subsection{Additional usage requirements} % A.12.3
+\end{info}
+
+\subsection{Data types} % 12.3.1
+\label{float:datatypes}
+
+Append table \ref{float:types} to table \ref{table:datatypes}.
+
+\begin{table}[ht]
+  \begin{center}
+	\caption{Data Types}
+	\label{float:types}
+	\begin{tabular}{llr}
+	\hline\hline
+	\emph{Symbol} & \emph{Data type} & \emph{Size on stack} \\
+	\hline
+	\emph{df-addr}	& double-float-aligned address	& 1 cell \\
+	\hline\hline
+	\end{tabular}
+  \end{center}
+\end{table}
+
+\subsubsection{Addresses} % 12.3.1.1
+\label{float:addr}
+
+The set of float-aligned addresses is an implementation-defined
+subset of the set of aligned addresses. Adding the size of a
+floating-point number to a float-aligned address shall produce
+a float-aligned address.
+
+The set of double-float-aligned addresses is an implementation-defined
+subset of the set of aligned addresses. Adding the size of a 64-bit
+IEEE double-precision floating-point number to a double-float-aligned
+address shall produce a double-float-aligned address.
+
+The set of single-float-aligned addresses is an implementation-defined
+subset of the set of aligned addresses. Adding the size of a 32-bit
+IEEE single-precision floating-point number to a single-float-aligned
+address shall produce a single-float-aligned address.
+
+\subsubsection{Floating-point numbers} % 12.3.1.2
+\label{float:num}
+
+The internal representation of a floating-point number, including the
+format and precision of the significand and the format and range of
+the exponent, is implementation defined.
+
+Any rounding or truncation of floating-point numbers is implementation
+defined.
+
+\subsection{Floating-point operations} % 12.3.2
+\label{float:ops}
+
+``Round to nearest'' means round the result of a floating-point
+operation to the representable value nearest the result. If the two
+nearest representable values are equally near the result, the one
+having zero as its least significant bit shall be delivered.
+
+``Round toward negative infinity'' means round the result of a
+floating-point operation to the representable value nearest to and
+no greater than the result.
+
+\subsection{Floating-point stack} % 12.3.3
+\label{float:stack}
+
+A last in, first out list that shall be used by all floating-point
+operators.
+
+The width of the floating-point stack is implementation-defined. By
+default the floating-point stack shall be separate from the data and
+return stacks. A program may determine whether floating-point numbers
+are kept on the data stack by passing the string
+``\texttt{FLOATING-STACK}'' to \word[core]{ENVIRONMENT?}.
+
+The size of a floating-point stack shall be at least 6 items.
+
+A program that depends on the floating-point stack being larger than
+six items has an environmental dependency.
+
+\subsection{Environmental queries} % 12.3.4
+
+Append table \ref{float:env} table \ref{table:env}.
+
+See: \xref{usage:env}{3.2.6 Environmental queries}.
+
+\begin{table}[ht]
+  \begin{center}
+	\caption{Environmental Query Strings}
+	\label{float:env}
+	\begin{tabular}{p{9em}rcp{0.42\textwidth}}
+		\hline\hline
+		\multicolumn{2}{l}{String \hfill Value data type} & Constant? & Meaning \\
+		\hline
+		\texttt{FLOATING}		& \emph{flag}		& no	&
+			floating-point word set present \\
+		\texttt{FLOATING-EXT}	& \emph{flag}		& no	&
+			floating-point extensions word set present \\
+		\texttt{FLOATING-STACK}	& \emph{n}			& yes	&
+			If $n$ = zero, floating-point numbers are kept on the data stack;
+			otherwise $n$ is the maximum depth of the separate floating-point stack. \\
+		\texttt{MAX-FLOAT}		& \emph{r}			& yes	&
+			largest usable floating-point number \\
+		\hline\hline
+	\end{tabular}
+  \end{center}
+\end{table}
+
+
+\subsection{Address alignment} % 12.3.5
+
+Since the address returned by a \word[core]{CREATE}d word is not
+necessarily aligned for any particular class of floating-point
+data, a program shall align the address (to be float aligned,
+single-float aligned, or double-float aligned) before accessing
+floating-point data at the address.
+
+See: \xref{usage:aaddr}{3.3.3.1 Address Alignment},
+\xref{float:addr}{12.3.1.1 Addresses}.
+
+\begin{info}
+\subsubsection{Address alignment} % A.12.3.5
+
+In defining custom floating-point data structures, be aware that
+\word[core]{CREATE} doesn't necessarily leave the data space pointer
+aligned for various floating-point data types. Programs may comply
+with the requirement for the various kinds of floating-point alignment
+by specifying the appropriate alignment both at compile-time and
+execution time. For example:
+
+\begin{quote}\ttfamily
+	\word[core]{:} \word[floating]{FCONSTANT} \word[core]{p} F: r -- ) \\
+	\tab \word[core]{CREATE} \word{FALIGN} ~\word[core]{HERE}~
+		1 \word{FLOATS} \word[core]{ALLOT} ~\word{F!} \\
+	\tab \word[core]{DOES} \word[core]{p} F: -- r )
+		~\word{FALIGNED} \word{F@} \word[core]{;}
+\end{quote}
+\end{info}
+
+\subsection{Variables} % 12.3.6
+
+A program may address memory in data space regions made available
+by \word{FVARIABLE}. These regions may be non-contiguous with
+regions subsequently allocated with \word[core]{,} (comma) or
+\word[core]{ALLOT}. See: \xref{usage:var}{3.3.3.3 Variables}.
+
+\subsection{Text interpreter input number conversion} % 12.3.7
+\label{float:conv}
+
+If the Floating-Point word set is present in the dictionary and
+the current base is \word[core]{DECIMAL}, the input number-conversion
+algorithm shall be extended to recognize floating-point numbers in
+this form:
+
+\begin{center}
+\begin{tabular}{r@{ \textsf{:=} }l}
+Convertible string  & \arg{significand}\arg{exponent} \\
+  \arg{significand} & [\arg{sign}]\arg{digits}[\texttt{.}\arg{digits0}] \\
+     \arg{exponent} & E[\arg{sign}]\arg{digits0} \\
+         \arg{sign} & \{ \texttt{+} {\textbar} \texttt{-} \} \\
+       \arg{digits} & \arg{digit}\arg{digits0} \\
+      \arg{digits0} & \arg{digit}* \\
+        \arg{digit} & \{ \texttt{0} {\textbar} \texttt{1} {\textbar}
+						 \texttt{2} {\textbar} \texttt{3} {\textbar}
+						 \texttt{4} {\textbar} \texttt{5} {\textbar}
+						 \texttt{6} {\textbar} \texttt{7} {\textbar}
+						 \texttt{8} {\textbar} \texttt{9} \} \\
+\end{tabular}
+\end{center}
+
+These are examples of valid representations of floating-point numbers
+in program source:
+
+\begin{center}
+\texttt{1E \qquad 1.E \qquad 1.E0 \qquad +1.23E-1 \qquad -1.23E+1}
+\end{center}
+
+See:
+	\xref{usage:numbers}{3.4.1.3 Text interpreter input number conversion},
+	\wref{floating:toFLOAT}{>FLOAT}.
+
+\begin{info}
+\subsubsection{Text interpreter input number conversion} % A.12.3.7
+
+The Technical Committee has more than once received the suggestion
+that the text interpreter in Standard Forth systems should treat
+numbers that have an embedded decimal point, but no exponent, as
+floating-point numbers rather than double cell numbers. This
+suggestion, although it has merit, has always been voted down because
+it would break too much existing code; many existing implementations
+put the full digit string on the stack as a double number and use
+other means to inform the application of the location of the decimal
+point.
+\end{info}
+
+\section{Additional documentation requirements} % 12.4
+
+\subsection{System documentation} % 12.4.1
+
+\subsubsection{Implementation-defined options} % 12.4.1.1
+\begin{itemize}
+\item format and range of floating-point numbers
+	(\xref{float:datatypes}{12.3.1 Data types},
+	 \wref{floating:REPRESENT}{REPRESENT})
+\item results of \wref{floating:REPRESENT}{REPRESENT} when
+	\emph{float} is out of range;
+\item rounding or truncation of floating-point numbers
+	(\xref{float:num}{12.3.1.2 Floating-point numbers});
+\item size of floating-point stack
+	(\xref{float:stack}{12.3.3 Floating-point stack});
+\item width of floating-point stack
+	(\xref{float:stack}{12.3.3 Floating-point stack}).
+\end{itemize}
+
+\subsubsection{Ambiguous conditions} % 12.4.1.2
+\begin{itemize}
+\item \word{DF@} or \word{DF!} is used with an address that is not
+	double-float aligned;
+\item \word{F@} or \word{F!} is used with an address that is not
+	float aligned;
+\item floating point result out of range
+	(e.g., in \wref{floating:F/}{F/});
+\item \word{SF@} or \word{SF!} is used with an address that is not
+	single-float aligned;
+\item \word[core]{BASE} is not decimal
+	(\wref{floating:REPRESENT}{REPRESENT},
+	 \wref{floating:F.}{F.},
+	 \wref{floating:FE.}{FE.},
+	 \wref{floating:FS.}{FS.});
+\item both arguments equal zero (\wref{floating:FATAN2}{FATAN2});
+\item cosine of argument is zero for \wref{floating:FTAN}{FTAN};
+\item $d$ can't be precisely represented as \emph{float} in
+	\wref{floating:DtoF}{D>F};
+\item dividing by zero (\wref{floating:F/}{F/});
+\item exponent too big for conversion
+	(\wref{floating:DF!}{DF!},
+	 \wref{floating:DF@}{DF@},
+	 \wref{floating:SF!}{SF!},
+	 \wref{floating:SF@}{SF@});
+\item \emph{float} less than one (\wref{floating:FACOSH}{FACOSH});
+\item \emph{float} less than or equal to minus-one
+	(\wref{floating:FLNP1}{FLNP1});
+\item \emph{float} less than or equal to zero
+	(\wref{floating:FLN}{FLN},
+	 \wref{floating:FLOG}{FLOG});
+\item \emph{float} less than zero
+	(\wref{floating:FASINH}{FASINH},
+	 \wref{floating:FSQRT}{FSQRT});
+\item \emph{float} magnitude greater than one
+	(\wref{floating:FACOS}{FACOS},
+	 \wref{floating:FASIN}{FASIN},
+	 \wref{floating:FATANH}{FATANH});
+\item integer part of \emph{float} can't be represented by $d$ in
+	\wref{floating:FtoD}{F>D};
+\item string larger than pictured-numeric output area
+	(\wref{floating:F.}{F.},
+	 \wref{floating:FE.}{FE.},
+	 \wref{floating:FS.}{FS.}).
+\end{itemize}
+
+\subsubsection{Other system documentation} % 12.4.1.3
+\begin{itemize}
+\item no additional requirements.
+\end{itemize}
+
+\subsection{Program documentation} % 12.4.2
+
+\subsubsection{Environmental dependencies} % 12.4.2.1
+
+\begin{itemize}
+\item requiring the floating-point stack to be larger than six items
+	(\xref{float:stack}{12.3.3 Floating-point stack}).
+\end{itemize}
+
+\subsubsection{Other program documentation} % 12.4.2.2
+\begin{itemize}
+\item no additional requirements.
+\end{itemize}
+
+\section{Compliance and labeling} % 12.5
+
+\subsection{ANS Forth systems} % 12.5.1
+
+The phrase ``Providing the Floating-Point word set'' shall be
+appended to the label of any Standard System that provides all of
+the Floating-Point word set.
+
+The phrase ``Providing \emph{name(s)} from the Floating-Point
+Extensions word set'' shall be appended to the label of any Standard
+System that provides portions of the Floating-Point Extensions word
+set.
+
+The phrase ``Providing the Floating-Point Extensions word set'' shall
+be appended to the label of any Standard System that provides all of
+the Floating-Point and Floating-Point Extensions word sets.
+
+\subsection{ANS Forth programs} % 12.5.2
+
+The phrase ``Requiring the Floating-Point word set'' shall be
+appended to the label of Standard Programs that require the system
+to provide the Floating-Point word set.
+
+The phrase ``Requiring \emph{name(s)} from the Floating-Point
+Extensions word set'' shall be appended to the label of Standard
+Programs that require the system to provide portions of the
+Floating-Point Extensions word set.
+
+The phrase ``Requiring the Floating-Point Extensions word set'' shall
+be appended to the label of Standard Programs that require the system
+to provide all of the Floating-Point and Floating-Point Extensions
+word sets.
+
+
+\section{Glossary} % 12.6
+
+\begin{info}
+\subsection{Glossary} % A.12.6
+\end{info}
+
+\subsection{Floating-Point words} % 12.6.1
+
+
+\begin{newword}[toFLOAT]{0558}{>FLOAT}[to-float]
+	\stack{c-addr u}{true {\textbar} false}
+	\stack[F]{}{r {\textbar}~} or
+	\stack{c-addr u}{r true {\textbar} false }
+
+	An attempt is made to convert the string specified by
+	\emph{c-addr} and $u$ to internal floating-point representation.
+	If the string represents a valid floating-point number in the
+	syntax below, its value $r$ and \emph{true} are returned. If
+	the string does not represent a valid floating-point number only
+	\emph{false} is returned.
+
+	A string of blanks should be treated as a special case
+	representing zero.
+
+	The syntax of a convertible string
+	\begin{center}
+		\begin{tabular}{r@{ \textsf{:=} }l}
+							& \arg{significand}[\arg{exponent}] \\
+		\arg{significand}	& [\arg{sign}]\{\arg{digits}[\texttt{.}\arg{digits0}]
+								{\textbar} \texttt{.}\arg{digits} \} \\
+		\arg{exponent}		& \arg{marker}\arg{digits0} \\
+		\arg{marker}		& \{\arg{e-form} {\textbar} \arg{sign-form}\}\\
+		\arg{e-form}		& \arg{e-char}[\arg{sign-form}] \\
+		\arg{sign-form} 	& \{ \texttt{+} {\textbar} \texttt{-} \} \\
+		\arg{e-char}		& \{ \texttt{D} {\textbar} \texttt{d} {\textbar}
+								 \texttt{E} {\textbar} \texttt{e} \} \\
+		\end{tabular}
+	\end{center}
+
+	\begin{rationale} % A.12.6.1.0558 >FLOAT
+		\word{toFLOAT} enables programs to read floating-point data in
+		legible ASCII format. It accepts a much broader syntax than
+		does the text interpreter since the latter defines rules for
+		composing source programs whereas \word{toFLOAT} defines rules
+		for accepting data. \word{toFLOAT} is defined as broadly as is
+		feasible to permit input of data from ANS Forth systems as well
+		as other widely used standard programming environments.
+
+		This is a synthesis of common FORTRAN practice. Embedded spaces
+		are explicitly forbidden in much scientific usage, as are other
+		field separators such as comma or slash.
+
+		While \word{toFLOAT} is not required to treat a string of blanks
+		as zero, this behavior is strongly encouraged, since a future
+		version of ANS Forth may include such a requirement.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}[DtoF]{1130}{D>F}[d-to-f]
+	\stack{d}{} \stack[F]{}{r} or
+	\stack{d}{r}
+
+	$r$ is the floating-point equivalent of $d$. An ambiguous
+	condition exists if $d$ cannot be precisely represented as a
+	floating-point value.
+\end{newword}
+
+
+\begin{newword}{1400}{F!}[f-store]
+	\stack{f-addr}{} \stack[F]{r}{} or
+	\stack{r f-addr}{}
+
+	Store $r$ at \emph{f-addr}.
+\end{newword}
+
+
+\begin{newword}{1410}{F*}[f-star]
+	\stack[F]{$r_1$ $r_2$}{$r_3$} or
+	\stack{$r_1$ $r_2$}{$r_3$}
+
+	Multiply $r_1$ by $r_2$ giving $r_3$.
+\end{newword}
+
+
+\begin{newword}{1420}{F+}[f-plus]
+	\stack[F]{$r_1$ $r_2$}{$r_3$} or
+	\stack{$r_1$ $r_2$}{$r_3$}
+
+	Add $r_1$ to $r_2$ giving the sum $r_3$.
+\end{newword}
+
+
+\begin{newword}{1425}{F-}[f-minus]
+	\stack[F]{$r_1$ $r_2$}{$r_3$} or
+	\stack{$r_1$ $r_2$}{$r_3$}
+
+	Subtract $r_2$ from $r_1$, giving $r_3$.
+\end{newword}
+
+
+\begin{newword}{1430}{F/}[f-slash]
+	\stack[F]{$r_1$ $r_2$}{$r_3$} or
+	\stack{$r_1$ $r_2$}{$r_3$}
+
+	Divide $r_1$ by $r_2$, giving the quotient $r_3$. An ambiguous
+	condition exists if $r_2$ is zero, or the quotient lies outside
+	of the range of a floating-point number.
+\end{newword}
+
+
+\begin{newword}[F0less]{1440}{F0<}[f-zero-less-than]
+	\stack{}{flag} \stack[F]{r}{} or
+	\stack{r}{flag}
+
+	\emph{flag} is true if and only if $r$ is less than zero.
+\end{newword}
+
+
+\begin{newword}{1450}{F0=}[f-zero-equals]
+	\stack{}{flag} \stack[F]{r}{} or
+	\stack{r}{flag}
+
+	\emph{flag} is true if and only if $r$ is equal to zero.
+\end{newword}
+
+
+\begin{newword}[Fless]{1460}{F<}[f-less-than]
+	\stack{}{flag} \stack[F]{$r_1$ $r_2$}{} or
+	\stack{$r_1$ $r_2$}{flag}
+
+	\emph{flag} is true if and only if $r_1$ is less than $r_2$.
+\end{newword}
+
+
+\begin{newword}[FtoD]{1470}{F>D}[f-to-d]
+	\stack{}{d} \stack[F]{r}{} or
+	\stack{r}{d}
+
+	\emph{d} is the double-cell signed-integer equivalent of the
+	integer portion of $r$. The fractional portion of $r$ is
+	discarded. An ambiguous condition exists if the integer portion
+	of $r$ cannot be precisely represented as a double-cell signed
+	integer.
+\end{newword}
+
+
+\begin{newword}{1472}{F@}[f-fetch]
+	\stack{f-addr}{} \stack[F]{}{r} or
+	\stack{f-addr}{r}
+
+	$r$ is the value stored at \emph{f-addr}.
+\end{newword}
+
+
+\begin{newword}{1479}{FALIGN}[f-align]
+	\stack{}{}
+
+	If the data-space pointer is not float aligned, reserve enough
+	data space to make it so.
+\end{newword}
+
+
+\begin{newword}{1483}{FALIGNED}[f-aligned]
+	\stack{addr}{f-addr}
+
+	\emph{f-addr} is the first float-aligned address greater than
+	or equal to \emph{addr}.
+\end{newword}
+
+
+\begin{newword}{1492}{FCONSTANT}[f-constant]
+	\stack{``\arg{spaces}name''}{} \stack[F]{r}{} or
+	\stack{r ``\arg{spaces}name''}{}
+
+	Skip leading space delimiters. Parse \emph{name} delimited by a
+	space. Create a definition for \emph{name} with the execution
+	semantics defined below.
+
+	\emph{name} is referred to as an ``f-constant''.
+
+\item[\emph{name} Execution:]
+	\stack{}{} \stack[F]{}{r} or
+	\stack{}{r}
+
+	Place $r$ on the floating-point stack.
+
+\item[See:]
+	\xref{usage:parsing}{3.4.1 Parsing}.
+
+	\begin{rationale} % A.12.6.1.1492 FCONSTANT
+		Typical use: \texttt{r} \word[floating]{FCONSTANT} \emph{name}
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{1497}{FDEPTH}[f-depth]
+	\stack{}{+n}
+
+	$+n$ is the number of values contained on the default separate
+	floating-point stack. If floating-point numbers are kept on the
+	data stack, $+n$ is the current number of possible floating-point
+	values contained on the data stack.
+\end{newword}
+
+
+\begin{newword}{1500}{FDROP}[f-drop]
+	\stack[F]{r}{} or
+	\stack{r}{}
+
+	Remove $r$ from the floating-point stack.
+\end{newword}
+
+
+\begin{newword}{1510}{FDUP}[f-dupe]
+	\stack[F]{r}{r r} or
+	\stack{r}{r r}
+
+	Duplicate $r$.
+\end{newword}
+
+
+\begin{newword*}{1552}{FLITERAL}[f-literal]
+\item[Interpretation:]
+	Interpretation semantics for this word are undefined.
+
+\item[Compilation:]
+	\stack[F]{r}{} or
+	\stack{r}{}
+
+	Append the run-time semantics given below to the current
+	definition.
+
+\item[Run-time:]
+	\stack[F]{}{r} or
+	\stack{}{r}
+
+	Place $r$ on the floating-point stack.
+
+	\begin{rationale} % A.12.6.1.1552 FLITERAL
+		Typical use:
+			\word[core]{:} \texttt{X} {\ldots}
+				\word[core]{[} {\ldots} \word[core]{p} r ) \word[core]{]}
+				\word{FLITERAL} {\ldots}
+			\word[core]{;}
+	\end{rationale}
+\end{newword*}
+
+
+\begin{newword}{1555}{FLOAT+}[float-plus]
+	\stack{f-addr$_1$}{f-addr$_2$}
+
+	Add the size in address units of a floating-point number to
+	\emph{f-addr}$_1$, giving \emph{f-addr}$_2$.
+\end{newword}
+
+
+\begin{newword}{1556}{FLOATS}
+	\stack{$n_1$}{$n_2$}
+
+	$n_2$ is the size in address units of $n_1$ floating-point
+	numbers.
+\end{newword}
+
+
+\begin{newword}{1558}{FLOOR}
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	Round $r_1$ to an integral value using the ``round toward
+	negative infinity'' rule, giving $r_2$.
+\end{newword}
+
+
+\begin{newword}{1562}{FMAX}[f-max]
+	\stack[F]{$r_1$ $r_2$}{$r_3$} or
+	\stack{$r_1$ $r_2$}{$r_3$}
+
+	$r_3$ is the greater of $r_1$ and $r_2$.
+\end{newword}
+
+
+\begin{newword}{1565}{FMIN}[f-min]
+	\stack[F]{$r_1$ $r_2$}{$r_3$} or
+	\stack{$r_1$ $r_2$}{$r_3$}
+
+	$r_3$ is the lesser of $r_1$ and $r_2$.
+\end{newword}
+
+
+\begin{newword}{1567}{FNEGATE}[f-negate]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the negation of $r_1$.
+\end{newword}
+
+
+\begin{newword}{1600}{FOVER}[f-over]
+	\stack[F]{$r_1$ $r_2$}{$r_1$ $r_2$ $r_1$} or
+	\stack{$r_1$ $r_2$}{$r_1$ $r_2$ $r_1$}
+
+	Place a copy of $r_1$ on top of the floating-point stack.
+\end{newword}
+
+
+\begin{newword}{1610}{FROT}[f-rote]
+	\stack[F]{$r_1$ $r_2$ $r_3$}{$r_2$ $r_3$ $r_1$} or
+	\stack{$r_1$ $r_2$ $r_3$}{$r_2$ $r_3$ $r_1$}
+
+	Rotate the top three floating-point stack entries.
+\end{newword}
+
+
+\begin{newword}{1612}{FROUND}[f-round]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	Round $r_1$ to an integral value using the ``round to nearest''
+	rule, giving $r_2$.
+
+\item[See:]
+	\xref{float:ops}{12.3.2 Floating-point operations}.
+\end{newword}
+
+
+\begin{newword}{1620}{FSWAP}[f-swap]
+	\stack[F]{$r_1$ $r_2$}{$r_2$ $r_1$} or
+	\stack{$r_1$ $r_2$}{$r_2$ $r_1$}
+
+	Exchange the top two floating-point stack items.
+\end{newword}
+
+
+\begin{newword}{1630}{FVARIABLE}[f-variable]
+	\stack{``\arg{spaces}name''}{}
+
+	Skip leading space delimiters. Parse \emph{name} delimited by a
+	space. Create a definition for \emph{name} with the execution
+	semantics defined below. Reserve \texttt{1} \word{FLOATS}
+	address units of data space at a float-aligned address.
+
+	\emph{name} is referred to as an ``f-variable''.
+
+\item[\emph{name} Execution:]
+	\stack{}{f-addr}
+
+	\emph{f-addr} is the address of the data space reserved by
+	\word{FVARIABLE} when it created \emph{name}. A program is
+	responsible for initializing the contents of the reserved
+	space.
+
+\item[See:]
+	\xref{usage:parsing}{3.4.1 Parsing}.
+
+	\begin{rationale} % A.12.6.1.1630 FVARIABLE
+		Typical use:
+			\word{FVARIABLE} \emph{name}
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{2143}{REPRESENT}
+	\stack{c-addr u}{n flag$_1$ flag$_2$} \stack[F]{r}{} or
+	\stack{r c-addr u}{n flag$_1$ flag$_2$}
+
+	At \emph{c-addr}, place the character-string external
+	representation of the significand of the floating-point number
+	$r$. Return the decimal-base exponent as $n$, the sign as
+	\emph{flag}$_1$ and ``valid result'' as \emph{flag}$_2$.
+	The character string shall consist of the $u$ most significant
+	digits of the significand represented as a decimal fraction with
+	the implied decimal point to the left of the first digit, and
+	the first digit zero only if all digits are zero. The significand
+	is rounded to $u$ digits following the ``round to nearest'' rule;
+	$n$ is adjusted, if necessary, to correspond to the rounded
+	magnitude of the significand. If \emph{flag}$_2$ is \emph{true}
+	then $r$ was in the implementation-defined range of floating-point
+	numbers. If \emph{flag}$_1$ is \emph{true} then $r$ is negative.
+
+	An ambiguous condition exists if the value of \word[core]{BASE}
+	is not decimal ten.
+
+	When \emph{flag}$_2$ is \emph{false}, $n$ and \emph{flag}$_1$
+	are implementation defined, as are the contents of \emph{c-addr}.
+	Under these circumstances, the string at \emph{c-addr} shall
+	consist of graphic characters.
+
+\item[See:]
+	\xref{usage:digits}{3.2.1.2 Digit conversion},
+	\wref{core:BASE}{BASE},
+	\xref{float:ops}{12.3.2 Floating-point operations}.
+
+	\begin{rationale} % A.12.6.1.2143 REPRESENT
+		This word provides a primitive for floating-point display.
+		Some floating-point formats, including those specified by
+		IEEE-754, allow representations of numbers outside of an
+		implementation-defined range. These include plus and minus
+		infinities, denormalized numbers, and others. In these cases
+		we expect that \word{REPRESENT} will usually be implemented
+		to return appropriate character strings, such as ``+infinity''
+		or ``nan'', possibly truncated.
+	\end{rationale}
+\end{newword}
+
+
+\subsection{Floating-Point extension words} % 12.6.2
+\extended
+
+\begin{newword}{1203}{DF!}[d-f-store]
+	\stack{-addr}{} \stack[F]{r}{} or
+	\stack{r df-addr}{}
+
+	Store the floating-point number $r$ as a 64-bit IEEE
+	double-precision number at \emph{df-addr}. If the significand
+	of the internal representation of $r$ has more precision than
+	the IEEE double-precision format, it will be rounded using the
+	``round to nearest'' rule. An ambiguous condition exists if the
+	exponent of $r$ is too large to be accommodated in IEEE
+	double-precision format.
+
+\item[See:]
+	\xref{float:addr}{12.3.1.1 Addresses},
+	\xref{float:ops}{12.3.2 Floating-point operations}.
+\end{newword}
+
+
+\begin{newword}{1204}{DF@}[d-f-fetch]
+	\stack{df-addr}{} \stack[F]{}{r} or
+	\stack{df-addr}{r}
+
+	Fetch the 64-bit IEEE double-precision number stored at
+	\emph{df-addr} to the floating-point stack as $r$ in the
+	internal representation. If the IEEE double-precision
+	significand has more precision than the internal representation
+	it will be rounded to the internal representation using the
+	``round to nearest'' rule. An ambiguous condition exists if the
+	exponent of the IEEE double-precision representation is too
+	large to be accommodated by the internal representation.
+
+\item[See:]
+	\xref{float:addr}{12.3.1.1 Addresses},
+	\xref{float:ops}{12.3.2 Floating-point operations}.
+\end{newword}
+
+
+\begin{newword}{1205}{DFALIGN}[d-f-align]
+	\stack{}{}
+
+	If the data-space pointer is not double-float aligned, reserve
+	enough data space to make it so.
+
+\item[See:]
+	\xref{float:addr}{12.3.1.1 Addresses}.
+\end{newword}
+
+
+\begin{newword}{1207}{DFALIGNED}[d-f-aligned]
+	\stack{addr}{df-addr}
+
+	\emph{df-addr} is the first double-float-aligned address greater
+	than or equal to \emph{addr}.
+
+\item[See:]
+	\xref{float:addr}{12.3.1.1 Addresses}.
+\end{newword}
+
+
+\begin{newword}{1208}{DFLOAT+}[d-float-plus]
+	\stack{df-addr$_1$}{df-addr$_2$}
+
+	Add the size in address units of a 64-bit IEEE double-precision
+	number to \emph{df-addr}$_1$, giving \emph{df-addr}$_2$.
+
+\item[See:]
+	\xref{float:addr}{12.3.1.1 Addresses}.
+\end{newword}
+
+
+\begin{newword}{1209}{DFLOATS}[d-floats]
+	\stack{$n_1$}{$n_2$}
+
+	$n_2$ is the size in address units of $n_1$ 64-bit IEEE
+	double-precision numbers.
+\end{newword}
+
+
+\begin{newword}{1415}{F**}[f-star-star]
+	\stack[F]{$r_1$ $r_2$}{$r_3$} or
+	\stack{$r_1$ $r_2$}{$r_3$}
+
+	Raise $r_1$ to the power $r_2$, giving the product $r_3$.
+\end{newword}
+
+
+\begin{newword}{1427}{F.}[f-dot]
+	\stack{}{} \stack[F]{r}{} or
+	\stack{r}{}
+
+	Display, with a trailing space, the top number on the
+	floating-point stack using fixed-point notation:
+	\begin{quote}
+		[\texttt{-}] \arg{digits}\texttt{.}\arg{digits0}
+	\end{quote}
+	An ambiguous condition exists if the value of \word[core]{BASE}
+	is not (decimal) ten or if the character string representation
+	exceeds the size of the pictured numeric output string buffer.
+
+\item[See:]
+	\wref{floating:toFLOAT}{>FLOAT}.
+
+	\begin{rationale} % A.12.6.1.1427 F.
+		For example, \texttt{1E3} \word{F.} displays \texttt{1000.}.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{1474}{FABS}[f-abs]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the absolute value of $r_1$.
+\end{newword}
+
+
+\begin{newword}{1476}{FACOS}[f-a-cos]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the principal radian angle whose cosine is $r_1$. An
+	ambiguous condition exists if {\textbar}$r_1${\textbar} is
+	greater than one.
+\end{newword}
+
+
+\begin{newword}{1477}{FACOSH}[f-a-cosh]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the floating-point value whose hyperbolic cosine is
+	$r_1$. An ambiguous condition exists if $r_1$ is less than one.
+\end{newword}
+
+
+\begin{newword}{1484}{FALOG}[f-a-log]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	Raise ten to the power $r_1$, giving $r_2$.
+\end{newword}
+
+
+\begin{newword}{1486}{FASIN}[f-a-sine]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the principal radian angle whose sine is $r_1$. An
+	ambiguous condition exists if $|r_1|$ is greater than one.
+\end{newword}
+
+
+\begin{newword}{1487}{FASINH}[f-a-cinch]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the floating-point value whose hyperbolic sine is $r_1$.
+	An ambiguous condition exists if $r_1$ is less than zero.
+\end{newword}
+
+
+\begin{newword}{1488}{FATAN}[f-a-tan]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the principal radian angle whose tangent is $r_1$.
+\end{newword}
+
+
+\begin{newword}{1489}{FATAN2}[f-a-tan-two]
+	\stack[F]{$r_1$ $r_2$}{$r_3$} or
+	\stack{$r_1$ $r_2$}{$r_3$}
+
+	$r_3$ is the radian angle whose tangent is $r_1/r_2$.
+	An ambiguous condition exists if $r_1$ and $r_2$ are zero.
+
+	\begin{rationale} % A.12.6.1.1489 FATAN2
+		\word{FSINCOS} and \word{FATAN2} are a complementary pair of
+		operators which convert angles to 2-vectors and vice-versa.
+		They are essential to most geometric and physical applications
+		since they correctly and unambiguously handle this conversion
+		in all cases except null vectors, even when the tangent of the
+		angle would be infinite.
+
+		\word{FSINCOS} returns a Cartesian unit vector in the direction
+		of the given angle, measured counter-clockwise from the positive
+		X-axis. The order of results on the stack, namely $y$ underneath
+		$x$, permits the 2-vector data type to be additionally viewed
+		and used as a ratio approximating the tangent of the angle. Thus
+		the phrase \word{FSINCOS} \word{F/} is functionally equivalent
+		to \word{FTAN}, but is useful over only a limited and
+		discontinuous range of angles, whereas \word{FSINCOS} and
+		\word{FATAN2} are useful for all angles. This ordering has been
+		found convenient for nearly two decades, and has the added
+		benefit of being easy to remember. A corollary to this
+		observation is that vectors in general should appear on the
+		stack in this order.
+
+		The argument order for \word{FATAN2} is the same, converting a
+		vector in the conventional representation to a scalar angle.
+		Thus, for all angles, \word{FSINCOS} \word{FATAN2} is an identity
+		within the accuracy of the arithmetic and the argument range of
+		\word{FSINCOS}. Note that while \word{FSINCOS} always returns a
+		valid unit vector, \word{FATAN2} will accept any non-null vector.
+		An ambiguous condition exists if the vector argument to
+		\word{FATAN2} has zero magnitude.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{1491}{FATANH}[f-a-tan-h]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the floating-point value whose hyperbolic tangent is
+	$r_1$. An ambiguous condition exists if $r_1$ is outside the
+	range of -1E0 to 1E0.
+\end{newword}
+
+
+\begin{newword}{1493}{FCOS}[f-cos]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the cosine of the radian angle $r_1$.
+\end{newword}
+
+
+\begin{newword}{1494}{FCOSH}[f-cosh]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the hyperbolic cosine of $r_1$.
+\end{newword}
+
+
+\begin{newword}{1513}{FE.}[f-e-dot]
+	\stack{}{} \stack[F]{r}{} or
+	\stack{r}{}
+
+	Display, with a trailing space, the top number on the
+	floating-point stack using engineering notation, where the
+	significand is greater than or equal to 1.0 and less than
+	1000.0 and the decimal exponent is a multiple of three.
+
+	An ambiguous condition exists if the value of \word[core]{BASE}
+	is not (decimal) ten or if the character string representation
+	exceeds the size of the pictured numeric output string buffer.
+
+\item[See:]
+	\wref{core:BASE}{BASE},
+	\xref{float:ops}{12.3.2 Floating-point operations},
+	\wref{floating:REPRESENT}{REPRESENT}.
+\end{newword}
+
+
+\begin{newword}{1515}{FEXP}[f-e-x-p]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	Raise $e$ to the power $r_1$, giving $r_2$.
+\end{newword}
+
+
+\begin{newword}{1516}{FEXPM1}[f-e-x-p-m-one]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	Raise $e$ to the power $r_1$ and subtract one, giving $r_2$.
+
+	\begin{rationale} % A.12.6.1.1516 FEXPM1
+		This function allows accurate computation when its arguments
+		are close to zero, and provides a useful base for the standard
+		exponential functions. Hyperbolic functions such as
+		\textsf{cosh($x$)} can be efficiently and accurately
+		implemented by using \word{FEXPM1}; accuracy is lost in this
+		function for small values of $x$ if the word \word{FEXP} is
+		used.
+
+		An important application of this word is in finance; say a loan
+		is repaid at 15\% per year; what is the daily rate? On a computer
+		with single precision (six decimal digit) accuracy:
+
+		\begin{enumerate}
+		\item[1.] Using \word{FLN} and \word{FEXP}:
+
+			\word{FLN} of 1.15 = 0.139762, \\
+			divide by 365 = 3.82910E-4, \\
+			form the exponent using \word{FEXP} = 1.00038, and \\
+			subtract one (1) and convert to percentage = 0.038\%.
+		\end{enumerate}
+		Thus we only have two digit accuracy.
+		\begin{enumerate}
+		\item[2.] Using \word{FLNP1} and \word{FEXPM1}:
+
+			\word{FLNP1} of 0.15 = 0.139762, (this is the same value
+			as in the first example, although with the argument closer
+			to zero it may not be so) \\
+			divide by 365 = 3.82910E-4, \\
+			form the exponent and subtract one (1) using
+			\word{FEXPM1} = 3.82983E-4, and \\
+			convert to percentage = 0.0382983\%.
+		\end{enumerate}
+		This is full six digit accuracy.
+
+		The presence of this word allows the hyperbolic functions to
+		be computed with usable accuracy. For example, the hyperbolic
+		sine can be defined as:
+
+		\begin{quote}\ttfamily
+			\word[core]{:} \word{FSINH}~ \word[core]{p} r1 -- r2 ) \\
+			\tab \word{FEXPM1}~ \word{FDUP}~
+				 \word{FDUP} 1.0E0 \word{F+}~ \word{F/}~ \word{F+}~
+				 2.0E0 \word{F/}
+			\word[core]{;}
+		\end{quote}
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{1553}{FLN}[f-l-n]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the natural logarithm of $r_1$. An ambiguous condition
+	exists if $r_1$ is less than or equal to zero.
+\end{newword}
+
+
+\begin{newword}{1554}{FLNP1}[f-l-n-p-one]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the natural logarithm of the quantity $r_1$ plus one.
+	An ambiguous condition exists if $r_1$ is less than or equal to
+	negative one.
+
+	\begin{rationale} % A.12.6.1.1554 FLNP1
+		This function allows accurate compilation when its arguments
+		are close to zero, and provides a useful base for the standard
+		logarithmic functions. For example, \word{FLN} can be
+		implemented as:
+
+		\begin{quote}\ttfamily
+			\word[core]{:} \word{FLN} ~
+				1.0E0 \word{F-} ~ \word{FLNP1}
+			\word[core]{;}
+		\end{quote}
+		See: \rref{floating:FEXPM1}{FEXPM1}.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{1557}{FLOG}[f-log]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the base-ten logarithm of $r_1$. An ambiguous condition
+	exists if $r_1$ is less than or equal to zero.
+\end{newword}
+
+
+\begin{newword}{1613}{FS.}[f-s-dot]
+	\stack{}{} \stack[F]{r}{} or
+	\stack{r}{}
+
+	Display, with a trailing space, the top number on the
+	floating-point stack in scientific notation:
+	\arg{significand}\arg{exponent}
+	where:
+	\begin{center}
+	  \begin{tabular}{r@{ \textsf{:=} }l}
+		\arg{significand} & [\texttt{-}]\arg{digit}\texttt{.}\arg{digits0} \\
+		\arg{exponent}	  & \texttt{E}[\texttt{-}]\arg{digits}
+	  \end{tabular}
+	\end{center}
+
+	An ambiguous condition exists if the value of \word[core]{BASE}
+	is not (decimal) ten or if the character string representation
+	exceeds the size of the pictured numeric output string buffer.
+
+\item[See:]
+	\wref{core:BASE}{BASE},
+	\xref{float:ops}{12.3.2 Floating-point operations},
+	\wref{floating:REPRESENT}{REPRESENT}.
+\end{newword}
+
+
+\begin{newword}{1614}{FSIN}[f-sine]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the sine of the radian angle $r_1$.
+\end{newword}
+
+
+\begin{newword}{1616}{FSINCOS}[f-sine-cos]
+	\stack[F]{$r_1$}{$r_2$ $r_3$} or
+	\stack{$r_1$}{$r_2$ $r_3$}
+
+	$r_2$ is the sine of the radian angle $r_1$. $r_3$ is the cosine
+	of the radian angle $r_1$.
+
+	\begin{rationale} % A.12.6.1.1616 FSINCOS
+		See: \rref{floating:FATAN2}{FATAN2}.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{1617}{FSINH}[f-cinch]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the hyperbolic sine of $r_1$.
+\end{newword}
+
+
+\begin{newword}{1618}{FSQRT}[f-square-root]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the square root of $r_1$. An ambiguous condition exists
+	if $r_1$ is less than zero.
+\end{newword}
+
+
+\begin{newword}{1625}{FTAN}[f-tan]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the tangent of the radian angle $r_1$. An ambiguous
+	condition exists if $\cos(r_1)$ is zero.
+\end{newword}
+
+
+\begin{newword}{1626}{FTANH}[f-tan-h]
+	\stack[F]{$r_1$}{$r_2$} or
+	\stack{$r_1$}{$r_2$}
+
+	$r_2$ is the hyperbolic tangent of $r_1$.
+\end{newword}
+
+
+\begin{newword}[Ftilde]{1640}{F\tilde}[f-proximate]
+	\stack{}{flag} \stack[F]{$r_1$ $r_2$ $r_3$}{} or
+	\stack{$r_1$ $r_2$ $r_3$}{flag}
+
+	If $r_3$ is positive, \emph{flag} is true if the absolute value
+	of ($r_1$ minus $r_2$) is less than $r_3$.
+
+	If $r_3$ is zero, \emph{flag} is true if the
+	implementation-dependent encoding of $r_1$ and $r_2$ are exactly
+	identical (positive and negative zero are unequal if they have
+	distinct encodings).
+
+	If $r_3$ is negative, \emph{flag} is true if the absolute value
+	of ($r_1$ minus $r_2$) is less than the absolute value of $r_3$
+	times the sum of the absolute values of $r_1$ and $r_2$.
+
+	\begin{rationale} % A.12.6.1.1640 F\tilde
+		This provides the three types of ``floating point equality''
+		in common use --- ``close'' in absolute terms, exact equality
+		as represented, and ``relatively close''.
+	\end{rationale}
+\end{newword}
+
+
+\begin{newword}{2035}{PRECISION}
+	\stack{}{u}
+
+	Return the number of significant digits currently used by
+	\word{F.}, \word{FE.}, or \word{FS.} as $u$.
+\end{newword}
+
+
+\begin{newword}{2200}{SET-PRECISION}
+	\stack{u}{}
+
+	Set the number of significant digits currently used by \word{F.},
+	\word{FE.}, or \word{FS.} to $u$.
+\end{newword}
+
+
+\begin{newword}{2202}{SF!}[s-f-store]
+	\stack{sf-addr}{} \stack[F]{r}{} or
+	\stack{r sf-addr}{}
+
+	Store the floating-point number $r$ as a 32-bit IEEE
+	single-precision number at \emph{sf-addr}. If the significand
+	of the internal representation of $r$ has more precision than
+	the IEEE single-precision format, it will be rounded using the
+	``round to nearest'' rule. An ambiguous condition exists if the
+	exponent of $r$ is too large to be accommodated by the IEEE
+	single-precision format.
+
+\item[See:]
+	\xref{float:addr}{12.3.1.1 Addresses},
+	\xref{float:ops}{12.3.2 Floating-point operations}.
+\end{newword}
+
+
+\begin{newword}{2203}{SF@}[s-f-fetch]
+	\stack{sf-addr}{} \stack[F]{}{r} or
+	\stack{sf-addr}{r}
+
+	Fetch the 32-bit IEEE single-precision number stored at
+	\emph{sf-addr} to the floating-point stack as $r$ in the
+	internal representation. If the IEEE single-precision
+	significand has more precision than the internal representation,
+	it will be rounded to the internal representation using the
+	``round to nearest'' rule. An ambiguous condition exists if the
+	exponent of the IEEE single-precision representation is too
+	large to be accommodated by the internal representation.
+
+\item[See:]
+	\xref{float:addr}{12.3.1.1 Addresses},
+	\xref{float:ops}{12.3.2 Floating-point operations}.
+\end{newword}
+
+
+\begin{newword}{2204}{SFALIGN}[s-f-align]
+	\stack{}{}
+
+	If the data-space pointer is not single-float aligned, reserve
+	enough data space to make it so.
+
+\item[See:]
+	\xref{float:addr}{12.3.1.1 Addresses}.
+\end{newword}
+
+
+\begin{newword}{2206}{SFALIGNED}[s-f-aligned]
+	\stack{addr}{sf-addr}
+
+	\emph{sf-addr} is the first single-float-aligned address greater
+	than or equal to \emph{addr}.
+
+\item[See:]
+	\xref{float:addr}{12.3.1.1 Addresses}.
+\end{newword}
+
+
+\begin{newword}{2207}{SFLOAT+}[s-float-plus]
+	\stack{sf-addr$_1$}{sf-addr$_2$}
+
+	Add the size in address units of a 32-bit IEEE single-precision
+	number to \emph{sf-addr}$_1$, giving \emph{sf-addr}$_2$.
+
+\item[See:]
+	\xref{float:addr}{12.3.1.1 Addresses}.
+\end{newword}
+
+
+\begin{newword}{2208}{SFLOATS}[s-floats]
+	\stack{$n_1$}{$n_2$}
+
+	$n_2$ is the size in address units of $n_1$ 32-bit IEEE
+	single-precision numbers.
+
+\item[See:]
+	\xref{float:addr}{12.3.1.1 Addresses}.
+\end{newword}

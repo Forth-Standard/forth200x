@@ -1,0 +1,79 @@
+\section{Forth 200X Treffen auf der EuroForth 2007}
+
+Am Tag vor der EuroForth 2007 in Schloss Dagstuhl fand wieder einmal
+das Treffen des Forth~200X Komittees statt, das am nächsten
+Forth-Standard arbeitet.  Die Teilnehmer waren Sergey N. Baranov,
+Willem Botha, Federico de Ceballos, Anton Ertl, Ulrich Hoffmann, Peter
+Knaggs, Dagobert Michelsen, Bernd Paysan, Stephen Pelc, und Carsten
+Strotmann.
+
+Der Grossteil der Diskussion drehte sich natürlich um die
+Vorschläge für Forth-Erweiterungen, die den RfD/CfV-Prozess
+durchlaufen hatten (siehe @url{http://www.forth200x.org/rfds.html}).
+Die folgenden Vorschläge wurden beschlossen:
+
+\begin{description}
+
+\item[Structures] Diese Erweiterung erleichtert es, Datenstrukturen
+  mit benannten Feldern zu definieren, ähnlich wie \code{struct}s in C.
+
+\item[Throw IORs] Dieser Vorschlag definiert einige weitere Werte, die
+  ein System bei bestimmten Fehlern mit \code{throw} werfen kann.
+
+\item[EKEY return values] Mit dieser Erweiterungen können
+  Standard-Programme bestimmen, ob z.B. eine Cursor-Taste gedrückt
+  wurde.  Nachdem dieser Vorschlag beim Treffen 2006 noch für eine
+  Klarstellung zurückgestellt worden war, wurde er diesmal angenommen
+  (die Klarstellung wurde allerdings beim Treffen vor der Forth-Tagung
+  2009 noch einmal überarbeitet).
+
+\item[Number Prefixes] standardisiert die Schreibweise von Zahlen
+  o.ä. mit einem Prefix, der die Basis angibt, z.B. \texttt{\$1f} für
+  einen Hex-Wert.
+
+\end{description}
+
+Weiters wurden noch zwei Änderungsvorschläge angenommen, die den
+Text des Standarddokuments ändern, ohne den Inhalt signifikant zu
+ändern, darunter eine Änderung bei der Definition von
+\texttt{to}, die künftige Erweiterungen (z.B. \code{2value})
+einfacher machen soll.
+
+Schließlich wurde noch der Vorschlag \textbf{separate fp stack}
+diskutiert, der den separaten Gleitkomma-Stack zum Standard erklären
+soll.  Dieser Vorschlag wurde bei diesem Treffen noch zurückgestellt,
+um eine Beschreibung der Auswirkungen in das Standard-Dokument
+einzuarbeiten, und wurde dann beim Treffen 2008 angenommen.
+
+Außerdem wurden bei dem Treffen noch Vorschläge diskutiert, die noch
+nicht die CfV-Stufe erreicht hatten:
+
+\begin{description}
+
+\item[Enhanced locals] schlagen einerseits eine bessere Syntax für
+  locals vor, andererseits auch Erweiterungen wir lokale Buffer.
+
+\item[Escaped strings] Hier geht es um Möglichkeiten, Sonderzeichen
+  oder \texttt{"} in String-Literale einzubauen.
+
+\item[Synonyms] erlauben es, einen neuen Namen für ein existierendes
+  Wort zu definieren.
+
+\item[Extended characters] Die xchar-Erweiterung erlaubt die
+  Verwendung von Zeichenkodierungen wie UTF-8 (siehe VD 1/2006, S. 19).
+
+\item[2VALUE, FVALUE] Ähnlich wie VALUE für andere Datentypen.
+
+\item[Directories] Wie referenziert man eine andere Datei innerhalb
+  des gleichen Forth-Programms?
+
+\end{description}
+
+Weiters wurden noch mögliche zukünftige RfDs präsentiert.
+
+Zusätzlich gab's noch Diskussionen über das vorläufige
+Standard-Dokument und über diverse organisatorische Themen.
+
+Wer's genauer wissen will, findet noch die Minutes von Peter Knaggs
+und meinen englischen Bericht auf
+\url{http://www.forth200x.org/forth200x.html}.

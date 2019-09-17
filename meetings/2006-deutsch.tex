@@ -1,0 +1,74 @@
+\section{Forth 200X Treffen auf der EuroForth 2006}
+
+Am Tag vor der EuroForth 2006 fand wieder einmal das Treffen des
+Forth~200X Komittees statt, das am nächsten Forth-Standard arbeitet.
+Die Teilnehmer waren Willem Botha, Federico de Ceballos, Anton Ertl,
+Peter Knaggs, Nick Nelson (Beobachter), Stephen Pelc, Jannus Poial
+(Beobachter), und Bill Stoddart.
+
+Der RfD/CfV-Prozess und seine Beziehung zum Treffen wurde diskutiert,
+und folgender Zeitplan festgelegt:
+
+\begin{itemize}
+\item Ein RfD sollte mindestens 12 Wochen vor dem Treffen erstmals
+veröffentlicht werden, um die anderen Termine wahrscheinlich einhalten
+zu können.
+
+\item Der CfV muss spätestens 6 Wochen vor dem Treffen eingereicht
+werden, bei dem er besprochen werden soll.
+
+\item Der Wahlleiter muss den Zwischenstand spätestens 4 Wochen vor
+dem Treffen veröffentlichen.
+
+\item Beim Treffen wird dann über den Vorschlag abgestimmt.  Die
+Mehrheit entscheidet.
+\end{itemize}
+
+Die Kontakt-Daten der Kommittee-Mitglieder werden veröffentlicht,
+damit sich die Forth-Gemeinde an sie wenden kann und nicht selbst zum
+Treffen kommen muss.
+
+Peter Knaggs, der Editor des Standard-Dokuments, stellte das sehr
+gelungene Dokument vor, das als \latex-Quellcode und in PDF-Form
+vorlag (und in beiden Formen veröffentlicht werden wird).  Es kann
+u.a. in einer Inline-Version erzeugt werden, wo bei jedem Wort die
+Begründung direkt dabei steht statt in einem Anhang.  Natürlich gab es
+immer noch Verbesserungsvorschläge.
+
+Ein zentraler Punkt war natürlich die Diskussion der Vorschläge, die
+den RfD/CfV durchlaufen hatten (siehe
+@url{http://www.forth200x.org/rfds.html}):
+
+\begin{description}
+
+\item[EKEY return values] Hierbei geht es darum, dass man mit den von
+EKEY gelieferten Werten auch etwas anfangen kann, z.B. erkennen, ob
+eine Cursor-Taste gedrückt wurde und welche.  Bei diesem Vorschlag
+verlangte das Kommittee noch eine Klarstellung, welche Beziehung
+zwischen EKEY und KEY herrscht, ansonsten wurde der Vorschlag
+akzeptiert.
+
+\item[FP-stack] Forth-Systeme sollen garantieren, dass es einen
+separaten Gleitkomma-Stack gibt.  Bei diesem Vorschlag verlangte das
+Kommittee, dass er so umformuliert werden soll, sodass die
+Auswirkungen auf existierende Programme und Systeme deutlicher werden.
+
+\item[One-time file loading] Dieser Vorschlag standardisiert das Wort
+\texttt{required}, das so funktioniert wie \texttt{included}, wenn die
+Datei noch nicht geladen wurde, aber nichts tut, wenn sie schon
+geladen wurde; zusätzlich werden noch \texttt{include} und
+\texttt{require} standardisiert.  Dieser Vorschlag wurde angenommen.
+
+\end{description}
+
+Ausserdem wurden noch Vorschläge diskutiert, die noch nicht die
+CfV-Stufe erreicht hatten.  U.a. resultierte daraus eine
+Umformulierung von \texttt{TO}, sodass künftige Änderungen
+(\texttt{2VALUE}, \texttt{FVALUE}) leichter gemacht werden können.
+
+Weiters wurde beschlossen, dass der Sitzungsbericht in diversen
+Papiermedien veröffentlicht werden sollte (wichtig für eine offizielle
+Standardisierungsorganisation), was u.a. hiermit geschieht.
+
+Das nächste Treffen findet wieder am Tag vor der EuroForth statt, und
+Ihr seid herzlich eingeladen, ihm beizuwohnen.
