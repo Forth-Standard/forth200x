@@ -1,0 +1,102 @@
+<h1 id="forth-200x-meeting-notes">2019 Forth 200x Meeting Notes</h1>
+<h2 id="attendance">Attendance:</h2>
+<ul>
+<li>Willem Botha</li>
+<li>Jermaine Davies</li>
+<li>M. Anton Ertl</li>
+<li>Ulrich Hoffmann</li>
+<li>Peter Knaggs</li>
+<li>Howerd Oakford</li>
+<li>Bernd Paysan from Mi 15:30</li>
+<li>Stephen Pelc (chair)</li>
+<li>Leon Wagner (remote)</li>
+<li>Gerald Wodni</li>
+</ul>
+<h2 id="review-of-procedures">2 Review of Procedures</h2>
+<p>Remote observers: No, because committee members want to freely speak their mind, and need to know who observes. The prospect of being recorded was seen as particularly problematic.</p>
+<h3 id="a-sfp-the-meeting-minutes-are-not-detailed-enough-for-people">2a) (SFP) The meeting minutes are not detailed enough for people</h3>
+<p>who did not participate in the meeting.</p>
+<p>Needs volunteers, but we will try to be more verbose.</p>
+<h3 id="b-sfp-gw-should-put-the-meeting-agendas-and-minutes-at-forth-">2b) (SFP) GW should put the meeting agendas and minutes at forth-</h3>
+<p>standard.org; 2c) (SFP) Other actions to migrate forth200x.org to forth- standard.org have not been implemented.</p>
+<p>Workshop on forth-standard.org and forth200x.org integration. GW, AE, PK Already done: https://github.com/Forth-Standard/forth200x</p>
+<h3 id="d-pjk-et-al-move-updated-proposal-process-to-document.">2d) (PJK et al) Move updated proposal process to document.</h3>
+<p>Both the 2018 and 2019 meeting results will be integrated into the document in one step.</p>
+<h3 id="e-cfv-on-forth-standard.org">2e) CfV on forth-standard.org</h3>
+<p>Still to be done</p>
+<h3 id="f-vote-to-accept-2018-minutes">2f) Vote to accept 2018 minutes</h3>
+<p>7A:0N:2A (abstentions due to non-attendance in 2018)</p>
+<h3 id="g-brexit-consequences">2g) Brexit Consequences</h3>
+<p>Take action when needed (and not before)</p>
+<h2 id="reports">3 Reports</h2>
+<h3 id="a-chair">3a) Chair</h3>
+<p>No electronic meeting</p>
+<h3 id="b-editor">3b) Editor</h3>
+<p>See 2d. There is github.com/PeterKnaggs/forth-standard</p>
+<h3 id="c-technical">3c) Technical</h3>
+<p>A few improvents have been implemented, more to come.</p>
+<h3 id="d-treasurer">3d) Treasurer</h3>
+<p>Balance: 0, no income, no expenses</p>
+<h2 id="review-of-proposals-and-activities">4 Review of Proposals and Activities</h2>
+<h3 id="a-recognizers">4a) Recognizers</h3>
+<p>For personal reasons Matthias Trute cannot continue. BP is picking up the proposal.</p>
+<p>Postpone action discussion: Workshop: BP, SP, AE</p>
+<h3 id="b-multi-tasking">4b) Multi-tasking</h3>
+<p>Discussion of the initialization of UVALUEs: Initialize by cloning an existing task, not by a HIS-like mechanism.</p>
+<p>Contact Andrew Haley (SP). Workshop topic (pretty much everyone)</p>
+<h3 id="c-external-functions">4c) External Functions</h3>
+<p>Workshop where GW explains the SWIG approach: Instead of doing a lot in Forth, do a lot in SWIG, and the result provides everything that Forth needs.</p>
+<h3 id="d-from-forth-standard.org">4d) From forth-standard.org</h3>
+<p>BL Rationale: GW volunteers for rewording</p>
+<h3 id="e-proposal-for-source-relative-filenames">4e) Proposal for source-relative filenames</h3>
+<p>Presentation from GW (in workshop). Committee encourages: Move to proposal</p>
+<h3 id="f-internationalisation">4f) Internationalisation</h3>
+<p>Discussion of character sets. Discussion of language and country.</p>
+<h3 id="g-from-forth-standard.org">4g) from forth-standard.org:</h3>
+<h4 id="also-without-vocabulary"><a href="http://forth-standard.org/standard/search/ALSO#contribution-70">ALSO without VOCABULARY</a></h4>
+<p>Proposal for &gt;ORDER AE Proposal for VOCABULARY UH Response on behalf of the committee AE</p>
+<h4 id="should-to-be-findable"><a href="http://forth-standard.org/standard/core/TO#contribution-72">Should TO be findable?</a></h4>
+<p>Related to Clarify FIND</p>
+<p>In addition, make a proposal to fix the shortcomings pointed out by Ruvim: execution token AE</p>
+<h4 id="case-sensitivity-case-insensitivity">Case sensitivity, Case insensitivity</h4>
+<p>Discuss them, finally do CfV</p>
+<h4 id="else-without-preceding-if"><a href="http://forth-standard.org/standard/tools/BracketELSE#contribution-54">[ELSE] without preceding [IF]</a></h4>
+<p>Write a rationale why this is a bad idea BP</p>
+<h4 id="if-and-else-parse-white-space---including-comments"><a href="http://forth-standard.org/standard/tools/BracketELSE#contribution-74">[if] and [else] parse white space - including comments</a></h4>
+<p>Discuss in the rationale the caveats of the interation of parsing words and [else], [if], [then] etc.</p>
+<p>Changes to [ELSE] and [IF] rationale 10Y:0:0</p>
+<h4 id="fr-and-fr-to-support-dynamically-scoped-floating-point-variables"><a href="http://forth-standard.org/standard/float#contribution-75">F&gt;R and FR&gt; to support dynamically-scoped floating point variables</a></h4>
+<p>AE: Write a reply inquiring about existing practice, wheter FP locals have more existing practice, and possibly turning it into a proper proposal.</p>
+<p>Flocals F: proposal to bewritten by SP</p>
+<p>add [ notation for locals to Gforth BP</p>
+<h4 id="the-case-of-undefined-interpretation-semantics"><a href="http://forth-standard.org/standard/tools/BracketDEFINED#contribution-86">The case of undefined interpretation semantics</a></h4>
+<p>BP will write a proposal for fixing this issue</p>
+<h4 id="interpretation-semantics"><a href="http://forth-standard.org/standard/core/COMPILEComma#contribution-87">Interpretation semantics</a></h4>
+<p>AE: write a proposal to define interpretation semantics of COMPILE,</p>
+<h4 id="terminology-and-wording-regarding-dictionary"><a href="http://forth-standard.org/standard/notation#contribution-82">Terminology and wording regarding &quot;dictionary&quot;</a></h4>
+<p>AE: write a reply, suggesting that ruv writes proposals; Renaming &quot;name space&quot; to &quot;header space&quot; should find consensus Some committee members are nervous about touching dictionary</p>
+<h4 id="ambiguous-condition-could-be-removed"><a href="http://forth-standard.org/standard/core/POSTPONE#contribution-98">Ambiguous condition could be removed</a></h4>
+<p>PK: Write on the committee's behalf</p>
+<h4 id="gnu-c-restrict-would-make-sense-in-the-standard"><a href="http://forth-standard.org/standard/core#contribution-104">GNU C RESTRICT would make sense in the standard</a></h4>
+<p>PK: Wrote a reply on the committee's behalf</p>
+<h4 id="cs-drop"><a href="http://forth-standard.org/standard/tools/CS-PICK#contribution-113">CS-DROP</a></h4>
+<p>UH: Adjust proposal to allow exactly one use of orig. Proceed to CfV.</p>
+<h3 id="h-further-forth-standard.org-contributions">4h) Further forth-standard.org contributions:</h3>
+<p>For this part I (AE) presented the contributions to the committee, so I noted only those parts where the committee voted and those where I should take an action. The Minutes should contain more about this.</p>
+<h4 id="behavior-when-no-text-found"><a href="http://forth-standard.org/standard/core/CHAR#contribution-78">Behavior when no text found</a></h4>
+<p>AE: Make a proposal to make it explicit</p>
+<h4 id="revise-rationale-of-buffer"><a href="http://forth-standard.org/standard/core/BUFFERColon#contribution-90">Revise Rationale of Buffer:</a></h4>
+<p>Committee vote on this wording change: 0Y:5N:4A</p>
+<h4 id="executing-compilation-semantics"><a href="http://forth-standard.org/standard/doc#contribution-94">Executing compilation semantics</a></h4>
+<p>Accepted 9Y:0N:1A</p>
+<h4 id="description-of-nt-in-the-standard"><a href="http://forth-standard.org/standard/tools#contribution-109">description of &quot;nt&quot; in the standard</a></h4>
+<p>Move the definition of &quot;name token&quot; from 15.3 to 15.2 8Y:0N:0A</p>
+<p>Coming out of that:</p>
+<p>Definition of &quot;search order&quot; and rewording of [defined] and [undefined] 9Y:0:0</p>
+<h2 id="workshops">6) Workshops</h2>
+<h3 id="clarify-find">Clarify find</h3>
+<p>Move to CfV</p>
+<h3 id="header-flags">Header flags</h3>
+<p>Discussion</p>
+<h3 id="forth-standard.org">forth-standard.org</h3>
+<p>Discuss ways to avoid overloading the committee. Closing (with the option to reopen) a contribution would take it off the ToDo list of the committee. If a committee member replies to a requests for clarification, he will normally close the contribution.</p>

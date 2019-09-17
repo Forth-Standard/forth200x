@@ -1,0 +1,77 @@
+1 Participants
+==============
+
+2 Review of Procedures
+======================
+a) (SFP) The meeting minutes are not detailed enough for people
+who did not participate in the meeting.
+
+b) (SFP) GW should put the meeting agendas and minutes at forth-
+standard.org
+
+c) (SFP) Other actions to migrate forth200x.org to forth-
+standard.org have not been implemented.
+
+d) (PJK et al)
+Move updated proposal process to document.
+
+3 Reports
+=========
+a) Chair
+
+b) Editor
+
+c) Technical
+
+d) Treasurer
+
+4 Review of Proposals and Activities
+====================================
+a) Recognisers
+   Stay as experimental proposal?
+   Separate POSTPONE action?
+   Impact of dot parser on POSTPONE?
+   Internationalisation
+
+b) Multi-tasking
+
+c) External functions
+
+BL rationale
+
+>From forth-standard.org
+-----------------------
+ALSO without VOCABULARY
+TO findable? Ambiguous condition?
+Case sensitivity wording
+[ELSE] without [IF], [ELSE] in white space
+F>R, FR>
+Execution of EXIT - text
+RUV's undefined interpretation semantics
+"name space"
+POSTPONE ambiguous condition or error?
+GNU C RESTRICT
+
+5 Consideration of proposals + CfV votes
+============================
+
+6) Workshops
+============
+Topic list to be defined at the meeting, perhaps to include:
+
+Recognisers
+Multitasking
+NDCS -> Dual
+Ambiguous conditions
+....
+
+Workshop reports
+
+7) Matters arising
+==================
+
+8) Any other business
+=====================
+
+9) Date of next meeting
+=======================
