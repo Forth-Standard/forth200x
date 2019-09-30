@@ -1,0 +1,187 @@
+SFP_Meeting_notes_2019.txt
+==========================
+
+1) Participants
+===============
+Willem Botha
+Jermaine Davies
+Anton Ertl
+Ulli Hoffman
+Peter Knaggs
+Howerd Oakford
+Bernd Paysan
+Stephen Pelc
+Leon Wagner (remote)
+Gerald Wodni
+
+2) Review of procedures
+=======================
+
+a) Remote attendance
+
+There were two requests for remote attendance, one from Juergen
+Pintaske to be an observer and one from Leon Wagner as a full
+member.
+
+After discussion covering privacy and confidence issues, it was
+decided by consensus that committee members in good standing can
+attend remotely, but that observers cannot.
+
+Leon had provided a simple conference phone set. After the second
+day we all believed that a better internet connection and hardware
+are required.
+
+b) (SFP) The meeting minutes are not detailed enough for people
+who did not participate in the meeting. The note-takers (AE, PK, SP)
+agreed to try harder.
+
+c) (SFP) GW should put the meeting agendas and minutes at forth-
+standard.org. Action AE, GW, PJK
+
+d) (SFP) Other actions to migrate forth200x.org to forth-
+standard.org have not been implemented. Action GW
+
+e) (PJK et al)
+Move updated proposal process to document. Action PJK.
+
+f) (BP) Brexit consequences.
+   We will do nothing until we have to. After Brexit, UK citizens
+   will no longer be treated as EU citizens. The most likely action is to
+   change to being a foreign community under German law if/when the
+   UK leaves the EU.
+
+3) Reports
+==========
+a) Chair (SFP) - too busy to do much
+b) Editor (PJK) - too busy to do much
+c) Technical (GW) - only small changes to forth-standard.org
+   Will add meetings and proposals
+d) Treasurer (BP) - no bank, no income, no expenditure
+
+4) Proposals and activities
+===========================
+With the introduction of the forth-standard.org website, there has been
+an explosion of discussion and topics.
+
+a) Recognisers
+   Matthias Trute has serious health issues. BP will take over
+   the proposal. It was suggested that we apply the IETF approach,
+   "rough consensus and running code".
+
+b) Multitasking
+   Andrew Haley (proposer) was not present.
+   SFP to contact APH re progress (done).
+   Workshop BP, SFP, GW ... all.
+
+c) External Functions
+   Use FUNCTION: or SWIG - Workshop
+   SFP to write up
+
+d) Rationale for BL.
+
+e) ./ for relative file INCLUDE and friends.
+   This should go to a proposal, SFP and AE?
+
+f) Internatioalisation
+   Authors to take to proposal.
+
+g) UH to write proposal for VOCABULARY
+   AE response and proposal
+
+h) TO findable? Ambiguous condition?
+   By committee consensus, there's a bug in the standard.
+
+i) Case sensitivity
+   Make case insensitive the default for ASCII only.
+   AE to write proposal.
+
+j) [ELSE] without [IF]
+
+k) F>R, FR>
+   AE to raise to proposal, add common practice.
+
+l) '/['] EXIT EXECUTE - legal/standard
+   Good point, will investigate further. AE?
+
+m) [DEFINED] needs a definition of search order.
+   COMPILE, should be a regular word
+   AE to draft.
+
+n) Code, data, name spaces
+   AE to respond.
+
+o) POSTPONE ambiguous condition. PJK responded.
+
+p) GNU C RESTRICT.
+   PJK responded that proposal would not reach consensus.
+
+q) CS-DROP. Go to call for vote.
+
+r) FP locals.
+   SFP to add F: notation proposal
+
+s) ACCEPT
+   AE to respond.
+
+t) Numeric overflow
+   AE has responded
+
+u) Cell width for numbers
+
+v) BUFFER:
+   AE's proposal was rejected.
+
+w) POSTPONE [IF]
+   BP to update rationale for [IF]
+
+x) doc - execute compilation semantics analagous 9/0/1
+   what is this?
+
+y) RTYPE right justified TYPE.
+   SFP to respond
+   a) update to full proposal
+   b) unlikely to pass
+   c) WIBNI - existing practice?
+
+z) LOAD clarification
+   HO responded
+
+aa) BLOCK, LIST
+    no further action
+
+ab) Tools, NT
+    ???
+
+ac) >IN clarafications - no further action
+
+ad) Ambiguous conditions RFC
+    ???
+
+ae) IMMEDIATE
+    Someone else should ...
+
+5 Consideration of proposals + CfV votes
+============================
+
+6) Workshops
+============
+Multi-tasking
+  homework for all
+
+./ relative include
+  Now implemented in VFX
+  take to proposal by GW/UH
+
+Internationalisation
+  Remove DCS/OCS/ACS discussion -
+  Define L" with dual behaviour
+  UH to convert proposal to Markdown for forth-standard.org
+
+
+7) Matters arising
+==================
+
+8) Any other business
+=====================
+Date of next meeting - 3 days before next EuroForth
+
