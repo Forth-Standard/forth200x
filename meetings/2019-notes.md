@@ -23,9 +23,11 @@ recorded was seen as particularly problematic.
 
 Needs volunteers, but we will try to be more verbose.
 
-### 2b) (SFP) GW should put the meeting agendas and minutes at forth-standard.org; 2c) (SFP) Other actions to migrate forth200x.org to forth-standard.org have not been implemented.
+### 2b) (SFP) GW should put the meeting agendas and minutes at forth-standard.org
+### 2c) (SFP) Other actions to migrate forth200x.org to forth-standard.org have not been implemented.
 
 Workshop on forth-standard.org and forth200x.org integration.  GW, AE, PK
+
 First part already done: <https://github.com/Forth-Standard/forth200x>
 
 ### 2d) (PJK et al) Move updated proposal process to document.
@@ -105,7 +107,9 @@ Discussion of character sets.  Discussion of language and country.
 #### [ALSO without VOCABULARY](http://forth-standard.org/standard/search/ALSO#contribution-70)
 
 Proposal for >ORDER AE
+
 Proposal for VOCABULARY UH
+
 Response on behalf of the committee AE
 
 #### [Should TO be findable?](http://forth-standard.org/standard/core/TO#contribution-72)
@@ -125,7 +129,7 @@ Write a rationale why this is a bad idea BP
 
 #### [[if] and [else] parse white space - including comments](http://forth-standard.org/standard/tools/BracketELSE#contribution-74)
 
-Discuss in the rationale the caveats of the interation of parsing
+Discuss in the rationale the caveats of the interaction of parsing
 words and [else], [if], [then] etc.
 
 Changes to [ELSE] and [IF] rationale 10Y:0:0
