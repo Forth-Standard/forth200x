@@ -1,0 +1,205 @@
+<h1 id="notes-on-the-2020-forth-200x-meeting">Notes on the 2020 Forth-200x meeting</h1>
+<p>Notes taken by M. Anton Ertl</p>
+<h2 id="participants">Participants:</h2>
+<ul>
+<li>Andrew Hayley (starting 2020-09-01 13:10 UTC)</li>
+<li>Andrew Read (observer)</li>
+<li>Anton Ertl</li>
+<li>Bernd Paysan</li>
+<li>Brad Rodriguez (Observer 2020-09-01 14:40 UTC)</li>
+<li>Gerald Wodni</li>
+<li>Gordon Charlton (Observer)</li>
+<li>Howerd Oakford (2020-09-01 13:18-13:30, 15:25- UTC)</li>
+<li>Jermaine Davies</li>
+<li>John Helmers (observer)</li>
+<li>Klaus Schleisiek (Observer)</li>
+<li>Krishna Myneni (accepted as voting member)</li>
+<li>Leon Wagner</li>
+<li>Peter Knaggs</li>
+<li>Stephen Pelc</li>
+<li>Ullrich Hoffmann (starting 2020-09-01 13:35 UTC)</li>
+<li>Willem Botha</li>
+</ul>
+<p>Accept Krishna for vote? Vote #5 7Y:0N:0A</p>
+<p>Sergey Baranov is no longer a committee member</p>
+<h2 id="review-of-procedures">Review of Procedures</h2>
+<ol type="1">
+<li><p>Covid consequences</p>
+<p>Electronic meetings</p>
+<p>Accepted the following amendment to the constitution (Vote #8, 12Y:0:0)</p>
+<blockquote>
+<p>Delete the “with the exception of the Annual General Meeting” restriction from section 5.7 of the Constitution so it reads as follows:</p>
+<p>“5.7. General Meetings may be virtual (e.g.,via Telephone, eMail, chat, etc.).”</p>
+</blockquote></li>
+<li><p>Brexit consequences</p>
+<p>none</p></li>
+<li><p>Payment for services/licences</p>
+<p>No change</p></li>
+<li><p>Other</p>
+<p>Vote of officers in 2020</p>
+<p>Due to lack of secret voting: Delay until 2021 unless somebody objects</p></li>
+</ol>
+<h2 id="reports">Reports</h2>
+<ol type="1">
+<li><p>Chair</p>
+<p>forth-standard.org works</p></li>
+<li><p>Editor</p>
+<p>Last public version: 2018-1</p>
+<p>Get the document in XML with Peter Knaggs’ document type</p></li>
+<li><p>Technical</p>
+<p>Provide Moderator button on “Manage users”. Action: GW</p>
+<p>Usenet postings for forth-standard.org postings: Only proposals. Undecided whether automated or in person.</p>
+<p>Mailing lists: Yahoo no longer archives the mailing lists Move the mailing list to Forth-Gesellschaft. Action: BP PK</p></li>
+<li><p>Treasurer</p>
+<p>No income, no expenses, balance: 0</p></li>
+</ol>
+<h2 id="review-of-proposals-and-activities">Review of Proposals and Activities</h2>
+<ol type="1">
+<li><p>Recognisers <br>Stay as experimental proposal? <br>Separate POSTPONE action? <br>Impact of dot parser on POSTPONE?</p>
+Discussion without resolution. Issues:
+<ul>
+<li>GET-RECOGNIZER and +RECOGNIZER -RECOGNIZER vs. REC-SEQUENCE</li>
+<li>POSTPONE action</li>
+<li>starting renaming from RfD-A instead of RfD-D</li>
+</ul></li>
+<li><p>Multi-tasking from APH</p>
+<p>There is common practice</p>
+<p>Implementation on GitHub</p>
+<p>Formal proposal upcoming (memory model missing). Action: AH</p></li>
+<li><p><a href="https://forth-standard.org/standard/core/IMMEDIATE#contribution-112">Ambiguous condition and IMMEDIATE</a> <br>TC answer by Bernd, 2019-09-12 15:19:24 <br>Move from RUV, any further action?</p>
+<p>Answer the latest reply. Action: AE</p>
+<p>Propose to remove the ambiguous condition (from 16.3.3) that RUV points out Vote #9: 6Y:4N:2A, i.e., not accepted (no consensus reached).</p>
+<p>no committee response</p></li>
+<li><p><a href="https://forth-standard.org/proposals/cs-drop-revised-2019-08-22-#contribution-113">CS-DROP</a> from UH <br>say orig and dest must be same size <br>Go to vote?</p>
+<p>Approved by the committee. Vote #18 11Y:0N:1A</p></li>
+<li><p><a href="https://forth-standard.org/proposals/case-insensitivity#contribution-114">Case insensitivity</a> <br>ASCII case insensitivity only. <br>Go to vote?</p>
+<p>Go to CfV when forth-standard.org supports it. Action: AE</p></li>
+<li><p><a href="https://forth-standard.org/proposals/remove-the-rules-of-find-#contribution-115">Remove the “rules of FIND”</a> (BP) <br>Locals word set? <br>Go to vote?</p>
+<p><a href="https://forth-standard.org/proposals/remove-the-rules-of-find-?hideDiff#reply-465">Wording change proposal</a> was accepted: Vote #10, 10Y:0:0</p></li>
+<li><p><a href="https://forth-standard.org/standard/tools/SYNONYM#contribution-116">Reference implementation of SYNONYM</a> (AE, RUV) <br>Broken reference implementation. <br>New reference implementation.</p>
+<p>Vote #6:</p>
+<blockquote>
+<p>Delete reference implementation for SYNONYM and replace with this rationale text (from original implementation):</p>
+<p>“The implementation of SYNONYM requires detailed knowledge of the host implementation, which is why it is standardized.”</p>
+</blockquote>
+<p>12Y:0:0 Accepted</p></li>
+<li><p><a href="https://forth-standard.org/proposals/vocabulary#contribution-117">VOCABULARY</a> (UH)</p>
+<p>The committee felt there was no question that this is common practice, so it skipped the CfV part and went directly to committee vote.</p>
+<p>Vote #7:</p>
+<blockquote>
+<p>Adopt <a href="https://forth-standard.org/proposals/vocabulary#reply-453">the latest (2020-09-01)</a> version of the VOCABULARY proposal to the standard.</p>
+</blockquote>
+<p>12Y:0:0 Accepted</p></li>
+<li><p><a href="https://forth-standard.org/standard/tools/TRAVERSE-WORDLIST#contribution-118">Unfindable definitions</a> (RUV)</p>
+<p><a href="https://forth-standard.org/proposals/traverse-wordlist-does-not-find-unnamed-unfinished-definitions?hideDiff#reply-487">Wording change for TRAVERSE-WORDLIST</a> to address the issue</p>
+<p>Vote #20: 11Y:0:0 Accepted</p></li>
+<li><p><a href="https://forth-standard.org/standard/tools/BracketELSE#contribution-121">Case sensitivity in [IF] and friends</a></p>
+<p>Reference implementation looks good. Vote #11 to accept this reference implementation: 10Y:0:0 Accepted.</p></li>
+<li><p><a href="https://forth-standard.org/proposals/clarify-find?hideDiff#reply-165">Clarify FIND</a> and <a href="https://forth-standard.org/proposals/clarify-find-more-classic-approach#contribution-122">Clarify FIND, more classic approach</a></p>
+<p>No action, look at it again next year.</p></li>
+<li><p>FIND-NAME</p>
+<p>Accepted in 2018</p></li>
+<li><p>License (JK, RUV)</p>
+<p>Addressed in <a href="https://forth-standard.org/proposals/licence-to-use-reference-implementations?hideDiff#reply-481">License to use reference implementations</a></p>
+<p>Vote #19: 12Y:0:0 Accepted</p></li>
+<li><p><a href="https://forth-standard.org/standard/string/REPLACES#contribution-124">String, REPLACES</a> (RUV) <br>Error if macro does not exist during compilation?</p>
+<p>Proposed wording change in REPLACES:</p>
+<blockquote>
+<p>This breaks the contiguity of the current region and is not allowed during compilation of a colon definition</p>
+</blockquote>
+<p>with</p>
+<blockquote>
+<p>Therefore REPLACES cannot be performed during compilation of a colon definition or in the middle of a contiguous region.</p>
+</blockquote>
+<p>Vote #14: 11Y:0N:1A Accepted</p></li>
+<li><p>Why RECURSE is needed (BI) <br>Pick a TC answer.</p>
+<p>Request answered</p></li>
+<li><p><a href="https://forth-standard.org/proposals/input-values-other-than-true-and-false#contribution-126">Input values other than true and false [IF]</a> <br>Pick flag as z/nz, vote, TC response</p>
+<p>Vote #16 12Y:0:0 Accepted</p></li>
+<li><p><a href="https://forth-standard.org/standard/core/WITHIN#contribution-127">sample implementation that can also be interpreted (MAX)</a> <br>Adopt RUV’s response as TC answer.</p>
+<p>ruv’s response is correct</p></li>
+<li><p><a href="https://forth-standard.org/proposals/better-wording-for-colon#contribution-128">Better wording for Colon</a> (RUV)</p>
+<p>Instead of the proposed wording, the committee accepted the following wording change (Vote #13: 11Y:0N:1A):</p>
+<blockquote>
+<p>Replace the first paragraph of 6.1.0450 : (colon)</p>
+<blockquote>
+<p>Skip leading space delimiters. Parse name delimited by a space. Create a definition for name, called a “colon definition”. Enter compilation state and start the current definition, producing colon-sys. Append the initiation semantics given below to the current definition.</p>
+</blockquote>
+<p>with the following</p>
+<blockquote>
+<p>Skip leading space delimiters. Parse name delimited by a space. Create a definition for name. Enter compilation state and start the current definition, producing colon-sys. Append the initiation semantics given below to the current definition.</p>
+</blockquote>
+</blockquote></li>
+<li><p><a href="https://forth-standard.org/proposals/name-interpret-wording#contribution-129">NAME&gt;INTERPRET wording</a> (RUV)</p>
+<p>To address the execution token issue, <a href="https://forth-standard.org/proposals/reword-the-term-execution-token-?hideDiff#reply-486">Proposal: Reword the term “execution token”</a> was drafted. This is now up for review by the general public.</p></li>
+<li><p><a href="https://forth-standard.org/standard/core/Colon#contribution-130">The parts of execution semantics and the calling definition</a> (RUV)</p>
+<p>Write a proposal eliminating initiation semantics of : and maybe other words. Action: AE</p></li>
+<li><p><a href="https://forth-standard.org/proposals/recognizer-rfd-rephrase-2020#contribution-131">Recognizer RfD rephrase 2020</a> (UH) <br>Move to recogniser workshop</p>
+<p>Discussed, see point 1.</p></li>
+<li><p><a href="https://forth-standard.org/standard/core/p#contribution-132">“(” typo in a testcase</a> (RUV) <br>Assign to editor</p>
+<p>Editor fixes it. Action: PK</p></li>
+<li><p><a href="https://forth-standard.org/proposals/wording-declare-undefined-interpretation-semantics-for-locals#contribution-133">Wording: declare undefined interpretation semantics for locals</a> (RUV) <br>Remove ambiguous conditions</p>
+<p>The committee accepted the following wording change (Vote #17, 12Y:0:0)</p>
+<blockquote>
+<p>This is true for (LOCAL) so we should add:</p>
+<p>local Interpretation: <br>Interpretation semantics for this word are undefined.</p>
+<p>LOCALS| refers to (LOCAL) so (LOCAL) covers the case.</p>
+<p>For {: we need to add:</p>
+<p>name Interpretation <br>The interpretation semantics of name are undefined</p>
+<p>then remove the ambiguous condition in name Execution.</p>
+</blockquote></li>
+<li><p><a href="https://forth-standard.org/standard/core/StoD#contribution-135">Word set of S&gt;D word</a> (RUV) <br>Leave as is?</p>
+<p><a href="https://forth-standard.org/standard/core/StoD#reply-468">Committee response</a></p></li>
+<li><p><a href="https://forth-standard.org/proposals/same-name-token-for-different-words#contribution-136">Same name token for different words</a> (RUV)</p>
+<p>No committee response for now</p></li>
+<li><p><a href="https://forth-standard.org/standard/locals#contribution-137">Recognizer for locals</a> (RUV)</p>
+<p>No committe response</p></li>
+<li><p><a href="https://forth-standard.org/standard/core/SMDivREM#contribution-138">There is error in testing SM/REM</a> (MB) <br>Pass to editor</p>
+<p>Pass to editor. Action: PK</p></li>
+<li><p><a href="https://forth-standard.org/standard/core/DEFER#contribution-141">Defer Implementation</a> (Tolich)</p>
+<p><a href="https://forth-standard.org/standard/core/DEFER#reply-562">Committee answer</a></p></li>
+<li><p><a href="https://forth-standard.org/proposals/recognizer#contribution-142">Recogniser</a> (BP) <br>Move to recogniser workshop.</p>
+<p>Move to workshop</p></li>
+<li><p><a href="https://forth-standard.org/standard/tools/SYNONYM#contribution-143">Does wording imply that if you SYNONYM a word with the same name</a> (JN)</p>
+<p>No committee response</p></li>
+<li><p><a href="https://forth-standard.org/standard/core/PARSE#contribution-144">What happens when parse reaches the end of the parse area?</a> (JN)</p>
+<p>Response. Action: AE</p></li>
+<li><p><a href="https://forth-standard.org/standard/testsuite#contribution-145">TEST instead of TEAT in F.1 para 2</a> (JN) <br>Pass to editor</p>
+<p>Pass to editor. Action: PK</p></li>
+</ol>
+<h2 id="workshop-topics">Workshop Topics</h2>
+<p>Workshops are topics for discussion outside the formal meeting.</p>
+<ol type="1">
+<li><p>Future Document Format</p>
+<p>Peter Knaggs may step down as editor. Gerald Wodni (technical director, responsible for forth-standard.org) strongly prefers staying with LaTeX. The XML format looks interesting; conversion cost, including tool conversion cost may be an issue, but there are some ideas on how to deal with it.</p></li>
+<li><p>Stack comments <br>stack comments should be parseable <br>Stack naming S: D: F: N: R: <br>stack effect notation <br>stack effect conventions</p>
+<p>This workshop did not happen.</p></li>
+<li><p>Test suites <br>Philosophy <br>J Hayes sequencing <br>G Jackson suite</p>
+<p>Connect with G Jackson. Action: PK</p></li>
+<li><p>Licensing</p>
+<p>Resulted in <a href="https://forth-standard.org/proposals/licence-to-use-reference-implementations?hideDiff#reply-481">License to use reference implementations</a></p>
+<p>Vote #19: 12Y:0:0 Accepted</p></li>
+<li><p>CfV</p>
+<p>Short workshop working out how CfVs should work on forth-standard.org</p></li>
+<li><p>Recognizers</p>
+<p>Some bikeshedding about names and terminology.</p>
+<p>Remove the opacity of rectype to allow to perform rectype dispatch with <code>STATE @ CELLS + @ EXECUTE</code>. This works better with the A/B POSTPONE, if you do a POSTPONE mode (]] … [[).</p>
+<p>Dealing with C/D POSTPONE in cross-compiling is possible (Bernd Paysan knows how to do it).</p></li>
+<li><p>Workshop reports</p>
+<p>See sections above</p></li>
+</ol>
+<h2 id="consideration-of-proposals-cfv-votes">Consideration of proposals + CfV votes</h2>
+<p>See above</p>
+<h2 id="matters-arising">Matters arising</h2>
+<p>Voting on officers moved to 2021</p>
+<h2 id="any-other-business">Any other business</h2>
+<ol type="1">
+<li><p>quotations wording</p>
+<p>offline</p></li>
+<li><p><a href="https://forth-standard.org/standard/tools/BracketELSE#contribution-134">Reference implementation does not seem to cope with changes to the stack</a></p>
+<p>Had been withdrawn</p></li>
+<li><p>Review votes</p>
+<p>Close votes at the end of EuroForth</p></li>
+</ol>
+<h2 id="date-of-next-meeting">Date of next meeting</h2>
+<p>September 8-10, 2021 in Rome <br>or <br>September 7-9, 2021, online</p>

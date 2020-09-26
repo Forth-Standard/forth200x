@@ -129,6 +129,16 @@ words defined with REC-SEQUENCE; for that we would need something like
 SET-REC-SEQUENCE.  It's not clear to me that this is really needed,
 though.
 
+## Discussion
+
+Advantages:
+
+The number of recognizers covered by a nestable recognizer sequence is
+unlimited (unlike the standard search order).
+
+REC-NUM can be a recognizer sequence, consisting of single-cell,
+double-cell, and/or various prefix recognizers.
+
 ## Proposal
 
 TBD (if this informal proposal is actually is popular enough to merit

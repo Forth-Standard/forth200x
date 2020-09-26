@@ -1,0 +1,1781 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head><script src="//archive.org/includes/analytics.js?v=cf34f82" type="text/javascript"></script>
+<script type="text/javascript">window.addEventListener('DOMContentLoaded',function(){var v=archive_analytics.values;v.service='wb';v.server_name='wwwb-app39.us.archive.org';v.server_ms=630;archive_analytics.send_pageview({});});</script><script type="text/javascript" src="/_static/js/playback.bundle.js?v=qchdzUCo" charset="utf-8"></script>
+<script type="text/javascript" src="/_static/js/wombat.js?v=cRqOKCOw" charset="utf-8"></script>
+<script type="text/javascript">
+  __wm.init("https://web.archive.org/web");
+  __wm.wombat("http://amforth.sourceforge.net/pr/Recognizer-rfc-C.html","20160328150126","https://web.archive.org/web/","web","/_static/",
+	      "1459177286","amforth.sourceforge.net");
+</script>
+<link rel="stylesheet" type="text/css" href="/_static/css/banner-styles.css?v=NHuXCfBH" />
+<link rel="stylesheet" type="text/css" href="/_static/css/iconochive.css?v=qtvMKcIJ" />
+<!-- End Wayback Rewrite JS Include -->
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="generator" content="Docutils 0.12: http://docutils.sourceforge.net/"/>
+<title>Forth Recognizer -- Request For Discussion</title>
+<meta name="author" content="Matthias Trute"/>
+<meta name="date" content="December, 1 2015"/>
+<style type="text/css">
+
+/*
+:Author: David Goodger (goodger@python.org)
+:Id: $Id: html4css1.css 7614 2013-02-21 15:55:51Z milde $
+:Copyright: This stylesheet has been placed in the public domain.
+
+Default cascading style sheet for the HTML output of Docutils.
+
+See http://docutils.sf.net/docs/howto/html-stylesheets.html for how to
+customize this style sheet.
+*/
+
+/* used to remove borders from tables and images */
+.borderless, table.borderless td, table.borderless th {
+  border: 0 }
+
+table.borderless td, table.borderless th {
+  /* Override padding for "table.docutils td" with "! important".
+     The right padding separates the table cells. */
+  padding: 0 0.5em 0 0 ! important }
+
+.first {
+  /* Override more specific margin styles with "! important". */
+  margin-top: 0 ! important }
+
+.last, .with-subtitle {
+  margin-bottom: 0 ! important }
+
+.hidden {
+  display: none }
+
+a.toc-backref {
+  text-decoration: none ;
+  color: black }
+
+blockquote.epigraph {
+  margin: 2em 5em ; }
+
+dl.docutils dd {
+  margin-bottom: 0.5em }
+
+object[type="image/svg+xml"], object[type="application/x-shockwave-flash"] {
+  overflow: hidden;
+}
+
+/* Uncomment (and remove this text!) to get bold-faced definition list terms
+dl.docutils dt {
+  font-weight: bold }
+*/
+
+div.abstract {
+  margin: 2em 5em }
+
+div.abstract p.topic-title {
+  font-weight: bold ;
+  text-align: center }
+
+div.admonition, div.attention, div.caution, div.danger, div.error,
+div.hint, div.important, div.note, div.tip, div.warning {
+  margin: 2em ;
+  border: medium outset ;
+  padding: 1em }
+
+div.admonition p.admonition-title, div.hint p.admonition-title,
+div.important p.admonition-title, div.note p.admonition-title,
+div.tip p.admonition-title {
+  font-weight: bold ;
+  font-family: sans-serif }
+
+div.attention p.admonition-title, div.caution p.admonition-title,
+div.danger p.admonition-title, div.error p.admonition-title,
+div.warning p.admonition-title, .code .error {
+  color: red ;
+  font-weight: bold ;
+  font-family: sans-serif }
+
+/* Uncomment (and remove this text!) to get reduced vertical space in
+   compound paragraphs.
+div.compound .compound-first, div.compound .compound-middle {
+  margin-bottom: 0.5em }
+
+div.compound .compound-last, div.compound .compound-middle {
+  margin-top: 0.5em }
+*/
+
+div.dedication {
+  margin: 2em 5em ;
+  text-align: center ;
+  font-style: italic }
+
+div.dedication p.topic-title {
+  font-weight: bold ;
+  font-style: normal }
+
+div.figure {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+div.footer, div.header {
+  clear: both;
+  font-size: smaller }
+
+div.line-block {
+  display: block ;
+  margin-top: 1em ;
+  margin-bottom: 1em }
+
+div.line-block div.line-block {
+  margin-top: 0 ;
+  margin-bottom: 0 ;
+  margin-left: 1.5em }
+
+div.sidebar {
+  margin: 0 0 0.5em 1em ;
+  border: medium outset ;
+  padding: 1em ;
+  background-color: #ffffee ;
+  width: 40% ;
+  float: right ;
+  clear: right }
+
+div.sidebar p.rubric {
+  font-family: sans-serif ;
+  font-size: medium }
+
+div.system-messages {
+  margin: 5em }
+
+div.system-messages h1 {
+  color: red }
+
+div.system-message {
+  border: medium outset ;
+  padding: 1em }
+
+div.system-message p.system-message-title {
+  color: red ;
+  font-weight: bold }
+
+div.topic {
+  margin: 2em }
+
+h1.section-subtitle, h2.section-subtitle, h3.section-subtitle,
+h4.section-subtitle, h5.section-subtitle, h6.section-subtitle {
+  margin-top: 0.4em }
+
+h1.title {
+  text-align: center }
+
+h2.subtitle {
+  text-align: center }
+
+hr.docutils {
+  width: 75% }
+
+img.align-left, .figure.align-left, object.align-left {
+  clear: left ;
+  float: left ;
+  margin-right: 1em }
+
+img.align-right, .figure.align-right, object.align-right {
+  clear: right ;
+  float: right ;
+  margin-left: 1em }
+
+img.align-center, .figure.align-center, object.align-center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.align-left {
+  text-align: left }
+
+.align-center {
+  clear: both ;
+  text-align: center }
+
+.align-right {
+  text-align: right }
+
+/* reset inner alignment in figures */
+div.align-right {
+  text-align: inherit }
+
+/* div.align-center * { */
+/*   text-align: left } */
+
+ol.simple, ul.simple {
+  margin-bottom: 1em }
+
+ol.arabic {
+  list-style: decimal }
+
+ol.loweralpha {
+  list-style: lower-alpha }
+
+ol.upperalpha {
+  list-style: upper-alpha }
+
+ol.lowerroman {
+  list-style: lower-roman }
+
+ol.upperroman {
+  list-style: upper-roman }
+
+p.attribution {
+  text-align: right ;
+  margin-left: 50% }
+
+p.caption {
+  font-style: italic }
+
+p.credits {
+  font-style: italic ;
+  font-size: smaller }
+
+p.label {
+  white-space: nowrap }
+
+p.rubric {
+  font-weight: bold ;
+  font-size: larger ;
+  color: maroon ;
+  text-align: center }
+
+p.sidebar-title {
+  font-family: sans-serif ;
+  font-weight: bold ;
+  font-size: larger }
+
+p.sidebar-subtitle {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+p.topic-title {
+  font-weight: bold }
+
+pre.address {
+  margin-bottom: 0 ;
+  margin-top: 0 ;
+  font: inherit }
+
+pre.literal-block, pre.doctest-block, pre.math, pre.code {
+  margin-left: 2em ;
+  margin-right: 2em }
+
+pre.code .ln { color: grey; } /* line numbers */
+pre.code, code { background-color: #eeeeee }
+pre.code .comment, code .comment { color: #5C6576 }
+pre.code .keyword, code .keyword { color: #3B0D06; font-weight: bold }
+pre.code .literal.string, code .literal.string { color: #0C5404 }
+pre.code .name.builtin, code .name.builtin { color: #352B84 }
+pre.code .deleted, code .deleted { background-color: #DEB0A1}
+pre.code .inserted, code .inserted { background-color: #A3D289}
+
+span.classifier {
+  font-family: sans-serif ;
+  font-style: oblique }
+
+span.classifier-delimiter {
+  font-family: sans-serif ;
+  font-weight: bold }
+
+span.interpreted {
+  font-family: sans-serif }
+
+span.option {
+  white-space: nowrap }
+
+span.pre {
+  white-space: pre }
+
+span.problematic {
+  color: red }
+
+span.section-subtitle {
+  /* font-size relative to parent (h1..h6 element) */
+  font-size: 80% }
+
+table.citation {
+  border-left: solid 1px gray;
+  margin-left: 1px }
+
+table.docinfo {
+  margin: 2em 4em }
+
+table.docutils {
+  margin-top: 0.5em ;
+  margin-bottom: 0.5em }
+
+table.footnote {
+  border-left: solid 1px black;
+  margin-left: 1px }
+
+table.docutils td, table.docutils th,
+table.docinfo td, table.docinfo th {
+  padding-left: 0.5em ;
+  padding-right: 0.5em ;
+  vertical-align: top }
+
+table.docutils th.field-name, table.docinfo th.docinfo-name {
+  font-weight: bold ;
+  text-align: left ;
+  white-space: nowrap ;
+  padding-left: 0 }
+
+/* "booktabs" style (no vertical lines) */
+table.docutils.booktabs {
+  border: 0px;
+  border-top: 2px solid;
+  border-bottom: 2px solid;
+  border-collapse: collapse;
+}
+table.docutils.booktabs * {
+  border: 0px;
+}
+table.docutils.booktabs th {
+  border-bottom: thin solid;
+  text-align: left;
+}
+
+h1 tt.docutils, h2 tt.docutils, h3 tt.docutils,
+h4 tt.docutils, h5 tt.docutils, h6 tt.docutils {
+  font-size: 100% }
+
+ul.auto-toc {
+  list-style-type: none }
+
+</style>
+</head>
+<body><!-- BEGIN WAYBACK TOOLBAR INSERT -->
+<style type="text/css">
+body {
+  margin-top:0 !important;
+  padding-top:0 !important;
+  /*min-width:800px !important;*/
+}
+</style>
+<script>__wm.rw(0);</script>
+<div id="wm-ipp-base" lang="en" style="display:none;direction:ltr;">
+<div id="wm-ipp" style="position:fixed;left:0;top:0;right:0;">
+<div id="wm-ipp-inside">
+  <div style="position:relative;">
+    <div id="wm-logo" style="float:left;width:110px;padding-top:12px;">
+      <a href="/web/" title="Wayback Machine home page"><img src="/_static/images/toolbar/wayback-toolbar-logo-200.png" srcset="/_static/images/toolbar/wayback-toolbar-logo-100.png, /_static/images/toolbar/wayback-toolbar-logo-150.png 1.5x, /_static/images/toolbar/wayback-toolbar-logo-200.png 2x" alt="Wayback Machine" style="width:100px" border="0" /></a>
+    </div>
+    <div class="r" style="float:right;">
+      <div id="wm-btns" style="text-align:right;height:25px;">
+                  <div id="wm-save-snapshot-success">success</div>
+          <div id="wm-save-snapshot-fail">fail</div>
+          <a id="wm-save-snapshot-open" href="#"
+	     title="Share via My Web Archive" >
+            <span class="iconochive-web"></span>
+          </a>
+          <a href="https://archive.org/account/login.php"
+             title="Sign In"
+             id="wm-sign-in"
+          >
+            <span class="iconochive-person"></span>
+          </a>
+          <span id="wm-save-snapshot-in-progress" class="iconochive-web"></span>
+        	<a href="http://faq.web.archive.org/" title="Get some help using the Wayback Machine" style="top:-6px;"><span class="iconochive-question" style="color:rgb(87,186,244);font-size:160%;"></span></a>
+	<a id="wm-tb-close" href="#close" onclick="__wm.h(event);return false;" style="top:-2px;" title="Close the toolbar"><span class="iconochive-remove-circle" style="color:#888888;font-size:240%;"></span></a>
+      </div>
+      <div id="wm-share">
+          <a href="/web/20160328150126/http://web.archive.org/screenshot/http://amforth.sourceforge.net/pr/Recognizer-rfc-C.html"
+             id="wm-screenshot"
+             title="screenshot">
+            <span class="wm-icon-screen-shot"></span>
+          </a>
+	<a id="wm-share-facebook" href="#" data-url="https://web.archive.org/web/20160328150126/http://amforth.sourceforge.net/pr/Recognizer-rfc-C.html" title="Share on Facebook" style="margin-right:5px;" target="_blank"><span class="iconochive-facebook" style="color:#3b5998;font-size:160%;"></span></a>
+	<a id="wm-share-twitter" href="#" data-url="https://web.archive.org/web/20160328150126/http://amforth.sourceforge.net/pr/Recognizer-rfc-C.html" title="Share on Twitter" style="margin-right:5px;" target="_blank"><span class="iconochive-twitter" style="color:#1dcaff;font-size:160%;"></span></a>
+      </div>
+    </div>
+    <table class="c" style="">
+      <tbody>
+	<tr>
+	  <td class="u" colspan="2">
+	    <form target="_top" method="get" action="/web/submit" name="wmtb" id="wmtb"><input type="text" name="url" id="wmtbURL" value="http://amforth.sourceforge.net/pr/Recognizer-rfc-C.html" onfocus="this.focus();this.select();" /><input type="hidden" name="type" value="replay" /><input type="hidden" name="date" value="20160328150126" /><input type="submit" value="Go" /></form>
+	  </td>
+	  <td class="n" rowspan="2" style="width:110px;">
+	    <table>
+	      <tbody>
+		<!-- NEXT/PREV MONTH NAV AND MONTH INDICATOR -->
+		<tr class="m">
+		  <td class="b" nowrap="nowrap">Feb</td>
+		  <td class="c" id="displayMonthEl" title="You are here: 15:01:26 Mar 28, 2016">MAR</td>
+		  <td class="f" nowrap="nowrap">Apr</td>
+		</tr>
+		<!-- NEXT/PREV CAPTURE NAV AND DAY OF MONTH INDICATOR -->
+		<tr class="d">
+		  <td class="b" nowrap="nowrap"><img src="/_static/images/toolbar/wm_tb_prv_off.png" alt="Previous capture" width="14" height="16" border="0" /></td>
+		  <td class="c" id="displayDayEl" style="width:34px;font-size:24px;white-space:nowrap;" title="You are here: 15:01:26 Mar 28, 2016">28</td>
+		  <td class="f" nowrap="nowrap"><img src="/_static/images/toolbar/wm_tb_nxt_off.png" alt="Next capture" width="14" height="16" border="0" /></td>
+		</tr>
+		<!-- NEXT/PREV YEAR NAV AND YEAR INDICATOR -->
+		<tr class="y">
+		  <td class="b" nowrap="nowrap">2015</td>
+		  <td class="c" id="displayYearEl" title="You are here: 15:01:26 Mar 28, 2016">2016</td>
+		  <td class="f" nowrap="nowrap">2017</td>
+		</tr>
+	      </tbody>
+	    </table>
+	  </td>
+	</tr>
+	<tr>
+	  <td class="s">
+	    	    <div id="wm-nav-captures">
+	      	      <a class="t" href="/web/20160328150126*/http://amforth.sourceforge.net/pr/Recognizer-rfc-C.html" title="See a list of every capture for this URL">1 capture</a>
+	      <div class="r" title="Timespan for captures of this URL">28 Mar 2016</div>
+	      </div>
+	  </td>
+	  <td class="k">
+	    <a href="" id="wm-graph-anchor">
+	      <div id="wm-ipp-sparkline" title="Explore captures for this URL" style="position: relative">
+		<canvas id="wm-sparkline-canvas" width="625" height="27" border="0"></canvas>
+	      </div>
+	    </a>
+	  </td>
+	</tr>
+      </tbody>
+    </table>
+    <div style="position:absolute;bottom:0;right:2px;text-align:right;">
+      <a id="wm-expand" class="wm-btn wm-closed" href="#expand" onclick="__wm.ex(event);return false;"><span id="wm-expand-icon" class="iconochive-down-solid"></span> <span style="font-size:80%">About this capture</span></a>
+    </div>
+  </div>
+    <div id="wm-capinfo" style="border-top:1px solid #777;display:none; overflow: hidden">
+                    <div id="wm-capinfo-collected-by">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center">COLLECTED BY</div>
+    <div style="padding:3px;position:relative" id="wm-collected-by-content">
+            <div style="display:inline-block;vertical-align:top;width:50%;">
+			<span class="c-logo" style="background-image:url(https://archive.org/services/img/webwidecrawl);"></span>
+		Organization: <a style="color:#33f;" href="https://archive.org/details/webwidecrawl" target="_new"><span class="wm-title">Internet Archive</span></a>
+		<div style="max-height:75px;overflow:hidden;position:relative;">
+	  <div style="position:absolute;top:0;left:0;width:100%;height:75px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,255) 100%);"></div>
+	  The Internet Archive discovers and captures web pages through many different web crawls.
+
+At any given time several distinct crawls are running, some for months, and some every day or longer.
+
+View the web archive through the <a href="http://archive.org/web/web.php">Wayback Machine</a>.
+	</div>
+	      </div>
+      <div style="display:inline-block;vertical-align:top;width:49%;">
+			<span class="c-logo" style="background-image:url(https://archive.org/services/img/hackernews00000)"></span>
+		<div>Collection: <a style="color:#33f;" href="https://archive.org/details/hackernews00000" target="_new"><span class="wm-title">Hackernews crawl number 0</span></a></div>
+		<div style="max-height:75px;overflow:hidden;position:relative;">
+	  <div style="position:absolute;top:0;left:0;width:100%;height:75px;background:linear-gradient(to bottom,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 90%,rgba(255,255,255,255) 100%);"></div>
+	  Hacker News Crawl of their links.
+	</div>
+	      </div>
+    </div>
+    </div>
+    <div id="wm-capinfo-timestamps">
+    <div style="background-color:#666;color:#fff;font-weight:bold;text-align:center" title="Timestamps for the elements of this page">TIMESTAMPS</div>
+    <div>
+      <div id="wm-capresources" style="margin:0 5px 5px 5px;max-height:250px;overflow-y:scroll !important"></div>
+      <div id="wm-capresources-loading" style="text-align:left;margin:0 20px 5px 5px;display:none"><img src="/_static/images/loading.gif" alt="loading" /></div>
+    </div>
+    </div>
+  </div></div></div></div><div id="donato" style="position:relative;width:100%;">
+  <div id="donato-base">
+    <iframe id="donato-if" src="https://archive.org/includes/donate.php?as_page=1&amp;transpiled=0&amp;referer=https%3A//web.archive.org/web/20160328150126/http%3A//amforth.sourceforge.net/pr/Recognizer-rfc-C.html"
+	    scrolling="no" frameborder="0" style="width:100%; height:100%">
+    </iframe>
+  </div>
+</div><script type="text/javascript">
+__wm.bt(625,27,25,2,"web","http://amforth.sourceforge.net/pr/Recognizer-rfc-C.html","20160328150126",1996,"/_static/",["/_static/css/banner-styles.css?v=NHuXCfBH","/_static/css/iconochive.css?v=qtvMKcIJ"]);
+  __wm.rw(1);
+</script>
+<!-- END WAYBACK TOOLBAR INSERT -->
+<div class="document" id="forth-recognizer-request-for-discussion">
+<h1 class="title">Forth Recognizer -- Request For Discussion</h1>
+<table class="docinfo" frame="void" rules="none">
+<col class="docinfo-name"/>
+<col class="docinfo-content"/>
+<tbody valign="top">
+<tr><th class="docinfo-name">Author:</th>
+<td>Matthias Trute</td></tr>
+<tr><th class="docinfo-name">Contact:</th>
+<td><a class="first last reference external" href="https://web.archive.org/web/20160328150126/mailto:mtrute@web.de">mtrute&#64;web.de</a></td></tr>
+<tr><th class="docinfo-name">Version:</th>
+<td>3</td></tr>
+<tr><th class="docinfo-name">Date:</th>
+<td>December, 1 2015</td></tr>
+<tr><th class="docinfo-name">Status:</th>
+<td>Final</td></tr>
+</tbody>
+</table>
+<div class="section" id="change-history">
+<h1>Change history</h1>
+<blockquote>
+<ul>
+<li><p class="first">2014-10-03 Version 1 - initial version.</p>
+</li>
+<li><p class="first">2015-05-17 Version 2 - extend rationale, added ' and [']</p>
+</li>
+<li><p class="first">2015-12-01 Version 3 - separate use cases, minor changes for
+nested recognizer stacks. New <tt class="docutils literal">POSTPONE</tt> action</p>
+<blockquote>
+<ul>
+<li><dl class="first docutils">
+<dt>2015-09-27</dt>
+<dd><ul class="first last simple">
+<li>Move naming conventions to informal appendix (not
+mandatory but worth to be mentioned)</li>
+<li>New <tt class="docutils literal">POSTPONE</tt> action. That finalizes the <tt class="docutils literal">R:TABLE</tt>
+API.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>2015-10-17</dt>
+<dd><ul class="first last simple">
+<li>Recognizers <em>can/may/shall</em> but don't <em>have to</em> replace
+the existing interpreter (Euroforth 2015).</li>
+<li>empty recognizer stacks are now allowed as a consequence from the above.</li>
+<li><a class="reference internal" href="#r-fail-necessity">R:FAIL necessity</a></li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>2015-10-31</dt>
+<dd><ul class="first last simple">
+<li><a class="reference internal" href="#nested-recognizer-stacks">Nested Recognizer Stacks</a> and (fast) switching between them.
+Introducing <tt class="docutils literal"><span class="pre">FORTH-RECOGNIZER</span></tt> as entry for the interpreter
+and similar words.</li>
+<li>fix stack effects at various places. More precious <tt class="docutils literal">POSTPONE</tt>
+description.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>2015-11-07</dt>
+<dd><ul class="first last simple">
+<li>finalize the building blocks.</li>
+<li>Introduce the recognizer stack id as an additional parameter.</li>
+<li>remove use cases from the proposal. Affects e.g. interpret, tick, bracket-tick
+and <tt class="docutils literal">POSTPONE</tt>. These words went to the informal appendix if applicable.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>2015-11-17</dt>
+<dd><ul class="first last simple">
+<li>expose the <tt class="docutils literal">R&gt;INT</tt>/<tt class="docutils literal">R&gt;COMP</tt>/<tt class="docutils literal">R&gt;POST</tt> words.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>2015-11-28</dt>
+<dd><ul class="first last simple">
+<li>document structure revisited.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>2015-12-01</dt>
+<dd><ul class="first last simple">
+<li>final version and public announcement</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+</div>
+<div class="section" id="background">
+<h1>Background</h1>
+<p>I'm working on a Forth for 8-bit micro-controllers
+for almost 10 years now (<a class="reference external" href="https://web.archive.org/web/20160328150126/http://amforth.sf.net/">amforth.sf.net</a>).
+It is not only a useful tool for serious work but
+a nice playground to experiment with Forth too.</p>
+<p>In 2011 my Forth got a floating point library. Since
+a micro-controller is (was) a resource constrained
+system it is not an option to include it permanently.
+It has to be a loadable module. Therefore I needed a
+way to keep the core system small but at the same time
+able to fully handle the new numbers. All but one
+problem were easy to fix. Only adding the number format
+to the Forth interpreter turned out to be serious one. I
+searched the net for ways to extend the Forth interpreter.
+What I found was having many hooks in the interpreter (U.
+Hoffman, Euroforth 2008) or a conditional re-compile of
+the sources with an autotool/configure like build system.
+Nothing really convinced me or my users. While googling
+I stumbled across the number parsing prefix discussion
+in c.l.f in 2007. The ideas sketched there looked
+promising so I stopped searching and started with
+them to invent my own solution.</p>
+<p>I changed the Forth interpreter into a dumb tool, that
+delegates all data related work to modules, which can
+be changed at run-time. That made it possible to load the
+FP library into a running system that afterwards was able
+to deal with the new numbers like native ones. Surprisingly
+the new system had no disadvantages in speed or size
+compared the old one, something I consider very
+important on a micro-controller.</p>
+<p>Shortly thereafter, Bernd Paysan got interested in what I
+did (we have regular IRC sessions on Forth topics) and
+started to implement recognizers in gforth. He suggested
+changes that further simplified my concept and made
+it more flexible.</p>
+<p>By now we reached a point that justifies the public review.
+There are two very different Forth's available (both GPL'ed)
+that implement recognizers. A third implementation is in
+the proposal (public domain).</p>
+<p>A recognizer written for one Forth works without modification
+for the other ones too. The words used to actually implement a
+recognizer (mostly string processing) need to be available
+of course. E.g. I wrote a recognizer for time stamp strings
+with gforth that converts the hh:mm:ss notation into a
+double cell number for the seconds since midnight. The
+code runs on amforth too. Gforth is a 64-bit system
+on the PC, amforth a 16-bit system on an 8-bit micro-controller
+(hence the double numbers). With that, something like</p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">test</span> <span class="literal number integer">01</span><span class="name function">:00:01</span> <span class="keyword">d. </span><span class="literal string">.&quot;</span> <span class="literal string"> seconds since midnight</span><span class="name function">&quot;</span> <span class="keyword">; </span><span class="name function">ok</span>
+<span class="name function">test</span> <span class="literal number integer">3601</span> <span class="name function">seconds</span> <span class="name function">since</span> <span class="name function">midnight</span> <span class="name function">ok</span>
+<span class="literal number integer">01</span><span class="name function">:01:00</span> <span class="literal number integer">01</span><span class="name function">:00:01</span> <span class="keyword">d+ d. </span><span class="literal number integer">7261</span> <span class="name function">ok</span>
+</pre>
+<p>is possible. Similarly strings: everything that starts
+with a <tt class="docutils literal">&quot;</tt> is a string until the closing <tt class="docutils literal">&quot;</tt> is
+reached. Further string handling get the addr/len
+without the enclosing <tt class="docutils literal">&quot;</tt>.</p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">test</span> <span class="name function">&quot;A</span> <span class="name function">string&quot;</span> <span class="keyword">type ; </span><span class="name function">ok</span>
+<span class="name function">test</span> <span class="name function">A</span> <span class="name function">string</span> <span class="name function">ok</span>
+<span class="name function">&quot;</span> <span class="name function">Another</span> <span class="name function">string&quot;</span> <span class="keyword">type </span><span class="name function">ok</span>  <span class="name function">Another</span> <span class="name function">string</span>
+</pre>
+<p>Another use case are name-spaces with
+word lists, without touching <tt class="docutils literal">ORDER</tt>:</p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">test</span> <span class="name function">i2c.begin</span> <span class="name function">i2c.sendbyte</span> <span class="name function">i2c.end</span> <span class="keyword">;</span>
+</pre>
+<p>where <tt class="docutils literal">begin/sendbyte/end</tt> are words from
+the word-list identified with <tt class="docutils literal">i2c</tt> (a constant
+with the wid). The recognizer splits the word
+at the first dot and uses the left sub-word to
+get the a word-list. In that word-list it searches
+with the remaining string and handles the result
+just like an ordinary dictionary search:
+interpret, compile (or not found).</p>
+<p>Implementations for these examples are available in
+the respective Forth systems.</p>
+</div>
+<div class="section" id="problem">
+<h1>Problem</h1>
+<p>The Forth compiler can be extended easily. The Forth
+interpreter however has a fixed set of capabilities as
+outlined in section 3.4 of the standard text: Words from
+the dictionary and some numbers.</p>
+<p>It's not easily possible to use the Forth text interpreter
+in an application or system extension context. The building
+blocks (<tt class="docutils literal">FIND</tt>, <tt class="docutils literal">COMPILE,</tt>, <tt class="docutils literal">&gt;NUMBER</tt> etc) are available
+but there is a gap between them and what the Forth interpreter
+does. Applications need to use either additional system
+provided and system specific intermediate words (if available)
+or have to re-invent the wheel to use e.g. numbers with a
+sign or hex numbers with the $ prefix.</p>
+<p>Some Forth interpreters have ways to add new data types.
+That makes it possible to use a loadable library to
+implement new data types to be handled like the built-in
+ones. An example are the floating point numbers. They
+have their own parsing and data handling words including
+a stack of their own.</p>
+<p>To actually handle data in the Forth context, the
+processing actions need to be <tt class="docutils literal">STATE</tt> aware. It
+would be nice if the Forth text interpreter,
+that maintains <tt class="docutils literal">STATE</tt>, is able to do the data
+processing without exposing <tt class="docutils literal">STATE</tt> to the data
+handling methods. For that the different methods
+need to be registered somehow.</p>
+</div>
+<div class="section" id="solution">
+<h1>Solution</h1>
+<p>The monolithic design of the Forth interpreter is factored into
+three major blocks: First the interpreter. It maintains <tt class="docutils literal">STATE</tt>
+and organizes the work. Second the actual data parsing. It is
+called from the interpreter and analyses strings (usually
+sub-strings of <tt class="docutils literal">SOURCE</tt>) if they match the criteria for a
+certain data type. These parsing words are grouped as a stack
+to achieve an order of invocation. The result of the parsing
+words is handed over by the interpreter to data specific
+handling methods. There are three different methods for each
+data type depending on <tt class="docutils literal">STATE</tt> and to <tt class="docutils literal">POSTPONE</tt> the data.</p>
+<p>The combination of a parsing word and the set of data handling words
+to deal with the data is called a recognizer. There is no strict 1:1
+relation between the parsing words and the data handling sets. A data
+handling set for e.g. single cell numbers can be used by different
+parsing words.</p>
+<p>Whenever the Forth text interpreter is mentioned, the standard
+words <tt class="docutils literal">EVALUATE</tt> (CORE), <tt class="docutils literal">'</tt> (tick, CORE), <tt class="docutils literal"><span class="pre">INCLUDE-FILE</span></tt>
+(FILE), <tt class="docutils literal"><span class="pre">INCLUDED``(FILE),</span> ``LOAD</tt> (BLOCK) and <tt class="docutils literal">THRU</tt> (BLOCK)
+are expected to act likewise. This proposal is not about to change
+these words, but to provide the tools to do so. As long as the
+standard feature set is used, a complete replacement with
+recognizers is possible.</p>
+<p>The proposal is about the building blocks.</p>
+</div>
+<div class="section" id="proposal">
+<h1>Proposal</h1>
+<div class="section" id="xy-the-optional-recognizer-word-set">
+<h2>XY. The optional Recognizer word set</h2>
+<div class="section" id="xy-1-introduction">
+<h3>XY.1 Introduction</h3>
+<p>A recognizer consists of two elements: a parsing word and
+information token(s) returned by the parsing words that
+identify the parsed data and provide methods to perform
+the various semantics of the data: interpret, compile and
+postpone. A parsing word can return different information
+tokens. A particular information token can be used by
+different parsing words.</p>
+<p>There is a system provided information token called <tt class="docutils literal">R:FAIL</tt>. It
+is used if no other token is applicable. This failure token is
+associated with the system error actions if used in step e) of
+the text interpreter (see Appendix). It is used to achieve the
+action d) of the section 3.4 text interpreter.</p>
+<p>The parsing word of a recognizer has the stack effect (parsing
+word names start with <tt class="docutils literal">REC:</tt> in this chapter)</p>
+<pre class="code forth literal-block">
+<span class="name function">REC:TABLE</span> <span class="comment single">( addr len -- i*x R:TABLE | R:FAIL )</span>
+</pre>
+<p>&quot;addr/len&quot; is a string, if provided by the Forth text interpreter
+a sub-string inside <tt class="docutils literal">SOURCE</tt>. The parsing word must not change the
+string content. It may change <tt class="docutils literal">&gt;IN</tt> however.</p>
+<p>&quot;i*x&quot; is the result of the parse action of the string &quot;addr/len&quot;.
+<tt class="docutils literal">R:TABLE</tt> is the information token that the interpreter uses
+to execute the interpret, compile or postpone actions for the
+data &quot;i*x&quot;.</p>
+<p>All three actions are called with the &quot;i*x&quot; data as left by the
+parsing word and are generally expected to consume it. They can
+have additional stack effects, depending on what <tt class="docutils literal">R:TABLE:METHOS</tt>
+actually does.</p>
+<pre class="code forth literal-block">
+<span class="name function">R:TABLE:METHOD</span> <span class="comment single">( ... i*x -- j*y )</span>
+</pre>
+<p>The data items &quot;i*x&quot; don't have to be on the data stack, they
+can be at different places, if applicable. E.g. floating
+point numbers have a stack of their own. In this case,
+the data stack contains the <tt class="docutils literal">R:TABLE</tt> information only.</p>
+<p>The names <tt class="docutils literal">R:TABLE</tt>, <tt class="docutils literal">REC:TABLE</tt> and <tt class="docutils literal">R:TABLE:METHOD</tt>
+don't have to actually exist, except the <tt class="docutils literal">R:FAIL</tt> name.</p>
+<p>A Forth system shall provide recognizers for integer numbers (both
+single and double precision) and the word look-up in the dictionary.</p>
+<p>A recognizer stack is identified by its ID. The numeric value
+is system dependent and generally opaque. The elements of a
+recognizer stack are available with <tt class="docutils literal"><span class="pre">GET/SET-RECOGNIZERS</span></tt> only.</p>
+</div>
+<div class="section" id="xy-2-additional-terms-and-notations">
+<h3>XY.2 Additional terms and notations</h3>
+<p>Information token: A single cell number. It identifies the
+data type and a method table to perform the data processing
+of the interpreter.</p>
+<p>Recognizer: A combination of a text parsing word that
+returns information tokens together with parsed data
+if successful. The text parsing word is assumed to
+run in cooperation with <tt class="docutils literal">SOURCE</tt> and <tt class="docutils literal">&gt;IN</tt>.</p>
+<p>A recognizer stack is identified with its stack id. This
+is cell sized numeric value. It may but don't have to
+be an address accessible with <tt class="docutils literal">&#64;</tt> and <tt class="docutils literal">!</tt> operations.</p>
+</div>
+<div class="section" id="xy-3-additional-usage-requirements">
+<h3>XY.3 Additional usage requirements</h3>
+<div class="section" id="xy-3-1-environment-queries">
+<h4>XY.3.1 Environment Queries</h4>
+<p>Obsolete.</p>
+</div>
+</div>
+<div class="section" id="xy-4-additional-documentation-requirements">
+<h3>XY.4 Additional documentation requirements</h3>
+<div class="section" id="xy-4-1-system-documentation">
+<h4>XY.4.1 System documentation</h4>
+<div class="section" id="xy-4-1-1-implementation-defined-options">
+<h5>XY.4.1.1 Implementation-defined options</h5>
+<p>No additional options.</p>
+</div>
+<div class="section" id="xy-4-1-2-ambiguous-conditions">
+<h5>XY.4.1.2 Ambiguous conditions</h5>
+<ul class="simple">
+<li>Change of the content of the parsed string during
+parsing.</li>
+<li>During <tt class="docutils literal"><span class="pre">SET-RECOGNIZERS</span></tt> the Recognizer stack size is exceeded.
+In this case, at least the following actions are possible
+* resize the stack, keeping its id
+* throw an exception (TBD)
+* execute an error action</li>
+</ul>
+</div>
+</div>
+<div class="section" id="xy-4-2-program-documentation">
+<h4>XY.4.2 Program documentation</h4>
+<ul class="simple">
+<li>No additional dependencies.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="xy-5-compliance-and-labeling">
+<h3>XY.5 Compliance and labeling</h3>
+<p>The phrase &quot;Providing the Recognizer word set&quot; shall be appended
+to the label of any Standard System that provides all of the
+Recognizer word set.</p>
+</div>
+<div class="section" id="xy-6-glossary">
+<h3>XY.6 Glossary</h3>
+<div class="section" id="xy-6-1-recognizer-words">
+<h4>XY.6.1 Recognizer Words</h4>
+<dl class="docutils">
+<dt>DO-RECOGNIZER ( addr len stack-id -- i*x R:TABLE | R:FAIL ) RECOGNIZER</dt>
+<dd><p class="first">Apply the string at &quot;addr/len&quot; to the elements of the recognizer
+stack identified by <tt class="docutils literal"><span class="pre">stack-id</span></tt>. Terminate the iteration if either
+one recognizer returns a information token that is different from
+<tt class="docutils literal">R:FAIL</tt> or the stack is exhausted. In this case return <tt class="docutils literal">R:FAIL</tt>.</p>
+<p class="last">&quot;i*x&quot; is the result of the parsing word. It represents the data from
+the string. It may be on other locations than the data stack. In this
+case the stack diagram should be read accordingly.</p>
+</dd>
+<dt>FORTH-RECOGNIZER ( -- stack-id ) RECOGNIZER</dt>
+<dd><p class="first">A system VALUE with a recognizer stack id.</p>
+<p>It is <tt class="docutils literal">VALUE</tt> that can be changed using <tt class="docutils literal">TO</tt> assigning a
+new recognizer stack id. This change has immediate effect.</p>
+<p class="last">The recognizer stack from this stack-id shall be used in all
+system level words like <tt class="docutils literal">EVALUATE</tt>, <tt class="docutils literal">LOAD</tt> etc.</p>
+</dd>
+<dt>GET-RECOGNIZERS ( stack-id -- rec-n .. rec-1 n ) RECOGNIZER</dt>
+<dd><p class="first">Return the execution tokens <tt class="docutils literal"><span class="pre">rec-1</span> .. <span class="pre">rec-n</span></tt> of the parsing
+words in the recognizer stack identified with <tt class="docutils literal"><span class="pre">stack-id</span></tt>.
+<tt class="docutils literal"><span class="pre">rec-1</span></tt> identifies the recognizer that is called first and
+<tt class="docutils literal"><span class="pre">rec-n</span></tt> the word that is called last.</p>
+<p class="last">The recognizer stack is left unchanged.</p>
+</dd>
+<dt>R&gt;COMP ( R:TABLE -- XT-COMPILE )   RECOGNIZER</dt>
+<dd>Return the execution token for the compilation action from the
+recognizer information token.</dd>
+<dt>R&gt;INT  ( R:TABLE -- XT-INTERPRET ) RECOGNIZER</dt>
+<dd>Return the execution token for the interpretation action from
+the recognizer information token.</dd>
+<dt>R&gt;POST ( R:TABLE -- XT-POSTPONE )  RECOGNIZER</dt>
+<dd>Return the execution token for the postpone action from the
+recognizer information token.</dd>
+<dt>R:FAIL ( -- R:FAIL ) RECOGNIZER</dt>
+<dd><p class="first">An information token with two uses: First it is used to
+deliver the information that a specific recognizer could
+not deal with the string passed to it. Second it is a
+predefined information token whose elements are used
+when no recognizer from the recognizer stack could handle the
+passed string. These methods provide the system error actions.</p>
+<p class="last">The actual numeric value is system dependent.</p>
+</dd>
+<dt>RECOGNIZER ( size -- stack-id ) RECOGNIZER</dt>
+<dd>Create a new recognizer stack with size elements.</dd>
+<dt>RECOGNIZER: ( XT-INTERPRET XT-COMPILE XT-POSTPONE &quot;&lt;spaces&gt;name&quot; -- ) RECOGNIZER</dt>
+<dd><p class="first">Skip leading space delimiters. Parse name delimited by a space. Create
+a recognizer information token &quot;name&quot; with the three execution tokens.</p>
+<p>The words for XT-INTERPRET, XT-COMPILE and XT-POSTPONE are called with
+the parsed data that the associated parsing word of the recognizer
+returned. The information token itself is consumed by the caller.</p>
+<p class="last">Each of the words XT-INTERPRET, XT-COMPILE and XT-POSTPONE has the
+stack effect <tt class="docutils literal">( ... i*x <span class="pre">--</span> j*y )</tt>. The words to compile and postpone
+the data shall consume the data &quot;i*x&quot;. If the data &quot;i*x&quot; is on different
+locations (e.g. floating point numbers), these words shall use that data.</p>
+</dd>
+<dt>SET-RECOGNIZERS ( rec-n .. rec-1 n stack-id -- ) RECOGNIZER</dt>
+<dd><p class="first">Set the recognizer stack identified by <tt class="docutils literal"><span class="pre">stack-id</span></tt> to the recognizers
+identified by the execution tokens of their parsing words <tt class="docutils literal"><span class="pre">rec-n</span> .. <span class="pre">rec-1</span></tt>.
+<tt class="docutils literal"><span class="pre">rec-1</span></tt> will be the parsing word of the recognizer that is called
+first, <tt class="docutils literal"><span class="pre">rec-n</span></tt> will be the last one.</p>
+<p class="last">If the size of the existing recognizer stack is too small to hold all
+new elements, an ambiguous situation arises.</p>
+</dd>
+</dl>
+</div>
+</div>
+<div class="section" id="xy-7-reference-implementation">
+<h3>XY.7 Reference Implementation</h3>
+<p>The code has as little as possible dependencies.</p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">RECOGNIZER</span> <span class="comment single">( size -- stack-id )</span>
+    <span class="keyword">1+ </span><span class="comment single">( size )</span> <span class="keyword">CELLS HERE SWAP ALLOT
+</span>    <span class="literal number integer">0</span> <span class="keyword">OVER ! </span><span class="comment single">\ empty stack
+</span><span class="keyword">;
+</span><span class="comment single">\ create the default recognizer stack
+</span><span class="literal number integer">4</span> <span class="name decorator">RECOGNIZER </span><span class="keyword namespace">VALUE</span> <span class="name class">FORTH-RECOGNIZER</span>
+
+<span class="keyword namespace">:</span> <span class="name class">SET-RECOGNIZERS</span> <span class="comment single">( rec-n .. rec-1 n stack-id -- )</span>
+   <span class="keyword">2DUP ! &gt;R
+</span>   <span class="keyword">BEGIN
+</span>     <span class="keyword">DUP
+</span>   <span class="keyword">WHILE
+</span>     <span class="keyword">DUP CELLS R&#64; +
+</span>     <span class="keyword">ROT SWAP ! 1-
+</span>   <span class="keyword">REPEAT R&gt; 2DROP
+;
+</span>
+<span class="keyword namespace">:</span> <span class="name class">GET-RECOGNIZERS</span> <span class="comment single">( stack-id -- rec-n .. rec-1 n )</span>
+   <span class="keyword">DUP &#64; DUP &gt;R SWAP
+</span>   <span class="keyword">BEGIN
+</span>     <span class="keyword">CELL+ OVER
+</span>   <span class="keyword">WHILE
+</span>     <span class="keyword">DUP &#64; ROT 1- ROT
+</span>   <span class="keyword">REPEAT 2DROP
+</span>   <span class="keyword">R&gt;
+;
+</span>
+<span class="comment single">\ create a simple 3 element structure
+</span><span class="keyword namespace">:</span> <span class="name class">RECOGNIZER:</span> <span class="comment single">( XT-INTERPRET XT-COMPILE XT-POSTPONE &quot;&lt;spaces&gt;name&quot; -- )</span>
+   <span class="keyword">CREATE SWAP ROT , , ,
+;
+</span>
+<span class="comment single">\ decode the data structure created by RECOGNIZER:
+</span><span class="keyword namespace">:</span> <span class="name class">R&gt;POST</span> <span class="comment single">( R:TABLE -- XT-POSTPONE )</span> <span class="keyword">CELL+ CELL+ &#64; ;
+</span><span class="keyword namespace">:</span> <span class="name class">R&gt;COMP</span> <span class="comment single">( R:TABLE -- XT-COMPILE  )</span>       <span class="keyword">CELL+ &#64; ;
+</span><span class="keyword namespace">:</span> <span class="name class">R&gt;INT</span>  <span class="comment single">( R:TABLE -- XT-INTERPRET)</span>             <span class="keyword">&#64; ;
+</span>
+<span class="comment single">\ system failure recognizer
+</span><span class="keyword">:NONAME </span><span class="literal number integer">-13</span> <span class="keyword">THROW ; DUP DUP </span><span class="name decorator">RECOGNIZER: R:FAIL
+</span>
+<span class="keyword namespace">:</span> <span class="name class">DO-RECOGNIZER</span>   <span class="comment single">( addr len stack-id -- i*x R:TABLE | R:FAIL )</span>
+    <span class="keyword">DUP &gt;R &#64;
+</span>    <span class="keyword">BEGIN
+</span>      <span class="keyword">DUP
+</span>    <span class="keyword">WHILE
+</span>      <span class="keyword">DUP CELLS R&#64; + &#64;
+</span>      <span class="keyword">2OVER 2&gt;R SWAP 1- &gt;R
+</span>      <span class="keyword">EXECUTE DUP </span><span class="name decorator">R:FAIL </span><span class="name function">&lt;&gt;</span> <span class="keyword">IF
+</span>        <span class="keyword">2R&gt; 2DROP 2R&gt; 2DROP EXIT
+</span>      <span class="keyword">THEN
+</span>      <span class="keyword">DROP R&gt; 2R&gt; ROT
+</span>    <span class="keyword">REPEAT
+</span>    <span class="keyword">DROP 2DROP R&gt; DROP </span><span class="name decorator">R:FAIL
+</span><span class="keyword">;</span>
+</pre>
+</div>
+</div>
+<div class="section" id="a-xy-informal-appendix">
+<h2>A.XY Informal Appendix</h2>
+<div class="section" id="a-xy-1-postpone">
+<h3>A.XY.1 POSTPONE</h3>
+<p><tt class="docutils literal">POSTPONE</tt> compiles the data returned by <tt class="docutils literal"><span class="pre">DO-RECOGNIZER</span></tt> (<tt class="docutils literal">i*x</tt>)
+into the dictionary as literal(s) and appends the compilation action
+of the <tt class="docutils literal">R:TABLE</tt> information token. Later at run-time the <tt class="docutils literal">i*x</tt>
+data is read back and the compilation action is performed like it
+would have been called directly at compile time.</p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">POSTPONE</span> <span class="comment single">( &quot;name&quot; -- )</span>
+  <span class="keyword">PARSE-NAME </span><span class="name decorator">FORTH-RECOGNIZER DO-RECOGNIZER </span><span class="keyword">DUP &gt;R
+</span>  <span class="name decorator">R&gt;POST </span><span class="keyword">EXECUTE R&gt; </span><span class="name decorator">R&gt;COMP </span><span class="keyword">COMPILE, ;</span>
+</pre>
+<p>This implementation assumes a system that uses recognizers only.</p>
+</div>
+<div class="section" id="a-xy-2-example-recognizer">
+<h3>A.XY.2 Example Recognizer</h3>
+<p>The first example looks up the dictionary for the word
+and returns the execution token and the header flags if
+found. The data processing is the usual interpret/compile
+action. The Compile actions checks for immediacy and act
+accordingly. A portable postpone action is not possible.
+Amforth and gforth do it in a system specific way.</p>
+<pre class="code forth literal-block">
+<span class="comment single">\ find-word is close to FIND but takes addr/len as input
+</span><span class="literal number integer">256</span> <span class="keyword namespace">BUFFER:</span> <span class="name class">find-word-buf</span> <span class="comment single">\ counted string
+</span><span class="keyword namespace">:</span> <span class="name class">place</span> <span class="comment single">( c-addr1 u c-addr2 )</span> <span class="keyword">2DUP C! CHAR+ SWAP MOVE ;
+</span><span class="keyword namespace">:</span> <span class="name class">find-word</span> <span class="comment single">( addr len -- xt +/-1 | 0 )</span>
+    <span class="name function">find-word-buf</span> <span class="name function">place</span> <span class="name function">find-word-buf</span>
+    <span class="keyword">FIND DUP 0= IF NIP THEN ;
+</span>
+<span class="keyword namespace">:</span> <span class="name class">immediate?</span> <span class="comment single">( flags -- true|false )</span> <span class="keyword">0&gt; ;
+:NONAME </span><span class="comment single">( i*x XT flags -- j*y )</span>  <span class="comment single">\ INTERPRET
+</span>  <span class="keyword">DROP EXECUTE ;
+:NONAME </span><span class="comment single">( XT flags -- )</span>          <span class="comment single">\ COMPILE
+</span>  <span class="name function">immediate?</span> <span class="keyword">IF COMPILE, ELSE EXECUTE THEN ;
+:NONAME POSTPONE 2LITERAL ; </span><span class="comment single">( XT flag -- )</span>
+<span class="name decorator">RECOGNIZER: R:WORD
+</span>
+<span class="keyword namespace">:</span> <span class="name class">REC:WORD</span> <span class="comment single">( addr len -- XT flags R:WORD | R:FAIL )</span>
+   <span class="name function">find-word</span> <span class="comment single">( addr len -- XT flags | 0 )</span>
+   <span class="keyword">?DUP IF </span><span class="name decorator">R:WORD </span><span class="keyword">ELSE </span><span class="name decorator">R:FAIL </span><span class="keyword">THEN
+;</span>
+</pre>
+<p>The second example deals with floating point numbers. The
+interpret action is a do-nothing since there is nothing
+that has to be done in addition to what the parsing word
+already did. The compile action takes the floating point
+number from the FP stack and compiles it to the dictionary.
+Postponing numbers is not defined, thus the postpone
+action here is printing the number and throwing an
+exception.</p>
+<pre class="code forth literal-block">
+<span class="keyword">:NONAME ; </span>                  <span class="comment single">( -- )</span> <span class="comment single">( F: f -- f)</span> <span class="comment single">\ INTERPRET
+</span><span class="keyword">:NONAME POSTPONE FLITERAL ; </span><span class="comment single">( -- )</span> <span class="comment single">( F: f -- )</span>  <span class="comment single">\ COMPILE
+</span><span class="keyword">:NONAME POSTPONE FLITERAL ; </span><span class="comment single">( -- )</span> <span class="comment single">( F: f -- )</span>  <span class="comment single">\ POSTPONE
+</span><span class="name decorator">RECOGNIZER: R:FLOAT
+</span>
+<span class="keyword namespace">:</span> <span class="name class">REC:FLOAT</span> <span class="comment single">( addr len -- R:FLOAT | R:FAIL )</span> <span class="comment single">( F: -- f | )</span>
+  <span class="keyword">&gt;FLOAT IF </span><span class="name decorator">R:FLOAT </span><span class="keyword">ELSE </span><span class="name decorator">R:FAIL </span><span class="keyword">THEN ;</span>
+</pre>
+</div>
+<div class="section" id="a-xy-3-text-interpreter">
+<h3>A.XY.3 Text Interpreter</h3>
+<p>The Forth text interpreter can be changed into a generic tool
+that is capable to deal with any data type. It maintains <tt class="docutils literal">STATE</tt>
+and calls the data processing methods according to it. The
+example is a full replacement if all necessary recognizers are
+available.</p>
+<p>The algorithm of the Forth text interpreter as described in
+section 3.4 is modified. All subsections of 3.4 apply
+unchanged. Change the steps b) and c) from section 3.4 to make them
+optional, they can be performed with recognizers. Replace the step
+d) with the following steps d) to f)</p>
+<ol class="loweralpha" start="4">
+<li><p class="first">For each element of the recognizer stack provided by <tt class="docutils literal"><span class="pre">FORTH-RECOGNIZER</span></tt>,
+starting with the top element, call its parsing method with the
+sub-string &quot;name&quot; from step a).</p>
+<p>Every parsing method returns an information token and the
+parsed data from the analyzed sub-string if successful.
+Otherwise it returns the system provided failure token
+R:FAIL and no further data.</p>
+<p>Continue with the next element in the recognizer stack
+until either all are used or the information token returned
+from the parsing word is not the system provided failure
+token R:FAIL.</p>
+</li>
+<li><dl class="first docutils">
+<dt>Use the information token and do one of the following</dt>
+<dd><ol class="first last arabic simple">
+<li>if interpreting execute the interpret method
+associated with the information token.</li>
+<li>if compiling execute the compile method associated
+with the information token.</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p class="first">Continue with a)</p>
+</li>
+</ol>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">INTERPRET</span>
+  <span class="keyword">BEGIN
+</span>      <span class="keyword">PARSE-NAME DUP
+</span>  <span class="keyword">WHILE
+</span>      <span class="name decorator">FORTH-RECOGNIZER DO-RECOGNIZER
+</span>      <span class="keyword">STATE &#64; IF </span><span class="name decorator">R&gt;COMP </span><span class="keyword">ELSE </span><span class="name decorator">R&gt;INT </span><span class="keyword">THEN </span><span class="comment single">\ get the right XT from R:*
+</span>      <span class="keyword">EXECUTE </span><span class="comment single">\ do the action.
+</span>      <span class="name function">?STACK</span>  <span class="comment single">\ simple housekeeping
+</span>  <span class="keyword">REPEAT 2DROP
+;</span>
+</pre>
+</div>
+<div class="section" id="a-xy-4-naming-conventions">
+<h3>A.XY.4 Naming Conventions</h3>
+<p>A Forth system that uses recognizers in the core
+has words for numbers and dictionary look-ups. These
+recognizers are useful for other data formats and use
+cases as well. They shall be named identically as shown
+in the table:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%"/>
+<col width="41%"/>
+<col width="42%"/>
+</colgroup>
+<tbody valign="top">
+<tr><td>Name</td>
+<td>Stack items</td>
+<td>Comment</td>
+</tr>
+<tr><td><tt class="docutils literal">R:NUM</tt></td>
+<td><tt class="docutils literal">( <span class="pre">--</span> n R:NUM)</tt></td>
+<td>single cell numbers, based
+on <tt class="docutils literal">&gt;NUMBER</tt></td>
+</tr>
+<tr><td><tt class="docutils literal">R:DNUM</tt></td>
+<td><tt class="docutils literal">( <span class="pre">--</span> d R:DNUM)</tt></td>
+<td>double cell numbers, based
+on <tt class="docutils literal">&gt;NUMBER</tt></td>
+</tr>
+<tr><td><tt class="docutils literal">R:FLOAT</tt></td>
+<td><tt class="docutils literal">( <span class="pre">--</span> R:FLOAT)</tt>
+<tt class="docutils literal">(F: <span class="pre">--</span> f | )</tt></td>
+<td>floating point numbers,
+based on <tt class="docutils literal">&gt;FLOAT</tt></td>
+</tr>
+<tr><td><tt class="docutils literal">R:WORD</tt></td>
+<td><tt class="docutils literal">( <span class="pre">--</span> XT flags R:WORD)</tt></td>
+<td>words from the dictionary,
+<tt class="docutils literal">FIND</tt></td>
+</tr>
+<tr><td><tt class="docutils literal">R:NAME</tt></td>
+<td><tt class="docutils literal">( <span class="pre">--</span> NT R:NAME)</tt></td>
+<td>words from the dictionary,
+with name tokens NT</td>
+</tr>
+</tbody>
+</table>
+<p>The matching parsing words should be available as</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%"/>
+<col width="80%"/>
+</colgroup>
+<tbody valign="top">
+<tr><td>Name</td>
+<td>Stack effect</td>
+</tr>
+<tr><td><tt class="docutils literal">REC:NUM</tt></td>
+<td><tt class="docutils literal">( addr len <span class="pre">--</span> n R:NUM&nbsp;&nbsp; | d R:DNUM | R:FAIL )</tt></td>
+</tr>
+<tr><td><tt class="docutils literal">REC:FLOAT</tt></td>
+<td><tt class="docutils literal">( addr len <span class="pre">--</span> R:FLOAT | R:FAIL )</tt> (F: -- f | )</td>
+</tr>
+<tr><td><tt class="docutils literal">REC:WORD</tt></td>
+<td><tt class="docutils literal">( addr len <span class="pre">--</span> XT flags R:WORD | R:FAIL )</tt></td>
+</tr>
+<tr><td><tt class="docutils literal">REC:NAME</tt></td>
+<td><tt class="docutils literal">( addr len <span class="pre">--</span> NT R:NAME | R:FAIL )</tt></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="section" id="experience">
+<h1>Experience</h1>
+<p>First ideas to dynamically extend the Forth text interpreter
+were published in 2005 at comp.lang.forth by Josh Fuller and J Thomas:
+<a class="reference external" href="https://web.archive.org/web/20160328150126/http://compgroups.net/comp.lang.forth/additional-recognizers/734676">Additional Recognizers?</a></p>
+<p>A specific solution to deal with number prefixes was
+roughly sketched by Anton Ertl at comp.lang.forth in 2007 with
+<a class="reference external" href="https://web.archive.org/web/20160328150126/https://groups.google.com/forum/#!msg/comp.lang.forth/r7Vp3w1xNus/Wre1BaKeCvcJ">https://groups.google.com/forum/#!msg/comp.lang.forth/r7Vp3w1xNus/Wre1BaKeCvcJ</a></p>
+<p>There are a number of specific solutions that can at least partly be seen
+as recognizers in various Forth's:</p>
+<ul class="simple">
+<li>prefix-detection in ciforth</li>
+<li>W32Forth uses its &quot;chain&quot; concept to achieve similar effects.</li>
+<li>various commercial Forth's seem to have ways to extent the
+interpreter.</li>
+</ul>
+<p>A first generic recognizer concept was implemented in amforth
+version 4.3 (May 2011). The design presented in this RFD is
+implemented with version 5.3 (May 2014). gforth has
+recognizers since 2012, the ones described here since June
+2014.</p>
+<p>Existing recognizers cover a wide range of data formats
+like floating point numbers and strings. Others mimic the
+back-tick syntax used in many Unix shells to execute OS
+sub-process. A recognizer is used to implement OO
+notations.</p>
+<p>Most of the small words that constitute a recognizer don't
+need a name actually since only their execution tokens are
+used. For the major words a naming convention is suggested:
+<tt class="docutils literal"><span class="pre">REC:&lt;name&gt;</span></tt> for the parsing word of the recognizer
+&quot;name&quot;, and <tt class="docutils literal"><span class="pre">R:&lt;name&gt;</span></tt> for the information token word
+created with <tt class="docutils literal">RECOGNIZER:</tt> for the data type &quot;name&quot;.</p>
+<p>There is no <tt class="docutils literal">REC:FAIL</tt> that would be the companion of
+the system provided <tt class="docutils literal">R:FAIL</tt>. It's simply</p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">REC:FAIL</span> <span class="comment single">( addr len -- R:FAIL )</span>
+  <span class="keyword">2DROP </span><span class="name decorator">R:FAIL </span><span class="keyword">;</span>
+</pre>
+<p>That way, <tt class="docutils literal">REC:FAIL</tt> can be seen as the parsing word of
+the recognizer that is always present as the last one in the
+recognizer stack and that cannot be deleted.</p>
+</div>
+<div class="section" id="test-cases">
+<h1>Test cases</h1>
+<p>The hardest and ultimate test case is to use the interpreter
+with recognizers enabled. Some parts can be tested separately,
+however.</p>
+<pre class="code forth literal-block">
+<span class="name function">T{</span> <span class="literal string">s&quot;</span> <span class="literal string">unknown word</span><span class="name function">&quot;</span> <span class="name decorator">FORTH-RECOGNIZER DO-RECOGNIZER </span> <span class="name function">-&gt;</span> <span class="name decorator">R:FAIL </span><span class="name function">}T</span>
+<span class="name function">T{</span> <span class="literal string">s&quot;</span> <span class="literal string">1234</span><span class="name function">&quot;</span>  <span class="name decorator">FORTH-RECOGNIZER DO-RECOGNIZER </span><span class="name function">-&gt;</span> <span class="literal number integer">1234</span>  <span class="name decorator">R:NUM </span>  <span class="name function">}T</span>
+<span class="name function">T{</span> <span class="literal string">s&quot;</span> <span class="literal string">1234.</span><span class="name function">&quot;</span> <span class="name decorator">FORTH-RECOGNIZER DO-RECOGNIZER </span><span class="name function">-&gt;</span> <span class="literal number integer">1234</span><span class="keyword">. </span><span class="name decorator">R:DNUM </span> <span class="name function">}T</span>
+<span class="name function">T{</span> <span class="literal string">s&quot;</span> <span class="literal string">DO-RECOGNIZER</span><span class="name function">&quot;</span> <span class="name decorator">FORTH-RECOGNIZER DO-RECOGNIZER </span><span class="name function">-&gt;</span> <span class="name function">'</span> <span class="name decorator">DO-RECOGNIZER </span><span class="literal number integer">-1</span> <span class="name decorator">R:WORD </span><span class="name function">}T</span>
+</pre>
+<p>The system provided recognizers, if available,
+work as follows:</p>
+<pre class="code forth literal-block">
+<span class="name function">T{</span> <span class="literal string">s&quot;</span> <span class="literal string">1234</span><span class="name function">&quot;</span>  <span class="name decorator">REC:NUM </span><span class="name function">-&gt;</span> <span class="literal number integer">1234</span>  <span class="name decorator">R:NUM </span>  <span class="name function">}T</span>
+<span class="name function">T{</span> <span class="literal string">s&quot;</span> <span class="literal string">1234.</span><span class="name function">&quot;</span> <span class="name decorator">REC:NUM </span><span class="name function">-&gt;</span> <span class="literal number integer">1234</span><span class="keyword">. </span><span class="name decorator">R:DNUM </span> <span class="name function">}T</span>
+<span class="name function">T{</span> <span class="literal string">s&quot;</span> <span class="literal string">DO-RECOGNIZER</span><span class="name function">&quot;</span> <span class="name decorator">REC:WORD </span><span class="name function">-&gt;</span> <span class="name function">'</span> <span class="name decorator">DO-RECOGNIZER </span><span class="literal number integer">-1</span> <span class="name decorator">R:WORD </span><span class="name function">}T</span>
+</pre>
+</div>
+<div class="section" id="discussion-rationale">
+<h1>Discussion / Rationale</h1>
+<div class="section" id="get-set-recognizers">
+<h2><tt class="docutils literal"><span class="pre">GET/SET-RECOGNIZERS</span></tt></h2>
+<p>These commands can create a deep data stack usage.
+They are modeled after the well established
+<tt class="docutils literal"><span class="pre">GET-/SET-ORDER</span></tt> and <tt class="docutils literal">N&gt;R</tt>/<tt class="docutils literal">NR&gt;</tt> word pairs.</p>
+<p>An alternative solution are words following <tt class="docutils literal">&gt;R</tt> and <tt class="docutils literal">R&gt;</tt>.
+Likewise a <tt class="docutils literal">&gt;RECOGNIZER</tt> would put the new item on the
+top of the recognizer stack. Since this element is processed
+first in <tt class="docutils literal"><span class="pre">DO-RECOGNIZER</span></tt>, this action prepends to the recognizer
+stack. Having the recognizer loop acting the other way (bottom up)
+is confusing and therefore not an option too. Furthermore I expect
+that most changes to the recognizer stack take place at
+the <em>end</em> (bottom) of it appending a new recognizer.
+There is no commonly agreed way to change a stack at
+its bottom. Even more difficult is an insert or remove
+operation of a recognizer in the middle. Again the
+standard data stack words are the simplest way to do
+it. Since the recognizer stack is smaller than the
+data stack and stack changes are expected to happen
+seldom the proposed solution is considered the simplest
+solution.</p>
+</div>
+<div class="section" id="postpone">
+<h2><tt class="docutils literal">POSTPONE</tt></h2>
+<p>Adding the <tt class="docutils literal">POSTPONE</tt> method has been seen as overly complex.
+At least with the current standard text it is necessary however.
+One reason is that <tt class="docutils literal">POSTPONE</tt> has a lot of special cases which
+cannot be implemented without system knowledge. The postpone
+method carries this information for all data types. Recent discussions
+indicate that this may be solved cleanly in a future version of
+Forth, until this discussion is finished, a separate postpone
+action is the only way to implement what recognizers can achieve.</p>
+<p>Bernd Paysan wrote in clf</p>
+<blockquote>
+<p>Concerning the postpone action and <tt class="docutils literal">'</tt> and <tt class="docutils literal">[']</tt> using recognizers: IMHO,
+there's not much point in generating a super-efficient postpone, but you can
+use <tt class="docutils literal">'</tt> and <tt class="docutils literal">[']</tt> together with literals, if the postpone method is modified to
+<em>only</em> contain the work to save the i*x part of the recognizer output into
+the dictionary.  The remaining action of postpone is generic.  So <tt class="docutils literal">POSTPONE</tt>
+executes the literal-append part of the <tt class="docutils literal">r:table</tt> and then appends the <tt class="docutils literal">r:table</tt>
+as literal and the compilation part of the <tt class="docutils literal">r:table</tt>.</p>
+<p><tt class="docutils literal">'</tt> and <tt class="docutils literal">[']</tt> can check if the literal-append part is empty
+(a noop), and if not, create a quotation that contains that literal, and
+appends the <tt class="docutils literal">_r&gt;int</tt>  part of the table.  I.e. <tt class="docutils literal">['] 3</tt>
+becomes something like <tt class="docutils literal">[: 3 noop ;]</tt>, with an  easy opportunity
+to optimize away the noop.</p>
+<p>This is not mandatory, but I'd like to implement it that way.  And that
+means the postpone part has to be changed to the essential core (the
+handling of the recognizer-specific i*x), and the rest is done by <tt class="docutils literal">POSTPONE</tt>.</p>
+<p>That means <tt class="docutils literal">r:num</tt> is defined as</p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">lit,</span> <span class="keyword">postpone literal ;
+</span><span class="name function">'</span> <span class="name constant">noop </span><span class="name function">'</span> <span class="name function">lit,</span> <span class="name function">'</span> <span class="name function">lit,</span> <span class="name decorator">recognizer: r:num</span>
+</pre>
+<p>and <tt class="docutils literal">POSTPONE</tt> is defined as</p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">POSTPONE</span> <span class="comment single">( &quot;name&quot; -- )</span>
+  <span class="keyword">PARSE-NAME </span><span class="name decorator">FORTH-RECOGNIZER </span> <span class="name decorator">DO-RECOGNIZER </span> <span class="keyword">&gt;R
+</span>  <span class="keyword">R&#64; </span><span class="name function">_r&gt;post</span> <span class="keyword">EXECUTE r&gt; </span><span class="name function">_r&gt;comp</span> <span class="keyword">COMPILE, ;</span>
+</pre>
+<p>following your reference implementations.</p>
+<p>This also makes the simple two-part table easier to implement, as <em>only</em> the
+compilation part (perform literal part+append interpretation part) needs to
+be generated.</p>
+</blockquote>
+<p>From 6.1.2033 POSTPONE: &quot;Append the compilation semantics of
+name to the current definition.&quot; This <tt class="docutils literal">postpone</tt> does exactly this.</p>
+<p>The suggested <tt class="docutils literal">'</tt> is part of the implementation and can be left to the system
+provider.</p>
+</div>
+<div class="section" id="multiword-parsing">
+<h2>Multiword Parsing</h2>
+<p>The RFD suggests that the input stream is split into white-space delimited
+words as part of the general text interpreter. The parse actions of the
+recognizers get these words only.</p>
+<p>A recognizer that deals with &quot;sentences&quot; (multiple words) needs more. It
+has to communicate back, where it finished its work so that subsequent parse
+action start at the right point. There are a few possibilities</p>
+<ul class="simple">
+<li>The input for recognizer comes from within <tt class="docutils literal">SOURCE</tt> and is managed with
+<tt class="docutils literal">&gt;IN</tt>. That is the designated environment for recognizers. Systems are
+free to make a copy of the word before calling the parsing words from the
+recognizer. A multi-word recognizer nevertheless needs access the <tt class="docutils literal">SOURCE</tt>
+buffer and changes <tt class="docutils literal">&gt;IN</tt> accordingly. It must not change the content of
+the string however.</li>
+<li>The input comes from an arbitrary string. <tt class="docutils literal">SOURCE</tt> and <tt class="docutils literal">&gt;IN</tt> are not
+used. The word <tt class="docutils literal"><span class="pre">DO-RECOGNIZER</span></tt> has to tell now, how far it went in addition
+to the actual results. The standard already has a word that works that way:
+<tt class="docutils literal">&gt;NUMBER ( ud1 addr len <span class="pre">--</span> ud2 addr' len')</tt>. A similiar <tt class="docutils literal"><span class="pre">DO-RECOGNIZER</span></tt>
+would have the stack effect <tt class="docutils literal">( addr len <span class="pre">--</span> i*x addr' len' R:TABLE | R:FAIL)</tt>.</li>
+</ul>
+<p>Since many standard words are already grouped around <tt class="docutils literal">SOURCE</tt> and <tt class="docutils literal">&gt;IN</tt> it
+seems to be overkill to maximize the flexibility. That's why option 1 is preferred.
+Furthermore it leads to simpler code and easier integration into existing systems.
+There is no dependency on <tt class="docutils literal">SOURCE</tt> and <tt class="docutils literal">&gt;IN</tt> for the single-word recognizer
+use case.</p>
+<p>Another aspect with multiword recognizers is that it is possible that the closing
+syntactic element of the multi-word sentence is not within the current input string
+One or more <tt class="docutils literal">REFILL</tt> may be necessary to get it. Since that may be troublesome
+in the long run, the closing element shall be in the same input string as the opening
+one.</p>
+</div>
+<div class="section" id="keep-the-interpreter">
+<h2>Keep the Interpreter</h2>
+<p>The Forth 2015 meeting in Bath as well as (earlier) Andrew Haley added the
+wish / requirement to keep the current interpreter and make recognizers an
+truly optional part. Changed in the proposal to make the Forth 2012 interpreter
+steps to search the dictionary (step b) and convert numbers (step c) optional.
+That way the current interpreter can work without changes and at the same time
+the hard coded steps b) and c) from section 3.4 could be replaced with
+recognizers. The recognizer steps are added as step d) to f) It should be
+clear that the example implementation of the interpreter is not mandatory.</p>
+<p>Nevertheless the full power of the concept cannot be achieved with such
+a two-class interpreter. For that, one need to be able to replace the
+standard actions FIND and number recognition too.</p>
+<p>As a related change the words <tt class="docutils literal">R&gt;COMP</tt>, <tt class="docutils literal">R&gt;INT</tt> and <tt class="docutils literal">R&gt;POST</tt> became part
+of the proposal since they are needed to write an interpreter and similar
+words portably.</p>
+</div>
+<div class="section" id="switch-the-recognizer-stack">
+<h2>Switch the Recognizer Stack</h2>
+<p>The Forth 2015 meeting wishes a possibility to switch between prepared
+recognizer stacks. To achieve this, the words <tt class="docutils literal"><span class="pre">set-recognizers</span></tt>, <tt class="docutils literal"><span class="pre">do-recognizer</span></tt>
+and <tt class="docutils literal"><span class="pre">get-recognizers</span></tt> are changed to have an additional parameter <tt class="docutils literal"><span class="pre">stack-id</span></tt> that
+identifies the recognizer stack to be used. The elements of the recognizer stack
+may not be accessible with the normal fetch and store operation, the numeric
+value of the <tt class="docutils literal"><span class="pre">stack-id</span></tt> is implementation defined. The stack may have a limited
+size too resulting in an error condition if the maximum size is exceeded.</p>
+<p>The new word <tt class="docutils literal"><span class="pre">FORTH-RECOGNIZER</span></tt> is introduced to have a global (drift)
+anchor to provide a common starting point to be used by various
+words like <tt class="docutils literal">EVALUATE</tt> from whom a consistent behavior is expected.
+It is a VALUE to switch the whole stack at once.</p>
+</div>
+<div class="section" id="nested-recognizer-stacks">
+<h2>Nested Recognizer Stacks</h2>
+<p>An extension of the <a class="reference internal" href="#switch-the-recognizer-stack">Switch the Recognizer Stack</a>.</p>
+<p>Example is a number recognizer. Instead of checking for both
+single and double numbers, only one type is checked. All number
+checks are collected in the <tt class="docutils literal">recstack:numbers</tt> recognizer
+stack.</p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">REC:SNUM</span> <span class="comment single">( addr len -- n R:NUM | R:FAIL )</span>
+  <span class="keyword type">...</span>
+<span class="keyword">;
+</span><span class="keyword namespace">:</span> <span class="name class">REC:DNUM</span> <span class="comment single">( addr len -- d R:DNUM | R:FAIL )</span>
+  <span class="keyword type">...</span>
+<span class="keyword">;
+</span>
+<span class="literal number integer">2</span> <span class="name decorator">RECOGNIZER </span><span class="keyword namespace">CONSTANT</span> <span class="name class">recstack:numbers</span>
+
+<span class="name function">'</span> <span class="name function">REC:SNUM</span> <span class="name function">'</span> <span class="name function">REC:DNUM</span> <span class="literal number integer">2</span> <span class="name function">recstack:numbers</span> <span class="name decorator">SET-RECOGNIZERS
+</span>
+<span class="keyword namespace">:</span> <span class="name class">REC:NUM</span> <span class="comment single">( addr len -- n R:NUM | d R:DNUM | R:FAIL )</span>
+  <span class="name function">recstack:numbers</span> <span class="name decorator">DO-RECOGNIZER
+</span><span class="keyword">;
+</span>
+<span class="name function">'</span> <span class="name decorator">REC:NUM </span><span class="name function">'</span> <span class="name decorator">REC:WORD </span><span class="literal number integer">2</span> <span class="name decorator">FORTH-RECOGNIZER SET-RECOGNIZERS</span>
+</pre>
+</div>
+<div class="section" id="flags-r-fail-or-exceptions">
+<h2>Flags, <tt class="docutils literal">R:FAIL</tt> or Exceptions</h2>
+<p>The <tt class="docutils literal">R:FAIL</tt> word has two purposes. One is to deliver a
+boolean information whether a parsing word could deal with a
+word. The other task is the method table of for the interpreter
+to actually handle the parsed data, this time by generating a
+proper error message and to leave the interpreter. While the
+method table simplifies the interpreter loop, the flag information
+seems to be odd. On the other hand a comparison of the returned
+<tt class="docutils literal">R:*</tt> token with the constant <tt class="docutils literal">R:FAIL</tt> can be easily optimized.</p>
+<p>A completely different approach is using exceptions to deliver the
+flag information from <tt class="docutils literal"><span class="pre">DO-RECOGNIZER</span></tt> to its callers. Using them
+requires the exception word set, which may not be present on all
+systems. In addition, an exception is a somewhat elaborate error
+handling tool and usually means than something unexpected has
+happened. Matching a string to a sequence of patterns means that
+exceptions are used in a normal flow of compare operations.</p>
+<p>That <tt class="docutils literal">R:FAIL</tt> is used in two ways is an optimization. The flag
+information can be carried with the equation <tt class="docutils literal">R:* R:FAIL &lt;&gt;</tt> as
+well.</p>
+<p>That there is no final <tt class="docutils literal">REC:FAIL</tt> in the recognizer stack is an optimization
+too. Earlier versions of the recognizer concept did have such a bottom
+element. It turned out that it caused a lot of trouble. If it got
+deleted, the interpreter loop did not recognize this as an error and
+crashed without further notice. To circumvent this situation, the current
+recognizer stack depth is needed. Adding a check for an empty
+recognizer stack was more code. The second argument against is
+that adding a recognizer to the recognizer becomes more complex since
+there is a bottom element, that has to be kept, essentially making
+appending a recognizer always an insert-in-the-middle action.</p>
+</div>
+<div class="section" id="r-fail-necessity">
+<h2>R:FAIL necessity</h2>
+<p>Compare different implementations. Esp the dual use as
+a flag and a information is discussed with code examples.
+Exception are not an option as already discussed.</p>
+<p>Parse <tt class="docutils literal">REC:*</tt> actions</p>
+<p>For simplicity the float recognizer. Others work likewise.</p>
+<p>With <tt class="docutils literal">R:FAIL</tt></p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">REC:FLOAT</span> <span class="comment single">( addr len -- R:FLOAT | R:FAIL )</span> <span class="comment single">( F: -- f )</span>
+  <span class="keyword">&gt;FLOAT IF </span><span class="name decorator">R:FLOAT </span><span class="keyword">ELSE </span><span class="name decorator">R:FAIL </span><span class="keyword">THEN ;</span>
+</pre>
+<p>Without <tt class="docutils literal">R:FAIL</tt></p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">REC:FLOAT</span> <span class="comment single">( addr len -- ( R:FLOAT | 0 )</span> <span class="comment single">( F: -- f )</span>
+  <span class="keyword">&gt;FLOAT IF </span><span class="name decorator">R:FLOAT </span><span class="keyword">ELSE </span><span class="literal number integer">0</span> <span class="keyword">THEN ;</span>
+</pre>
+<p>almost the same.</p>
+<p><tt class="docutils literal"><span class="pre">DO-RECOGNIZER</span></tt></p>
+<p>with <tt class="docutils literal">R:FAIL</tt></p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">DO-RECOGNIZER</span>   <span class="comment single">( addr len stack-id -- i*x R:TABLE | R:FAIL )</span>
+    <span class="keyword">DUP &gt;R &#64;
+</span>    <span class="keyword">BEGIN
+</span>      <span class="keyword">DUP
+</span>    <span class="keyword">WHILE
+</span>      <span class="keyword">DUP CELLS R&#64; + &#64;
+</span>      <span class="keyword">2OVER 2&gt;R SWAP 1- &gt;R
+</span>      <span class="keyword">EXECUTE DUP </span><span class="name decorator">R:FAIL </span><span class="name function">&lt;&gt;</span> <span class="keyword">IF
+</span>        <span class="keyword">2R&gt; 2DROP 2R&gt; 2DROP EXIT
+</span>      <span class="keyword">THEN DROP R&gt; 2R&gt; ROT
+</span>    <span class="keyword">REPEAT
+</span>    <span class="keyword">DROP 2DROP R&gt; DROP </span><span class="name decorator">R:FAIL
+</span><span class="keyword">;</span>
+</pre>
+<p>Without <tt class="docutils literal">R:FAIL</tt></p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">DO-RECOGNIZER</span>   <span class="comment single">( addr len stack-id -- i*x R:TABLE | 0 )</span>
+    <span class="keyword">DUP &gt;R &#64;
+</span>    <span class="keyword">BEGIN
+</span>      <span class="keyword">DUP
+</span>    <span class="keyword">WHILE
+</span>      <span class="keyword">DUP CELLS R&#64; + &#64;
+</span>      <span class="keyword">2OVER 2&gt;R SWAP 1- &gt;R
+</span>      <span class="keyword">EXECUTE DUP IF
+</span>        <span class="keyword">2R&gt; DROP 2R&gt; 2DROP EXIT
+</span>      <span class="keyword">THEN DROP R&gt; 2R&gt; ROT
+</span>    <span class="keyword">REPEAT
+</span>    <span class="keyword">DROP 2DROP R&gt; DROP </span><span class="name decorator">R:FAIL
+</span><span class="keyword">;</span>
+</pre>
+<p>again almost the same.</p>
+<p><tt class="docutils literal">POSTPONE</tt></p>
+<p>with <tt class="docutils literal">R:FAIL</tt></p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">POSTPONE</span> <span class="comment single">( &quot;name&quot; -- )</span>
+  <span class="keyword">PARSE-NAME </span><span class="name decorator">FORTH-RECOGNIZER DO-RECOGNIZER </span><span class="keyword">DUP &gt;R
+</span>  <span class="name decorator">R&gt;POST </span><span class="keyword">EXECUTE R&gt; </span><span class="name decorator">R&gt;COMP </span><span class="keyword">COMPILE, ;</span>
+</pre>
+<p>without <tt class="docutils literal">R:FAIL</tt></p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">POSTPONE</span> <span class="comment single">( &quot;name&quot; -- )</span>
+  <span class="keyword">PARSE-NAME </span><span class="name decorator">FORTH-RECOGNIZER DO-RECOGNIZER
+</span>  <span class="keyword">?DUP IF
+</span>    <span class="keyword">DUP &gt;R
+</span>    <span class="name decorator">R&gt;POST </span><span class="keyword">EXECUTE R&gt; </span><span class="name decorator">R&gt;COMP </span><span class="keyword">COMPILE,
+</span>  <span class="keyword">ELSE
+</span>    <span class="name function">NOT-RECOGNIZED</span>
+  <span class="keyword">THEN ;</span>
+</pre>
+<p>special casing &quot;not-recognized&quot; and slightly more complex due
+to <tt class="docutils literal"><span class="pre">NOT-RECOGNIZED</span></tt>.</p>
+<p>Interpreter</p>
+<p>With  <tt class="docutils literal">R:FAIL</tt></p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">INTERPRET</span>
+  <span class="keyword">BEGIN
+</span>      <span class="keyword">PARSE-NAME DUP
+</span>  <span class="keyword">WHILE
+</span>      <span class="name decorator">FORTH-RECOGNIZER DO-RECOGNIZER
+</span>      <span class="keyword">STATE &#64; IF </span><span class="name decorator">R&gt;COMP </span><span class="keyword">ELSE </span><span class="name decorator">R&gt;INT </span><span class="keyword">THEN </span><span class="comment single">\ get the right XT from R:*
+</span>      <span class="keyword">EXECUTE </span><span class="comment single">\ do the action.
+</span>      <span class="name function">?STACK</span>  <span class="comment single">\ simple housekeeping
+</span>  <span class="keyword">REPEAT 2DROP
+;</span>
+</pre>
+<p>Without <tt class="docutils literal">R:FAIL</tt></p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">INTERPRET</span>
+  <span class="keyword">BEGIN
+</span>      <span class="keyword">PARSE-NAME DUP
+</span>  <span class="keyword">WHILE
+</span>      <span class="name decorator">FORTH-RECOGNIZER DO-RECOGNIZER
+</span>      <span class="keyword">?DUP IF </span><span class="comment single">\ we got an R:* table
+</span>        <span class="keyword">STATE &#64; IF </span><span class="name decorator">R&gt;COMP </span><span class="keyword">ELSE </span><span class="name decorator">R&gt;INT </span><span class="keyword">THEN </span><span class="comment single">\ get the right XT from R:*
+</span>        <span class="keyword">EXECUTE </span><span class="comment single">\ do the action.
+</span>      <span class="keyword">ELSE
+</span>         <span class="comment single">\ no recognizer did the job
+</span>         <span class="name function">NOT-RECOGNIZED</span>
+      <span class="keyword">THEN
+</span>      <span class="name function">?STACK</span>  <span class="comment single">\ simple housekeeping
+</span>  <span class="keyword">REPEAT 2DROP
+;</span>
+</pre>
+<p>Like <tt class="docutils literal">POSTPONE</tt> Special casing the &quot;not-found&quot; condition and slightly more complex
+due to <tt class="docutils literal"><span class="pre">NOT-RECOGNIZED</span></tt>.</p>
+<p>Adapting the special case &quot;not recognized&quot; requires to extent the text interpreter
+specification too.</p>
+<p>Conclusion: <tt class="docutils literal">R:FAIL</tt> is essential since it simplifies both the concept and the
+implementation by not special casing any result. Furthermore the code for the
+recognizers is easier to read and understand: <tt class="docutils literal">R:FAIL</tt> vs <tt class="docutils literal">0</tt>. &quot;Notation matters&quot;.</p>
+</div>
+</div>
+<div class="section" id="use-cases">
+<h1>Use Cases</h1>
+<div class="section" id="name-tokens">
+<h2>Name Tokens</h2>
+<p>Name Tokens (nt) are part of the Forth 2012
+Programming Tools word set. This section is
+just a use case description deploying an optional
+word set.</p>
+<p>The words found in the dictionary with FIND
+return the execution token and the immediate
+flag. Using the Programming Tools word set,
+the dictionary look-up can be made based on
+<tt class="docutils literal"><span class="pre">TRAVERSE-WORDLIST</span></tt> with a recognizer called
+e.g. <tt class="docutils literal">REC:NAME ( addr len <span class="pre">--</span> nt R:NAME|R:FAIL)</tt>.
+The major difference to <tt class="docutils literal">FIND</tt> is that all
+header information is available to handle the
+token:</p>
+<pre class="code forth literal-block">
+<span class="keyword">:NONAME NAME&gt;INTERPRET EXECUTE ; </span><span class="comment single">( nt -- )</span> <span class="comment single">\ interpret
+</span><span class="keyword">:NONAME NAME&gt;COMPILE EXECUTE ; </span>  <span class="comment single">( nt -- )</span> <span class="comment single">\ compile
+</span><span class="keyword">:NONAME POSTPONE LITERAL </span>    <span class="keyword">; </span>  <span class="comment single">( nt -- )</span> <span class="comment single">\ postpone
+</span><span class="name decorator">RECOGNIZER: R:NAME</span>
+</pre>
+<p>The actual <tt class="docutils literal">REC:NAME</tt> is slightly more complex and
+usually benefits from system knowledge.</p>
+<pre class="code forth literal-block">
+<span class="comment single">\ the analogon to search-wordlist
+</span><span class="keyword namespace">:</span> <span class="name class">search-name</span> <span class="comment single">( addr len wid -- nt | 0 )</span>
+  <span class="keyword">&gt;R </span><span class="literal number integer">0</span> <span class="comment single">\ used as flag inside the following quotation
+</span>  <span class="name function">[:</span> <span class="comment single">( addr len flag nt -- addr len false true | nt false )</span>
+    <span class="keyword">&gt;R DROP 2DUP R&#64; NAME&gt;STRING COMPARE
+</span>    <span class="keyword">IF R&gt; DROP </span><span class="literal number integer">0</span> <span class="literal number integer">-1</span> <span class="keyword">ELSE 2DROP R&gt; </span><span class="literal number integer">0</span> <span class="keyword">THEN
+</span>  <span class="name function">;]</span> <span class="keyword">R&gt; TRAVERSE-WORDLIST </span><span class="comment single">( -- addr len false | nt )</span>
+  <span class="keyword">DUP 0= IF NIP NIP THEN
+;
+</span>
+<span class="comment single">\ a single wordlist is checked
+</span><span class="keyword namespace">:</span> <span class="name class">(rec:name)</span>    <span class="comment single">( addr len wid -- nt R:NAME | R:FAIL )</span>
+  <span class="name function">search-name</span>
+  <span class="keyword">?DUP IF </span><span class="name decorator">R:NAME </span><span class="keyword">ELSE </span><span class="name decorator">R:FAIL </span><span class="keyword">THEN
+;
+</span>
+<span class="comment single">\ checks only the standard word-list
+</span><span class="keyword namespace">:</span> <span class="name class">rec:name</span> <span class="comment single">( addr len -- nt R:NAME | R:FAIL )</span>
+  <span class="keyword">FORTH-WORDLIST </span><span class="name function">(rec:name)</span>
+<span class="keyword">;</span>
+</pre>
+</div>
+<div class="section" id="search-order-word-set">
+<h2>Search Order Word Set</h2>
+<p>A large part of the Search Order word set is close to
+what recognizers do while dictionary searches. The order
+stack can be seen as a subset of the recognizer stack.</p>
+<p>The words dealing with the order stack (<tt class="docutils literal">ALSO</tt>, <tt class="docutils literal">PREVIOUS</tt>,
+<tt class="docutils literal">FORTH</tt>, <tt class="docutils literal">ONLY</tt> etc) may be extended/changed to handle
+the recognizer stack too/instead. On the other hand, <tt class="docutils literal">ALSO</tt>
+is essentially <tt class="docutils literal">DUP</tt> on a  different stack. <tt class="docutils literal">ONLY</tt> and
+<tt class="docutils literal">FORTH</tt> set a predefined stack content. With the
+<tt class="docutils literal"><span class="pre">GET/SET-RECOGNIZERS</span></tt> words all changes can be prepared
+on the data stack with the usual data stack words.</p>
+<p>A complete redesign of the Search Order word set
+affects many programs, worth an own RFD. The common
+tools to actually implement both recognizer
+and search order word sets may be useful for
+themselves.</p>
+<p>Completely unrelated is <tt class="docutils literal"><span class="pre">SET/GET-CURRENT</span></tt>. Recognizers
+don't deal with the places, new words are put into.
+Possible changes here are not considered part of the
+recognizer word set proposal.</p>
+</div>
+<div class="section" id="stateless-interpreter">
+<h2>Stateless interpreter</h2>
+<p>An implementation of the interpreter without an explicit
+<tt class="docutils literal">STATE</tt>. For legacy applications a <tt class="docutils literal">STATE</tt> variable
+is maintained but not used.</p>
+<p>The code depends on <tt class="docutils literal">DEFER</tt> and <tt class="docutils literal">IS</tt> from CORE EXT.
+Similar code can be found in gforth and win32forth.</p>
+<pre class="code forth literal-block">
+<span class="comment single">\ legacy state support
+</span><span class="keyword namespace">VARIABLE</span> <span class="name class">STATE</span>
+<span class="keyword namespace">:</span> <span class="name class">on</span> <span class="comment single">( addr -- )</span>  <span class="literal number integer">-1</span> <span class="keyword">SWAP ! ;
+</span><span class="keyword namespace">:</span> <span class="name class">off</span> <span class="comment single">( addr -- )</span>  <span class="literal number integer">0</span> <span class="keyword">SWAP ! ;
+</span>
+<span class="comment single">\ the two modes of the interpreter
+</span><span class="keyword namespace">:</span> <span class="name class">(interpret-i)</span> <span class="name decorator">R&gt;INT </span><span class="keyword">EXECUTE ;
+</span><span class="keyword namespace">:</span> <span class="name class">(interpret-c)</span> <span class="name decorator">R&gt;COMP </span><span class="keyword">EXECUTE ;
+DEFER </span><span class="name function">(interpret)</span> <span class="name function">'</span> <span class="name function">(interpret-i)</span> <span class="keyword">IS </span><span class="name function">(interpret)</span>
+
+<span class="comment single">\ switch interpreter modes
+</span><span class="keyword namespace">:</span> <span class="name class">]</span> <span class="keyword">STATE </span><span class="name function">on</span> <span class="keyword">['] </span><span class="name function">(interpret-c)</span> <span class="keyword">IS </span><span class="name function">(interpret)</span> <span class="keyword">;
+</span><span class="keyword namespace">:</span> <span class="name class">[</span> <span class="keyword">STATE </span><span class="name function">off</span> <span class="keyword">['] </span><span class="name function">(interpret-i)</span> <span class="keyword">IS </span><span class="name function">(interpret)</span> <span class="keyword">; IMMEDIATE
+</span>
+<span class="keyword namespace">:</span> <span class="name class">interpret</span>
+    <span class="keyword">BEGIN
+</span>      <span class="keyword">PARSE-NAME DUP </span><span class="comment single">\ get something
+</span>    <span class="keyword">WHILE
+</span>      <span class="name decorator">FORTH-RECOGNIZER DO-RECOGNIZER </span> <span class="comment single">\ analyze it
+</span>      <span class="name function">(interpret)</span>    <span class="comment single">\ act on it
+</span>      <span class="name function">?stack</span>         <span class="comment single">\ simple housekeeping
+</span>    <span class="keyword">REPEAT 2DROP
+</span> <span class="keyword">;</span>
+</pre>
+</div>
+<div class="section" id="not-found-hooks">
+<h2>Not-Found Hooks</h2>
+<p>Many systems have a not-found hook that is called if a word
+is not found and is not a number. This hook is usually a
+deferred word. With recognizers it can be implemented as
+follows:</p>
+<pre class="code forth literal-block">
+ <span class="keyword namespace">:</span> <span class="name class">throw-13</span>  <span class="literal number integer">-13</span> <span class="keyword">THROW ;
+</span>
+ <span class="keyword">DEFER </span><span class="name function">interpret-notfound</span> <span class="comment single">( addr u -- )</span>
+   <span class="name function">'</span> <span class="name function">throw-13</span> <span class="keyword">IS </span><span class="name function">interpret-notfound</span>
+ <span class="keyword">DEFER </span><span class="name function">compiler-notfound</span> <span class="comment single">( addr u -- )</span>
+   <span class="name function">'</span> <span class="name function">throw-13</span> <span class="keyword">IS </span><span class="name function">compiler-notfound</span>
+ <span class="keyword">DEFER </span><span class="name function">postpone-notfound</span> <span class="comment single">( addr u -- )</span>
+   <span class="name function">'</span> <span class="name function">throw-13</span> <span class="keyword">IS </span><span class="name function">postpone-notfound</span>
+
+<span class="name function">'</span> <span class="name function">interpret-notfound</span>
+<span class="name function">'</span> <span class="name function">compiler-notfound</span>
+<span class="name function">'</span> <span class="name function">postpone-notfound</span>
+<span class="name decorator">RECOGNIZER: </span><span class="name function">rec:notfound</span>
+</pre>
+<p>With that recognizer places at the end (bottom) of the recognizer
+stack the final action if a word could not be handled is a set
+of words that can be changed independently. These hooks are most
+useful for existing code that uses the <tt class="docutils literal"><span class="pre">not-found</span></tt> deferred word
+API. (Idea and basic code structure taken from gforth).</p>
+</div>
+<div class="section" id="and">
+<h2><tt class="docutils literal">'</tt> and <tt class="docutils literal">[']</tt></h2>
+<p><tt class="docutils literal">'</tt> (tick) and its companion <tt class="docutils literal">[']</tt> (bracket-tick) are affected too.
+It is common practice that the sequence <tt class="docutils literal">' foo execute</tt> does the same
+as calling <tt class="docutils literal">foo</tt> directly (in interpret mode). Now consider special
+recognizer that searches an otherwise hidden word-list (think of name
+spaces). Words from it may be interpreted and compiled without problems,
+but could not be found with <tt class="docutils literal">'</tt>. Therefore it is desirable to use the
+recognizer stack here too. The difficulty here is to decide whether a
+recognized item is an executable &quot;tick-able&quot; word. E.g. numbers and
+compile-only words are not.</p>
+<p>Implementation requires system specific knowledge. The following code
+depends on <tt class="docutils literal">R:WORD</tt> to work.</p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">executable?</span> <span class="comment single">( R:TABLE -- f )</span>
+          <span class="name decorator">R&gt;INT </span><span class="comment single">\ get the interpretation action for the given token
+</span>   <span class="name decorator">R:WORD R&gt;INT </span><span class="comment single">\ get the system specific interpret action
+</span>   <span class="name function">=</span>
+<span class="keyword">;
+</span>
+<span class="keyword namespace">:</span> <span class="name class">'</span> <span class="comment single">( &quot;&lt;spaces&gt;name&quot; -- XT )</span>
+  <span class="keyword">PARSE-NAME </span><span class="name decorator">FORTH-RECOGNIZER DO-RECOGNIZER
+</span>  <span class="name function">executable?</span> <span class="keyword">0= IF
+</span>    <span class="comment single">\ call the system specific error action &quot;invalid tick&quot;
+</span>    <span class="literal number integer">-13</span> <span class="keyword">THROW
+</span>  <span class="keyword">THEN
+</span>  <span class="keyword">DROP </span><span class="comment single">\ remove the immediate flag
+</span>  <span class="comment single">\ the XT from the R:WORD result set is left
+</span><span class="keyword">;</span>
+</pre>
+</div>
+</div>
+<div class="section" id="older-remarks">
+<h1>Older Remarks</h1>
+<div class="section" id="method-api">
+<h2>2-Method API</h2>
+<p>Anton Ertl suggested an alternative implementation of
+recognizers. Basically all text data is converted into
+a literal at parse time. Later the interpreter decides
+whether to execute or compile the literal data,
+depending on STATE. POSTPONE is a combination of storing
+the literal data together with their compile time action.</p>
+<pre class="code text literal-block">
+interpretation: conv final-action
+compilation:    conv literal-like postpone final-action
+postpone:
+      conv literal-like postpone literal-like postpone final-action
+</pre>
+<p>The conv-action is what is done inside the <tt class="docutils literal"><span class="pre">DO-RECOGNIZER</span></tt> action (<tt class="docutils literal">REC:*</tt>
+words) and the literal-like and final-action set replaces the proposed 3 method
+set in <tt class="docutils literal">R:*</tt>. It is not yet clear whether this approach covers the same
+range of possibilities as the proposed one or may solve the tick-problem mentioned
+above. Another side effect is that postponing literals like numbers becomes
+possible without further notice.</p>
+<p>For simple use cases (literals) it's possible to automatically convert this approach
+into the 3-method API (Anton Ertl and Bernd Paysan):</p>
+<pre class="code forth literal-block">
+<span class="keyword namespace">:</span> <span class="name class">rec-methods</span> <span class="name function">{:</span> <span class="name function">literal-xt</span> <span class="name function">final-xt</span> <span class="name function">--</span> <span class="name function">interpret-xt</span> <span class="name function">compile-xt</span> <span class="name function">postpone-xt</span> <span class="name function">:}</span>
+  <span class="name function">final-xt</span>
+  <span class="keyword">:noname </span><span class="name function">literal-xt</span> <span class="keyword">compile, </span><span class="name function">final-xt</span> <span class="name function">]]</span> <span class="keyword">literal compile, ; </span><span class="name function">[[</span> <span class="keyword">dup &gt;r
+</span>  <span class="keyword">:noname </span><span class="name function">literal-xt</span> <span class="keyword">compile, r&gt; compile, postpone ;
+;</span>
+</pre>
+<p>With that command, the standard number recognizer can be rewritten as</p>
+<pre class="code forth literal-block">
+<span class="comment single">\ numbers
+</span><span class="keyword">:NONAME ; </span><span class="comment single">\ final-action do nothing
+</span><span class="name function">'</span> <span class="keyword">LITERAL </span><span class="comment single">\ literal-action
+</span><span class="name function">rec-methods</span> <span class="name decorator">RECOGNIZER: R:NUM</span>
+</pre>
+<p>Anton Ertl writes in comp.lang.forth:</p>
+<blockquote>
+<p>If you define recognizers through these components, you don't need to
+specify the three components, in particular not a POSTPONE action; and
+yet POSTPONEing literals works as does any other POSTPONEing of
+recognizers.  With that, one might leave it up to systems whether they
+support POSTPONEing recognizers or not.</p>
+<p>Disadvantage: Does not combine with doing the dictionary look-up as a
+recognizer for immediate words:</p>
+<p>If you make the immediate word a parse-time action with a noop for
+literal-like and noop for run-time, it works correctly for
+interpretation and compilation, but not for POSTPONE.  And anything
+else is even further from the desired behaviour.  One could enhance
+this scheme to support immediate words correctly, but I don't see a
+clean way to do that.</p>
+<p>So there seems to be a choice:</p>
+<ol class="arabic simple">
+<li>Compose the behaviour of recognizers of these components, but do
+not treat the dictionary as a recognizer.</li>
+<li>Treat the dictionary as a recognizer, but build recognizers from
+interpretation, compilation, and postponeing behaviour.</li>
+</ol>
+</blockquote>
+<p>A complete reference implementation does not exist, many aspects
+were published at comp.lang.forth by Jenny Brien.</p>
+</div>
+</div>
+<div class="section" id="acknowledgments">
+<h1>Acknowledgments</h1>
+<p>The following people did major or minor contributions, in
+no particular order.</p>
+<ul class="simple">
+<li>Bernd Paysan</li>
+<li>Jenny Brien</li>
+<li>Andrew Haley</li>
+<li>Alex McDonald</li>
+<li>Anton Ertl</li>
+</ul>
+</div>
+</div>
+</body>
+</html>
+<!--
+     FILE ARCHIVED ON 15:01:26 Mar 28, 2016 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 11:23:26 Sep 21, 2020.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+-->
+<!--
+playback timings (ms):
+  RedisCDXSource: 4.488
+  exclusion.robots: 0.63
+  LoadShardBlock: 253.946 (3)
+  CDXLines.iter: 33.885 (3)
+  PetaboxLoader3.datanode: 354.762 (4)
+  captures_list: 301.512
+  esindex: 0.015
+  exclusion.robots.policy: 0.615
+  load_resource: 277.351
+  PetaboxLoader3.resolve: 108.987
+-->
