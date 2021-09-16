@@ -1,0 +1,256 @@
+<h1 id="forth200x-2021-meeting-notes">Forth200x 2021 meeting notes</h1>
+<h2 id="participants">Participants:</h2>
+<ul>
+<li>M. Anton Ertl</li>
+<li>Bernd Paysan</li>
+<li>Bill Ragsdale (observer)</li>
+<li>Gerald Wodni</li>
+<li>Brad Rodriguez</li>
+<li>Frank Guidi (observer)</li>
+<li>Howerd Oakford</li>
+<li>Jermaine Davies</li>
+<li>Krishna Myneni</li>
+<li>Leon Wagner</li>
+<li>Peter Knaggs (from Tu 16:25)</li>
+<li>Rolf Hemmerling (observer)</li>
+<li>Stephen Pelc (from Tu 15:40)</li>
+<li>Ulrich Hoffmann</li>
+<li>Willem Botha</li>
+</ul>
+<p>Session chair until Tu 15:40: GW</p>
+<p>Session chair from Wed 18:00-19:30 AE</p>
+<p>Andre Haley has missed this meeting.</p>
+<h2 id="review-of-procedures">Review of Procedures</h2>
+<ol style="list-style-type: decimal">
+<li>Covid consequences</li>
+</ol>
+<p>Nothing of note.</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Brexit consequences</li>
+</ol>
+<p>Nothing of note.</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Payment for services and licences Until now, this has always been done informally.</li>
+</ol>
+<p>Continues informally.</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Closure mechanism for discussions to avoid inconsequential stuff being discussed at the next meeting.</li>
+</ol>
+<p>Not as much closed as we wanted.</p>
+<ol start="5" style="list-style-type: decimal">
+<li>Real name of user should be required by the web site, but need not be displayed. A standard is a public document.</li>
+</ol>
+<h2 id="reports">Reports</h2>
+<ol style="list-style-type: decimal">
+<li>Chair</li>
+</ol>
+<p>Nothing of note</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Editor</li>
+</ol>
+<p>Was not present at the time</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Technical</li>
+</ol>
+<p>Nothing of note</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Treasurer</li>
+</ol>
+<p>Nothing of note</p>
+<h2 id="election-of-officers">Election of officers</h2>
+<p>All elected officers accept the election</p>
+<ol style="list-style-type: decimal">
+<li>Chair</li>
+</ol>
+<p>Ulrich Hoffman volunteers 11Y:0N:0A</p>
+<ol start="2" style="list-style-type: decimal">
+<li>Editor</li>
+</ol>
+<p>Peter Knaggs volunteers 11Y:0N:1A</p>
+<ol start="3" style="list-style-type: decimal">
+<li>Technical</li>
+</ol>
+<p>Gerald Wodni volunteers 11Y:0N:0A</p>
+<ol start="4" style="list-style-type: decimal">
+<li>Treasurer</li>
+</ol>
+<p>Bernd Paysan volunteers 11Y:0N:0A</p>
+<h2 id="snapshot-of-the-standard">Snapshot of the standard</h2>
+<p>We make a snapshot and will review the document for the next meeting.</p>
+<h2 id="review-of-proposals">Review of Proposals</h2>
+<h3 id="reword-the-term-execution-token-reword-the-term-execution-token--157">Reword the term &quot;execution token&quot; (<a href="https://forth-standard.org/proposals/reword-the-term-execution-token-#contribution-157">reword-the-term-execution-token- #157</a>)</h3>
+<p>The consensus from 2020 has evaporated, leading to a long discussion. Workshop set up for a potential alternative proposal, revisit in main session on Wednesday.</p>
+<p>After a workshop and some more discussions, a consensus emerged for the following new text:</p>
+<p>A value that can be passed to EXECUTE (6.1.1370)</p>
+<p>As a result, AE posted a <a href="https://forth-standard.org/proposals/reword-the-term-execution-token-?hideDiff#reply-742">new version of the proposal</a> and this was voted on with vote #21: 12Y:0:0.</p>
+<h3 id="minimalistic-core-api-for-recognizers-minimalistic-core-api-for-recognizers-160">minimalistic core API for recognizers (<a href="https://forth-standard.org/proposals/minimalistic-core-api-for-recognizers#contribution-160">minimalistic-core-api-for-recognizers #160</a>)</h3>
+<p>Presentation by Bernd Paysan. Discussion. Several participants found it too minimal. Some criticism of the factoring. Workshop proposed.</p>
+<p>See <a href="#recognizers">workshop report below</a>, which also covered the next two topics.</p>
+<h3 id="an-alternative-to-the-recognizer-proposal-an-alternative-to-the-recognizer-proposal-159">An alternative to the RECOGNIZER proposal (<a href="https://forth-standard.org/proposals/an-alternative-to-the-recognizer-proposal#contribution-159">an-alternative-to-the-recognizer-proposal #159</a>)</h3>
+<p>Some discussion. Some people think it goes too far. At the same time, some consider it too inflexible.</p>
+<h3 id="common-terminology-for-recognizers-discurse-and-specifications-common-terminology-for-recognizers-discurse-and-specifications-161">Common terminology for recognizers discurse and specifications (<a href="https://forth-standard.org/proposals/common-terminology-for-recognizers-discurse-and-specifications#contribution-161">common-terminology-for-recognizers-discurse-and-specifications #161</a>)</h3>
+<p>Several people like the terms proposed in the proposal. Discussion on whether &quot;perceptor&quot; is actually needed.</p>
+<h3 id="tick-and-undefined-execution-semantics-tick-and-undefined-execution-semantics-163">Tick and undefined execution semantics (<a href="https://forth-standard.org/proposals/tick-and-undefined-execution-semantics#contribution-163">tick-and-undefined-execution-semantics #163</a>)</h3>
+<p>Some discussion of whether every word should be tickable. SP volunteers to write <a href="https://forth-standard.org/proposals/tick-and-undefined-execution-semantics-2#contribution-212">a proposal</a>.</p>
+<h3 id="emit-and-non-ascii-values-emit-and-non-ascii-values-184">EMIT and non-ASCII values (<a href="https://forth-standard.org/proposals/emit-and-non-ascii-values#contribution-184">emit-and-non-ascii-values #184</a>)</h3>
+<p>Are there any systems where EMIT does not send raw bytes? Find out with a CfV.</p>
+<h3 id="reference-implementations-are-not-normative-reference-implementations-are-not-normative-187">Reference implementations are not normative (<a href="https://forth-standard.org/proposals/reference-implementations-are-not-normative#contribution-187">reference-implementations-are-not-normative #187</a>)</h3>
+<p>Go to committee vote. AE. Vote #22.</p>
+<h3 id="wording-change-for-compile-harmonization-with-terms-wording-change-for-compile-harmonization-with-terms-200">Wording change for &quot;COMPILE,&quot;: harmonization with terms (<a href="https://forth-standard.org/proposals/wording-change-for-compile-harmonization-with-terms#contribution-200">wording-change-for-compile-harmonization-with-terms #200</a>)</h3>
+<p>Change the proposed sentence as follows:</p>
+<p>Append the semantics identified by xt to the execution semantics of the current definition.</p>
+<p>Committee vote on that. AE. Vote #23: 12Y:0:0</p>
+<h3 id="let-us-adopt-the-gerry-jackson-test-suite-as-part-of-forth-200x-let-us-adopt-the-gerry-jackson-test-suite-as-part-of-forth-200x-63">Let us adopt the Gerry Jackson test suite as part of Forth 200x (<a href="https://forth-standard.org/proposals/let-us-adopt-the-gerry-jackson-test-suite-as-part-of-forth-200x#contribution-63">let-us-adopt-the-gerry-jackson-test-suite-as-part-of-forth-200x #63</a>)</h3>
+<p>Discussion about how to deal with the test suite in the document and forth-standard.org.</p>
+<p>Contact Gerry Jackson on working together for making it easier to get the code from the test suite into forth-standard.org. GW</p>
+<p>Either add some markup to the suite to allow integrating it or do some more automatic program slicing.</p>
+<h3 id="place-place-place-place-206">PLACE +PLACE (<a href="https://forth-standard.org/proposals/place-place#contribution-206">place-place #206</a>)</h3>
+<p>Some discussion about the name of +PLACE and the wording.</p>
+<p>UH updates the proposal for the suggested wording and prepares a committee vote.</p>
+<h3 id="clarify-find-clarify-find-55">Clarify FIND (<a href="https://forth-standard.org/proposals/clarify-find#contribution-55">clarify-find #55</a>)</h3>
+<p>Do we want to be able to write a user-defined text interpreter, and do we want to be able to do it with FIND?</p>
+<p>Retract. AE Done.</p>
+<h3 id="clarify-find-more-classic-approach-clarify-find-more-classic-approach-122">Clarify FIND, more classic approach (<a href="https://forth-standard.org/proposals/clarify-find-more-classic-approach#contribution-122">clarify-find-more-classic-approach #122</a>)</h3>
+<p>Contact ruv about this proposal. Action: AE</p>
+<h3 id="nameinterpret-wording-name-interpret-wording-129">NAME&gt;INTERPRET wording (<a href="https://forth-standard.org/proposals/name-interpret-wording#contribution-129">name-interpret-wording #129</a>)</h3>
+<p>Contact ruv about this proposal. Action: UH</p>
+<h3 id="same-name-token-for-different-words-same-name-token-for-different-words-136">Same name token for different words (<a href="https://forth-standard.org/proposals/same-name-token-for-different-words#contribution-136">same-name-token-for-different-words #136</a>)</h3>
+<p>A system is allowed to do it, but is not required to do it. The committee does not see a need to add such a clause to the standard. AE. Done</p>
+<h3 id="tick-and-undefined-execution-semantics---2"><a href="https://forth-standard.org/proposals/tick-and-undefined-execution-semantics-2#contribution-212">Tick and undefined execution semantics - 2</a></h3>
+<p>Throw -13 is name is not found.</p>
+<p>performing the semantics identified by xt</p>
+<p><a href="#xt">Workshop in the evening</a></p>
+<p>and then let the community have a go at it until the next meeting</p>
+<h2 id="requests-for-clarification">Requests for clarification</h2>
+<h3 id="why-is-specified-using-immediacy-core-bracket-205">Why &quot;[&quot; is specified using immediacy? (<a href="https://forth-standard.org/standard/core/Bracket#contribution-205">core, Bracket #205</a>)</h3>
+<p>SP writes up an answer and closes it. Done.</p>
+<h3 id="implementation-for-s-via-the-immediacy-mechanism-file-sq-201">Implementation for S&quot; via the immediacy mechanism (<a href="https://forth-standard.org/standard/file/Sq#contribution-201">file, Sq #201</a>)</h3>
+<p>Answer by BP and closed. Done.</p>
+<h3 id="web-site-problem-right-bracket-197">Web site problem? (<a href="https://forth-standard.org/standard/right-bracket#contribution-197">right-bracket #197</a>)</h3>
+<p>GW answers it. Done</p>
+<h3 id="return-value-of-xc-width-for-control-characters-xchar-xc-width-196">Return value of XC-WIDTH for control characters (<a href="https://forth-standard.org/standard/xchar/XC-WIDTH#contribution-196">xchar, XC-WIDTH #196</a>)</h3>
+<p>Write an answer AE. Done</p>
+<h3 id="how-many-cells-can-be-compared-must-have-any-limit-string-compare-193">How many cells can be compared ? Must have any limit ? (<a href="https://forth-standard.org/standard/string/COMPARE#contribution-193">string, COMPARE #193</a>)</h3>
+<p>SP closes it again. Done</p>
+<h3 id="allot-in-romable-systems-core-allot-190">ALLOT in ROMable systems (<a href="https://forth-standard.org/standard/core/ALLOT#contribution-190">core, ALLOT #190</a>)</h3>
+<p>Closed by AE. Done.</p>
+<h3 id="stack-effect-of-leave-during-compilation-core-leave-185">Stack effect of LEAVE during compilation (<a href="https://forth-standard.org/standard/core/LEAVE#contribution-185">core, LEAVE #185</a>)</h3>
+<p>Answer on behalf of the committee and close. AE. Done</p>
+<h3 id="size-of-implementation-dependent-data-types-usage-183">Size of implementation dependent data types (<a href="https://forth-standard.org/standard/usage#contribution-183">usage #183</a>)</h3>
+<p>Answer on behalf of the committee and close. AE. Done</p>
+<h3 id="is-a-counted-string-limited-to-255-chars-core-count-181">Is a counted string limited to 255 chars? (<a href="https://forth-standard.org/standard/core/COUNT#contribution-181">core, COUNT #181</a>)</h3>
+<p>Closed by AE. Done.</p>
+<h3 id="can-block-transfer-from-mass-storage-in-the-case-when-block-u-is-already-in-a-block-buffer-block-block-179">Can <code>BLOCK</code> transfer from mass storage in the case when block u is already in a block buffer? (<a href="https://forth-standard.org/standard/block/BLOCK#contribution-179">block, BLOCK #179</a>)</h3>
+<p>Closed by AE. Done.</p>
+<h3 id="gt1-not-defined-core-postpone-175">GT1 not defined (<a href="https://forth-standard.org/standard/core/POSTPONE#contribution-175">core, POSTPONE #175</a>)</h3>
+<p>Answer by GW on behalf of the committe. Done</p>
+<h3 id="write-cell-mem-undefined-memory-allocate-174">write-cell-mem undefined (<a href="https://forth-standard.org/standard/memory/ALLOCATE#contribution-174">memory, ALLOCATE #174</a>)</h3>
+<p>Answer by GW on behalf of the committee. Done</p>
+<h3 id="extending-marker-core-marker-162">Extending MARKER (<a href="https://forth-standard.org/standard/core/MARKER#contribution-162">core, MARKER #162</a>)</h3>
+<p>Answer by UH on behalf of the committee. Action: UH</p>
+<h2 id="suggested-reference-implementation">Suggested reference implementation</h2>
+<h3 id="cmove-implementation-based-on-move-string-cmove-211">CMOVE implementation based on MOVE (<a href="https://forth-standard.org/standard/string/CMOVE#contribution-211">string, CMOVE #211</a>)</h3>
+<p>Leave it open. github issue to accept reference implementations. AE. Done</p>
+<h3 id="possible-reference-implementation-string-divstring-203">Possible Reference Implementation (<a href="https://forth-standard.org/standard/string/DivSTRING#contribution-203">string, DivSTRING #203</a>)</h3>
+<p>Leave it open. It will be accepted as reference implementation in a future version.</p>
+<h3 id="portable-implementation-for-synonym-tools-synonym-202">Portable implementation for SYNONYM (<a href="https://forth-standard.org/standard/tools/SYNONYM#contribution-202">tools, SYNONYM #202</a>)</h3>
+<p>Reply and close by AE. Done</p>
+<h3 id="portable-implementation-for-postpone-core-postpone-198">Portable implementation for POSTPONE (<a href="https://forth-standard.org/standard/core/POSTPONE#contribution-198">core, POSTPONE #198</a>)</h3>
+<p>Ruv should run it through the test suite. Action: ??</p>
+<h3 id="off-by-one-error-in-reference-implementation-search-definitions-165">off-by-one error in reference implementation (<a href="https://forth-standard.org/standard/search/DEFINITIONS#contribution-165">search, DEFINITIONS #165</a>)</h3>
+<p>Leave it open. Update the document with AE's implementation. Action: PK</p>
+<h2 id="suggested-testcase">Suggested Testcase</h2>
+<h3 id="more-general-testcase-core-depth-207">More general Testcase (<a href="https://forth-standard.org/standard/core/DEPTH#contribution-207">core, DEPTH #207</a>)</h3>
+<p>Response. AE. Done</p>
+<h3 id="inaccurate-test-cases-double-dtos-199">Inaccurate Test Cases? (<a href="https://forth-standard.org/standard/double/DtoS#contribution-199">double, DtoS #199</a>)</h3>
+<p>Reply and closed by AE. Done</p>
+<h3 id="a-final-test-case-for-compile-core-bracketcompile-195">A final test case for [COMPILE] (<a href="https://forth-standard.org/standard/core/BracketCOMPILE#contribution-195">core, BracketCOMPILE #195</a>)</h3>
+<p>Leave it open. [COMPILE] is obsolescent.</p>
+<h3 id="additional-test-for-utf-16-core-ccomma-194">Additional test for UTF-16 (<a href="https://forth-standard.org/standard/core/CComma#contribution-194">core, CComma #194</a>)</h3>
+<p>AE and PK replied.</p>
+<h2 id="example">Example</h2>
+<h3 id="missed-order-in-section-f.3.10-division-testsuite-209">Missed-order in section F.3.10 Division (<a href="https://forth-standard.org/standard/testsuite#contribution-209">testsuite #209</a>)</h3>
+<p>Action: PK</p>
+<h3 id="needs-an-example-of-replacing-compile-core-postpone-177">Needs an example of replacing COMPILE (<a href="https://forth-standard.org/standard/core/POSTPONE#contribution-177">core, POSTPONE #177</a>)</h3>
+<p>Closed by AE. Done</p>
+<h3 id="relationship-to-block-set-core-source-172">Relationship to block set (<a href="https://forth-standard.org/standard/core/SOURCE#contribution-172">core, SOURCE #172</a>)</h3>
+<p>Closed by AE. Done. However, the editor might want to look at <a href="https://forth-standard.org/standard/core/SOURCE#reply-591">AE's answer from 2021-01-14</a>. Action: PK</p>
+<h2 id="comment">Comment</h2>
+<h3 id="mistake-in-implementation-double-twovalue-204">Mistake in implementation? (<a href="https://forth-standard.org/standard/double/TwoVALUE#contribution-204">double, TwoVALUE #204</a>)</h3>
+<p>Editing fix. Action: PK</p>
+<h3 id="how-to-avoid-default-compilation-semantics-in-the-specification-for-compile-core-bracketcompile-192">How to avoid default compilation semantics in the specification for [COMPILE] (<a href="https://forth-standard.org/standard/core/BracketCOMPILE#contribution-192">core, BracketCOMPILE #192</a>)</h3>
+<p>Answered by AE. Done</p>
+<h3 id="throwing-past-doloop-exception-throw-191">Throwing past DO/LOOP (<a href="https://forth-standard.org/standard/exception/THROW#contribution-191">exception, THROW #191</a>)</h3>
+<p>Closed by UH. Done</p>
+<h3 id="note-incompatability-double-v-single-with-some-older-forths.-core-num-182">Note incompatability (double v single) with some older Forth's. (<a href="https://forth-standard.org/standard/core/num#contribution-182">core, num #182</a>)</h3>
+<p>Closed by AE. Done</p>
+<h3 id="run-time-section-is-missing-words-locals-bcolon-178">Run-Time Section is Missing Words (<a href="https://forth-standard.org/standard/locals/bColon#contribution-178">locals, bColon #178</a>)</h3>
+<p>Investigate the error in converting the document. Action: PK; Action: GW</p>
+<h3 id="throw-text-doesnt-match-implementation-example-exception-throw-170">THROW: text doesn't match implementation example (<a href="https://forth-standard.org/standard/exception/THROW#contribution-170">exception, THROW #170</a>)</h3>
+<p>Answer and closed by AE. Done</p>
+<h3 id="cells-numeration-in-a-cell-pair-core-twostore-169">Cells numeration in a cell-pair (<a href="https://forth-standard.org/standard/core/TwoStore#contribution-169">core, TwoStore #169</a>)</h3>
+<p>Closed by SP: Done</p>
+<p>Maybe change 3.1.4. Possible Action: PK (Looking at 3.1.4 again, I don't see how it could be improved)</p>
+<h3 id="data-object-notion-usage-usage-168">Data object notion usage (<a href="https://forth-standard.org/standard/usage#contribution-168">usage #168</a>)</h3>
+<p>Leave it open</p>
+<h3 id="query-re-status-and-minor-comments-multi-tasking-proposal-167">Query re status; and minor comments (<a href="https://forth-standard.org/proposals/multi-tasking-proposal#contribution-167">multi-tasking-proposal #167</a>)</h3>
+<p>Invite MitraArdron to collaborate. UH. Done</p>
+<h3 id="data-type-for-strings-usage-166">Data type for strings (<a href="https://forth-standard.org/standard/usage#contribution-166">usage #166</a>)</h3>
+<p>Closed by AE. Done.</p>
+<h3 id="typo-in-stack-comment-search-set-order-164">Typo in stack comment (<a href="https://forth-standard.org/standard/search/SET-ORDER#contribution-164">search, SET-ORDER #164</a>)</h3>
+<p>Editing fix. Action: PK</p>
+<h2 id="workshop-topics-and-reports">Workshop Topics and Reports</h2>
+<h3 id="recognizers">Recognizers</h3>
+<p>Report by UH</p>
+<p>We discussed a blend of the Minimal RECOGNIZER API proposal (Bernd), Recognizer Sequences (Anton) and the Recognizer Rewording Proposal (uho)</p>
+<p>Just before and at the beginning of our recognizer workshop, I (uho) implemented the minimal proposal for seedForth. RECOGNIZER CORE (FORTH-RECOGNIZER to be named differently?, NOTFOUND) and seedForth-specific recognizers (for words, numbers). That took about 45 minutes and some debugging.</p>
+<p>Recognizers have the stack effect ( addr u -- i*x rectype | notfound )</p>
+<p>For RECOGNIZER EXT we agreed on having:</p>
+<pre><code>the RECOGNIZER: ( xt-interp xt-comp xt-post &lt;name&gt; -- ) defining word
+the COMPOUND-RECOGNIZER: ( rec1 rec2 ... recn n &lt;name&gt; -- ) defining word
+the word GET-RECOGNIZERS ( compound-rec -- rec1 rec2 ... recn n ) to retrieve the recognizers that make up a compound recognizer
+the word SET-SECOGNIZERS ( rec1 rec2 ... recn n compound-rec -- ) to store the recognizers in a compound recognizer
+the lit-recognizer</code></pre>
+<p>All names are subject to change.</p>
+<p>Given the two variations to handle STATE (either in RECOGNIZER:'s DOES&gt; part or in INTERPRET), yesterdays participants favoured to have the single occurrence of STATE in INTERPRET. Further investigation and model implementations will show whether one or the other is beneficial.</p>
+<h3 id="xt">xt</h3>
+<p>Resulted in the text for the proposal <a href="https://forth-standard.org/proposals/reword-the-term-execution-token-?hideDiff#reply-742">Reword the term &quot;execution token&quot;</a></p>
+<h3 id="forth-document-format">Forth Document Format</h3>
+<p>Report by GW</p>
+<p>The workflow is as follows:</p>
+<ul>
+<li>download document repository</li>
+<li><code>make pdf</code></li>
+<li>download Forth2HTML</li>
+<li>build</li>
+<li>run in document repository as working directory</li>
+<li>run assimilate script in forth-standard.org repository</li>
+</ul>
+<h4 id="todos">TODOS:</h4>
+<h5 id="forth2html">Forth2HTML</h5>
+<ul>
+<li>generate title page</li>
+<li>fix compilation of latest document</li>
+<li>fix right-bracket output directory and name</li>
+</ul>
+<h5 id="forth-standard.org-assimilate">forth-standard.org assimilate</h5>
+<ul>
+<li>add title page</li>
+<li>remove legacy latex-html directory</li>
+<li>store multiple snapshots in json format in repository</li>
+<li>allow switching between different versions of standard</li>
+<li>make section numbers visible somehow on website</li>
+<li>current links show latest version</li>
+<li>switcher to older version</li>
+<li>allow contributions only on current version</li>
+<li>allow some contributions like request-for-clarifications on latest snapshot (i.e. Forth-2012)</li>
+<li>display &quot;latest version differs&quot; warning</li>
+</ul>
+<h3 id="stack-comments">Stack comments</h3>
+<p>Stack comments should be parseable for automatic processing</p>
+<h2 id="matters-arising">Matters arising</h2>
+<p>Meeting in half a year, for an afternoon. Agenda for that amount of time. Action: UH.</p>
+<h2 id="any-other-business">Any other business</h2>
+<p>Thanks to SP for serving as chair</p>
+<h2 id="date-of-next-meeting">Date of next meeting</h2>
+<p>Half-year meeting 2022-02-18 13:00 UTC Full meeting in front of EuroForth, probably mid-September 2022</p>
