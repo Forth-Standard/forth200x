@@ -156,7 +156,8 @@ Provisional dates:
 1. Pronounciations ([pronounciations #261](https://forth-standard.org/proposals/pronounciations#contribution-261))
 
 The committee prefers 'Have "than"', but not for <# and #>.  Revise
-proposal and submit it for committee vote.   Action: AE  Vote #26
+proposal and submit it for committee vote.  Done: AE Vote #26 Accepted
+with 10Y:0N:1A
 
 2. Exclude zero from the data types that are identifiers ([exclude-zero-from-the-data-types-that-are-identifiers #252](https://forth-standard.org/proposals/exclude-zero-from-the-data-types-that-are-identifiers#contribution-252))
 
@@ -181,7 +182,7 @@ Organize a subcommitte on this kind of topic. Action: RP
 
 4. Formatting: spaces in data type symbols ([formatting-spaces-in-data-type-symbols #250](https://forth-standard.org/proposals/formatting-spaces-in-data-type-symbols#contribution-250))
 
-Go to committee vote.  Action: RP
+Go to committee vote.  Done: RP.  Vote #30 accepted with 10Y:0N:1A
 
 5. Revert rewording the term &quot;execution token&quot; ([revert-rewording-the-term-execution-token- #249](https://forth-standard.org/proposals/revert-rewording-the-term-execution-token-#contribution-249))
 
@@ -195,9 +196,7 @@ Wordsmithing by LW.
 >
 > The first paragraph of a semantic description contains an optional label for the semantics and a stack diagram for each stack affected by performing these semantics.
 
-Go to committee vote.  Action: RP
-
-
+Go to committee vote.  Done: RP  vote #31 10Y:0N:1A
 
 
 7. Better wording for &quot;data field&quot; term ([better-wording-for-data-field-term #214](https://forth-standard.org/proposals/better-wording-for-data-field-term#contribution-214))
@@ -206,7 +205,7 @@ Wordsmithing resulted in:
 
 > A data space region associated with a Forth word defined by CREATE (6.1.1000)
 
-Goto committe vote. Action: RP
+Goto committe vote. Done: RP Vote #32 8Y:1N:1A
 
 8. Tick and undefined execution semantics - 2 ([tick-and-undefined-execution-semantics-2 #212](https://forth-standard.org/proposals/tick-and-undefined-execution-semantics-2#contribution-212))
 
@@ -302,6 +301,6 @@ Action: AE
     
 27. Executing compilation semantics ([executing-compilation-semantics #94](https://forth-standard.or/proposals/executing-compilation-semantics#contribution-94))
 
-Committee Vote.  Action: UH
+Committee Vote.  Done: UH  Vote #29 10Y:0N:1A
 
 28. We did not get around to processing more proposals.
