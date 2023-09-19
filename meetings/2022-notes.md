@@ -92,7 +92,7 @@ Accepted with (11Y:0N:0A)
 
 1. Specify that 0 THROW pops the 0 ([https://forth-standard.org/proposals/specify-that-0-throw-pops-the-0#reply-794](https://forth-standard.org/proposals/specify-that-0-throw-pops-the-0#reply-794))
 
-Fine-tune the wording, and do a committee vote.  Action: AE Vote #27
+Fine-tune the wording, and do a committee vote.  Vote #27 Accepted 10Y:0N:1A
 
 #### Proposals in the state *voting*
 
@@ -156,7 +156,8 @@ Provisional dates:
 1. Pronounciations ([pronounciations #261](https://forth-standard.org/proposals/pronounciations#contribution-261))
 
 The committee prefers 'Have "than"', but not for <# and #>.  Revise
-proposal and submit it for committee vote.   Action: AE  Vote #26
+proposal and submit it for committee vote.  Vote #26 Accepted:
+10Y:0N:1A
 
 2. Exclude zero from the data types that are identifiers ([exclude-zero-from-the-data-types-that-are-identifiers #252](https://forth-standard.org/proposals/exclude-zero-from-the-data-types-that-are-identifiers#contribution-252))
 
@@ -224,7 +225,7 @@ Go to CfV (as suggested in the 2021 meeting). Action: AE
 Assign to the subcommittee above.
 
 
-11. Common terminology for recognizers discurse and specifications ([common-terminology-for-recognizers-discurse-and-specifications #161](https://forth-standard.or/proposals/common-terminology-for-recognizers-discurse-and-specifications#contribution-161))
+11. Common terminology for recognizers discurse and specifications ([common-terminology-for-recognizers-discurse-and-specifications #161](https://forth-standard.org/proposals/common-terminology-for-recognizers-discurse-and-specifications#contribution-161))
 
 Discussed with the minimalistic core API for recognizers below.
 
@@ -252,8 +253,10 @@ Action: GW
      
 16. Nestable Recognizer Sequences ([nestable-recognizer-sequences #149](https://forth-standard.org/proposals/nestable-recognizer-sequences#contribution-149))
 
-Retired, because it is integrated into the main regognizer proposal.
-Action: AE
+Retired, because it is integrated into the [[160] minimalistic core
+API for
+recognizers](https://forth-standard.org/proposals/minimalistic-core-api-for-recognizers#reply-892).
+Done: AE
 
 
 17. OPTIONAL IEEE 754 BINARY FLOATING-POINT WORD SET ([https://forth-standard.org/proposals/optional-ieee-754-binary-floating-point-word-set#reply-420](https://forth-standard.org/proposals/optional-ieee-754-binary-floating-point-word-set#reply-420))
@@ -287,7 +290,7 @@ Refer this to the subcommittee above.
 
 Accepted in 2020 meeting.  Action: BP
  
-24. Case insensitivity ([case-insensitivity #114](https://forth-standard.or/proposals/case-insensitivity#contribution-114))
+24. Case insensitivity ([[114]case-insensitivity](https://forth-standard.org/proposals/case-insensitivity#contribution-114))
 
 Go to CfV.  Action: AE
 
@@ -295,12 +298,12 @@ Go to CfV.  Action: AE
 
 Revise it.  Action: UH
     
-26. Right-justified text output ([right-justified-text-output #101](https://forth-standard.or/proposals/right-justified-text-output#contribution-101))
+26. Right-justified text output ([right-justified-text-output #101](https://forth-standard.org/proposals/right-justified-text-output#contribution-101))
 
 Retire it, because the proponent is apparently no longer interested.
-Action: AE
+Done: AE
     
-27. Executing compilation semantics ([executing-compilation-semantics #94](https://forth-standard.or/proposals/executing-compilation-semantics#contribution-94))
+27. Executing compilation semantics ([executing-compilation-semantics #94](https://forth-standard.org/proposals/executing-compilation-semantics#contribution-94))
 
 Committee Vote.  Action: UH
 
