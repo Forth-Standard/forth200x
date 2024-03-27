@@ -1,4 +1,5 @@
-MD := $(wildcard *.md)
+MD = $(wildcard *.md)
+#HTML = $(pathsubst %.md,%.o,$(MD))
 HTML := $(MD:.md=.html)
 
 all: $(HTML)
