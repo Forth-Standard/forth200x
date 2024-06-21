@@ -304,7 +304,7 @@ Add the following words:
 
 `w!` ( x c-addr -- ) "w-store"
 
-   Store the bottom 16 bits of x at c_addr.
+   Store the least significant 16 bits of x at c_addr.
 
 `wbe` ( u1 -- u2 )
 
@@ -320,7 +320,7 @@ Add the following words:
 
 `w>s` ( x -- n ) "w-to-s"
 
-   Sign-extend the 16-bit value in x to cell n.
+   Sign-extend the low-order 16 bits in x to the full cell width.
 
 `l@` ( c-addr -- u ) "l-fetch"
 
@@ -328,7 +328,7 @@ Add the following words:
 
 `l!` ( x c-addr -- ) "l-store"
 
-   Store the bottom 32 bits of x at c_addr.
+   Store the least significant 32 bits of x at c_addr.
 
 `lbe` ( u1 -- u2 )
 
@@ -344,7 +344,7 @@ Add the following words:
 
 `l>s` ( x -- n ) "l-to-s"
 
-   Sign-extend the 32-bit value in x to cell n.
+   Sign-extend the low-order 32 bits in x to the full cell width.
 
 `x@` ( c-addr -- u ) "x-fetch"
 
@@ -352,7 +352,7 @@ Add the following words:
 
 `x!` ( x c-addr -- ) "x-store"
 
-   Store the bottom 64 bits of x at c_addr.
+   Store the least significant 64 bits of x at c_addr.
 
 `xbe` ( u1 -- u2 )
 
@@ -368,11 +368,17 @@ Add the following words:
 
 `x>s` ( x -- n ) "l-to-s"
 
-   Sign-extend the 64-bit value in x to cell n.
+   Sign-extend the low-order 64 bits in x to the full cell width.
 
 `c>s` ( x -- n ) "c-to-s"
 
-   Sign-extend the 8-bit value in x to cell n.
+   Sign-extend the low-order 8 bits in x to the full cell width.
+
+`c>u` ( x -- u ) "c-to-u"
+
+   Zero-extend the low-order 8 bits in x to the full cell width.
+
+
 
 ## Reference implementation:
 
