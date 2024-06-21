@@ -160,6 +160,25 @@ words to fetch from or store to this layout.  For the file words, this
 layout could come into play through a file access mode modifier
 (similar to `bin`).
 
+To support this scheme, we would specify "bytewise" memory access for
+words like `w@` and `w!`, a type b-addr for words that perform such
+memory accesses, and some wording in "3.1.3.3 Addresses" about that.
+We would also need a word `b@` (for zero-extending the least
+significant 8 bits, while `c@` zero-extends possibly bigger units;
+`b!` is not needed, `c!` is good enough), and a word `bytewise`, which
+is the file access mode modifier mentioned above.
+
+However, I wonder if these additions will really be useful or if they
+just make the specification harder to understand.  I.e., are there any
+systems that use the Forth standard as baseline, that have address
+units with more than 8 bits, and where the system implementors
+actually would implement words like `w@` in the bytewise way outlined
+above?
+
+If not, the simpler alternative is to specify that systems
+implementing these words are required to have an address unit that is
+an 8-bit byte.
+
 
 ### Require alignment or not
 
@@ -373,11 +392,6 @@ Add the following words:
 `c>s` ( x -- n ) "c-to-s"
 
    Sign-extend the low-order 8 bits in x to the full cell width.
-
-`c>u` ( x -- u ) "c-to-u"
-
-   Zero-extend the low-order 8 bits in x to the full cell width.
-
 
 
 ## Reference implementation:
