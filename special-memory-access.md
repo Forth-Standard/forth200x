@@ -10,19 +10,19 @@ M. Anton Ertl
 
 ## Problem:
 
-Data coming from or going to a file or the net often contain 16-bit,
-32-bit, and 64-bit integer values that may be signed or unsigned, may
-be naturally aligned or not, and may be in big-endian or little-endian
-instead of the native byte order.  Architectures tend to provide
-convenient instructions for accessing these data, but the Forth
-standard does not provide words for that, and synthesizing the
+Data coming from or going to a file or another computer often contain
+16-bit, 32-bit, and 64-bit integer values that may be signed or
+unsigned, may be naturally aligned or not, and may be in big-endian or
+little-endian instead of the native byte order.  Architectures tend to
+provide convenient instructions for accessing these data, but the
+Forth standard does not provide words for that, and synthesizing the
 operations from C@ and C! is not just cumbersome, but also leads to
 inefficient code.
 
 ## Solution:
 
-This proposal only targets byte-addressed systems.  See the discussion
-below about word-addressed machines.
+This proposal targets primarily byte-addressed systems. See the
+discussion below about larger address units.
 
 We use the following prefixes:
 
@@ -33,7 +33,11 @@ We use the following prefixes:
 | `l`    | 32 bits | Long          |
 | `x`    | 64 bits | eXtended      |
 
-For the `w` prefex this proposal specifies the following set of words:
+The `l`-prefixed words are not useful on systems with cell size <32
+bits, and such systems are therefore expected not to implement them.
+Likewise for the `x`-prefixed words and cell sizes <64 bits.
+
+For the `w` prefix this proposal specifies the following set of words:
 
 `w@` `w!` for unaligned 16-bit memory accesses; `w@` zero-extends.
 
@@ -56,17 +60,12 @@ w@ wbe w>s   \ 16-bit unaligned signed big-endian fetch
 >r wle r> w! \ 16-bit unaligned     little-endian store
 ````
 
-For the `l` prefix the corresponding five words `l@` `l!` `lbe` `lle`
-`l>s` are proposed and for the `x` prefix the corresponding five words
-`x@` `x!` `xbe` `xle` `x>s`.
-
-For the `c` prefix Standard Forth already has `c@` and `c!`, and byte
-order and alignment are not issues there, so the only thing needed is
-sign extension, so `c>s` is proposed.
+For the `c` prefix byte order and alignment are not issues, so there
+are no words for that.
 
 These words do not work properly if the data does not fit into a cell,
-so a 16-bit system would only implement the `c` and `w` words, a
-32-bit system only the `c`, `w` and `l` words, and only systems with
+so a 16-bit system would only implement the `b` and `w` words, a
+32-bit system only the `b`, `w` and `l` words, and only systems with
 cell size >= 64 bits would implement all the words.
 
 ## Typical use: (Optional)
@@ -107,11 +106,6 @@ This proposal also includes words like `w,` `walign` `waligned`
 This proposal has been met with significant resistance due to the
 large number of words proposed.
 
-This proposal also includes `b` words for dealing with bytes, but
-given the [1 chars = 1](http://www.forth200x.org/char-is-1.html)
-proposal that has been accepted in 2016, `c` seems good enough on
-byte-addressed systems.
-
 #### [16-bit memory access](https://forth-standard.org/proposals/16-bit-memory-access#contribution-301)
 
 This proposes `w@` `w!` as working with w-addr addresses that are not
@@ -148,14 +142,15 @@ Also, is a lot of time spent accessing input and output data?
 ### Larger address units
 
 On some systems (in particular on word-addressed hardware) the address
-unit is larger than one byte.  How can these words work there?  The
-only way I can see is to work with a special memory layout where each
-address unit contains only one byte, and the upper bits are ignored on
-fetching, and are set to 0 on storing.  The reference implementation
-of the proposed words can be used in such a setting.
+unit is larger than one byte (8 bits).  How can these words work
+there?  The only way I can see is to work with a special memory layout
+where only the least significant 8 bits of each address unit are used,
+and the other bits are ignored on fetching, and are set to 0 on
+storing.  The reference implementation of the proposed words can be
+used in such a setting.
 
 This memory layout would be used between I/O words that produce or
-consume this layout, and the words using the special memory access
+consume this layout, and the words that use the special memory access
 words to fetch from or store to this layout.  For the file words, this
 layout could come into play through a file access mode modifier
 (similar to `bin`).
@@ -168,17 +163,24 @@ significant 8 bits, while `c@` zero-extends possibly bigger units;
 `b!` is not needed, `c!` is good enough), and a word `bytewise`, which
 is the file access mode modifier mentioned above.
 
-However, I wonder if these additions will really be useful or if they
-just make the specification harder to understand.  I.e., are there any
-systems that use the Forth standard as baseline, that have address
-units with more than 8 bits, and where the system implementors
-actually would implement words like `w@` in the bytewise way outlined
-above?
+However, during the discussion no implementor of a system with larger
+address units emerged, who announced interest in implementing such a
+wordset.  So, in order to avoid standardizing unnecessary words, `b@`,
+`b!` and `bytewise` are not proposed.  Instead, the issue is discussed
+in the Rationale.
 
-If not, the simpler alternative is to specify that systems
-implementing these words are required to have an address unit that is
-an 8-bit byte.
+### `c` vs. `b` prefix
 
+Some people have expressed a preference for the `b` prefix even if the
+result would mean introducing synonyms of `c@` and `c!`.  However, in
+the interest of avoiding superfluous words, such words are not
+proposed.  Those interested in such words can define them themselves:
+
+````
+synonym b@ c@
+synonym b! c!
+synonym b>s c>s
+````
 
 ### Require alignment or not
 
@@ -215,8 +217,23 @@ little-endian 16-bit fetch, and we would need to add a word `w>u` or
 somesuch.
 
 So we specify that the upper bits of the result are either untouched
-or 0 (when applying `wbe` `wce` to the result of `w@`, that produces
+or 0 (when applying `wbe`/`wle` to the result of `w@`, that produces
 the same result in either case).
+
+### Types
+
+There has been some discussion whether 'c-addr' or 'addr' is more
+appropriate (they are formally equivalent).  Using 'c-addr' makes the
+intent of supporting unaligned accesses more obvious.
+
+Another discussion is about 'u' vs. 'x'.  The 'u' (where used)
+expresses that the values are zero-extended, even if they happen to be
+a zero-extended representation of a possibly signed, possibly
+byte-swapped integer.  If more precise typing is required,
+[r1259](https://forth-standard.org/proposals/special-memory-access-words#reply-1259)
+outlines a precise way to specify the typing.  However, it is doubtful
+that such a specification would result in enough additional clarity
+(if any) to justify the longer specification.
 
 ### Accesses to values larger than one cell
 
@@ -225,6 +242,20 @@ double-cell.  This allows implementing 64-bit accesses on systems with
 32-bit cells.  When I presented these words at the 2023 Forth200x
 meeting, I was asked not to include them in this proposal.  So access
 to values larger than a cell is not supported by the proposed words.
+
+### Signed number representations
+
+Given that the other Forth words (e.g. `+`) work for 2s-complement
+numbers, any other signed-number representation in the input and
+output requires additional conversion work.  No words for such
+conversions are proposed, because there is no existing practice.
+
+The description of `c>s` `w>s` `l>s` `x>s` as sign-extending makes it
+clear what operation they perform.  Specifying a number format is
+redundent and actually reduced generality (these words could also be
+used for 1s-complement, but other words would be needed to then
+convert the results into 2s-complement or perform computations in
+1s-complement).
 
 ### Additional words
 
@@ -267,6 +298,10 @@ to do that.  But do we need them and do we need them in this form?
   the layout of a data structure (already defined with the `field`
   words), which means that a change to the layout results several
   changes in the code.
+
+  There was some discussion of `w,` at the 2024 meeting, and the
+  result of the discussion was not to include such words in this
+  proposal.  They may be proposed separately.
 
 * `walign` may be useful in connection with `w,`, but has the same
   problem of redundancy.
@@ -313,7 +348,7 @@ create dfbuf 1 dfloats allot
 ````
 
 
-## Proposal:
+## Proposal (Changes to the standard document):
 
 Add the following words:
 
@@ -393,6 +428,29 @@ Add the following words:
 
    Sign-extend the low-order 8 bits in x to the full cell width.
 
+Add the following Rationale for these words:
+
+Typical use: (Optional)
+
+````
+( c-addr ) l@ lle l>s \ 32-bit unaligned signed little-endian fetch
+( c-addr ) w@         \ 16-bit unaligned unsigned native-order fetch
+( n|u c-addr ) >r xbe r> x! \ 64-bit unaligned big-endian   store
+( n|u c-addr ) l!           \ 32-bit unaligned native-order store
+````
+
+Implementation on systems with address-unit-bits > 8:
+
+This wordset primarily addresses byte-addressed machines, but can also
+be used on others (in particular, word-addressed machines), by using
+only the lower 8 bits of each address unit (e.g., each word).  The
+application would use a file-access-mode modifier `bytewise` (not
+standardized) to read the input into memory in that format, then use
+`c@ $ff and` `w@` `l@` `x@` to convert from this 8-bit-per-au format
+into data on the data stack, work with that, then use `c!` `w!` ´l!`
+`x!` to convert back to the 8-bit-per-au format, and finally submit
+the data to the external destination by writing to a file opened in
+`bytewise` mode.
 
 ## Reference implementation:
 
