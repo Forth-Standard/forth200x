@@ -6,6 +6,10 @@ M. Anton Ertl
 
 ## Change Log:
 
+2025-09-10 additional wording for systems with char-unit-bits>8;
+           discussed signed number representation;
+           discussed (but did not use) finer typing;
+           continue using `c´ prefix for byte access
 2024-06-14 initial version
 
 ## Problem:
@@ -35,7 +39,7 @@ We use the following prefixes:
 
 The `l`-prefixed words are not useful on systems with cell size <32
 bits, and such systems are therefore expected not to implement them.
-Likewise for the `x`-prefixed words and cell sizes <64 bits.
+Likewise for the `x`-prefixed words and cell size <64 bits.
 
 For the `w` prefix this proposal specifies the following set of words:
 
@@ -56,8 +60,10 @@ or natively ordered signed and unsigned 16-bit values, with sequences
 like:
 
 ````
-w@ wbe w>s   \ 16-bit unaligned signed big-endian fetch
->r wle r> w! \ 16-bit unaligned     little-endian store
+w@           \ 16-bit unaligned unsigned native-order fetch
+w@ wbe w>s   \ 16-bit unaligned   signed   big-endian fetch
+>r wle r> w! \ 16-bit unaligned         little-endian store
+w!           \ 16-bit unaligned          native-order store
 ````
 
 For the `c` prefix byte order and alignment are not issues, so there
@@ -71,7 +77,7 @@ cell size >= 64 bits would implement all the words.
 ## Typical use: (Optional)
 
 ````
-( c-addr ) l@ lle l>s \ 32-bit unaligned signed little-endian fetch
+( c-addr ) l@ lle l>s \ 32-bit unaligned  signed little-endian fetch
 ( c-addr ) w@         \ 16-bit unaligned unsigned native-order fetch
 ( n|u c-addr ) >r xbe r> x! \ 64-bit unaligned big-endian   store
 ( n|u c-addr ) l!           \ 32-bit unaligned native-order store
