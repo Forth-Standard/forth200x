@@ -173,15 +173,15 @@ Define "name" (formerly rectype:)
 
 "name" exection: ( i\*x -- translation )
 
-translation interpreting run-time: ( ... translation -- ... )
+"name" interpreting action: ( ... translation -- ... )
 
 Remove the top of stack (the translation token) and execute xt-int.
 
-translation compiling run-time: ( ... translation -- ... )
+"name" compiling action: ( ... translation -- ... )
 
 Remove the top of stack (the translation token) and execute xt-comp.
 
-translation postponing run-time: ( ... translation -- ... )
+"name" postponing action: ( translation -- )
 
 Remove the top of stack (the translation token) and execute xt-post.
 
