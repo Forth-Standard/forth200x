@@ -4,7 +4,8 @@ __Hint: Please delete the blockquote explanations, they are just for your conven
 
 ## Author:
 
-> The name of the author(s) of the proposal.
+M. Anton Ertl (based on previous work by Matthias Trute, Bernd Paysan,
+and others, and the input of the standardization committee.
 
 ## Change Log:
 
@@ -12,11 +13,54 @@ __Hint: Please delete the blockquote explanations, they are just for your conven
 
 ## Problem:
 
-> This states what problem the proposal addresses.
+The classical text interpreter is inflexible: E.g., adding
+floating-point recognizers requires hardcoding the change; several
+systems include system-specific hooks (sometimes more than one) for
+plugging in functionality at various places in the text interpreter.
+
+The difficulty of adding to the text interpreter may also have led to
+missed opportunities: E.g., for string literals the standard did not
+task the text interpreter with recognizing them, but instead
+introduced `S"` and `S\"` (and their complicated definition with
+interpretation and compilation semantics).
 
 ## Solution:
 
-> A short informal description of the proposed solution to the problem identified by the proposal.
+The recognizer proposal is a factorization of the central part of the
+text interpreter.
+
+As before the text interpreter parses a white-space-delimited string.
+Unlike before, the string is now passed to the recognizers in the
+default recognizer sequence `rec-forth`, one after another, until one
+matches.  The result of the matching recognizer is a *translation*, an
+on-stack representation of the word or literal.  The translation is
+then processed according to the text-interpreter's state
+(interpreting, compiling, postponing).
+
+There are five usage levels and related recognizer words:
+
+1. Programs that use the default recognizers.
+
+2. Programs that change which of the existing recognizers are used and in what order.
+
+`rec-name rec-number rec-float rec-none recs rec-forth rec-sequence:
+get-recs set-recs`
+
+3. Programs that define new recognizers that use existing translators.
+
+`translate-none translate-cell translate-dcell translate-float translate-name`
+
+4. Programs that define new translators.
+
+translate:
+
+5. Programs that define text interpreters and programming tools that
+have to deal with recognizers
+
+Not standardized in this round
+
+
+## Rationale
 
 > This gives the rationale for specific decisions you have taken in the proposal (often in response to comments), or discusses specific issues that have not been decided yet.
 
