@@ -10,8 +10,14 @@ and others, and the input of the standardization committee).
 
 ## Change Log:
 
-* 2026-02-08 Fleshed out proposal; worked in feedback up to now.
+* 2026-02-09 Specify the translation tokens of the `rec-...` words.
+  Also provide ( -- translation-token ) stack effects for
+  `translate-...` words.
+
+* 2026-02-08 [r1614] Fleshed out proposal; worked in feedback up to now.
+
 * 2025-09-12 [r1535] Some fixes 
+
 * 2025-09-12 [412] Initial version
 
 ## Problem:
@@ -92,10 +98,10 @@ TBD.
 **translation**: The result of a recognizer; the input of
 `interpreting`, `compiling`, and `postponing`; it's a semi-opaque type
 that consists of a translation token at the top of the data stack and
-additional data on various stacks below.
+additional data on various stacks.
 
 **translation token**: (This has formerly been called a rectype.)
-  Single-cell item that identifies a certain translation.
+  Single-cell item that identifies a certain kind of translation.
 
 #### Translations and text-interpretation
 
@@ -105,11 +111,14 @@ stack(s), and then either performs the interpreting run-time,
 compiling run-time, or postponing run-time.
 
 All the proposed-standard `translate-...` words only push a
-translation token.  Their stack effects are specified as expecting
-some data on the stack and pushing a translation.  This shows what
-data is required in addition to the translation token to form a
-complete translation.  A proposed-standard `translate-...` word pushes
-the same translation token every time it is invoked.
+translation token, and that stack effect is given, but in addition the
+definitions of these words also show a "Stack effect to produce a
+translation"; this stack effect points out which additional stack
+items need to be pushed before the translation token in order to
+produce a translation.
+
+A proposed-standard `translate-...` word pushes the same translation
+token every time it is invoked.
 
 #### Compiling and postponing run-time 
 
@@ -131,35 +140,39 @@ Add the following exception to table 9.1:
 
 If c-addr u is the name of a visible local or a visible named word,
 translation represents the text-interpretation semantics
-(interpreting, compiling, postponing) of that word (see
-`translate-name`).  If not, translation is `translate-none`.
+(interpreting, compiling, postponing) of that word, and has the
+translation token `translate-name`.  If not, translation is
+`translate-none`.
 
 
 #### `rec-number` ( c-addr u -- translation )
 
-(formerly `rec-num`)
-If c-addr u is a single or double number (without or with prefix), or
-a character, all as described in section 3.4.1.3 (Text interpreter
-input number conversion), translation represents pushing that number
-at run-time (see `translate-cell`, `translate-dcell`).  If not,
-translation is `translate-none`. 
+(formerly `rec-num`) If c-addr u is a single-cell or double-cell
+number (without or with prefix), or a character, all as described in
+section 3.4.1.3 (Text interpreter input number conversion),
+translation represents pushing that number at run-time.  If a
+single-cell number is recognized, the translation token of translation
+is `translate-cell`, for a double cell `translate-dcell`.  If neither
+is recognized, translation is `translate-none`.
 
 #### `rec-float` ( c-addr u -- translation )
 
 If c-addr u is a floating-point number, as described in section 12.3.7
-(Text interpreter input number conversion), translation represents
-pushing that number at run-time (see `translate-float`). If c-addr u
-has the syntax of a double number without prefix according to section
-8.3.1 (Text interpreter input number conversion), and it corresponds
-to the floating-point number r according to section 12.6.1.0558
-(`>float`), translation may represent pushing r at run-time.  If
-c-addr u is not recognized as a floating-point number, translation is
-`translate-none`.
+(Text interpreter input number conversion), `rec-float` recognizes it
+as floating-point number r. If c-addr u has the syntax of a double
+number without prefix according to section 8.3.1 (Text interpreter
+input number conversion), and it corresponds to the floating-point
+number r according to section 12.6.1.0558 (`>float`), `rec-float` may
+(but is not required to) recognize it as a floating-point number.  If
+`rec-float` recognized c-addr u as floating-point number, translation
+represents pushing that number at run-time, and the translation token
+is `translate-float`.  If c-addr u is not recognized as a
+floating-point number, translation is `translate-none`.
 
 #### `rec-none` ( c-addr u -- translation )
 
-This word does not recognize anything.  For its translation, see
-`translate-none`.
+This word does not recognize anything.  Its translation and
+translation token is `translate-none`.
 
 #### `recs` ( -- )
 
@@ -185,9 +198,23 @@ Execute xt1; if the resulting translation is the result of
 the next xt.  If there is no next xt, remove ( c-addr u -- ) and
 perform `translate-none`.
 
-#### `translate-none` ( -- translation )
+#### `get-recs` ( xt -- xt_u ... xt_1 u )
+
+xt is the execution token of a recognizer sequence.  xt_1 is the first
+recognizer searched by this sequence, xt_u is the last one.
+
+#### `set-recs` ( xt_u ... xt_1 u xt -- )
+
+xt is the execution token of a recognizer sequence.  Replace the
+contents of this sequence with xt_u ... xt_1, where xt_1 is searched
+first, and xt_u is searched last.  Throw -80 (too many recognizers) if
+u exceeds the number of elements supported by the recognizer sequence.
+
+#### `translate-none` ( -- translation-token )
 
 (formerly `r:fail` or `notfound`)
+
+Stack effect to produce a translation: ( -- translation )
 
 translation interpreting run-time: ( ... -- )
 
@@ -201,25 +228,33 @@ translation postponing run-time: ( ... --  )
 
 `-13 throw`
 
-#### `translate-cell` ( x -- translation )
+#### `translate-cell` ( -- translation-token )
 
 (formerly `translate-num`)
 
+Stack effect to produce a translation: ( x -- translation )
+
 translation interpreting run-time: ( -- x )
 
-#### `translate-dcell` ( xd -- translation )
+#### `translate-dcell` ( -- translation-token )
 
 (formerly `translate-dnum`)
 
+Stack effect to produce a translation: ( xd -- translation )
+
 translation interpreting run-time: ( -- xd )
 
-#### `translate-float` ( r -- translation )
+#### `translate-float` ( -- translation-token )
+
+Stack effect to produce a translation: ( r -- translation )
 
 translation interpreting run-time: ( -- r )
 
-#### `translate-name` ( nt -- translation )
+#### `translate-name` ( -- translation-token )
 
 (formerly translate-nt)
+
+Stack effect to produce a translation: ( nt -- translation )
 
 translation interpreting run-time: ( ... -- ... )
 
@@ -235,7 +270,9 @@ Perform the compilation semantics of nt.
 
 Define "name"
 
-"name" exection: ( i\*x -- translation )
+"name" exection: ( -- translation-token )
+
+Stack effect to produce a translation: ( i\*x -- translation )
 
 "name" interpreting action: ( ... translation -- ... )
 
@@ -248,18 +285,6 @@ Remove the top of stack (the translation token) and execute xt-comp.
 "name" postponing action: ( translation -- )
 
 Remove the top of stack (the translation token) and execute xt-post.
-
-#### `get-recs` ( xt -- xt_u ... xt_1 u )
-
-xt is the execution token of a recognizer sequence.  xt_1 is the first
-recognizer searched by this sequence, xt_u is the last one.
-
-#### `set-recs` ( xt_u ... xt_1 u xt -- )
-
-xt is the execution token of a recognizer sequence.  Replace the
-contents of this sequence with xt_u ... xt_1, where xt_1 is searched
-first, and xt_u is searched last.  Throw -80 (too many recognizers) if
-u exceeds the number of elements supported by the recognizer sequence.
 
 #### `postpone`
 
@@ -313,6 +338,11 @@ proposal decides against the implementation variations and for the
 uses by specifying in the Usage Requirements that a `translate-...`
 word just pushes a translation token, and it always pushes the same
 one.
+
+Moreover, this proposal specifies the translation tokens that the
+proposed-standard recognizers produce.  This is useful in various
+contexts where recognizers are not used directly in `rec-forth`, and
+it also makes it possible to write tests for the recognizers.
 
 ### Discarding a translation
 
