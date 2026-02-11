@@ -15,9 +15,8 @@ t{ : test-postpone-name postpone-name ; -> }t
 t{ test-postpone-name -> #123 }t
 
 t{ : postpone-imm postpone postpone-cell ; immediate -> }t
-t{ : test-postpone-imm postpone-imm ; immediate -> }t
-t{ : test-postpone-imm2 test-postpone-imm ; -> }t
-t{ test-postpone-imm2 -> #123 }t
+t{ : test-postpone-imm postpone-imm ;  -> }t
+t{ test-postpone-imm -> #123 }t
 
 t{ : postpone-dcell postpone #1234. ; immediate -> }t
 t{ : test-postpone-dcell postpone-dcell ; -> }t
@@ -88,7 +87,7 @@ TESTING get-recs set-recs
 
 t{ ' rec-number-name get-recs -> ' rec-name ' rec-number 2 }t
 t{ ' rec-number-name is rec-forth -> }t
-t{ ' rec-forth get-recs -> ' rec-name ' rec-number 2 }t
+t{ action-of rec-forth get-recs -> ' rec-name ' rec-number 2 }t
 t{ default-rec-forth is rec-forth -> }t
 t{ ' rec-number-name get-recs ' rec-float swap 1+ ' rec-number-name set-recs }t
 t{ s" 1234.5e" rec-number-name -> 1234.5e translate-float }t
