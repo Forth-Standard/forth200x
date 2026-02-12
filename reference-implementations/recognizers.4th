@@ -1,14 +1,65 @@
 \ This file is in the public domain. NO WARRANTY.
 
+\ The program uses the following words
+\ from CORE :
+\  : Create , ; @ execute ' dup postpone Literal 2drop IF ELSE drop THEN 
+\  swap over and >body 1+ ! cell+ LOOP >r cells + r> allot does> 2dup i rot 
+\  unloop EXIT +LOOP type space BEGIN WHILE REPEAT 0= immediate 
+\ from CORE-EXT :
+\  case of endof endcase u> ?DO tuck 2>r <> 2r> 
+\ from CORE-EXT-2012 :
+\  Defer IS action-of parse-name 
+\ from BLOCK-EXT :
+\  \ 
+\ from DOUBLE :
+\  2Literal 
+\ from EXCEPTION :
+\  throw 
+\ from FILE :
+\  ( 
+\ from FLOATING :
+\  FLiteral >float 
+\ from TOOLS-EXT :
+\  state 
+\ from TOOLS-EXT-2012 :
+\  name>interpret name>compile name>string 
+\ from non-ANS :
+\  find-name snumber? latestxt >name interpret replace-word 
+
+\ The non-standard words are implemented on Gforth (development):
+
+\ 'find-name' ( c-addr u - nt | 0  ) gforth-0.2
+\   Find the name c-addr u in the current search order.  Return its nt,
+\   if found, otherwise 0.
+
+\   find-name has been accepted into Forth 200x in 2018
+
+\ 'snumber?' ( c-addr u -- 0 / n -1 / d 0> )
+\       Convert string to an integer number, single or double.
+
+\ 'latestxt' ( - xt  ) gforth-0.6
+\    xt is the execution token of the most recent word defined in the
+\    current section.
+
+\ '>name' ( xt - nt|0  ) gforth-0.2 "to-name"
+\    For most words (all words with the default implementation of
+\    'name>interpret'), '>name' is the inverse of 'name>interpret': for these
+\    words 'nt name>interpret' produces xt.  [...]
+
+\ The following two words are used for plugging 'interpret1' into the
+\ existing text-interpreter setup instead of 'interpret'.  For other
+\ Forth systems you probably need to do it differently, and maybe even
+\ replace INTERPRET1 with something else.
+
+\ : interpret ( ... -- ... ) \ gforth-internal
+\     \ interpret/compile the (rest of the) input buffer
+
+\ 'replace-word' ( xt1 xt2 -  ) gforth-1.0
+\     make xt2 do xt1, both need to be colon definitions
+
+    
 : translate: ( xt-int xt-comp xt-post "name" -- )
     create , , , ; \ postponing has offset 0, compiling cell+, interpreting 2 cells +
-
-: interpret2 ( ... -- ... )
-    begin
-        parse-name dup while
-            rec-forth state @ 2 + cells + @ execute
-    repeat
-    2drop ;
 
 : postponing ( ... translation-token -- )
     @ execute ;
@@ -87,13 +138,8 @@
 
 : get-recs ( xt -- xt_u ... xt_1 u )
     >body dup @ dup >r cells + r> 1+ 0 ?do
-        dup @ swap cell- loop
+        dup @ swap 1 cells - loop
     drop ;
-
-: recs ( -- )
-    action-of rec-forth get-recs 0 ?do
-        >name name>string type space
-    loop ;
 
 : rec-sequence: ( xtu .. xt1 u "name" -- )
     create #17 cells allot latestxt set-recs
@@ -109,8 +155,20 @@
 
 defer rec-forth ' rec-default is rec-forth
 
+: recs ( -- )
+    action-of rec-forth get-recs 0 ?do
+        >name name>string type space
+    loop ;
+
+: interpret1 ( ... -- ... )
+    begin
+        parse-name dup while
+            rec-forth state @ 2 + cells + @ execute
+    repeat
+    2drop ;
+
 : postpone ( "name" -- )
     parse-name dup 0= #-16 and throw
     rec-forth postponing ; immediate
 
-\ ' interpret2 ' interpret replace-word
+' interpret1 ' interpret replace-word
