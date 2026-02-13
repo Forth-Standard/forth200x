@@ -124,7 +124,7 @@ t{ s" : ttd test-translate-dcell ;" evaluate-seq-translates -> }t
 t{ s" : ttf test-translate-float ;" evaluate-seq-translates -> }t
 t{ s" : tts test-translate-swap  ;" evaluate-seq-translates -> }t
 t{ s" : tti test-translate-if test-translate-cell else test-translate-dcell then ;" evaluate-seq-translates -> }t
-\ t{ s" : ttn #012no-word ;" ' evaluate-seq-translates catch nip nip -> #-13 }t
+t{ s" : ttn #012no-word ;" ' evaluate-seq-translates catch [ nip nip -> #-13 }t
 
 t{ ttc      -> #123  }t
 t{ ttd      -> #123. }t
@@ -139,7 +139,7 @@ t{ s" : tptd1 postpone test-translate-dcell ; immediate" evaluate-seq-translates
 t{ s" : tptf1 postpone test-translate-float ; immediate" evaluate-seq-translates -> }t
 t{ s" : tpts1 postpone test-translate-swap  ; immediate" evaluate-seq-translates -> }t
 t{ s" : tpti1 postpone test-translate-if    ; immediate" evaluate-seq-translates -> }t
-\ t{ s" : tptn1 postpone #012no-word ;" ' evaluate-seq-translates catch nip nip -> #-13 }t
+t{ s" : tptn1 postpone #012no-word ;" ' evaluate-seq-translates catch [ nip nip -> #-13 }t
 
 t{ : tptc2 tptc1 ; -> }t
 t{ : tptd2 tptd1 ; -> }t
