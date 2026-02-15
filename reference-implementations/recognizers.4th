@@ -1,5 +1,16 @@
 \ This file is in the public domain. NO WARRANTY.
 
+\ This implementation fails the locals tests when run on Gforth,
+\ because Gforth's {: installs a recognizer in Gforth's rec-forth, but
+\ during this test we have switched to a text interpreter that uses
+\ the reference implementation's rec-forth.
+
+\ Even if that hurdle was not present, there is no good way to add
+\ TRANSLATE-LOCAL and to add recognizing locals to REC-NAME, because
+\ there is no commonality between locals implementations in Forth
+\ systems.
+
+
 \ The program uses the following words
 \ from CORE :
 \  : Create , ; @ execute ' dup postpone Literal 2drop IF ELSE drop THEN 
@@ -57,7 +68,6 @@
 \ 'replace-word' ( xt1 xt2 -  ) gforth-1.0
 \     make xt2 do xt1, both need to be colon definitions
 
-    
 : translate: ( xt-int xt-comp xt-post "name" -- )
     create , , , ; \ postponing has offset 0, compiling cell+, interpreting 2 cells +
 

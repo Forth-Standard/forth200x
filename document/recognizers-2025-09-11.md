@@ -10,8 +10,10 @@ and others, and the input of the standardization committee).
 
 ## Change Log:
 
-* 2026-02-15 Changes based on feedback in [r1616], [r1620], [r1621].
+* 2026-02-15 Non-substantive changes based on [r1616], [r1620], [r1621].
              Added links to the tests and reference implementation.
+             Added `translate-local` and locals discussion.
+             Improved "Typical use"
 
 * 2026-02-09 Specify the translation tokens of the `rec-...` words.
   Also provide ( -- translation-token ) stack effects for
@@ -59,7 +61,7 @@ text interpreter.  You do not need to use recognizer words for this
 level, but you can inform yourself about the recognizers in the
 current default recognizer sequence with `recs`.  The default
 recognizer sequence contains at least `rec-name` and `rec-number`,
-and, if the Floating-Point wordset is present, `rec-float`.
+and, depending on the wordsets present, `rec-float` and `rec-local`.
 `Postpone`ing numbers and other reconized things is a feature that a
 system that implements this proposal provides; this feature is also at
 this usage level; e.g., `postpone 1` is equivalent to `1 postpone
@@ -81,14 +83,14 @@ literal`.
    how to change `rec-forth`, as there are different preferences among
    committee members.
    
-   This proposal contains pre-defined recognizers `rec-name rec-number
-   rec-float`, which can be used with `set-recs` or for defining a
-   recognizer sequence.
+   This proposal contains pre-defined recognizers `rec-local rec-name
+   rec-number rec-float`, which can be used with `set-recs` or for
+   defining a recognizer sequence.
 
 3. Programs that define new recognizers that use existing translation
 tokens.  New recognizers are usually colon definitions.
 Proposed-standard translation tokens are `translate-none
-translate-cell translate-dcell translate-float translate-name`.  There
+translate-cell translate-dcell translate-float translate-local translate-name`.  There
 is also `rec-none`, which is sometimes a useful factor when defining
 recognizers.
 
@@ -133,6 +135,12 @@ the data and floating-point stack depends on the translation token.
 **translation token**: (This has formerly been called a rectype.)
   Single-cell item that identifies a certain kind of translation.
 
+**local-sys**: A local-sys contains information about a specific local
+  necessary to translate it.  The local-sys becomes invalid once the
+  local becomes invisible by going out of scope.  Local-sys is a
+  system-compilation type with an implementation-dependent number of
+  stack items.
+
 #### Translations and text-interpretation
 
 A recognizer pushes a translation on the stack(s).  The text interpreter
@@ -172,11 +180,16 @@ Add the following exception to table 9.1:
 
 (formerly `rec-nt`)
 
-If c-addr u is the name of a visible local or a visible named word,
-translation represents the text-interpretation semantics
-(interpreting, compiling, postponing) of that word, and has the
-translation token `translate-name`.  If not, translation is
-`translate-none`.
+If c-addr u is the name of a visible local, *translation* represents the
+text-interpretation semantics (interpreting, compiling, postponing) of
+that word, and has the translation token `translate-local`.
+
+If c-addr u is the name of a visible named word, *translation*
+represents the text-interpretation semantics (interpreting, compiling,
+postponing) of that word, and has the translation token
+`translate-name`.
+
+Otherwise, *translation* is `translate-none`.
 
 
 #### `rec-number` ( c-addr u -- translation )
@@ -184,10 +197,10 @@ translation token `translate-name`.  If not, translation is
 (formerly `rec-num`) If c-addr u is a single-cell or double-cell
 number (without or with prefix), or a character, all as described in
 section 3.4.1.3 (Text interpreter input number conversion),
-translation represents pushing that number at run-time.  If a
-single-cell number is recognized, the translation token of translation
+*translation* represents pushing that number at run-time.  If a
+single-cell number is recognized, the translation token of *translation*
 is `translate-cell`, for a double cell `translate-dcell`.  If neither
-is recognized, translation is `translate-none`.
+is recognized, *translation* is `translate-none`.
 
 #### `rec-float` ( c-addr u -- translation )
 
@@ -198,10 +211,10 @@ number without prefix according to section 8.3.1 (Text interpreter
 input number conversion), and it corresponds to the floating-point
 number r according to section 12.6.1.0558 (`>float`), `rec-float` may
 (but is not required to) recognize it as a floating-point number.  If
-`rec-float` recognized c-addr u as floating-point number, translation
+`rec-float` recognized c-addr u as floating-point number, *translation*
 represents pushing that number at run-time, and the translation token
 is `translate-float`.  If c-addr u is not recognized as a
-floating-point number, translation is `translate-none`.
+floating-point number, *translation* is `translate-none`.
 
 #### `rec-none` ( c-addr u -- translation )
 
@@ -227,7 +240,7 @@ must be able to accomodate at least 16 recognizers.
 
 name execution: ( c-addr u -- translation )
 
-Execute xt1; if the resulting translation is the result of
+Execute xt1; if the resulting *translation* is the result of
 `translate-none`, restore the data stack to ( c-addr u -- ) and try
 the next xt.  If there is no next xt, remove ( c-addr u -- ) and
 perform `translate-none`.
@@ -250,15 +263,15 @@ u exceeds the number of elements supported by the recognizer sequence.
 
 Stack effect to produce a translation: ( -- translation )
 
-translation interpreting run-time: ( ... -- )
+*translation* interpreting run-time: ( ... -- )
 
 `-13 throw`
 
-translation compiling run-time: ( ... --  )
+*translation* compiling run-time: ( ... --  )
 
 `-13 throw`
 
-translation postponing run-time: ( ... --  )
+*translation* postponing run-time: ( ... --  )
 
 `-13 throw`
 
@@ -268,21 +281,39 @@ translation postponing run-time: ( ... --  )
 
 Stack effect to produce a translation: ( x -- translation )
 
-translation interpreting run-time: ( -- x )
+*translation* interpreting run-time: ( -- x )
 
 #### `translate-dcell` ( -- translation-token )
 
 (formerly `translate-dnum`)
 
-Stack effect to produce a translation: ( xd -- translation )
+Stack effect to produce a *translation*: ( xd -- translation )
 
-translation interpreting run-time: ( -- xd )
+*translation* interpreting run-time: ( -- xd )
 
 #### `translate-float` ( -- translation-token )
 
 Stack effect to produce a translation: ( r -- translation )
 
-translation interpreting run-time: ( -- r )
+*translation* interpreting run-time: ( -- r )
+
+#### `translate-local` ( -- translation-token )
+
+Stack effect to produce a translation: ( local-sys -- translation )
+
+*translation* interpreting run-time: ( ... -- ... )
+
+`-14 throw`
+
+*translation* compiling run-time: ( ... -- ... )
+
+Append the "name Execution" semantics (see 13.6.2.2550 `{:`) for the
+local *name* corresponding to *local-sys* to the current definition.
+
+*translation* postponing run-time ( -- )
+
+Perform the *translation* compiling run-time.  Append the compilation
+semantics of `literal` to the current definition.
 
 #### `translate-name` ( -- translation-token )
 
@@ -290,11 +321,11 @@ translation interpreting run-time: ( -- r )
 
 Stack effect to produce a translation: ( nt -- translation )
 
-translation interpreting run-time: ( ... -- ... )
+*translation* interpreting run-time: ( ... -- ... )
 
 Perform the interpretation semantics of nt.
 
-translation compiling run-time: ( ... -- ... )
+*translation* compiling run-time: ( ... -- ... )
 
 Perform the compilation semantics of nt.
 
@@ -381,15 +412,61 @@ it also makes it possible to write tests for the recognizers.
 ### Discarding a translation
 
 [[r1541]](https://forth-standard.org/proposals/recognizer-committee-proposal-2025-09-11#reply-1541)
-also asks for a way to discard a translation.  This need has also come
-up in some recognizers implemented in Gforth (e.g., `rec-tick`), and
-Gforth uses (non-standard) words like `sp@` and `sp!` for that.
-Standard options would be to wrap the word that pushes a translation
-into `catch` and discard the stacks with a non-zero `throw`, or to use
-`depth` and `fdepth` in combination with loops of `drop` and `fdrop`;
-both ways are cumbersome.  My feeling is that many in the committee
-and in the wider Forth community do not see the need for
-`discard-translation` yet; this may change in the future.
+also asks for a way to discard (drop) a translation.  This need has
+also come up in some recognizers implemented in Gforth (e.g.,
+`rec-tick`), and Gforth uses (non-standard) words like `sp@` and `sp!`
+for that.  Standard options would be to wrap the word that pushes a
+translation into `catch` and discard the stacks with a non-zero
+`throw`, or to use `depth` and `fdepth` in combination with loops of
+`drop` and `fdrop`; both ways are cumbersome, but viable.  At the
+2026-02-13 meeting the committee decided not to standardize support
+for dropping translations for now.
+
+### Locals
+
+#### `translate-local`
+
+Locals need a separate translation token `translate-local`, because
+the postponing action differs from that of name tokens for permanent
+words.  Also, there is much variation in how systems represent locals
+internally during compilation, and many system implementors prefer not
+to have to change their system to work with nts.
+
+#### `rec-local` ?
+
+One contentious issue has been how to recognize locals: Should it
+happen in `rec-name` or in a separate `rec-local`?  This reflects the
+existing divergence among systems, some of which `find` or `find-name`
+locals and some of which use a mechanism outside these words.  I think
+that both options are relatively easy to implement for all systems,
+and that there is currently no legacy based on having a separate
+`rec-local` or not.  OTOH, leaving this decision undecided is going to
+significantly reduce the usefulness of this proposal: Already usage
+level 2 (Programs that change which of the existing recognizers are
+used and in what order) would become much more cumbersome for many
+uses, and other uses may become completely unusable.  For now I have
+kept recognizing locals in `rec-name`, but changing the proposal to
+have a separate locals recognizer would just mean removing the local
+recognition paragraph from `rec-name` and adding:
+
+##### `rec-local` ( c-addr u -- translation )
+
+If c-addr u is the name of a visible local, *translation* represents the
+text-interpretation semantics (interpreting, compiling, postponing) of
+that word, and has the translation token `translate-local`.  If not,
+*translation* is `translate-none`.
+
+#### `Postpone`ing a local
+
+The postponing action for a local `x` is specified such that writing
+`POSTPONE x` is equivalent to `x POSTPONE LITERAL`.  This is the
+current behaviour of Gforth.  It is easy to implement and has proven
+to be useful ("notation matters").  However, probably no other Forth
+system implements this behaviour (yet), so an alternative is to
+specify that the postponing action throws or performs an
+implementation-defined action, and I am prepared for changing the
+proposal accordingly.
+
 
 ### Consumers of translations (Usage level 5)
 
@@ -428,8 +505,37 @@ token, remove it from the stack and execute its post-xt.
 ## Typical use:
 
 ````
-s" 123" rec-forth ( translation ) interpreting ( n ) \ leaves 123 on the stack
+\ Usage level 1
 
+\ Just program in Forth
+
+\ You want to see what recognizers are in rec-forth:
+recs
+
+\ And here's an example of using POSTPONE in a new way:
+: [foo] postpone #123 ; immediate
+: foo [foo] ;
+foo . \ prints 123
+
+\ Usage level 2
+
+\ let's check for a float before an integer
+action-of rec-forth constant rec-forth-default
+' rec-number ' rec-float ' rec-name 3 rec-sequence: rec-nfn
+' rec-nfn is rec-forth
+\ whether the following are recognizes as integers or floats depends
+\ on your rec-float
+123 .   \ in Gforth rec-float does not recognize that
+123. f. \ in Gforth rec-float recognizes that
+\ restore the old world order
+rec-forth-default is rec-forth
+
+\ you can also check a particular string with a particular recognizer:
+s" 123" rec-float \ in Gforth, returns the same as TRANSLATE-NONE
+
+\ Usage level 3
+
+\ A recognizer that recognizes `<name> and produces the xt of <name>
 : umin ( u1 u2 -- u )
   2dup u< if drop else nip then ;
 
@@ -445,6 +551,20 @@ s" 123" rec-forth ( translation ) interpreting ( n ) \ leaves 123 on the stack
         exit then
     \ this recognizer did not recognize anything, therefore:
     rec-none ;
+
+\ And now install it last in rec-nfn
+' rec-tick ' rec-nfn get-recs 1+ ' rec-nfn set-recs
+
+\ now use it:
+' rec-nfn is rec-forth
+5 `. execute \ prints 5
+\ restore the default recognizer sequence
+`rec-forth-default is rec-forth
+
+\ Usage level 4
+
+\ Here's how you could define the proposed-standard translate-cell yourself
+: lit, postpone literal ;
 
 ' noop                       ( x -- x )                             \ int-xt
 ' lit,                       ( compilation: x -- ; run-time: -- x ) \ comp-xt
