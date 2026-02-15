@@ -10,6 +10,9 @@ and others, and the input of the standardization committee).
 
 ## Change Log:
 
+* 2026-02-15 Changes based on feedback in [r1616], [r1620], [r1621].
+             Added links to the tests and reference implementation.
+
 * 2026-02-09 Specify the translation tokens of the `rec-...` words.
   Also provide ( -- translation-token ) stack effects for
   `translate-...` words.
@@ -42,9 +45,11 @@ As before the text interpreter parses a white-space-delimited string.
 Unlike before, the string is now passed to the recognizers in the
 default recognizer sequence `rec-forth`, one recognizer after another,
 until one matches.  The result of the matching recognizer is a
-*translation*, an on-stack representation of the word or literal.  The
-translation is then processed according to the text-interpreter's
-state (interpreting, compiling, postponing).
+*translation*, an on-stack representation of the word or literal; the
+kind of translation is identified by a *translation token*, which is a
+part of the translation.  The translation is then processed according
+to the needs of the text-interpreter (interpreting, compiling) or
+`postpone`.
 
 There are five usage levels of recognizers and related recognizer words:
 
@@ -54,22 +59,38 @@ text interpreter.  You do not need to use recognizer words for this
 level, but you can inform yourself about the recognizers in the
 current default recognizer sequence with `recs`.  The default
 recognizer sequence contains at least `rec-name` and `rec-number`,
-and, if the Floating-Point wordset is present, `rec-float`.  Moreover,
-programmers can now `postpone` numbers and other recognized things.
+and, if the Floating-Point wordset is present, `rec-float`.
+`Postpone`ing numbers and other reconized things is a feature that a
+system that implements this proposal provides; this feature is also at
+this usage level; e.g., `postpone 1` is equivalent to `1 postpone
+literal`.
 
 2. Programs that change which of the existing recognizers are used and
-in what order.  The default recognizer sequence is `rec-forth`.  You
-can get the recognizers in it with `get-recs` and set them with
-`set-recs`.  You can also create a recognizer sequence (which is a
-recognizer itself) with `rec-sequence:`.  This proposal contains
-pre-defined recognizers `rec-name rec-number rec-float rec-none`,
-which can be used with `set-recs` or for defining a recognizer
-sequence.
+   in what order.
+   
+   The default recognizer sequence is `rec-forth`, a deferred word.
+   
+   You can also create a recognizer sequence with `rec-sequence:`.  A
+   recognizer sequence is a recognizer itself, and can be used
+   everwhere where a recognizer can be used, including in a recognizer
+   sequence.  One can change `rec-forth` to call such a sequence.
+
+   You can get the recognizers contained in a recognizer sequence with
+   `get-recs` and set them with `set-recs` (including the recognizer
+   sequence in `rec-forth`).  The committee makes no recommendation on
+   how to change `rec-forth`, as there are different preferences among
+   committee members.
+   
+   This proposal contains pre-defined recognizers `rec-name rec-number
+   rec-float`, which can be used with `set-recs` or for defining a
+   recognizer sequence.
 
 3. Programs that define new recognizers that use existing translation
-tokens.  New recognizers are usually colon definitions,
-proposed-standard translation tokens are `translate-none
-translate-cell translate-dcell translate-float translate-name`.
+tokens.  New recognizers are usually colon definitions.
+Proposed-standard translation tokens are `translate-none
+translate-cell translate-dcell translate-float translate-name`.  There
+is also `rec-none`, which is sometimes a useful factor when defining
+recognizers.
 
 4. Programs that define new translation tokens.  New translation
 tokens are defined with `translate:`.
@@ -82,12 +103,20 @@ See the rationale for more detail and answers to specific questions.
 
 ## Reference implementation:
 
-TBD.
+[Latest version](https://raw.githubusercontent.com/Forth-Standard/forth200x/refs/heads/master/reference-implementations/recognizers.4th)
+
+This may not be the version corresponding to this proposal, so you may
+want to look at the
+[history](https://github.com/Forth-Standard/forth200x/commits/master/reference-implementations/recognizers.4th).
 
 
 ## Testing:
 
-TBD.
+[Latest version](https://raw.githubusercontent.com/Forth-Standard/forth200x/refs/heads/master/tests/recognizers.4th)
+
+This may not be the version corresponding to this proposal, so you may
+want to look at the
+[history](https://github.com/Forth-Standard/forth200x/commits/master/tests/recognizers.4th).
 
 ## Proposal:
 
@@ -96,9 +125,10 @@ TBD.
 #### Data Types
 
 **translation**: The result of a recognizer; the input of
-`interpreting`, `compiling`, and `postponing`; it's a semi-opaque type
-that consists of a translation token at the top of the data stack and
-additional data on various stacks.
+`interpreting`, `compiling`, and `postponing`; it's a type that
+consists of a translation token at the top of the data stack and
+additional data on various stacks; which stack items are required on
+the data and floating-point stack depends on the translation token.
 
 **translation token**: (This has formerly been called a rectype.)
   Single-cell item that identifies a certain kind of translation.
@@ -110,15 +140,19 @@ A recognizer pushes a translation on the stack(s).  The text interpreter
 stack(s), and then either performs the interpreting run-time,
 compiling run-time, or postponing run-time.
 
-All the proposed-standard `translate-...` words only push a
-translation token, and that stack effect is given, but in addition the
-definitions of these words also show a "Stack effect to produce a
-translation"; this stack effect points out which additional stack
-items need to be pushed before the translation token in order to
-produce a translation.
+All the proposed-standard `translate-...` words and the words defined
+with `translate:` have the stack effect ( -- translation-token ), and
+each of these words pushes the same translation token every time it is
+invoked, so you can compare the result of a recognizer against the
+result of a `translate-...` word or a word defined with `translate:`.
 
-A proposed-standard `translate-...` word pushes the same translation
-token every time it is invoked.
+In addition the definitions of the `translate-...` words also show a
+"Stack effect to produce a translation"; this stack effect points out
+which additional stack items need to be pushed before the translation
+token in order to produce a translation.  E.g., for `translate-dcell`
+this stack effect is ( xd -- translation ), which means that the
+translation with this particular translation token consists of ( xd
+translation-token ).
 
 #### Compiling and postponing run-time 
 
