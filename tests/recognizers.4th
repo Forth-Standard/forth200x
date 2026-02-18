@@ -36,6 +36,8 @@ TESTING rec-name rec-number rec-float rec-none rec-forth
 t{ : #12345 #12345 ; -> }t
 
 t{ s" dup"     rec-name -> s" dup" find-name translate-name }t
+t{ s" ("       rec-name -> s" ("   find-name translate-name }t
+t{ s" if"      rec-name -> s" if"  find-name translate-name }t
 t{ s" unr-str" rec-name -> translate-none }t
 t{ s" #123"    rec-name -> translate-none }t
 t{ s" #12345"  rec-name -> s" #12345" find-name translate-name }t
@@ -64,6 +66,8 @@ t{ s" #1234."  rec-none -> translate-none }t
 t{ s" 1234.5e" rec-none -> translate-none }t
 
 t{ s" dup"     rec-forth -> s" dup" find-name translate-name }t
+t{ s" ("       rec-forth -> s" ("   find-name translate-name }t
+t{ s" if"      rec-forth -> s" if"  find-name translate-name }t
 t{ s" unr-str" rec-forth -> translate-none }t
 t{ s" #123"    rec-forth -> #123   translate-cell  }t
 t{ s" #12345"  rec-forth -> s" #12345" find-name translate-name }t
@@ -161,8 +165,8 @@ TESTING translate:
 \ first, an absurd translation token
 t{ : ttti 9 ; -> }t
 t{ : tttc 8 ; -> }t
-t{ variable tttpv 0 tttpv ! -> }t
-t{ : tttp 1 tttpv +! ; -> }t
+t{ variable tttpv 5 tttpv ! -> }t
+t{ : tttp state @ tttpv ! ; -> }t
 t{ ' ttti ' tttc ' tttp translate: translate-ttt -> }t
 
 \ next, a translation token for a two-float literal (e.g., for complex)
@@ -177,9 +181,9 @@ t{ :noname ; ' 2flit, :noname 2flit, postpone 2flit, ; translate: translate-2flo
 t{ ' rec-name ' rec-ttt 2 ' rec-seq-translates set-recs -> }t
 
 cr
-t{ s" test-ttt"              evaluate-seq-translates         -> 9 }t
-t{ s" ] test-ttt ["          evaluate-seq-translates         -> 8 }t
-t{ s" ] postpone test-ttt [" evaluate-seq-translates tttpv @ -> 1 }t
+t{         s" test-ttt"              evaluate-seq-translates         -> 9 }t
+t{         s" ] test-ttt ["          evaluate-seq-translates         -> 8 }t
+t{ tttpv @ s" ] postpone test-ttt [" evaluate-seq-translates tttpv @ -> 5 -1 }t
 
 t{ s" test-2float"     evaluate-seq-translates -> 3e 4e }t
 t{ s" : t2fc test-2float ;" evaluate-seq-translates -> }t
