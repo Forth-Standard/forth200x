@@ -200,34 +200,33 @@ variable ltv
 variable depth1
 variable fdepth1
 
-: save-depths ( -- )
-    depth depth1 ! fdepth fdepth1 ! ;
-
-: drop-translation ( ... -- )
-    fdepth fdepth1 @ ?do fdrop loop
-    depth   depth1 @ ?do  drop loop ;
+: tlx ( c-addr u xt -- )
+    depth 3 - >r fdepth >r
+    execute dup ltv !
+    fdepth r> ?do fdrop loop
+    depth  r> ?do  drop loop ; immediate
 
 \ first test whether locals work with rec-forth
-t{ : tl1 {: mylocal :} [ save-depths s" mylocal" rec-forth dup ltv ! drop-translation ] ; ltv @ -> translate-local }t
+t{ : tl1 {: mylocal :} [ s" mylocal" ' rec-forth ] tlx ; ltv @ -> translate-local }t
 
 \ is the local from tl1 no longer visible?
-t{ s" mylocal" rec-forth -> translate-none }t
+t{ s" mylocal" ' rec-forth ] tlx [ ltv @ -> translate-none }t
 
 \ does shadowing work?
-t{ : tl3 {: swap :} [ save-depths s" swap" rec-forth dup ltv ! drop-translation ] ; ltv @ -> translate-local }t
+t{ : tl3 {: swap :} [ s" swap" ' rec-forth ] tlx ; ltv @ -> translate-local }t
 
 
 \ now also test whether locals work with rec-name (depending on how
 \ the discussion turns out, this may change into a check whether
 \ locals work with rec-local).
 
-t{ : tl4 {: mylocal :} [ save-depths s" mylocal" rec-name dup ltv ! drop-translation ] ; ltv @ -> translate-local }t
+t{ : tl4 {: mylocal :} [ s" mylocal" ' rec-name ] tlx ; ltv @ -> translate-local }t
 
 \ is the local from tl1 no longer visible?
-t{ s" mylocal" rec-name -> translate-none }t
+t{ s" mylocal" ' rec-name ] tlx [ ltv @ -> translate-none }t
 
 \ does shadowing work?
-t{ : tl5 {: swap :} [ save-depths s" swap" rec-name dup ltv ! drop-translation ] ; ltv @ -> translate-local }t
+t{ : tl5 {: swap :} [ s" swap" ' rec-name ] tlx ; ltv @ -> translate-local }t
 
 
 
