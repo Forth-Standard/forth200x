@@ -409,18 +409,30 @@ proposed-standard recognizers produce.  This is useful in various
 contexts where recognizers are not used directly in `rec-forth`, and
 it also makes it possible to write tests for the recognizers.
 
-### Discarding a translation
+### Dropping a translation and filtering
 
 [[r1541]](https://forth-standard.org/proposals/recognizer-committee-proposal-2025-09-11#reply-1541)
-also asks for a way to discard (drop) a translation.  This need has
+also asks for a way to drop (discard) a translation.  This need has
 also come up in some recognizers implemented in Gforth (e.g.,
-`rec-tick`), and Gforth uses (non-standard) words like `sp@` and `sp!`
-for that.  Standard options would be to wrap the word that pushes a
-translation into `catch` and discard the stacks with a non-zero
-`throw`, or to use `depth` and `fdepth` in combination with loops of
-`drop` and `fdrop`; both ways are cumbersome, but viable.  At the
-2026-02-13 meeting the committee decided not to standardize support
-for dropping translations for now.
+`rec-tick`).
+
+In particular, one technique used for building recognizers is to use
+`rec-forth` on a substring, but only use the result if it produces a
+translation with a specific translation token.  In the other cases the
+translation has to be dropped.  See the second implementation of
+`rec-tick` in Section "Typical Use".  The advantage of using
+`rec-forth` and, e.g., filtering for `translate-name` over using
+`rec-name` is that when you add other ways that produce
+`translate-name` to `rec-forth` (e.g., `rec-scope` in Gforth), they
+also work in the superstring recognizers.
+
+To drop a translation, Gforth uses (non-standard) words like `sp@` and
+`sp!` for that.  Standard options would be to wrap the word that
+pushes a translation into `catch` and discard the stacks with a
+non-zero `throw`, or to use `depth` and `fdepth` in combination with
+loops of `drop` and `fdrop`; both ways are cumbersome, but viable.  At
+the 2026-02-13 meeting the committee decided not to standardize
+support for dropping translations for now.
 
 ### Locals
 
@@ -542,7 +554,9 @@ s" 123" rec-float \ in Gforth, returns the same as TRANSLATE-NONE
 : string-prefix? ( c-addr1 u1 c-addr2 u2 -- f )
     tuck 2>r umin 2r> compare 0= ;
 
-: rec-tick ( addr u -- translation )
+\ two implementations
+\ Implementation 1 based on find-name
+: rec-tick1 ( addr u -- translation )
     2dup "`" string-prefix? if
         1 /string find-name dup if
             name>interpret translate-cell
@@ -552,8 +566,34 @@ s" 123" rec-float \ in Gforth, returns the same as TRANSLATE-NONE
     \ this recognizer did not recognize anything, therefore:
     rec-none ;
 
-\ And now install it last in rec-nfn
-' rec-tick ' rec-nfn get-recs 1+ ' rec-nfn set-recs
+\ Implementation 2 based on filtering the output of rec-forth
+: filter-rec ( c-addr u xt-rec xt-filter -- translation f )
+    \ apply xt-rec ( c-addr u -- translation ) to c-addr u, then run
+    \ xt-filter ( translation -- translation f ) on the resulting
+    \ *translation*; if *f* is true, return *translation f*, otherwise
+    \ return *translate-none f*.
+    depth 4 - >r fdepth >r >r execute r> execute dup if
+        2r> 2drop
+    else
+        fdepth r> ?do fdrop loop
+        depth  r> ?do  drop loop
+        translate-none false
+    then ;
+
+: name-filter ( translation -- translation f )
+  dup translate-name = ;
+
+: rec-tick2 ( addr u -- translation )
+    2dup "`" string-prefix? if
+        1 /string ['] rec-forth ['] name-filter filter-rec if
+            drop name>interpret translate-cell then
+        exit then
+    \ this recognizer did not recognize anything, therefore:
+    rec-none ;
+
+\ And now install one of them last in rec-nfn
+\ ' rec-tick1 ' rec-nfn get-recs 1+ ' rec-nfn set-recs
+' rec-tick2 ' rec-nfn get-recs 1+ ' rec-nfn set-recs
 
 \ now use it:
 ' rec-nfn is rec-forth
