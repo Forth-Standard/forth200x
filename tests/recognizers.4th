@@ -36,6 +36,8 @@ TESTING rec-name rec-number rec-float rec-none rec-forth
 t{ : #12345 #12345 ; -> }t
 
 t{ s" dup"     rec-name -> s" dup" find-name translate-name }t
+t{ s" ("       rec-name -> s" ("   find-name translate-name }t
+t{ s" if"      rec-name -> s" if"  find-name translate-name }t
 t{ s" unr-str" rec-name -> translate-none }t
 t{ s" #123"    rec-name -> translate-none }t
 t{ s" #12345"  rec-name -> s" #12345" find-name translate-name }t
@@ -64,6 +66,8 @@ t{ s" #1234."  rec-none -> translate-none }t
 t{ s" 1234.5e" rec-none -> translate-none }t
 
 t{ s" dup"     rec-forth -> s" dup" find-name translate-name }t
+t{ s" ("       rec-forth -> s" ("   find-name translate-name }t
+t{ s" if"      rec-forth -> s" if"  find-name translate-name }t
 t{ s" unr-str" rec-forth -> translate-none }t
 t{ s" #123"    rec-forth -> #123   translate-cell  }t
 t{ s" #12345"  rec-forth -> s" #12345" find-name translate-name }t
@@ -161,8 +165,8 @@ TESTING translate:
 \ first, an absurd translation token
 t{ : ttti 9 ; -> }t
 t{ : tttc 8 ; -> }t
-t{ variable tttpv 0 tttpv ! -> }t
-t{ : tttp 1 tttpv +! ; -> }t
+t{ variable tttpv 5 tttpv ! -> }t
+t{ : tttp state @ tttpv ! ; -> }t
 t{ ' ttti ' tttc ' tttp translate: translate-ttt -> }t
 
 \ next, a translation token for a two-float literal (e.g., for complex)
@@ -177,9 +181,9 @@ t{ :noname ; ' 2flit, :noname 2flit, postpone 2flit, ; translate: translate-2flo
 t{ ' rec-name ' rec-ttt 2 ' rec-seq-translates set-recs -> }t
 
 cr
-t{ s" test-ttt"              evaluate-seq-translates         -> 9 }t
-t{ s" ] test-ttt ["          evaluate-seq-translates         -> 8 }t
-t{ s" ] postpone test-ttt [" evaluate-seq-translates tttpv @ -> 1 }t
+t{         s" test-ttt"              evaluate-seq-translates         -> 9 }t
+t{         s" ] test-ttt ["          evaluate-seq-translates         -> 8 }t
+t{ tttpv @ s" ] postpone test-ttt [" evaluate-seq-translates tttpv @ -> 5 -1 }t
 
 t{ s" test-2float"     evaluate-seq-translates -> 3e 4e }t
 t{ s" : t2fc test-2float ;" evaluate-seq-translates -> }t
@@ -196,34 +200,33 @@ variable ltv
 variable depth1
 variable fdepth1
 
-: save-depths ( -- )
-    depth depth1 ! fdepth fdepth1 ! ;
-
-: drop-translation ( ... -- )
-    fdepth fdepth1 @ ?do fdrop loop
-    depth   depth1 @ ?do  drop loop ;
+: tlx ( c-addr u xt -- )
+    depth 3 - >r fdepth >r
+    execute dup ltv !
+    fdepth r> ?do fdrop loop
+    depth  r> ?do  drop loop ; immediate
 
 \ first test whether locals work with rec-forth
-t{ : tl1 {: mylocal :} [ save-depths s" mylocal" rec-forth dup ltv ! drop-translation ] ; ltv @ -> translate-local }t
+t{ : tl1 {: mylocal :} [ s" mylocal" ' rec-forth ] tlx ; ltv @ -> translate-local }t
 
 \ is the local from tl1 no longer visible?
-t{ s" mylocal" rec-forth -> translate-none }t
+t{ s" mylocal" ' rec-forth ] tlx [ ltv @ -> translate-none }t
 
 \ does shadowing work?
-t{ : tl3 {: swap :} [ save-depths s" swap" rec-forth dup ltv ! drop-translation ] ; ltv @ -> translate-local }t
+t{ : tl3 {: swap :} [ s" swap" ' rec-forth ] tlx ; ltv @ -> translate-local }t
 
 
 \ now also test whether locals work with rec-name (depending on how
 \ the discussion turns out, this may change into a check whether
 \ locals work with rec-local).
 
-t{ : tl4 {: mylocal :} [ save-depths s" mylocal" rec-name dup ltv ! drop-translation ] ; ltv @ -> translate-local }t
+t{ : tl4 {: mylocal :} [ s" mylocal" ' rec-name ] tlx ; ltv @ -> translate-local }t
 
 \ is the local from tl1 no longer visible?
-t{ s" mylocal" rec-name -> translate-none }t
+t{ s" mylocal" ' rec-name ] tlx [ ltv @ -> translate-none }t
 
 \ does shadowing work?
-t{ : tl5 {: swap :} [ save-depths s" swap" rec-name dup ltv ! drop-translation ] ; ltv @ -> translate-local }t
+t{ : tl5 {: swap :} [ s" swap" ' rec-name ] tlx ; ltv @ -> translate-local }t
 
 
 
