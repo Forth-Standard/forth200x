@@ -31,7 +31,7 @@ s" floating" environment? [if] [if]
         t{ test-postpone-float -> 1234.5e }t
 [then] [then]
         
-TESTING rec-name rec-number rec-float rec-none rec-forth
+TESTING rec-name rec-number rec-float rec-none
 
 t{ : #12345 #12345 ; -> }t
 
@@ -65,14 +65,7 @@ t{ s" #12345"  rec-none -> translate-none }t
 t{ s" #1234."  rec-none -> translate-none }t
 t{ s" 1234.5e" rec-none -> translate-none }t
 
-t{ s" dup"     rec-forth -> s" dup" find-name translate-name }t
-t{ s" ("       rec-forth -> s" ("   find-name translate-name }t
-t{ s" if"      rec-forth -> s" if"  find-name translate-name }t
 t{ s" unr-str" rec-forth -> translate-none }t
-t{ s" #123"    rec-forth -> #123   translate-cell  }t
-t{ s" #12345"  rec-forth -> s" #12345" find-name translate-name }t
-t{ s" #1234."  rec-forth -> #1234. translate-dcell }t
-t{ s" 1234.5e" rec-forth -> 1234.5e translate-float }t
 
 TESTING not testing recs
 \ the output cannot be checked, and the stack effect is trivial
@@ -87,7 +80,6 @@ t{ action-of rec-forth constant default-rec-forth -> }t
 t{ ' rec-number-name is rec-forth -> }t
 t{ s" 1234.5e" rec-forth -> translate-none }t
 t{ default-rec-forth is rec-forth -> }t
-t{ s" 1234.5e" rec-forth -> 1234.5e translate-float }t
 
 TESTING get-recs set-recs
 
@@ -100,6 +92,12 @@ t{ s" 1234.5e" rec-number-name -> 1234.5e translate-float }t
 t{ ' rec-number-name get-recs -> ' rec-name ' rec-number ' rec-float 3 }t
 
 TESTING translate-none translate-cell translate-dcell translate-float translate-name
+
+\ translation tokens are single-cell constants
+t{ translate-none  translate-none  = -> true }t
+t{ translate-cell  translate-cell  = -> true }t
+t{ translate-dcell translate-dcell = -> true }t
+t{ translate-float translate-float = -> true }t
 
 : rec-test-translates ( c-addr u -- translation )
     2dup s" test-translate-cell"  compare 0= if 2drop #123               translate-cell  exit then
@@ -195,6 +193,9 @@ t{ t2fp2 -> 3e 4e }t
 
 TESTING locals
 
+\ translation tokens are single-cell constants
+t{ translate-local translate-local = -> true }t
+
 variable ltv
 
 variable depth1
@@ -227,6 +228,28 @@ t{ s" mylocal" ' rec-name ] tlx [ ltv @ -> translate-none }t
 
 \ does shadowing work?
 t{ : tl5 {: swap :} [ s" swap" ' rec-name ] tlx ; ltv @ -> translate-local }t
+
+
+TESTING  rec-forth (nice to have)
+\ The proposal does not require that REC-FORTH produces TRANSLATE-NAME
+\ TRANSLATE-CELL TRANSLATE-DCELL TRANSLATE-FLOAT given appropriate
+\ input; instead, different translation tokens could be used.
+
+\ However, it's a good idea to use the standardized translation
+\ tokens, so that programs can test what REC-FORTH has recognized.
+
+\ E.g., Gforth's REC-TICK calls REC-FORTH and then tests whether it
+\ produces TRANSLATE-NAME.  The benefit of that approach is that
+\ Gforth's REC-TICK recognizes not just `MYWORD, but also
+\ `MYVOC:MYWORD (recognized by Gforth's REC-SCOPE).
+
+t{ s" dup"     rec-forth -> s" dup" find-name translate-name }t
+t{ s" ("       rec-forth -> s" ("   find-name translate-name }t
+t{ s" if"      rec-forth -> s" if"  find-name translate-name }t
+t{ s" #123"    rec-forth -> #123   translate-cell  }t
+t{ s" #12345"  rec-forth -> s" #12345" find-name translate-name }t
+t{ s" #1234."  rec-forth -> #1234. translate-dcell }t
+t{ s" 1234.5e" rec-forth -> 1234.5e translate-float }t
 
 
 
